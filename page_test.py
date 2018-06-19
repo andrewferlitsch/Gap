@@ -198,6 +198,34 @@ class MyTest(unittest.TestCase):
         page = Page("test.txt", pageno=2)
         self.assertEqual(page.pageno, 2)
         
+    def test_032(self):
+        """ Page store/load """
+        page = Page(text="hello world, goodbye")
+        page.store('tmp.txt')
+        page._words = []
+        page.load('tmp.txt')
+        os.remove("tmp.txt")
+        self.assertEqual(towords(page._words), ["hello", "world", "goodbye"])
+        
+    def test_033(self):
+        """ Page store/load - unicode - latin """
+        page = Page(text="hāllo world, goodbye")
+        page.store('tmp.txt')
+        page._words = []
+        page.load('tmp.txt')
+        os.remove("tmp.txt")
+        self.assertEqual(towords(page._words), ["hāllo", "world", "goodbye"])
+        
+    def xtest_bugs(self):
+        """ Page store/load - unicode - cryllic """
+        page = Page(text="Й й")
+        page.store('tmp.txt')
+        page._words = []
+        page.load('tmp.txt')
+        os.remove("tmp.txt")
+        self.assertEqual(towords(page._words), ["Й", "й"])
+        
+        
 def towords(list):
     words = []
     for word in list:

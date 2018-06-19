@@ -12,6 +12,7 @@ import time
 import shutil
 import glob
 import sys
+import json
 
 from vocabulary import Vocabulary, vocab
 from pdf_res import PDFResource
@@ -412,6 +413,16 @@ class Page(object):
     def pageno(self):
         """ Getter for the page number """
         return self._pageno
+        
+    def store(self, file):
+        """ Store the NLP tokenized string to storage """
+        with open(file, 'w') as f:
+            json.dump( self.words, f)
+        
+    def load(self, file):
+        """ Load the NLP tokenized string from storage """
+        with open(file, 'r') as f:
+            self._words = json.load(f)
         
     def __len__(self):
         """ Override the len() operator - get the number of tokenized words """
