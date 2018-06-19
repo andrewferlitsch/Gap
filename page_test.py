@@ -191,6 +191,13 @@ class MyTest(unittest.TestCase):
         page = Page(text="hello world")
         self.assertEqual(page.size, 11)
         
+    def test_031(self):
+        """ Page number """
+        page = Page("test.txt")
+        self.assertEqual(page.pageno, None)
+        page = Page("test.txt", pageno=2)
+        self.assertEqual(page.pageno, 2)
+        
 def towords(list):
     words = []
     for word in list:

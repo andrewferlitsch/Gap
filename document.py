@@ -17,7 +17,7 @@ from vocabulary import Vocabulary, vocab
 from pdf_res import PDFResource
 
 # Ghostscript executable for Windows 64bit
-GHOSTSCRIPT = "gswin64c"
+GHOSTSCRIPT = "gswin32c"
 TESSERACT   = "tesseract"
 MAGICK      = "magick"
 
@@ -161,7 +161,7 @@ class Document(object):
                 
                 # Add a page object to this document
                 with open(text_file, 'r', encoding="utf-8") as f:
-                    self.__iadd__(Page(pdf_file, f.read())) 
+                    self.__iadd__(Page(pdf_file, f.read(), n+1)) 
                     # First Page
                     if n == 0 and self._scanned == False:   
                         # Empty page - could be a 'undetected' scanned PDF (no text)
@@ -203,7 +203,7 @@ class Document(object):
                 # Read text file
                 with open(text_file, 'r', encoding="utf-8", errors='ignore') as f:
                     text = f.read()
-                    self.__iadd__(Page(tif_file, text)) 
+                    self.__iadd__(Page(tif_file, text, n+1)) 
                     
             self._scanned = True 
             
@@ -324,14 +324,15 @@ class Document(object):
 class Page(object):
     """ Base (super) class for Page object """
     
-    def __init__(self, path=None, text=None):
+    def __init__(self, path=None, text=None, pageno=None):
         """ Constructor for page object 
         path - filepath to the page
         text - extracted text
         """
         self._path   = path     # Path to where PDF page is stored
         self._text   = text     # Raw text extracted from page
-        self._words  = None     # List of words on page
+        self._pageno = pageno   # Page Number
+        self._words  = None     # Tokenized List of words on page
         self._class  = None     # The page classification (label)
         self._size   = 0        # byte size of the page
         
@@ -406,6 +407,11 @@ class Page(object):
         if self._words is None:
             self._words = Words(self._text)
         return self._words.words 
+        
+    @property
+    def pageno(self):
+        """ Getter for the page number """
+        return self._pageno
         
     def __len__(self):
         """ Override the len() operator - get the number of tokenized words """
@@ -815,7 +821,7 @@ class Words(object):
             #elif word.endswith("ves"):
                 #self._words[i]['word'] = word[0:-3] + 'f'
             elif word.endswith("ss") or word.endswith("is") or word.endswith("us"):
-                continue 
+                pass 
             elif word.endswith("s"):
                 self._words[i]['word'] = word[0:-1]
               
@@ -928,6 +934,14 @@ class Words(object):
                     self._words[i]['word'] = word[0:-3] + 'y'
                 elif word.endswith("fy"):
                     self._words[i]['word'] = word[0:-2]
+                elif word.endswith("iful"):
+                    self._words[i]['word'] = word[0:-4] + 'y'
+                elif word.endswith("ful"):
+                    self._words[i]['word'] = word[0:-3]
+                elif word.endswith("iness"): 
+                    self._words[i]['word'] = word[0:-5] + 'y'
+                elif word.endswith("ness"):
+                    self._words[i]['word'] = word[0:-4]
         
     def _stopwords(self):
         """ Stop word removal """

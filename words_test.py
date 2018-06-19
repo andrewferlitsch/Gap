@@ -686,7 +686,7 @@ class MyTest(unittest.TestCase):
         words = Words("dad daddy mom mommy sir auntie madam", gender=False)
         self.assertEqual(words.words, []) 
         words = Words("dad daddy mom mommy sir auntie madam", gender=True)
-        self.assertEqual(towords(words.words), ["dad", "father", "mom", "mother", "sir", "auntie", "madam"])
+        self.assertEqual(towords(words.words), ["dad", "father", "mom", "mother", "sir", "aunt", "madam"])
                     		
     def test_127(self): 
         """ Words other transgender words """
@@ -2344,6 +2344,20 @@ class MyTest(unittest.TestCase):
         self.assertEqual(towords(words.words), ["rare", "testify", "testify", "ugly", "happy", "gentry", "category", "better"])
         words = Words("butterflies")
         self.assertEqual(towords(words.words), ["butterfly"])
+        words = Words("handful powerful shitful artful beautiful colorful fanciful merciful")
+        self.assertEqual(towords(words.words), ["hand", "power", "shit", "art", "beauty", "color", "fancy", "mercy"])
+        words = Words("calmness darkness kindness messiness", stopwords=True)
+        self.assertEqual(towords(words.words), ["calm", "dark", "kind", "messy"])
+              
+    def test_290(self):
+        """ More stemming """
+        words = Words("dinner")
+        self.assertEqual(towords(words.words), ["dine"])       
+        
+    def test_291(self):
+        """ More NER male """
+        words = Words("grandfather grandpa papa grandmother grandma", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'grandfather', 'tag': 15}, {'word': 'grandfather', 'tag': 15}, {'word': 'father', 'tag': 15}, {'word': 'grandmother', 'tag': 16}, {'word': 'grandmother', 'tag': 16}])    
         
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
