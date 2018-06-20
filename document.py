@@ -18,7 +18,7 @@ from vocabulary import Vocabulary, vocab
 from pdf_res import PDFResource
 
 # Ghostscript executable for Windows 64bit
-GHOSTSCRIPT = "gswin32c"
+GHOSTSCRIPT = "gswin64c"
 TESSERACT   = "tesseract"
 MAGICK      = "magick"
 
@@ -108,9 +108,13 @@ class Document(object):
             text_file = dir + self._name + '1.txt'
             with open(self._document, 'r', encoding="utf-8") as f:
                 text = f.read()
-                self.__iadd__(Page(None, text))
             with open(text_file, 'w', encoding="utf-8") as f:
                 f.write(text)
+            page = Page(text_file, text, 1)
+            self.__iadd__(page)
+            # Store the tokenized text
+            json_file = dir + self._name + '1.json' 
+            page.store(json_file)
         # Extract text from image files
         elif self._type == 'png' or self._type == 'jpg':
             img_file = dir + self._name + '1.' + self._type
@@ -123,13 +127,18 @@ class Document(object):
             # Read text file
             with open(text_file, 'r', encoding="utf-8") as f:
                 text = f.read()
-                self.__iadd__(Page(img_file, text))   
+            page = Page(img_file, text, 1)
+            self.__iadd__(page)   
+            # Store the tokenized text
+            json_file = dir + self._name + '1.json' 
+            page.store(json_file)
                 
             self._scanned = True                 
         # Split the PDF document into pages
         elif self._type == 'pdf':
             # Use ghostscript to get the number of pages
             os.system(GHOSTSCRIPT + ' -dBATCH -q -dNODISPLAY -c "("' + self.document + '") (r) file runpdfbegin pdfpagecount = quit" >tmp.tmp')
+
             with open("tmp.tmp", "r") as f:
                 npages = int(f.read())
             os.remove("tmp.tmp")
@@ -162,7 +171,14 @@ class Document(object):
                 
                 # Add a page object to this document
                 with open(text_file, 'r', encoding="utf-8") as f:
-                    self.__iadd__(Page(pdf_file, f.read(), n+1)) 
+                    # Create Page Object and read in the text for the page
+                    page = Page(pdf_file, f.read(), n+1)
+                    # Store the tokenized text
+                    json_file = dir + self._name + str(n+1) + '.json' 
+                    page.store(json_file)
+                    # Add the page to this document
+                    self.__iadd__(page) 
+                    
                     # First Page
                     if n == 0 and self._scanned == False:   
                         # Empty page - could be a 'undetected' scanned PDF (no text)
@@ -177,7 +193,9 @@ class Document(object):
                             
                             # Reread text file
                             with open(text_file, 'r', encoding="utf-8") as f:
-                                self.pages[n] = Page(pdf_file, f.read())
+                                self.pages[n] = Page(pdf_file, f.read(), n+1)
+                                # Store the tokenized text
+                                page.store(json_file)
                             # Assume all remaining pages are scanned images
                             self._scanned = True          
         # Split the TIF document into pages
@@ -188,9 +206,9 @@ class Document(object):
             files = glob.glob(dir + self._name + '*.tif')
             npages = 0
             for file in files:
-                if file != self._document:
+                if file.replace('\\', '/') != self._document:
                     npages += 1
-
+                    
             # image magic names pages 0 .. N-1. We rename tp 1 .. N
             for n in range(npages,0,-1):
                 os.rename( dir + self._name + str(n-1) + '.tif' , dir + self._name + str(n) + '.tif' )
@@ -203,8 +221,13 @@ class Document(object):
                                       
                 # Read text file
                 with open(text_file, 'r', encoding="utf-8", errors='ignore') as f:
+                    # Create Page Object and read in the text for the page
                     text = f.read()
-                    self.__iadd__(Page(tif_file, text, n+1)) 
+                    page = Page(tif_file, text, n+1)
+                    # Store the tokenized text
+                    json_file = dir + self._name + str(n+1) + '.json' 
+                    page.store(json_file)
+                    self.__iadd__(page) 
                     
             self._scanned = True 
             
@@ -221,7 +244,7 @@ class Document(object):
         """ Setter for the document name (path) 
         document - path to the document
         """
-        self._document = document
+        self._document = document  
         self._exist()
         self._collate(self._dir)
 
@@ -1167,6 +1190,8 @@ class Words(object):
             word = word[1:]
         elif word[0] == '-':
             start = 1
+        if start >= len(word):
+            return None, 0
         
         if word[start] == self.DECIMAL:
             word = word[0:start] + '0' + word[start:]
@@ -1222,7 +1247,9 @@ class Words(object):
                 
         # convert from hex to decimal
         if hex:
-            word = str(int(word, 16))
+            try:
+                word = str(int(word, 16))
+            except: return None, 0
             
         # fraction
         if nom is not False:

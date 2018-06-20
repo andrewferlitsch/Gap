@@ -2356,8 +2356,8 @@ class MyTest(unittest.TestCase):
         
     def test_291(self):
         """ More NER male """
-        words = Words("grandfather grandpa papa grandmother grandma", stopwords=True)
-        self.assertEqual(words.words, [{'word': 'grandfather', 'tag': 15}, {'word': 'grandfather', 'tag': 15}, {'word': 'father', 'tag': 15}, {'word': 'grandmother', 'tag': 16}, {'word': 'grandmother', 'tag': 16}])    
+        words = Words("grandfather grandpa papa grandmother grandma momma", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'grandfather', 'tag': 15}, {'word': 'grandfather', 'tag': 15}, {'word': 'father', 'tag': 15}, {'word': 'grandmother', 'tag': 16}, {'word': 'grandmother', 'tag': 16}, {'word': 'mother', 'tag': 16}])    
         
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")

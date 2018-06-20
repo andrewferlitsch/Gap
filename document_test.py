@@ -49,7 +49,10 @@ class MyTest(unittest.TestCase):
         self.assertEqual(document.name, "test")
         self.assertEqual(len(document), 1)
         self.assertEqual(document.text, ["foo"])
+        self.assertTrue(os.path.isfile("test1.txt"))
+        self.assertTrue(os.path.isfile("test1.json"))
         os.remove("test1.txt")
+        os.remove("test1.json")
         
     def test_006(self):
         """ Document Constructor - document = valid pdf document """
@@ -57,17 +60,14 @@ class MyTest(unittest.TestCase):
         self.assertEqual(document.document, "tests/4page.pdf")
         self.assertEqual(document.name, "4page")
         self.assertEqual(len(document), 4)
-        self.assertTrue(os.path.isfile("4page1.pdf"))
-        self.assertTrue(os.path.isfile("4page2.pdf"))
-        self.assertTrue(os.path.isfile("4page3.pdf"))
-        self.assertTrue(os.path.isfile("4page4.pdf"))
-        self.assertTrue(os.path.isfile("4page1.txt"))
-        self.assertTrue(os.path.isfile("4page2.txt"))
-        self.assertTrue(os.path.isfile("4page3.txt"))
-        self.assertTrue(os.path.isfile("4page4.txt"))
+        for i in range(1,5):
+            self.assertTrue(os.path.isfile("4page" + str(i) + ".pdf"))
+            self.assertTrue(os.path.isfile("4page" + str(i) + ".txt"))
+            self.assertTrue(os.path.isfile("4page" + str(i) + ".json"))
         for i in range(1,5):
             os.remove("4page" + str(i) + ".pdf")
             os.remove("4page" + str(i) + ".txt")
+            os.remove("4page" + str(i) + ".json")
         
     def test_007(self):
         """ Document Constructor - document = valid pdf document with page directory specified """
@@ -75,17 +75,14 @@ class MyTest(unittest.TestCase):
         self.assertEqual(document.document, "tests/4page.pdf")
         self.assertEqual(document.name, "4page")
         self.assertEqual(len(document), 4)
-        self.assertTrue(os.path.isfile("tests/4page1.pdf"))
-        self.assertTrue(os.path.isfile("tests/4page2.pdf"))
-        self.assertTrue(os.path.isfile("tests/4page3.pdf"))
-        self.assertTrue(os.path.isfile("tests/4page4.pdf"))
-        self.assertTrue(os.path.isfile("tests/4page1.txt"))
-        self.assertTrue(os.path.isfile("tests/4page2.txt"))
-        self.assertTrue(os.path.isfile("tests/4page3.txt"))
-        self.assertTrue(os.path.isfile("tests/4page4.txt"))
+        for i in range(1,5):
+            self.assertTrue(os.path.isfile("tests/4page"  + str(i) + ".pdf"))
+            self.assertTrue(os.path.isfile("tests/4page"  + str(i) + ".txt"))
+            self.assertTrue(os.path.isfile("tests/4page"  + str(i) + ".json"))
         for i in range(1,5):
             os.remove("tests/4page" + str(i) + ".pdf")
-            os.remove("tests/4page" + str(i) + ".txt")       
+            os.remove("tests/4page" + str(i) + ".txt")  
+            os.remove("tests/4page" + str(i) + ".json")      
         
     def test_008(self):
         """ Document constructor - keyword argument: document """
@@ -93,6 +90,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(document.name, "test")
         self.assertEqual(len(document), 1)
         os.remove("test1.txt")
+        os.remove("test1.json")
         
     def test_009(self):
         """ Document constructor - keyword argument: dir """
@@ -110,6 +108,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(document.name, "test")
         self.assertTrue(os.path.isfile("tests/test1.txt"))
         os.remove("tests/test1.txt")
+        os.remove("tests/test1.json")
         
     def test_012(self):
         """ Document constructr - non-ascii characters in document (UTF-8 encoding) """
@@ -118,6 +117,7 @@ class MyTest(unittest.TestCase):
         for i in range(1,8):
             os.remove("tests/7page" + str(i) + ".pdf")
             os.remove("tests/7page" + str(i) + ".txt")
+            os.remove("tests/7page" + str(i) + ".json")
         
     def test_013(self):
         """ Document constructor - create page directory """
@@ -126,6 +126,7 @@ class MyTest(unittest.TestCase):
         for i in range(1,5):
             os.remove("tests2/4page" + str(i) + ".pdf")
             os.remove("tests2/4page" + str(i) + ".txt")
+            os.remove("tests2/4page" + str(i) + ".json")
         os.removedirs("tests2")
         
     def test_014(self):
@@ -155,17 +156,14 @@ class MyTest(unittest.TestCase):
         self.assertEqual(document.document, "tests/4page.pdf")
         self.assertEqual(document.name, "4page")
         self.assertEqual(len(document), 4)
-        self.assertTrue(os.path.isfile("4page1.pdf"))
-        self.assertTrue(os.path.isfile("4page2.pdf"))
-        self.assertTrue(os.path.isfile("4page3.pdf"))
-        self.assertTrue(os.path.isfile("4page4.pdf"))
-        self.assertTrue(os.path.isfile("4page1.txt"))
-        self.assertTrue(os.path.isfile("4page2.txt"))
-        self.assertTrue(os.path.isfile("4page3.txt"))
-        self.assertTrue(os.path.isfile("4page4.txt"))
+        for i in range(1,5):
+            self.assertTrue(os.path.isfile("4page" + str(i) + ".pdf"))
+            self.assertTrue(os.path.isfile("4page" + str(i) + ".txt"))
+            self.assertTrue(os.path.isfile("4page" + str(i) + ".json"))
         for i in range(1,5):
             os.remove("4page" + str(i) + ".pdf")
             os.remove("4page" + str(i) + ".txt")
+            os.remove("4page" + str(i) + ".json")
         
     def test_018(self):
         """ Document document setter - valid PDF file with page directory """
@@ -174,17 +172,14 @@ class MyTest(unittest.TestCase):
         document.document = "tests/4page.pdf"
         self.assertEqual(document.name, "4page")
         self.assertEqual(len(document), 4)
-        self.assertTrue(os.path.isfile("tests/4page1.pdf"))
-        self.assertTrue(os.path.isfile("tests/4page2.pdf"))
-        self.assertTrue(os.path.isfile("tests/4page3.pdf"))
-        self.assertTrue(os.path.isfile("tests/4page4.pdf"))
-        self.assertTrue(os.path.isfile("tests/4page1.txt"))
-        self.assertTrue(os.path.isfile("tests/4page2.txt"))
-        self.assertTrue(os.path.isfile("tests/4page3.txt"))
-        self.assertTrue(os.path.isfile("tests/4page4.txt"))
+        for i in range(1,5):
+            self.assertTrue(os.path.isfile("tests/4page" + str(i) + ".pdf"))
+            self.assertTrue(os.path.isfile("tests/4page" + str(i) + ".txt"))
+            self.assertTrue(os.path.isfile("tests/4page" + str(i) + ".json"))
         for i in range(1,5):
             os.remove("tests/4page" + str(i) + ".pdf")
             os.remove("tests/4page" + str(i) + ".txt")
+            os.remove("tests/4page" + str(i) + ".json")
         
     def test_019(self):
         """ Document document setter - not a string """
@@ -214,6 +209,7 @@ class MyTest(unittest.TestCase):
         for i in range(1,5):
             os.remove("tests/4page" + str(i) + ".pdf")
             os.remove("tests/4page" + str(i) + ".txt")
+            os.remove("tests/4page" + str(i) + ".json")
         
     def test_023(self):
         """ Document text setter """
@@ -224,14 +220,13 @@ class MyTest(unittest.TestCase):
         for i in range(1,5):
             os.remove("tests/4page" + str(i) + ".pdf")
             os.remove("tests/4page" + str(i) + ".txt")
+            os.remove("tests/4page" + str(i) + ".json")
         
     def test_024(self):
         """ Document [] getter """
         document = Document("tests/4page.pdf", "tests")
-        self.assertEqual(document[0].path, "tests/4page1.pdf")
-        self.assertEqual(document[1].path, "tests/4page2.pdf")
-        self.assertEqual(document[2].path, "tests/4page3.pdf")
-        self.assertEqual(document[3].path, "tests/4page4.pdf")
+        for i in range(1,5):
+            self.assertEqual(document[i-1].path, "tests/4page" + str(i) + ".pdf")
         self.assertEqual(document[0].text.strip()[0:6], "TIER 1")
         self.assertEqual(document[1].text.strip()[0:15], "COVERED MEDICAL")
         self.assertEqual(document[2].text.strip()[0:14], "Emergency mean")
@@ -239,6 +234,7 @@ class MyTest(unittest.TestCase):
         for i in range(1,5):
             os.remove("tests/4page" + str(i) + ".pdf")
             os.remove("tests/4page" + str(i) + ".txt")
+            os.remove("tests/4page" + str(i) + ".json")
         
     def test_025(self):
         """ Document [] getter - index out of range """
@@ -247,6 +243,7 @@ class MyTest(unittest.TestCase):
         for i in range(1,5):
             os.remove("tests/4page" + str(i) + ".pdf")
             os.remove("tests/4page" + str(i) + ".txt")
+            os.remove("tests/4page" + str(i) + ".json")
         
     def test_026(self):
         """ Document [] setter """
@@ -313,6 +310,7 @@ class MyTest(unittest.TestCase):
         for i in range(1,5):
             os.remove("tests/4page" + str(i) + ".pdf")
             os.remove("tests/4page" + str(i) + ".txt") 
+            os.remove("tests/4page" + str(i) + ".json") 
 
     def test_036(self): 
         """ Document type getter - None """
@@ -325,7 +323,8 @@ class MyTest(unittest.TestCase):
         self.assertEqual(document.type, "pdf")
         for i in range(1,5):
             os.remove("tests/4page" + str(i) + ".pdf")
-            os.remove("tests/4page" + str(i) + ".txt")        
+            os.remove("tests/4page" + str(i) + ".txt")   
+            os.remove("tests/4page" + str(i) + ".json")      
         
     def test_038(self): 
         """ Document - empty file """ 
@@ -341,14 +340,13 @@ class MyTest(unittest.TestCase):
         """ Document - color PDF with overlay """
         document = Document("tests/5page.pdf", "tests")
         self.assertEqual(len(document), 5)
-        self.assertTrue(os.path.isfile("tests/5page1.txt"))
-        self.assertTrue(os.path.isfile("tests/5page2.txt"))
-        self.assertTrue(os.path.isfile("tests/5page3.txt"))
-        self.assertTrue(os.path.isfile("tests/5page4.txt"))
-        self.assertTrue(os.path.isfile("tests/5page5.txt"))
+        for i in range(1,6):
+            self.assertTrue(os.path.isfile("tests/5page"  + str(i) + ".txt"))
+            self.assertTrue(os.path.isfile("tests/5page"  + str(i) + ".json"))
         for i in range(1,6):
             os.remove("tests/5page" + str(i) + ".txt")
             os.remove("tests/5page" + str(i) + ".pdf") 
+            os.remove("tests/5page" + str(i) + ".json") 
         
     def test_041(self): 
         """ Document - invoice PDF """
@@ -356,8 +354,10 @@ class MyTest(unittest.TestCase):
         self.assertEqual(len(document), 1)
         self.assertTrue(os.path.isfile("tests/invoice1.txt"))
         self.assertTrue(os.path.isfile("tests/invoice1.pdf"))
+        self.assertTrue(os.path.isfile("tests/invoice1.json"))
         os.remove("tests/invoice1.txt")
         os.remove("tests/invoice1.pdf")
+        os.remove("tests/invoice1.json")
 		
     def test_042(self):
         """ Document - Adobe Example """
@@ -367,9 +367,11 @@ class MyTest(unittest.TestCase):
         for i in range(1,5):
             self.assertTrue(os.path.isfile("tests/adobepdf" + str(i) + ".txt"))
             self.assertTrue(os.path.isfile("tests/adobepdf" + str(i) + ".pdf"))
+            self.assertTrue(os.path.isfile("tests/adobepdf" + str(i) + ".json"))
         for i in range(1,5):
             os.remove("tests/adobepdf" + str(i) + ".txt")
             os.remove("tests/adobepdf" + str(i) + ".pdf") 
+            os.remove("tests/adobepdf" + str(i) + ".json") 
 
     ### SCANNED PDF ###
         
@@ -380,24 +382,25 @@ class MyTest(unittest.TestCase):
         self.assertTrue(os.path.isfile("tests/scan1.png"))
         self.assertTrue(document.scanned)
         l = len(document.pages[0])
-        self.assertTrue(l >= 90 and l <= 100)
+        self.assertTrue(l >= 83 and l <= 100)
         os.remove("tests/scan1.txt")
         os.remove("tests/scan1.pdf")
         os.remove("tests/scan1.png")
+        os.remove("tests/scan1.json")
         
     def test_044(self): 
         """ Document - scanned PDF - multi page, no text, but noise """
         document = Document("tests/4scan.pdf", "tests")
         self.assertEqual(len(document), 4)
         self.assertTrue(document.scanned)
-        self.assertTrue(os.path.isfile("tests/4scan1.png"))
-        self.assertTrue(os.path.isfile("tests/4scan2.png"))
-        self.assertTrue(os.path.isfile("tests/4scan3.png"))
-        self.assertTrue(os.path.isfile("tests/4scan4.png"))
+        for i in range(1,5):
+            self.assertTrue(os.path.isfile("tests/4scan"  + str(i) + ".png"))
+            self.assertTrue(os.path.isfile("tests/4scan"  + str(i) + ".json"))
         for i in range(1,5):
             os.remove("tests/4scan" + str(i) + ".txt")
             os.remove("tests/4scan" + str(i) + ".pdf")
             os.remove("tests/4scan" + str(i) + ".png")
+            os.remove("tests/4scan" + str(i) + ".json")
         
     def test_045(self): 
         """ Document - scanned PDF - single page, set resolution """
@@ -407,7 +410,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(document.scanned)
         self.assertTrue(os.path.isfile("tests/scan1.png"))
         l = len(document.pages[0])
-        self.assertTrue(l >= 100 and l <= 110)
+        self.assertTrue(l >= 97 and l <= 110)
         os.remove("tests/scan1.txt")
         os.remove("tests/scan1.pdf")
         os.remove("tests/scan1.png")
@@ -423,6 +426,7 @@ class MyTest(unittest.TestCase):
         l = len(document.pages[0])
         os.remove("tests/scan_textback1.txt")
         os.remove("tests/scan_textback1.pdf")
+        os.remove("tests/scan_textback1.json")
         
     def test_047(self): 
         """ Document - scanned PDF - single page, non-text example """
@@ -436,6 +440,7 @@ class MyTest(unittest.TestCase):
         os.remove("tests/nontext1.txt")
         os.remove("tests/nontext1.pdf")
         os.remove("tests/nontext1.png")
+        os.remove("tests/nontext1.json")
         
     def test_048(self): 
         """ Document - PNG text """
@@ -447,6 +452,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(document.scanned)
         l = len(document.pages[0])
         self.assertTrue(l >= 25 and l <= 30)
+        self.assertTrue(document[0].pageno, 1)
         os.remove("tests/text1.txt")
         os.remove("tests/text1.png")
         
@@ -458,30 +464,25 @@ class MyTest(unittest.TestCase):
         self.assertTrue(document.scanned)
         self.assertTrue(os.path.isfile("tests/text1.txt"))
         self.assertTrue(os.path.isfile("tests/text1.jpg"))
+        self.assertTrue(os.path.isfile("tests/text1.json"))
         l = len(document.pages[0])
         self.assertTrue(l >= 14 and l <= 30)
         os.remove("tests/text1.txt")
         os.remove("tests/text1.jpg")
+        os.remove("tests/text1.json")
         
     def test_050(self): 
         """ Document - TIF text """
         document = Document("tests/6page.tif", "tests")
         self.assertEqual(len(document), 6)
-        self.assertTrue(os.path.isfile("tests/6page1.tif"))
-        self.assertTrue(os.path.isfile("tests/6page2.tif"))
-        self.assertTrue(os.path.isfile("tests/6page3.tif"))
-        self.assertTrue(os.path.isfile("tests/6page4.tif"))
-        self.assertTrue(os.path.isfile("tests/6page5.tif"))
-        self.assertTrue(os.path.isfile("tests/6page6.tif"))
-        self.assertTrue(os.path.isfile("tests/6page1.txt"))
-        self.assertTrue(os.path.isfile("tests/6page2.txt"))
-        self.assertTrue(os.path.isfile("tests/6page3.txt"))
-        self.assertTrue(os.path.isfile("tests/6page4.txt"))
-        self.assertTrue(os.path.isfile("tests/6page5.txt"))
-        self.assertTrue(os.path.isfile("tests/6page6.txt"))
         for i in range(1,7):
-            os.remove("tests/4scan" + str(i) + ".txt")
-            os.remove("tests/4scan" + str(i) + ".tif")
+            self.assertTrue(os.path.isfile("tests/6page" + str(i) + ".tif"))
+            self.assertTrue(os.path.isfile("tests/6page" + str(i) + ".txt"))
+            self.assertTrue(os.path.isfile("tests/6page" + str(i) + ".json"))
+        for i in range(1,7):
+            os.remove("tests/6scan" + str(i) + ".txt")
+            os.remove("tests/6scan" + str(i) + ".tif")
+            os.remove("tests/6scan" + str(i) + ".json")
         
     ### ASYNC PROCESSING ###
         
@@ -490,8 +491,14 @@ class MyTest(unittest.TestCase):
         document = Document("tests/invoice.pdf", "tests", self.done)
         time.sleep(5)
         self.assertTrue(self.isdone)
-        self.isdone = False
-        
+        os.remove("tests/invoice1.pdf")
+        os.remove("tests/invoice1.txt")
+        os.remove("tests/invoice1.json")
+
+
+    def xtests_bugs(self):
+        # page.path for .txt file
+        pass
 
 		
     def done(self, document):
