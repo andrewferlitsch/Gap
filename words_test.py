@@ -2351,14 +2351,34 @@ class MyTest(unittest.TestCase):
               
     def test_290(self):
         """ More stemming """
-        words = Words("dinner")
-        self.assertEqual(towords(words.words), ["dine"])       
+        words = Words("dinner transfer transferrer")
+        self.assertEqual(towords(words.words), ["dine", "transfer", "transfer"])       
         
     def test_291(self):
         """ More NER male """
         words = Words("grandfather grandpa papa grandmother grandma momma", stopwords=True)
         self.assertEqual(words.words, [{'word': 'grandfather', 'tag': 15}, {'word': 'grandfather', 'tag': 15}, {'word': 'father', 'tag': 15}, {'word': 'grandmother', 'tag': 16}, {'word': 'grandmother', 'tag': 16}, {'word': 'mother', 'tag': 16}])    
+                 
+    def test_292(self):
+        """ Porter Stemmer """
+        words = Words("taxes lives elves hides haves halves grasses braves", stem='porter')
+        self.assertEqual(towords(words.words), ["tax", "live", "elv", "hide", "halv", "grass", "brave"])      
         
+    def test_293(self):
+        """ Snowball Stemmer """
+        words = Words("taxes lives elves hides haves halves grasses braves", stem='snowball')
+        self.assertEqual(towords(words.words), ["tax", "live", "elv", "hide", "halv", "grass", "brave"])      
+        
+    def test_294(self):
+        """ Lancaster Stemmer """
+        words = Words("taxes lives elves hides haves halves grasses braves", stem='lancaster')
+        self.assertEqual(towords(words.words), ["tax", "liv", "elv", "hid", "hav", "halv", "grass", "brav"])      
+        
+    def test_295(self):
+        """ Lemma """
+        words = Words("taxes lives elves hides haves halves grasses braves", stem='lemma')
+        self.assertEqual(towords(words.words), ["tax", "life", "elf", "hide", "grass", "brave"]) 
+    
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
         words = Words("10 m/s", stopwords=True)

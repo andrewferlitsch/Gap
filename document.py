@@ -14,6 +14,12 @@ import glob
 import sys
 import json
 
+from nltk.stem import *
+import nltk
+from nltk import pos_tag
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+
 from vocabulary import Vocabulary, vocab
 from pdf_res import PDFResource
 
@@ -27,7 +33,7 @@ class Document(object):
     
     RESOLUTION = 300    # Resolution for OCR
 
-    def __init__(self, document=None, dir="./", ehandler=None):
+    def __init__(self, document=None, dir="./", ehandler=None, config=None):
         """ Constructor for document object 
         document - - path to the document
         dir - directory where to store extracted pages and text
@@ -46,7 +52,17 @@ class Document(object):
         # value must be a string
         if dir is not None and isinstance(dir, str) == False:
             raise TypeError("String expected for page directory path")
-        
+                       
+        # 
+        if config is not None:
+            for key in config:
+                if key == 'bare':
+                    Page.BARE = True
+                elif key.startswith('stem'):
+                    vals = key.split('=')
+                    if len(vals) == 2:
+                        Page.STEM = vals[1]
+                                     
         # Verify that the document exists
         if self._document is not None:
             self._exist()
@@ -57,6 +73,7 @@ class Document(object):
             else:
                 t = threading.Thread(target=self._async, args=(dir, ))
                 t.start()
+ 
             
     def _async(self, dir):
         """ Asynchronous processing of the document """
@@ -348,6 +365,9 @@ class Document(object):
 class Page(object):
     """ Base (super) class for Page object """
     
+    BARE=False
+    STEM='internal'
+    
     def __init__(self, path=None, text=None, pageno=None):
         """ Constructor for page object 
         path - filepath to the page
@@ -429,7 +449,7 @@ class Page(object):
             
         # If text has not been tokenized yet, then tokenize it
         if self._words is None:
-            self._words = Words(self._text)
+            self._words = Words(self._text, bare=self.BARE, stem=self.STEM)
         return self._words.words 
         
     @property
@@ -454,7 +474,7 @@ class Page(object):
             
         # If text has not been tokenized yet, then tokenize it
         if self._words is None:
-            self._words = Words(self._text)
+            self._words = Words(self._text, bare=self.BARE, stem=self.STEM)
         return len(self._words.words)
         
     def __str__(self):
@@ -478,7 +498,7 @@ class Page(object):
             # Was already tokenized
             if self._words is not None:
                 # Tokenize new text
-                words = Words(text)
+                words = Words(text, bare=self.BARE, stem=self.STEM)
                 # Add tokens to existing list
                 self._words += words.words
         return self
@@ -490,13 +510,14 @@ class Words(object):
     DECIMAL		    = '.'	# Standard Unit for Decimal Point
     THOUSANDS 	    = ','	# Standard Unit for Thousandth Separator
     
-    def __init__(self, text=None, bare=False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, dob=False, unit=False, standard=False, metric=False ):
+    def __init__(self, text=None, bare=False, stem='internal', stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, dob=False, unit=False, standard=False, metric=False ):
         """ Constructor 
         text - raw text as string to tokenize
         """
         self._text          = text          # raw text
         self._words         = None          # list of words
         self._punct         = punct         # keep/remove punctuation
+        self._stemming      = stem          # on/off stemming
         self._porter        = stopwords     # keep/remove stopwords
         self._bare          = bare          # on/off bare tokenizing
         self._standard      = standard      # convert metric to standard units
@@ -596,7 +617,16 @@ class Words(object):
                 # preprocess the tokens
                 self._preprocess()
                 # word stemming
-                self._stem()
+                if self._stemming == 'internal':
+                    self._stem()
+                elif self._stemming == 'porter':
+                    self._nltkStemmer('porter')
+                elif self._stemming == 'snowball':
+                    self._nltkStemmer('snowball')
+                elif self._stemming == 'lancaster':
+                    self._nltkStemmer('lancaster')
+                elif self._stemming == 'lemma':
+                    self._lemma()
                 # remove stop words
                 self._stopwords()
                 # Do unit conversions
@@ -975,8 +1005,38 @@ class Words(object):
                 elif word.endswith("iness"): 
                     self._words[i]['word'] = word[0:-5] + 'y'
                 elif word.endswith("ness"):
-                    self._words[i]['word'] = word[0:-4]
+                    self._words[i]['word'] = word[0:-4]    
+
+    def _nltkStemmer(self, name):
+        """ NLTK Stemmer """
+        if name == 'porter':
+            stemmer = PorterStemmer()
+        elif name == 'snowball':
+            stemmer = SnowballStemmer("english")
+        elif name == "lancaster":
+            stemmer = LancasterStemmer()
+        else:
+            return
         
+        length = len(self._words)
+        for i in range(length):
+            word = self._words[i]['word']
+            l = len(word)
+
+            # Don't stem short words or words already categorized
+            if l < 4 or self._words[i]['tag'] != Vocabulary.UNTAG:
+                continue
+            
+            self._words[i]['word'] = stemmer.stem(self._words[i]['word'])    
+            
+    def _lemma(self):
+        """ NLTK Lemmatizer """
+        lemma = WordNetLemmatizer()
+
+        length = len(self._words)
+        for i in range(length):        
+            self._words[i]['word'] = lemma.lemmatize(self._words[i]['word'])
+
     def _stopwords(self):
         """ Stop word removal """
         words = []
