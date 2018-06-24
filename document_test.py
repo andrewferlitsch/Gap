@@ -489,16 +489,28 @@ class MyTest(unittest.TestCase):
     def test_051(self):
         """ async processing """
         document = Document("tests/invoice.pdf", "tests", self.done)
-        time.sleep(5)
+        time.sleep(6)
         self.assertTrue(self.isdone)
         os.remove("tests/invoice1.pdf")
         os.remove("tests/invoice1.txt")
         os.remove("tests/invoice1.json")
+        
+    def test_052(self):
+        """ document load from store """
+        document = Document("tests/4page.pdf", "tests")
+        document = Document()
+        document.load("tests/4page.pdf", "tests")
+        self.assertEquals(len(document), 4)
+        self.assertTrue(documnet[0].words != None)
 
 
-    def xtests_bugs(self):
+    def test_053(self):
         # page.path for .txt file
-        pass
+        document = Document("test.txt")
+        self.assertTrue(os.path.isfile("test1.json"))
+        self.assertEquals(document[0].path, "./test1.txt")
+        os.remove("test1.txt")
+        os.remove("test1.json")
 
 		
     def done(self, document):

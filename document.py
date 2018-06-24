@@ -252,7 +252,25 @@ class Document(object):
             
         # Total time to do collation
         self._time = time.time() - start
-
+        
+    def load(self, document, dir='./'):
+        """ """
+        self._document = document
+        if dir.endswith("/") == False:
+                dir += "/"  
+        self._dir = dir
+        basename = os.path.splitext(os.path.basename(self._document))
+        self._name = basename[0]
+        self._type = basename[1][1:].lower()
+        
+        files = glob.glob(dir + self._name + '*.json')
+        pageno = 1
+        for file in files:
+            page = Page(pageno=pageno)
+            page.load(file)
+            self.__iadd__(page) 
+        
+       
     @property
     def document(self):
         """ Getter for the document name (path) """
@@ -447,7 +465,7 @@ class Page(object):
     @property
     def words(self):
         """ Getter for page words (tokenized) """
-        if self._text is None:
+        if self._text is None and self._words is None:
             return None
             
         # If text has not been tokenized yet, then tokenize it
@@ -468,7 +486,8 @@ class Page(object):
     def load(self, file):
         """ Load the NLP tokenized string from storage """
         with open(file, 'r') as f:
-            self._words = json.load(f)
+            self._words = Words()
+            self._words._words = json.load(f)
         
     def __len__(self):
         """ Override the len() operator - get the number of tokenized words """
@@ -1099,7 +1118,8 @@ class Words(object):
                             if self._words[_x]['tag'] in [ Vocabulary.STREET_NUM, Vocabulary.STREET_DIR, 
                                                            Vocabulary.STREET_NAME, Vocabulary.STREET_TYPE,
                                                            Vocabulary.POB, Vocabulary.STREET_ADDR2, 
-                                                           Vocabulary.CITY, Vocabulary.STATE, Vocabulary.POSTAL]:
+                                                           Vocabulary.CITY, Vocabulary.STATE, Vocabulary.POSTAL,
+                                                           Vocabulary.STATION]:
                                 words.append( self._words[_x] )
                     continue
   
@@ -1519,7 +1539,7 @@ class Words(object):
         if index == length:
             return None, 0
             
-        while words[index]['tag'] in [ Vocabulary.PUNCT, Vocabulary.SYMBOL ]:
+        while words[index]['tag'] in [ Vocabulary.PUNCT, Vocabulary.SYMBOL ] or words[index]['word'] in ['is', 'of']:
             index += 1
             if index == length:
                 return None, 0
@@ -1570,7 +1590,7 @@ class Words(object):
                 if index == length:
                     return None, 0
             
-            while words[index]['tag'] in [ Vocabulary.PUNCT, Vocabulary.SYMBOL]:
+            while words[index]['tag'] in [ Vocabulary.PUNCT, Vocabulary.SYMBOL]  or words[index]['word'] in ['is', 'of']:
                 index += 1
                 if index == length:
                     return None, 0
@@ -1628,6 +1648,8 @@ class Words(object):
         length = len(words)
         start = index
         
+        # POB
+        stn = None
         pob, n = self._pob(words, index)
         if pob is not None:
             index += n
@@ -1638,6 +1660,17 @@ class Words(object):
                 index += 1
                 if index == length:
                     return 0
+            # Station (Canada)
+            stn, n = self._stn(words, index)
+            if stn is not None:
+                index += n
+                idx_stn = index - 1
+                if index == length:
+                    return 0
+                if words[index]['word'] == ',':
+                    index += 1
+                    if index == length:
+                        return 0
         
         # Street Number
         num, n = self._streetnum(words, index)
@@ -1743,6 +1776,11 @@ class Words(object):
                     idx_pob = index - 1
                     if index < length and words[index]['word'] == ',':
                         index += 1
+                    stn, n = self._stn(words, index)
+                    index += n
+                    idx_stn = index - 1
+                    if index < length and words[index]['word'] == ',':
+                        index += 1
        
         # Secondary Address may follow address
         idx_addr2 = 0
@@ -1768,7 +1806,10 @@ class Words(object):
         idx_postal = 0
         postal = None
         if index < length: 
-            postal, n = self._postalcode( words, index )
+            if state and "CA-" in state:
+                postal, n = self._postalcodeCA( words, index )
+            else:
+                postal, n = self._postalcode( words, index )
             idx_postal = index
             index += n
   
@@ -1779,6 +1820,9 @@ class Words(object):
         if pob is not None:
             words[idx_pob]['word'] = pob
             words[idx_pob]['tag'] = Vocabulary.POB
+        if stn is not None:
+            words[idx_stn]['word'] = stn
+            words[idx_stn]['tag'] = Vocabulary.STATION
         if dir is not None:
             words[idx_dir]['tag'] = Vocabulary.STREET_DIR
             words[idx_dir]['word'] = dir
@@ -1801,6 +1845,7 @@ class Words(object):
         
     def _pob(self, words, index):
         """ Look for Post Office Box 
+        PMB digits
         POB digits
         P.O.B digits
         P.O. Box digits
@@ -1810,7 +1855,7 @@ class Words(object):
         start = index
         length = len(words)
         
-        if words[index]['word'] == 'pob':
+        if words[index]['word'] == 'pob' or words[index]['word'] == 'pmb':
             index += 1
             if index == length:
                 return None, 0
@@ -1826,7 +1871,7 @@ class Words(object):
                 index += 1
                 if index == length:
                     return None, 0
-            if words[index]['word'] != 'o':
+            if words[index]['word'] not in ['o', 'm']:
                 return None, 0
             index += 1
             if index == length:
@@ -1857,6 +1902,29 @@ class Words(object):
                     return None, 0
             return words[index]['word'], index - start + 1
             
+        return None, 0
+        
+    def _stn(self, words, index):
+        """ Look for Station
+        STN word
+        Station word
+        """
+                
+        start = index
+        length = len(words)
+        
+        if index == length:
+            return None, 0
+        
+        if words[index]['word'] == 'stn' or words[index]['word'] == 'station' or words[index]['word'] == 'rpo':
+            index += 1
+            if index == length:
+                return None, 0
+            if words[index]['word'] == '.':
+                return words[index+1]['word'], 3
+            else:
+                return words[index]['word'], 2
+                
         return None, 0
               
     def _streetnum(self, words, index):
@@ -2042,6 +2110,14 @@ class Words(object):
             return city, "ISO3166-2:US-FM", index - start + 1, index
         if words[index]['word'] == 'northern' and index + 1 < length and words[index+1]['word'] == 'marianas':
             return city, "ISO3166-2:US-FM", index - start + 1, index
+        if words[index]['word'] == 'british' and index + 1 < length and words[index+1]['word'] == 'columbia':
+            return city, "ISO3166-2:CA-BC", index - start + 1, index
+        if words[index]['word'] == 'newfoundland' and index + 2 < length and words[index+1]['word'] == 'and':
+            return city, "ISO3166-2:CA-NL", index - start + 2, index
+        if words[index]['word'] == 'nova' and index + 1 < length and words[index+1]['word'] == 'scotia':
+            return city, "ISO3166-2:CA-NS", index - start + 1, index
+        if words[index]['word'] == 'prince' and index + 2 < length and words[index+1]['word'] == 'edward':
+            return city, "ISO3166-2:CA-PE", index - start + 1, index
  
         # Hack
         if words[index]['word'] == 'medical doctor':
@@ -2051,7 +2127,7 @@ class Words(object):
             return None, None, 0, 0
                        
         # State Name Prefix
-        if words[index]['word'] in [ 'new', 'north', 'south', 'west']:
+        if words[index]['word'] in [ 'new', 'north', 'south', 'west', 'northwest']:
             index += 1
             if index == length:
                 return None, None, 0, 0
@@ -2181,10 +2257,35 @@ class Words(object):
         'marshall islands': 'ISO3166-2:US-MH',
         'mp'            : 'ISO3166-2:US-MP',
         'northern marianas': 'ISO3166-2:US-MP',
+        'ab'            : 'ISO3166-2:CA-AB',
+        'alberta'       : 'ISO3166-2:CA-AB',
+        'bc'            : 'ISO3166-2:CA-BC',
+        'british columbia' : 'ISO3166-2:CA-BC',
+        'mb'            : 'ISO3166-2:CA-MB',
+        'manitoba'      : 'ISO3166-2:CA-MB',
+        'nb'            : 'ISO3166-2:CA-NB',
+        'new brunswick' : 'ISO3166-2:CA-NB',
+        'nf'            : 'ISO3166-2:CA-NL',
+        'nt'            : 'ISO3166-2:CA-NT',
+        'northwest territories': 'ISO3166-2:CA-NT',
+        'ns'            : 'ISO3166-2:CA-NS',
+        'nova scotia'   : 'ISO3166-2:CA-NS',
+        'nu'            : 'ISO3166-2:CA-NU*',
+        'nunavat'       : 'ISO3166-2:CA-NU',
+        'on'            : 'ISO3166-2:CA-ON',
+        'ontario'       : 'ISO3166-2:CA-ON',
+        'pe'            : 'ISO3166-2:CA-PE',
+        'qc'            : 'ISO3166-2:CA-QC',
+        'quebec'        : 'ISO3166-2:CA-QC',
+        'québec'        : 'ISO3166-2:CA-QC',
+        'sk'            : 'ISO3166-2:CA-SK',
+        'saskatchewan'  : 'ISO3166-2:CA-SK',
+        'yt'            : 'ISO3166-2:CA-YT',
+        'yukon'         : 'ISO3166-2:CA-YT',
     }
     
     def _postalcode(self, words, index):
-        """ Check if sequence is a postal code """
+        """ Check if sequence is a USA postal code """
 
         length = len(words)
         if words[index]['word'] == ',':
@@ -2209,6 +2310,29 @@ class Words(object):
                     return postal, 1
                     
         return postal, 1
+    
+    def _postalcodeCA(self, words, index):
+        """ Check if sequence is a Canadian postal code """
+
+        length = len(words)
+        
+        if words[index]['word'] == ',':
+            index += 1
+            if index == length:
+                return None, 0
+                
+        if len(words[index]['word']) != 3:
+            return None, 0
+        postal = words[index]['word']
+        index += 1
+        if index == length:
+            return None, 0
+                
+        if len(words[index]['word']) != 3:
+            return None, 0
+        postal += words[index]['word']
+                    
+        return postal, 2
 
     def _isGender(self, words, index):
         """ Check if sequence is Gender reference """
@@ -2376,6 +2500,41 @@ class Words(object):
         else:
             raise TypeError("String or List expected for words")
         return self
+        
+class Address(object):
+    """ US/CA Street/Postal Addresses """
+    def __init__(self):
+        self._pob = None
+        self._stn = None
+        self._num = None
+        self._dir = None
+        self._nam = None
+        self._typ = None
+        self._sec = None
+        self._cty = None
+        self._sta = None
+        self._pst = None
+        
+    def parse(self, words, index):
+        """ Parse an Address """
+        self.words = words
+        self.index = index
+        self.pob()
+        self.streetnum()
+        self,streetdir()
+        self.sreetname()
+        self.sreettype()
+        self.streetdir()
+        self.pob()
+        self.addr2()
+        self.city()
+        self.state()
+        self.postal()
+        pass
+        
+    def pob(self):
+        """ """
+        pass
        
 def towords(words):
     ret = []

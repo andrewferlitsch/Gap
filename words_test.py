@@ -2416,8 +2416,97 @@ class MyTest(unittest.TestCase):
     def test_296(self):
         """ POS tags """
         words = Words("Jim Jones", pos=True, stopwords=True)
-        self.assertEqual(words.words, [{'word': 'jim', 'tag':0, 'pos': 'NN'}, {'word': 'jones', 'tag':11, 'pos': 'NNS'}])
-    
+        self.assertEqual(words.words, [{'word': 'jim', 'tag':0, 'pos': 'NN'}, {'word': 'jones', 'tag':11, 'pos': 'NNS'}])     
+        
+    def test_297(self):
+        """ Words - more key value separators """
+        words = Words("SSN is 544-12-1222", ssn=True)
+        self.assertEqual(towords(words.words), ["544121222"])
+        words = Words("DOB is 01-02-2018", dob=True)
+        self.assertEqual(towords(words.words), ["2018-01-02"])
+        words = Words("Phone of (800) 123-1234", telephone=True)
+        self.assertEqual(towords(words.words), ["8001231234"])   
+        
+    def test_298(self):
+        """ Words - Address PMB """
+        words = Words("PMB 10 12 W Main Ave.,", stopwords=True)
+        self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
+        words = Words("PMB. 10 12 W Main Ave.,", stopwords=True)
+        self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
+        words = Words("P.M.B. 10 12 W Main Ave.,", stopwords=True)
+        self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
+
+    def test_299(self):
+        """ Words - Address Canada STN/RPO """
+        words = Words("POB 10 STN A 12 W Main Ave.,", stopwords=True)
+        self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': 'a', 'tag': 37}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
+        words = Words("POB 10 RPO A 12 W Main Ave.,", stopwords=True)
+        self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': 'a', 'tag': 37}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
+        words = Words("POB 10 Station A 12 W Main Ave.,", stopwords=True)
+        self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': 'a', 'tag': 37}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
+
+    def test_300(self):
+        """ Words - Canada Provinces """
+        words = Words("12 W Main Ave., Calgary, Alberta", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'calgary', 'tag': 31}, {'word': 'ISO3166-2:CA-AB', 'tag': 32}])
+        words = Words("12 W Main Ave., Calgary, AB", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'calgary', 'tag': 31}, {'word': 'ISO3166-2:CA-AB', 'tag': 32}])
+        words = Words("12 W Main Ave., Victoria Island, British Columbia", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'victoria island', 'tag': 31}, {'word': 'ISO3166-2:CA-BC', 'tag': 32}])
+        words = Words("12 W Main Ave., Victoria Island, BC", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'victoria island', 'tag': 31}, {'word': 'ISO3166-2:CA-BC', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, Manitoba", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-MB', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, MB", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-MB', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, New Brunswick", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-NB', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, NB", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-NB', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, Newfoundland and Labrador", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-NL', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, NF", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-NL', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, Northwest Territories", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-NT', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, NT", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-NT', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, Nova Scotia", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-NS', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, NS", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-NS', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, Northwest Territories", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-NT', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, NT", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-NT', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, Ontario", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-ON', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, ON", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-ON', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, Prince Edward Island", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-PE', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, PE", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-PE', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, Quebec", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-QC', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, QC", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-QC', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, Québec", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-QC', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, SK", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-SK', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, Saskatchewan", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-SK', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, YT", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-YT', 'tag': 32}])
+        words = Words("12 W Main Ave., Hoops, Yukon", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-YT', 'tag': 32}])
+
+    def test_301(self):
+        """ Words - Canada Postal Codes """
+        words = Words("12 W Main Ave., Calgary, Alberta V8X 3X4", address=True)
+        self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'calgary', 'tag': 31}, {'word': 'ISO3166-2:CA-AB', 'tag': 32}, {'word': 'v8x3x4', 'tag': 34}])
+
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
         words = Words("10 m/s", stopwords=True)
