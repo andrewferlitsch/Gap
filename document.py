@@ -2002,11 +2002,16 @@ class Words(object):
         index += 1
         if index == length:
             return None, None, 0, 0
+            
+        if words[index]['word'] == ',':
+            index += 1
+            if index == length:
+                return None, None, 0, 0
  
-        if words[index]['tag'] == Vocabulary.NAME: 
+        elif words[index]['tag'] == Vocabulary.NAME: 
             # Hack
             if words[index]['word'] == 'medical doctor':
-                return city, 'maryland', index - start + 1, index
+                return city, 'ISO3166-2:US-MD', index - start + 1, index
             try:
                 state = self._state_dict[words[index]['word']]
                 return city, state, index - start + 1, index
@@ -2016,22 +2021,31 @@ class Words(object):
                 if index == length:
                     return None, None, 0, 0
             
-        if words[index]['word'] == ',':
-            index += 1
-            if index == length:
-                return None, None, 0, 0
+            if words[index]['word'] == ',':
+                index += 1
+                if index == length:
+                    return None, None, 0, 0
            
         # D.C. special case
         if words[index]['word'] == 'd' and index + 1 < length and words[index+1]['word'] == 'c':
-            return city, "district of columbia", index - start + 1, index
-           
-        # Rhode Island special case
+            return city, "ISO3166-2:US-DC", index - start + 1, index 
+        # two word special case
         if words[index]['word'] == 'rhode' and index + 1 < length and words[index+1]['word'] == 'island':
-            return city, "rhode island", index - start + 1, index
+            return city, "ISO3166-2:US-RI", index - start + 1, index
+        if words[index]['word'] == 'virgin' and index + 1 < length and words[index+1]['word'] == 'islands':
+            return city, "ISO3166-2:US-VI", index - start + 1, index
+        if words[index]['word'] == 'puerto' and index + 1 < length and words[index+1]['word'] == 'rico':
+            return city, "ISO3166-2:US-PR", index - start + 1, index
+        if words[index]['word'] == 'american' and index + 1 < length and words[index+1]['word'] == 'samoa':
+            return city, "ISO3166-2:US-AS", index - start + 1, index
+        if words[index]['word'] == 'marshall' and index + 1 < length and words[index+1]['word'] == 'islands':
+            return city, "ISO3166-2:US-FM", index - start + 1, index
+        if words[index]['word'] == 'northern' and index + 1 < length and words[index+1]['word'] == 'marianas':
+            return city, "ISO3166-2:US-FM", index - start + 1, index
  
         # Hack
         if words[index]['word'] == 'medical doctor':
-            return city, 'maryland', index - start + 1, index
+            return city, 'ISO3166-2:US-MD', index - start + 1, index
             
         if words[index]['tag'] not in [Vocabulary.NAME, Vocabulary.ACRONYM]:
             return None, None, 0, 0
@@ -2052,107 +2066,121 @@ class Words(object):
             return None, None, 0, 0
         
     _state_dict = {
-        'al'            : 'alabama',
-        'alabama'       : 'alabama',
-        'ak'            : 'alaska',
-        'alaska'        : 'alaska',
-        'az'            : 'arizona',
-        'arizona'       : 'arizona',
-        'ar'            : 'arkansas',
-        'arkansas'      : 'arkansas',
-        'ca'            : 'california',
-        'california'    : 'california',
-        'co'            : 'colorado',
-        'colorado'      : 'colorado',
-        'ct'            : 'connecticut',
-        'connecticut'   : 'connecticut',
-        'de'            : 'delaware',
-        'delaware'      : 'delaware',
-        'dc'            : 'district of columbia',
-        'fl'            : 'florida',
-        'florida'       : 'florida',
-        'ga'            : 'georgia',
-        'georgia'       : 'georgia',
-        'hi'            : 'hawaii',
-        'hawaii'        : 'hawaii',
-        'id'            : 'idaho',
-        'idaho'         : 'idaho',
-        'il'            : 'illinois',
-        'illinois'      : 'illinois',
-        'in'            : 'indiana',
-        'indiana'       : 'indiana',
-        'ia'            : 'iowa',
-        'iowa'          : 'iowa',
-        'ks'            : 'kansas',
-        'kansas'        : 'kansas',
-        'ky'            : 'kentucky',
-        'kentucky'      : 'kentucky',
-        'la'            : 'louisiana',
-        'louisiana'     : 'louisiana',
-        'me'            : 'maine',
-        'maine'         : 'maine',
-        'md'            : 'maryland',
-        'maryland'      : 'maryland',
-        'ma'            : 'massachusetts',
-        'massachusetts' : 'massachusetts',
-        'mi'            : 'michigan',
-        'michigan'      : 'michigan',
-        'mn'            : 'minnesota',
-        'minnesota'     : 'minnesota',
-        'ms'            : 'mississippi',
-        'mississippi'   : 'mississippi',
-        'mo'            : 'missouri',
-        'missouri'      : 'missouri',
-        'mt'            : 'montana',
-        'montana'       : 'montana',
-        'ne'            : 'nebraska',
-        'nebraska'      : 'nebraska',
-        'nv'            : 'nevada',
-        'nevada'        : 'nevada',
-        'nh'            : 'new hampshire',
-        'new hampshire' : 'new hampshire',
-        'nj'            : 'new jersey',
-        'new jersey'    : 'new jersey',
-        'nm'            : 'new mexico',
-        'new mexico'    : 'new mexico',
-        'ny'            : 'new york',
-        'new york'      : 'new york',
-        'nc'            : 'north carolina',
-        'north carolina': 'north carolina',
-        'nd'            : 'north dakota',
-        'north dakota'  : 'north dakota',
-        'oh'            : 'ohio',
-        'ohio'          : 'ohio',
-        'ok'            : 'oklahoma',
-        'oklahoma'      : 'oklahoma',
-        'or'            : 'oregon',
-        'oregon'        : 'oregon',
-        'pa'            : 'pennsylvania',
-        'pennsylvania'  : 'pennsylvania',
-        'ri'            : 'rhode island',
-        'rhode island'  : 'rhode island',
-        'sc'            : 'south carolina',
-        'south carolina': 'south carolina',
-        'sd'            : 'south dakota',
-        'south dakota'  : 'south dakota',
-        'tn'            : 'tennessee',
-        'tennessee'     : 'tennessee',
-        'tx'            : 'texas',
-        'texas'         : 'texas',
-        'ut'            : 'utah',
-        'utah'          : 'utah',
-        'vt'            : 'vermont',
-        'vermont'       : 'vermont',
-        'va'            : 'virginia',
-        'virginia'      : 'virginia',
-        'wa'            : 'washington',
-        'washington'    : 'washington',
-        'wv'            : 'west virginia',
-        'west virginia' : 'west virginia',
-        'wi'            : 'wisconsin',
-        'wisconsin'     : 'wisconsin',
-        'wy'            : 'wyoming',
-        'wyoming'       : 'wyoming',
+        'al'            : 'ISO3166-2:US-AL',
+        'alabama'       : 'ISO3166-2:US-AL',
+        'ak'            : 'ISO3166-2:US-AK',
+        'alaska'        : 'ISO3166-2:US-AK',
+        'az'            : 'ISO3166-2:US-AZ',
+        'arizona'       : 'ISO3166-2:US-AZ',
+        'ar'            : 'ISO3166-2:US-AR',
+        'arkansas'      : 'ISO3166-2:US-AR',
+        'ca'            : 'ISO3166-2:US-CA',
+        'california'    : 'ISO3166-2:US-CA',
+        'co'            : 'ISO3166-2:US-CO',
+        'colorado'      : 'ISO3166-2:US-CO',
+        'ct'            : 'ISO3166-2:US-CT',
+        'connecticut'   : 'ISO3166-2:US-CT',
+        'de'            : 'ISO3166-2:US-DE',
+        'delaware'      : 'ISO3166-2:US-DE',
+        'dc'            : 'ISO3166-2:US-DC',
+        'fl'            : 'ISO3166-2:US-FL',
+        'florida'       : 'ISO3166-2:US-FL',
+        'ga'            : 'ISO3166-2:US-GA',
+        'georgia'       : 'ISO3166-2:US-GA',
+        'hi'            : 'ISO3166-2:US-HI',
+        'hawaii'        : 'ISO3166-2:US-HI',
+        'id'            : 'ISO3166-2:US-ID',
+        'idaho'         : 'ISO3166-2:US-ID',
+        'il'            : 'ISO3166-2:US-IL',
+        'illinois'      : 'ISO3166-2:US-IL',
+        'in'            : 'ISO3166-2:US-IN',
+        'indiana'       : 'ISO3166-2:US-IN',
+        'ia'            : 'ISO3166-2:US-IA',
+        'iowa'          : 'ISO3166-2:US-IA',
+        'ks'            : 'ISO3166-2:US-KS',
+        'kansas'        : 'ISO3166-2:US-KS',
+        'ky'            : 'ISO3166-2:US-KY',
+        'kentucky'      : 'ISO3166-2:US-KY',
+        'la'            : 'ISO3166-2:US-LA',
+        'louisiana'     : 'ISO3166-2:US-LA',
+        'me'            : 'ISO3166-2:US-ME',
+        'maine'         : 'ISO3166-2:US-ME',
+        'md'            : 'ISO3166-2:US-MD',
+        'maryland'      : 'ISO3166-2:US-MD',
+        'ma'            : 'ISO3166-2:US-MA',
+        'massachusetts' : 'ISO3166-2:US-MA',
+        'mi'            : 'ISO3166-2:US-MI',
+        'michigan'      : 'ISO3166-2:US-MI',
+        'mn'            : 'ISO3166-2:US-MN',
+        'minnesota'     : 'ISO3166-2:US-MN',
+        'ms'            : 'ISO3166-2:US-MS',
+        'mississippi'   : 'ISO3166-2:US-MS',
+        'mo'            : 'ISO3166-2:US-MO',
+        'missouri'      : 'ISO3166-2:US-MO',
+        'mt'            : 'ISO3166-2:US-MT',
+        'montana'       : 'ISO3166-2:US-MT',
+        'ne'            : 'ISO3166-2:US-NE',
+        'nebraska'      : 'ISO3166-2:US-NE',
+        'nv'            : 'ISO3166-2:US-NV',
+        'nevada'        : 'ISO3166-2:US-NV',
+        'nh'            : 'ISO3166-2:US-NH',
+        'new hampshire' : 'ISO3166-2:US-NH',
+        'nj'            : 'ISO3166-2:US-NJ',
+        'new jersey'    : 'ISO3166-2:US-NJ',
+        'nm'            : 'ISO3166-2:US-NM',
+        'new mexico'    : 'ISO3166-2:US-NM',
+        'ny'            : 'ISO3166-2:US-NY',
+        'new york'      : 'ISO3166-2:US-NY',
+        'nc'            : 'ISO3166-2:US-NC',
+        'north carolina': 'ISO3166-2:US-NC',
+        'nd'            : 'ISO3166-2:US-ND',
+        'north dakota'  : 'ISO3166-2:US-ND',
+        'oh'            : 'ISO3166-2:US-OH',
+        'ohio'          : 'ISO3166-2:US-OH',
+        'ok'            : 'ISO3166-2:US-OK',
+        'oklahoma'      : 'ISO3166-2:US-OK',
+        'or'            : 'ISO3166-2:US-OR',
+        'oregon'        : 'ISO3166-2:US-OR',
+        'pa'            : 'ISO3166-2:US-PA',
+        'pennsylvania'  : 'ISO3166-2:US-PA',
+        'ri'            : 'ISO3166-2:US-RI',
+        'rhode island'  : 'ISO3166-2:US-RI',
+        'sc'            : 'ISO3166-2:US-SC',
+        'south carolina': 'ISO3166-2:US-SC',
+        'sd'            : 'ISO3166-2:US-SD',
+        'south dakota'  : 'ISO3166-2:US-SD',
+        'tn'            : 'ISO3166-2:US-TN',
+        'tennessee'     : 'ISO3166-2:US-TN',
+        'tx'            : 'ISO3166-2:US-TX',
+        'texas'         : 'ISO3166-2:US-TX',
+        'ut'            : 'ISO3166-2:US-UT',
+        'utah'          : 'ISO3166-2:US-UT',
+        'vt'            : 'ISO3166-2:US-VT',
+        'vermont'       : 'ISO3166-2:US-VT',
+        'va'            : 'ISO3166-2:US-VA',
+        'virginia'      : 'ISO3166-2:US-VA',
+        'wa'            : 'ISO3166-2:US-WA',
+        'washington'    : 'ISO3166-2:US-WA',
+        'wv'            : 'ISO3166-2:US-WV',
+        'west virginia' : 'ISO3166-2:US-WV',
+        'wi'            : 'ISO3166-2:US-WI',
+        'wisconsin'     : 'ISO3166-2:US-WI',
+        'wy'            : 'ISO3166-2:US-WY',
+        'wyoming'       : 'ISO3166-2:US-WY',
+        'vi'            : 'ISO3166-2:US-VI',
+        'pr'            : 'ISO3166-2:US-PR',
+        'gu'            : 'ISO3166-2:US-GU',
+        'guam'          : 'ISO3166-2:US-GU',
+        'pw'            : 'ISO3166-2:US-PW',
+        'palau'         : 'ISO3166-2:US-PW',
+        'fm'            : 'ISO3166-2:US-FM',
+        'micronesia'    : 'ISO3166-2:US-FM',
+        'as'            : 'ISO3166-2:US-AS',
+        'american samoa': 'ISO3166-2:US-AS',
+        'mh'            : 'ISO3166-2:US-MH',
+        'marshall islands': 'ISO3166-2:US-MH',
+        'mp'            : 'ISO3166-2:US-MP',
+        'northern marianas': 'ISO3166-2:US-MP',
     }
     
     def _postalcode(self, words, index):
