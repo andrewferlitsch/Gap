@@ -2507,6 +2507,21 @@ class MyTest(unittest.TestCase):
         words = Words("12 W Main Ave., Calgary, Alberta V8X 3X4", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'calgary', 'tag': 31}, {'word': 'ISO3166-2:CA-AB', 'tag': 32}, {'word': 'v8x3x4', 'tag': 34}])
 
+    def test_302(self):
+        """ Words - USA international code in telephone number """
+        words = Words("1-800-360-1234", telephone=True)
+        self.assertEqual(words.words, [{'word': '18003601234', 'tag': 10}])
+        words = Words("1 (800) 360-1234", telephone=True)
+        self.assertEqual(words.words, [{'word': '18003601234', 'tag': 10}])
+        words = Words("1 800 360 1234", telephone=True)
+        self.assertEqual(words.words, [{'word': '18003601234', 'tag': 10}])
+        words = Words("tele: 18003601234", telephone=True)
+        self.assertEqual(words.words, [{'word': '18003601234', 'tag': 10}])
+        words = Words("1.800.360.1234", telephone=True)
+        self.assertEqual(words.words, [{'word': '18003601234', 'tag': 10}])
+        words = Words("800.360.1234", telephone=True)
+        self.assertEqual(words.words, [{'word': '8003601234', 'tag': 10}])
+        
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
         words = Words("10 m/s", stopwords=True)

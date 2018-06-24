@@ -1597,20 +1597,60 @@ class Words(object):
             prefix = True
         else: 
             prefix = False
-            #return None, 0
+            
+        tele = ""
 
         # NNNNNNNNNN
         if prefix == True and len(words[index]['word']) == 10 and words[index]['word'].isdigit():
             return words[index]['word'], index - start
+
+        # 1NNNNNNNNNN
+        if prefix == True and len(words[index]['word']) == 11 and words[index]['word'].isdigit() and words[index]['word'][0] == '1':
+            return words[index]['word'], index - start
+            
+        if '.' in words[index]['word']:
+            toks = words[index]['word'].split('.')
+            if len(toks) == 3:
+                for i in range(3):
+                    if not toks[i].isdigit():
+                        return None, 0
+                    tele += toks[i]
+                return tele, index - start
+            if len(toks) == 4:
+                tele = "1"
+                if toks[0] != '1':
+                    return None, 0
+                for i in range(1,4):
+                    if not toks[i].isdigit():
+                        return None, 0
+                    tele += toks[i]
+                return tele, index - start
+            
+        # International Prefix
+        if len(words[index]['word']) == 1 and words[index]['word'] == '1':
+            tele = "1"
+            index += 1
+            if index == length:
+                return None, 
+                
+            if words[index]['word'] in ['-', '.']:
+                index += 1
+                if index == length:
+                    return None, 0
+                    
+        if words[index]['word'] == '(':
+            index += 1
+            if index == length:
+                return None, 0
             
         # NNN NNN[sp]NNNN or NNN-NNN-NNNN
         if len(words[index]['word']) == 3 and words[index]['word'].isdigit():
-            tele = words[index]['word']
+            tele += words[index]['word']
             index += 1
             if index == length:
                 return None, 0
                 
-            if words[index]['word'] in ['-', ')']:
+            if words[index]['word'] in ['-', '.', ')']:
                 index += 1
                 if index == length:
                     return None, 0
@@ -1628,7 +1668,7 @@ class Words(object):
             if index == length:
                 return None, 0
             
-            if words[index]['word'] == '-':
+            if words[index]['word'] in ['-', '.']:
                 index += 1
                 if index == length:
                     return None, 0
@@ -2501,40 +2541,8 @@ class Words(object):
             raise TypeError("String or List expected for words")
         return self
         
-class Address(object):
-    """ US/CA Street/Postal Addresses """
-    def __init__(self):
-        self._pob = None
-        self._stn = None
-        self._num = None
-        self._dir = None
-        self._nam = None
-        self._typ = None
-        self._sec = None
-        self._cty = None
-        self._sta = None
-        self._pst = None
-        
-    def parse(self, words, index):
-        """ Parse an Address """
-        self.words = words
-        self.index = index
-        self.pob()
-        self.streetnum()
-        self,streetdir()
-        self.sreetname()
-        self.sreettype()
-        self.streetdir()
-        self.pob()
-        self.addr2()
-        self.city()
-        self.state()
-        self.postal()
-        pass
-        
-    def pob(self):
-        """ """
-        pass
+
+       
        
 def towords(words):
     ret = []
