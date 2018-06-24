@@ -53,7 +53,7 @@ class Document(object):
         if dir is not None and isinstance(dir, str) == False:
             raise TypeError("String expected for page directory path")
                        
-        # 
+        # NLP configuration
         if config is not None:
             for key in config:
                 if key == 'bare':
@@ -62,6 +62,8 @@ class Document(object):
                     vals = key.split('=')
                     if len(vals) == 2:
                         Page.STEM = vals[1]
+                elif key.startswith('pos'):
+                        Page.POS = True
                                      
         # Verify that the document exists
         if self._document is not None:
@@ -367,6 +369,7 @@ class Page(object):
     
     BARE=False
     STEM='internal'
+    POS=False
     
     def __init__(self, path=None, text=None, pageno=None):
         """ Constructor for page object 
@@ -449,7 +452,7 @@ class Page(object):
             
         # If text has not been tokenized yet, then tokenize it
         if self._words is None:
-            self._words = Words(self._text, bare=self.BARE, stem=self.STEM)
+            self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS)
         return self._words.words 
         
     @property
@@ -474,7 +477,7 @@ class Page(object):
             
         # If text has not been tokenized yet, then tokenize it
         if self._words is None:
-            self._words = Words(self._text, bare=self.BARE, stem=self.STEM)
+            self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS)
         return len(self._words.words)
         
     def __str__(self):
@@ -498,7 +501,7 @@ class Page(object):
             # Was already tokenized
             if self._words is not None:
                 # Tokenize new text
-                words = Words(text, bare=self.BARE, stem=self.STEM)
+                words = Words(text, bare=self.BARE, stem=self.STEM, pos=self.POS)
                 # Add tokens to existing list
                 self._words += words.words
         return self
@@ -510,7 +513,7 @@ class Words(object):
     DECIMAL		    = '.'	# Standard Unit for Decimal Point
     THOUSANDS 	    = ','	# Standard Unit for Thousandth Separator
     
-    def __init__(self, text=None, bare=False, stem='internal', stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, dob=False, unit=False, standard=False, metric=False ):
+    def __init__(self, text=None, bare=False, stem='internal', pos=False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, dob=False, unit=False, standard=False, metric=False ):
         """ Constructor 
         text - raw text as string to tokenize
         """
@@ -518,6 +521,7 @@ class Words(object):
         self._words         = None          # list of words
         self._punct         = punct         # keep/remove punctuation
         self._stemming      = stem          # on/off stemming
+        self._pos           = pos           # on/off parts of speech
         self._porter        = stopwords     # keep/remove stopwords
         self._bare          = bare          # on/off bare tokenizing
         self._standard      = standard      # convert metric to standard units
@@ -631,6 +635,9 @@ class Words(object):
                 self._stopwords()
                 # Do unit conversions
                 self._conversion()
+                # Do POS tagging
+                if self._pos == True:
+                    self._partsofspeech()
     
     @property
     def text(self):
@@ -2211,7 +2218,8 @@ class Words(object):
         if not self._standard and not self._metric:
             return
             
-        for i in range(1, len(self._words)):
+        l = len(self._words)
+        for i in range(1, l):
             tag = self._words[i]['tag']
             if tag == Vocabulary.UNIT and self._words[i-1]['tag'] == Vocabulary.NUMBER:
                 unit = self._words[i]['word']
@@ -2310,7 +2318,15 @@ class Words(object):
                         self._words[i]['word'] = "kilometer per hour"
                     elif unit == "knot":
                         self._words[i-1]['word'] = str(float(numb) * 1.852)
-                        self._words[i]['word'] = "kilometer per hour"
+                        self._words[i]['word'] = "kilometer per hour"     
+                        
+    
+    def _partsofspeech(self):
+        """ Do Parts of Speech Tagging """
+           
+        l = len(self._words)
+        for i in range(l):
+            self._words[i]['pos'] = pos_tag( [ self._words[i]['word'] ])[0][1]
                         
     def __len__(self):
         """ Override the len() operator - get the number of tokenized words """
