@@ -19,6 +19,7 @@ import nltk
 from nltk import pos_tag
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
+from unidecode import unidecode
 
 from vocabulary import Vocabulary, vocab
 from pdf_res import PDFResource
@@ -64,6 +65,8 @@ class Document(object):
                         Page.STEM = vals[1]
                 elif key.startswith('pos'):
                         Page.POS = True
+                elif key == 'roman':
+                    Page.ROMAN = True
                                      
         # Verify that the document exists
         if self._document is not None:
@@ -385,9 +388,10 @@ class Document(object):
 class Page(object):
     """ Base (super) class for Page object """
     
-    BARE=False
-    STEM='internal'
-    POS=False
+    BARE    = False         # bare tokenization mode
+    STEM    = 'internal'    # NLP stemmer to use
+    POS     = False         # Annotation of Parts of Speech
+    ROMAN   = False         # Romanize text to ASCII
     
     def __init__(self, path=None, text=None, pageno=None):
         """ Constructor for page object 
@@ -470,7 +474,7 @@ class Page(object):
             
         # If text has not been tokenized yet, then tokenize it
         if self._words is None:
-            self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS)
+            self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN)
         return self._words.words 
         
     @property
@@ -485,9 +489,12 @@ class Page(object):
         
     def load(self, file):
         """ Load the NLP tokenized string from storage """
-        with open(file, 'r') as f:
+        with open(file, 'r', encoding='utf-8') as f:
             self._words = Words()
             self._words._words = json.load(f)
+        file = file.replace('.json', '.txt')
+        with open(file, 'r', encoding='utf-8') as f:
+            self._text = f.read()
         
     def __len__(self):
         """ Override the len() operator - get the number of tokenized words """
@@ -496,7 +503,7 @@ class Page(object):
             
         # If text has not been tokenized yet, then tokenize it
         if self._words is None:
-            self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS)
+            self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN)
         return len(self._words.words)
         
     def __str__(self):
@@ -520,7 +527,7 @@ class Page(object):
             # Was already tokenized
             if self._words is not None:
                 # Tokenize new text
-                words = Words(text, bare=self.BARE, stem=self.STEM, pos=self.POS)
+                words = Words(text, bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN)
                 # Add tokens to existing list
                 self._words += words.words
         return self
@@ -532,7 +539,7 @@ class Words(object):
     DECIMAL		    = '.'	# Standard Unit for Decimal Point
     THOUSANDS 	    = ','	# Standard Unit for Thousandth Separator
     
-    def __init__(self, text=None, bare=False, stem='internal', pos=False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, dob=False, unit=False, standard=False, metric=False ):
+    def __init__(self, text=None, bare=False, stem='internal', pos=False, roman = False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, dob=False, unit=False, standard=False, metric=False ):
         """ Constructor 
         text - raw text as string to tokenize
         """
@@ -541,6 +548,7 @@ class Words(object):
         self._punct         = punct         # keep/remove punctuation
         self._stemming      = stem          # on/off stemming
         self._pos           = pos           # on/off parts of speech
+        self._roman         = roman         # on/off romanization 
         self._porter        = stopwords     # keep/remove stopwords
         self._bare          = bare          # on/off bare tokenizing
         self._standard      = standard      # convert metric to standard units
@@ -871,7 +879,11 @@ class Words(object):
                     if cont == True:
                         continue
                             
+                # lowercase
                 word['word'] = word['word'].lower()
+                # romanize
+                if self._roman:
+                    word['word'] = unidecode(word['word'])
                 _words.append(word)
                 
         self._words = _words

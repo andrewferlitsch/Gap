@@ -213,8 +213,16 @@ class MyTest(unittest.TestCase):
         page.store('tmp.txt')
         page._words = None
         page.load('tmp.txt')
-        os.remove("tmp.txt")
         self.assertEqual(towords(page.words), ["hāllo", "world", "goodbye"])
+        os.remove("tmp.txt")
+        Page.ROMAN = True
+        page = Page(text="québec")
+        page.store('tmp.txt')
+        page._words = None
+        page.load('tmp.txt')
+        Page.ROMAN = False
+        self.assertEqual(towords(page.words), ["quebec"])
+        os.remove("tmp.txt")
         
     def xtest_bugs(self):
         """ Page store/load - unicode - cryllic """

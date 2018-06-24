@@ -2522,6 +2522,15 @@ class MyTest(unittest.TestCase):
         words = Words("800.360.1234", telephone=True)
         self.assertEqual(words.words, [{'word': '8003601234', 'tag': 10}])
         
+    def test_303(self):
+        """ Words - Romanization """
+        words = Words("Quebec", roman=True)
+        self.assertEqual(words.words, [{'word': 'quebec', 'tag': 0}])
+        words = Words("Québec", roman=False)
+        self.assertEqual(words.words, [{'word': 'québec', 'tag': 0}])
+        words = Words("Québec")
+        self.assertEqual(words.words, [{'word': 'québec', 'tag': 0}])
+        
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
         words = Words("10 m/s", stopwords=True)
