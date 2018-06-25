@@ -480,9 +480,9 @@ class MyTest(unittest.TestCase):
             self.assertTrue(os.path.isfile("tests/6page" + str(i) + ".txt"))
             self.assertTrue(os.path.isfile("tests/6page" + str(i) + ".json"))
         for i in range(1,7):
-            os.remove("tests/6scan" + str(i) + ".txt")
-            os.remove("tests/6scan" + str(i) + ".tif")
-            os.remove("tests/6scan" + str(i) + ".json")
+            os.remove("tests/6page" + str(i) + ".txt")
+            os.remove("tests/6page" + str(i) + ".tif")
+            os.remove("tests/6page" + str(i) + ".json")
         
     ### ASYNC PROCESSING ###
         
@@ -501,7 +501,12 @@ class MyTest(unittest.TestCase):
         document = Document()
         document.load("tests/4page.pdf", "tests")
         self.assertEquals(len(document), 4)
-        self.assertTrue(documnet[0].words != None)
+        self.assertTrue(document[0].words != None)
+        self.assertTrue(document[0].text != None)
+        for i in range(1,5):
+            os.remove("tests/4page" + str(i) + ".txt")
+            os.remove("tests/4page" + str(i) + ".pdf")
+            os.remove("tests/4page" + str(i) + ".json")
 
 
     def test_053(self):
