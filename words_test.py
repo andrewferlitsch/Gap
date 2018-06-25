@@ -1,5 +1,5 @@
 # -*- coding: latin-1 -*-
-from document import Words
+from words import Words
 import unittest
 import pytest
 import os

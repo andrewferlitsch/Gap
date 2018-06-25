@@ -1,4 +1,5 @@
-from document import Page, Words
+from document import Page
+from words import Words
 import unittest
 import pytest
 import os

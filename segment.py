@@ -1,3 +1,7 @@
+""" Segment Module for Processing PDF Documents 
+2018(c), Andrew Ferlitsch
+"""
+
 class Segment(object):
     """ Segment text into Regions """
     
