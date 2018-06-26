@@ -28,7 +28,7 @@ The framework consists of a sequence of Python modules which can be retrofitted 
 
 ## Audience
 
-The intended audience for this framework are machine learning engineers, data engineers and project managers, whom are working with unstructured data. 
+This framework is ideal for any organization planning to do data extraction from their repository of documents into an RDBMS system for CART analysis, linear/logistic regressions or generating word vectors for natural language deep learning (DeepNLP).
 
 ## License
 
@@ -45,6 +45,9 @@ The Epipog framework extensives uses a number of open source applications/module
 
 ## Installation
 
--- describe here
+[Ghostscript]()
+[Magick]()
+[Tesseract]()
+[NLTK]()
 
-
+## User's Guide
