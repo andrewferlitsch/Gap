@@ -1,4 +1,4 @@
-# epipog-nlp
+# epipog-nlp, v1.4
 ## Natural Language Processing for PDF, TIFF, and camera captured documents.
 
 ### Framework
@@ -85,15 +85,13 @@ The Epipog framework extensives uses a number of open source applications/module
     B. Type tesseract in the command line.<br/>
     C. If not found, add it your path variable. For me, it is C:\Program Files\tesseract-Win64\
 
-3. Install the English Training Data files as: C:\Program Files\tesseract-Win64\tessdata
-
-  You can get a copy from my [github account.](tools/tessdata)
+3. Install the English Training Data files as: C:\Program Files\tesseract-Win64\tessdata . You can get a copy from my [github account.](tools/tessdata)
 
 #### NLTK
 
 1. Install NLTK using pip
 
-  pip install nltk
+    pip install nltk
 
 ## Modules
 
