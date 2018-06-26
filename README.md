@@ -51,14 +51,13 @@ The Epipog framework extensives uses a number of open source applications/module
         
     Use the Free Version<br/>
 
-    Example: Ghostscript 9.23 for Windows (64 bit).<br/><br/>
+    Example: Ghostscript 9.23 for Windows (64 bit).<br/>
 
 2. Check if path to the program is in your PATH variable. 
 
     A. Open a command shell.<br/>
     B. Type gswin64c in the command line.<br/>
     C. If not found, add it to your path variable. Ex: C:\Program Files\gs\gs9.23\bin<br/>
-
 
 #### Magick
 
@@ -82,8 +81,8 @@ The Epipog framework extensives uses a number of open source applications/module
 
 2. Check if path to program is in your PATH variable:
 
-    A. Open a command shell.
-    B. Type tesseract in the command line.
+    A. Open a command shell.<br/>
+    B. Type tesseract in the command line.<br/>
     C. If not found, add it your path variable. For me, it is C:\Program Files\tesseract-Win64\
 
 Install the English Training Data files as: C:\Program Files\tesseract-Win64\tessdata
