@@ -2,7 +2,6 @@
 ## Natural Language Processing for PDF, TIFF, and camera captured documents.
 
 ### Framework
-<span style="color:blue">some *This is Blue italic.* text</span>
 
 The Epipog NLP framework provides an easy to get started into the world of machine learning for your unstructured data in PDF documents, scanned documents, TIFF facsimiles and camera captured documents. 
 
@@ -38,4 +37,9 @@ The framework consists of a sequence of Python modules which can be retrofitted 
 ## Prerequites
 
 -- describe here
+
+## Installation
+
+-- describe here
+
 
