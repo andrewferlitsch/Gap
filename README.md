@@ -45,9 +45,37 @@ The Epipog framework extensives uses a number of open source applications/module
 
 ## Installation
 
-[Ghostscript](ghostscript.md)
+#### Ghostscript
 
-[Magick](magick.md)
+1. Download link : https://www.ghostscript.com/download/gsdnld.html
+        
+    Use the Free Version<br/>
+
+    Example: Ghostscript 9.23 for Windows (64 bit).<br/><br/>
+
+2. Check if path to the program is in your PATH variable. 
+
+    A. Open a command shell.<br/>
+    B. Type gswin64c in the command line.<br/>
+    C. If not found, add it to your path variable. Ex: C:\Program Files\gs\gs9.23\bin<br/>
+
+
+#### Magick
+
+1. Download Link: https://www.imagemagick.org/script/download.php
+
+  Use the static version (dynamic is for DLL inclusion).
+
+  Use the 8bits per pixel version.
+
+  Ex. 64bit Windows laptop: ImageMagick-7.0.8-1-Q8-x64-static.exe
+
+
+2. Check if path to the program is in your PATH variable.
+
+  A. Open a command shell.
+  B. Type magick in the command line.
+  C. If not found, add it to your path variable. For me, it is: C:\Program Files\ImageMagic-7.0.8-Q8
 
 [Tesseract](tesseract.md)
 
