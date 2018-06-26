@@ -28,7 +28,7 @@ The framework consists of a sequence of Python modules which can be retrofitted 
 
 ## Audience
 
--- describe here
+The intended audience for this framework are machine learning engineers, data engineers and project managers, whom are working with unstructured data. 
 
 ## License
 
