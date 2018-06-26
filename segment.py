@@ -11,11 +11,17 @@ class Segment(object):
     COPYRIGHT   = 4
     
     def __init__(self, text):
-        """ """
+        """ constructor """  
+        # value must be a string
+        if text and not isinstance(text, str) :
+            raise TypeError("String expected for text")
+            
         self._text = text
         self._segments = []
+            
         # Do Segmentation of the text
-        self._segmentation()
+        if text:
+            self._segmentation()
         
     def _segmentation(self):
         """ Split text into paragraphs """
@@ -48,7 +54,7 @@ class Segment(object):
                 pageno = False
                 toks = s_line.split(' ')
                 if len(toks) == 2:
-                    if toks[0].lower() == 'page' and toks[1].isdigit():
+                    if toks[0].lower() in [ 'page', 'p', 'p.'] and toks[1].isdigit():
                         pageno = True
                 if not pageno:
                     # Look for heading
@@ -85,3 +91,7 @@ class Segment(object):
     def segments(self):
         """ Getter for segments """
         return self._segments
+        
+    def __len__(self):
+        """ return the number of segments """
+        return len(self._segments)
