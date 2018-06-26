@@ -139,7 +139,7 @@ Along with the builtin stemmer and lemmatizer, the module can optionally be conf
 
 ## User's Guide
 
--- describe here
+The User's (Programming) Guide can be found [here](specs/users%20guide.docx)
 
 ## Releases
 
