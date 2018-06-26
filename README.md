@@ -64,20 +64,31 @@ The Epipog framework extensives uses a number of open source applications/module
 
 1. Download Link: https://www.imagemagick.org/script/download.php
 
-  Use the static version (dynamic is for DLL inclusion).
+    Use the 8bits per pixel static version (dynamic is for DLL inclusion).<br/>
 
-  Use the 8bits per pixel version.
-
-  Ex. 64bit Windows laptop: ImageMagick-7.0.8-1-Q8-x64-static.exe
-
+    Ex. 64bit Windows laptop: ImageMagick-7.0.8-1-Q8-x64-static.exe<br/><br/>
 
 2. Check if path to the program is in your PATH variable.
 
-  A. Open a command shell.
-  B. Type magick in the command line.
-  C. If not found, add it to your path variable. For me, it is: C:\Program Files\ImageMagic-7.0.8-Q8
+    A. Open a command shell.
+    B. Type magick in the command line.
+    C. If not found, add it to your path variable. For me, it is: C:\Program Files\ImageMagic-7.0.8-Q8
 
-[Tesseract](tesseract.md)
+#### Tesseract
+
+1. Download Link: https://github.com/tesseract-ocr/tesseract/wiki/Downloads
+
+    A. Make sure to add the English Language training data to the tessdata subdirectory where tesseract is installed.
+
+2. Check if path to program is in your PATH variable:
+
+    A. Open a command shell.
+    B. Type tesseract in the command line.
+    C. If not found, add it your path variable. For me, it is C:\Program Files\tesseract-Win64\
+
+Install the English Training Data files as: C:\Program Files\tesseract-Win64\tessdata
+
+You can get a copy from my github account.
 
 [NLTK](nltk.md)
 
