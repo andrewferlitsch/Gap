@@ -36,7 +36,12 @@ The framework consists of a sequence of Python modules which can be retrofitted 
 
 ## Prerequites
 
--- describe here
+The Epipog framework extensives uses a number of open source applications/modules. The following applications and modules will need to be installed on your computer/laptop:
+
+  1. Artifex's Ghostscript - extracting text from text PDF
+  2. ImageMagic's Magick - extracting image from scanned PDF
+  3. Google's Tesseract - OCR of scanned/image captured text
+  4. NLTK (Natural Language Toolkit)
 
 ## Installation
 
