@@ -46,8 +46,27 @@ The Epipog framework extensives uses a number of open source applications/module
 ## Installation
 
 [Ghostscript]()
+
 [Magick]()
+
 [Tesseract]()
+
 [NLTK]()
+
+## Modules
+
+-- describe here
+
+### Splitter
+
+-- describe here
+
+### Syntax
+
+-- describe here
+
+### Segmentation
+
+-- describe here
 
 ## User's Guide
