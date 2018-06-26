@@ -32,7 +32,7 @@ The framework consists of a sequence of Python modules which can be retrofitted 
 
 ## License
 
-The source code is made available under the Creative Commons license: CC-BY (https://creativecommons.org/licenses/by/4.0/)
+The source code is made available under the Creative Commons license: [CC-BY](https://creativecommons.org/licenses/by/4.0/)
 
 ## Prerequites
 
