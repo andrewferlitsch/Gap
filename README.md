@@ -65,12 +65,12 @@ The Epipog framework extensives uses a number of open source applications/module
 
     Use the 8bits per pixel static version (dynamic is for DLL inclusion).<br/>
 
-    Ex. 64bit Windows laptop: ImageMagick-7.0.8-1-Q8-x64-static.exe<br/><br/>
+    Ex. 64bit Windows laptop: ImageMagick-7.0.8-1-Q8-x64-static.exe<br/>
 
 2. Check if path to the program is in your PATH variable.
 
-    A. Open a command shell.
-    B. Type magick in the command line.
+    A. Open a command shell.<br/>
+    B. Type magick in the command line.<br/>
     C. If not found, add it to your path variable. For me, it is: C:\Program Files\ImageMagic-7.0.8-Q8
 
 #### Tesseract
@@ -85,11 +85,15 @@ The Epipog framework extensives uses a number of open source applications/module
     B. Type tesseract in the command line.<br/>
     C. If not found, add it your path variable. For me, it is C:\Program Files\tesseract-Win64\
 
-Install the English Training Data files as: C:\Program Files\tesseract-Win64\tessdata
+3. Install the English Training Data files as: C:\Program Files\tesseract-Win64\tessdata
 
-You can get a copy from my github account.
+  You can get a copy from my [github account.](tools/tessdata)
 
-[NLTK](nltk.md)
+#### NLTK
+
+1. Install NLTK using pip
+
+  pip install nltk
 
 ## Modules
 
