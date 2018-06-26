@@ -45,28 +45,54 @@ The Epipog framework extensives uses a number of open source applications/module
 
 ## Installation
 
-[Ghostscript]()
+[Ghostscript](ghostscript.md)
 
-[Magick]()
+[Magick](magick.md)
 
-[Tesseract]()
+[Tesseract](tesseract.md)
 
-[NLTK]()
+[NLTK](nltk.md)
 
 ## Modules
 
 -- describe here
 
-### Splitter
+### SPLITTER
+
+
+The syntax module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support. 
+
+The word classifier recognizes:
+
+  - Syntax Units: Articles, Demonstratives, Prepositions, Pronouns, Conjunctions, Quantifiers, Questions
+  - Abbreviations
+  - Acronyms
+  - Gender (inclusive of Transgender)
+  - Date of Birth
+  - USA and Canadian Addresses
+  - USA and Canadian Telephone Numbers
+  - USA Social Security numbers
+  - USA and ISO Standard for Dates
+  - USA and ISO Standard for Numbers and units of measure. 
+  - Geographic Locations
+  - Sentiment
+
+Dates, numbers and units of measure can be converted to either USA Standard or ISO Standard.  USA and Canadian postal addresses are converted to the USPO standard for address matching.
+
+Along with the builtin stemmer and lemmatizer, the module can optionally be configured to use the NLTK (open source) stemmers, lemmatizer and parts of speech annotations.
+
+### SYNTAX
 
 -- describe here
 
-### Syntax
-
--- describe here
-
-### Segmentation
+### SEGMENTATION
 
 -- describe here
 
 ## User's Guide
+
+-- describe here
+
+## Releases
+
+-- describe here
