@@ -57,7 +57,7 @@ The Epipog framework extensives uses a number of open source applications/module
 
 The framework provides the following pipeline of modules to support your data and knowledge extraction from both digital and scanned PDF documents, TIFF facsimiles and image captured documents.
 
-### SPLITTER
+#### SPLITTER
 
 The splitter module is the entry point into the pipeline. It consists of a Document and Page class. The Document class handles the splitting of PDF documents into PDF pages, TIFF facsimiles into TIFF pages, OCR and raw text extraction. PDF splitting and image extraction is handled by the open source Artifex’s Ghostscript ©, and TIFF splitting by open source Image Magic’s Magick ©. OCR is handled by the open source Google’s Tesseract ©. The Document object stores the individual PDF/TIFF/image pages and corresponding raw text and optionally page images (when scanned PDF, TIFF or images) in the specified storage path. The splitting process can be done synchronously or asynchronously, where in the latter case an event handler signals when the splitting/OCR has been completed and the page table is accessible.
 
@@ -69,7 +69,7 @@ NLP processing of the raw text is deferred until first access (JIT), and then pr
 
 The document and corresponding pages may be classified (i.e., category of the content) when the CLASSIFICATION module is installed.
 
-### SYNTAX
+#### SYNTAX
 
 The syntax module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support. 
 
@@ -93,7 +93,7 @@ Dates, numbers and units of measure can be converted to either USA Standard or I
 Along with the builtin stemmer and lemmatizer, the module can optionally be configured to use the NLTK (open source) stemmers, lemmatizer and parts of speech annotations.
 
 
-### SEGMENTATION
+#### SEGMENTATION
 
 -- describe here
 
