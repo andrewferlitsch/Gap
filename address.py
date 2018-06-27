@@ -497,7 +497,10 @@ class Address(object):
         if self.words[index]['tag'] != Vocabulary.NAME:
             return None, None, 0, 0
             
-        city = self.words[index]['word']
+        if self.words[index]['word'] == 'mt':
+            city = "mountain"
+        else:
+            city = self.words[index]['word']
         start = index
             
         index += 1
@@ -510,8 +513,13 @@ class Address(object):
                 return None, None, 0, 0
         elif self.words[index]['tag'] == Vocabulary.NAME: 
             # Hack
-            if self.words[index]['word'] == 'medical doctor':
-                self.words[index]['word'] = "maryland"
+            state, n = self.state_hack(index)
+            if n > 0:
+                index += n
+                return city, state, index - start + 1, index
+                
+            #if self.words[index]['word'] == 'medical doctor':
+                #return city, "ISO3166-2:US-MD", index - start + 1, index
             try:
                 state = self._state_dict[self.words[index]['word']]
                 return city, state, index - start + 1, index
@@ -526,53 +534,60 @@ class Address(object):
                 if index == self.length:
                     return None, None, 0, 0
 
-        
         # Hack
-        if self.words[index]['word'] == 'medical doctor':
-            return city, "ISO3166-2:US-MD", index - start + 1, index 
+        state, n = self.state_hack(index)
+        if n > 0:
+            index += n
+            if index == self.length: index -= 1 # Hack
+            return city, state, index - start + 1, index
                 
-        # D.C. special case
-        if self.words[index]['word'] == 'd' and index + 1 < self.length and self.words[index+1]['word'] == 'c':
-            return city, "ISO3166-2:US-DC", index - start + 1, index 
-        # two word special case
-        if self.words[index]['word'] == 'rhode' and index + 1 < self.length and self.words[index+1]['word'] == 'island':
-            return city, "ISO3166-2:US-RI", index - start + 1, index
-        if self.words[index]['word'] == 'virgin' and index + 1 < self.length and self.words[index+1]['word'] == 'islands':
-            return city, "ISO3166-2:US-VI", index - start + 1, index
-        if self.words[index]['word'] == 'puerto' and index + 1 < self.length and self.words[index+1]['word'] == 'rico':
-            return city, "ISO3166-2:US-PR", index - start + 1, index
-        if self.words[index]['word'] == 'american' and index + 1 < self.length and self.words[index+1]['word'] == 'samoa':
-            return city, "ISO3166-2:US-AS", index - start + 1, index
-        if self.words[index]['word'] == 'marshall' and index + 1 < self.length and self.words[index+1]['word'] == 'islands':
-            return city, "ISO3166-2:US-FM", index - start + 1, index
-        if self.words[index]['word'] == 'northern' and index + 1 < self.length and self.words[index+1]['word'] == 'marianas':
-            return city, "ISO3166-2:US-FM", index - start + 1, index
-        if self.words[index]['word'] == 'british' and index + 1 < self.length and self.words[index+1]['word'] == 'columbia':
-            return city, "ISO3166-2:CA-BC", index - start + 1, index
-        if self.words[index]['word'] == 'newfoundland' and index + 2 < self.length and self.words[index+1]['word'] == 'and':
-            return city, "ISO3166-2:CA-NL", index - start + 2, index
-        if self.words[index]['word'] == 'nova' and index + 1 < self.length and self.words[index+1]['word'] == 'scotia':
-            return city, "ISO3166-2:CA-NS", index - start + 1, index
-        if self.words[index]['word'] == 'prince' and index + 2 < self.length and self.words[index+1]['word'] == 'edward':
-            return city, "ISO3166-2:CA-PE", index - start + 1, index
-   
         if self.words[index]['tag'] not in [Vocabulary.NAME, Vocabulary.ACRONYM]:
             return None, None, 0, 0
-                       
-        # State Name Prefix
+   
+        try:
+            state = self._state_dict[self.words[index]['word']]
+            return city, state, index - start + 1, index
+        except: 
+            return None, None, 0, 0
+            
+    def state_hack(self, index):
+        """ """
+        if self.words[index]['word'] == 'medical doctor':
+            return 'ISO3166-2:US-MD', 1
+            
+        if self.words[index]['word'] == 'd' and index + 1 < self.length and self.words[index+1]['word'] == 'c':
+            return "ISO3166-2:US-DC", 1
+            
+        # two word special case
+        if self.words[index]['word'] == 'rhode' and index + 1 < self.length and self.words[index+1]['word'] == 'island':
+            return "ISO3166-2:US-RI", 1
+        if self.words[index]['word'] == 'virgin' and index + 1 < self.length and self.words[index+1]['word'] == 'islands':
+            return "ISO3166-2:US-VI", 1
+        if self.words[index]['word'] == 'puerto' and index + 1 < self.length and self.words[index+1]['word'] == 'rico':
+            return "ISO3166-2:US-PR", 1
+        if self.words[index]['word'] == 'american' and index + 1 < self.length and self.words[index+1]['word'] == 'samoa':
+            return "ISO3166-2:US-AS", 1
+        if self.words[index]['word'] == 'marshall' and index + 1 < self.length and self.words[index+1]['word'] == 'islands':
+            return "ISO3166-2:US-FM", 1
+        if self.words[index]['word'] == 'northern' and index + 1 < self.length and self.words[index+1]['word'] == 'marianas':
+            return "ISO3166-2:US-FM", 1
+        if self.words[index]['word'] == 'british' and index + 1 < self.length and self.words[index+1]['word'] == 'columbia':
+            return "ISO3166-2:CA-BC", 1
+        if self.words[index]['word'] == 'newfoundland' and index + 2 < self.length and self.words[index+1]['word'] == 'and':
+            return "ISO3166-2:CA-NL", 1
+        if self.words[index]['word'] == 'nova' and index + 1 < self.length and self.words[index+1]['word'] == 'scotia':
+            return "ISO3166-2:CA-NS", 1
+        if self.words[index]['word'] == 'prince' and index + 2 < self.length and self.words[index+1]['word'] == 'edward':
+            return "ISO3166-2:CA-PE", 1
         if self.words[index]['word'] in [ 'new', 'north', 'south', 'west', 'northwest']:
             index += 1
             if index == self.length:
                 return None, None, 0, 0
             word = self.words[index-1]['word'] + ' ' + self.words[index]['word']
-        else:
-            word = self.words[index]['word']
-            
-        try:
-            state = self._state_dict[word]
-            return city, state, index - start + 1, index
-        except: 
-            return None, None, 0, 0
+            try:
+                return self._state_dict[word], 1
+            except: pass
+        return None, 0
         
     _state_dict = {
         'al'            : 'ISO3166-2:US-AL',
@@ -831,6 +846,6 @@ sttype = {
          'room'         : { 'tag': [  Vocabulary.SAC ], 'lemma': ['room']},
          'bldg'         : { 'tag': [  Vocabulary.SAC ], 'lemma': ['building']},
          'building'     : { 'tag': [  Vocabulary.SAC ], 'lemma': ['building']},
-         'ln'           : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['lane']},
+         'unit'         : { 'tag': [  Vocabulary.SAC ], 'lemma': ['lane']},
 }
         

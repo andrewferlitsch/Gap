@@ -2531,12 +2531,30 @@ class MyTest(unittest.TestCase):
         words = Words("Québec")
         self.assertEqual(words.words, [{'word': 'québec', 'tag': 0}])
         
+    def test_304(self):
+        """ Words - addresses that were broken """
+        words = Words("PMB 10 12 W Main Ave. foo", stopwords=True)
+        self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'foo', 'tag': 0}])
+        words = Words("PMB 10 12 W Main Ave., Seattle, WA foo", stopwords=True)
+        self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'seattle', 'tag': 31}, {'word': 'ISO3166-2:US-WA', 'tag': 32}, {'word': 'foo', 'tag': 0}])
+        words = Words("12A W Main Ave., Hoops D.C.", address=True)
+        self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:US-DC', 'tag': 32}])
+        words = Words("12A W Main Ave., Hoops, D.C.", address=True)
+        self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:US-DC', 'tag': 32}])
+        words = Words("12A W Main Ave., Hoops Rhode Island", address=True)
+        self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:US-RI', 'tag': 32}])
+        words = Words("12A W Main Ave., Hoops Puerto Rico", address=True)
+        self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:US-PR', 'tag': 32}])
+        words = Words("12A W Main Ave., Hoops New Hampshire", address=True)
+        self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:US-NH', 'tag': 32}])
+        words = Words("12A W Main Ave., Mt. View CA", address=True)
+        self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'mountain view', 'tag': 31}, {'word': 'ISO3166-2:US-CA', 'tag': 32}])
+        
+        
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
         words = Words("10 m/s", stopwords=True)
         words = Words("10 ft/s", stopwords=True)
-        words = Words("12A W Main Ave., Hoops D.C.", address=True)
-        words = Words("12A W Main Ave., Hoops New Hampshire", address=True)
         # dad -> father, mom -> mother
         
         

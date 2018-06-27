@@ -144,3 +144,8 @@ The User's (Programming) Guide can be found [here](specs/users%20guide.docx)
 ## Releases
 
 -- describe here
+
+## Testing
+
+-- describe here
+

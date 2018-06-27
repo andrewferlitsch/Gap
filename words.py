@@ -616,6 +616,7 @@ class Words(object):
                                                            Vocabulary.CITY, Vocabulary.STATE, Vocabulary.POSTAL,
                                                            Vocabulary.STATION]:
                                 words.append( self._words[_x] )
+                    skip -= 1
                     continue
   
                 # Check if this word is a number
