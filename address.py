@@ -350,27 +350,35 @@ class Address(object):
                 break
             if self.words[index+i]['word'] == ',':
                 break
+            # Hack
+            if self.words[index+i]['word'] == 'doctor':
+                self.words[index+i]['word'] = 'drive'
+                break
             try:
-                word = vocab[self.words[index+i]['word']]
-                if Vocabulary.STREET_TYPE in word['tag']:
-                    break
-                if name != '':
-                    name += ' ' + word['lemma'][0]
-                else:
-                    name = word['lemma'][0]
-            except: 
-                if self.words[index+i]['word'][-2:] in [ 'th', 'st', 'nd', 'rd' ]:
-                    name = self.words[index+i]['word'][:-2]
-                else:
-                    self.index += i
-                    _dir, _n = self.parse_streetdir()
-                    self.index -= i
-                    if _dir:
+                word = sttype[self.words[index+i]['word']]
+                break
+            except:
+                try:
+                    word = vocab[self.words[index+i]['word']]
+                    if Vocabulary.STREET_TYPE in word['tag']:
                         break
                     if name != '':
-                        name += ' ' + self.words[index+i]['word']
+                        name += ' ' + word['lemma'][0]
                     else:
-                        name = self.words[index+i]['word']
+                        name = word['lemma'][0]
+                except: 
+                    if self.words[index+i]['word'][-2:] in [ 'th', 'st', 'nd', 'rd' ]:
+                        name = self.words[index+i]['word'][:-2]
+                    else:
+                        self.index += i
+                        _dir, _n = self.parse_streetdir()
+                        self.index -= i
+                        if _dir:
+                            break
+                        if name != '':
+                            name += ' ' + self.words[index+i]['word']
+                        else:
+                            name = self.words[index+i]['word']
                     
         if i == 0 or i == 4:
             return None, 0
@@ -398,8 +406,9 @@ class Address(object):
     def parse_streettype(self):
         """ Parse a Street Type """
         
+
         try:
-            word = vocab[self.words[self.index]['word']]
+            word = sttype[self.words[self.index]['word']]
             if Vocabulary.STREET_TYPE in word['tag']:
                 itag = word['tag'].index(Vocabulary.STREET_TYPE)
                 lemma = word['lemma'][itag]
@@ -431,7 +440,7 @@ class Address(object):
         start  = self.index 
                 
         try:
-            v = vocab[self.words[index]['word']]
+            v = sttype[self.words[index]['word']]
             if Vocabulary.SAC not in v['tag']:
                 return None, 0  
             itag = v['tag'].index(Vocabulary.SAC)
@@ -502,7 +511,7 @@ class Address(object):
         elif self.words[index]['tag'] == Vocabulary.NAME: 
             # Hack
             if self.words[index]['word'] == 'medical doctor':
-                return city, 'ISO3166-2:US-MD', index - start + 1, index
+                self.words[index]['word'] = "maryland"
             try:
                 state = self._state_dict[self.words[index]['word']]
                 return city, state, index - start + 1, index
@@ -516,7 +525,12 @@ class Address(object):
                 index += 1
                 if index == self.length:
                     return None, None, 0, 0
-           
+
+        
+        # Hack
+        if self.words[index]['word'] == 'medical doctor':
+            return city, "ISO3166-2:US-MD", index - start + 1, index 
+                
         # D.C. special case
         if self.words[index]['word'] == 'd' and index + 1 < self.length and self.words[index+1]['word'] == 'c':
             return city, "ISO3166-2:US-DC", index - start + 1, index 
@@ -541,11 +555,7 @@ class Address(object):
             return city, "ISO3166-2:CA-NS", index - start + 1, index
         if self.words[index]['word'] == 'prince' and index + 2 < self.length and self.words[index+1]['word'] == 'edward':
             return city, "ISO3166-2:CA-PE", index - start + 1, index
-       
-        # Hack
-        if self.words[index]['word'] == 'medical doctor':
-            return city, 'ISO3166-2:US-MD', index - start + 1, index
-            
+   
         if self.words[index]['tag'] not in [Vocabulary.NAME, Vocabulary.ACRONYM]:
             return None, None, 0, 0
                        
@@ -720,8 +730,6 @@ class Address(object):
         if self._pst is not None:
             self.idx_pst = self.index
             self.index += n
-            if self.index < self.length and self.words[self.index]['word'] == ',':
-                self.index += 1
             if self._debug: print("PST", self._pst, self.idx_pst)
             return True
         return False
@@ -772,4 +780,57 @@ class Address(object):
         if self.isaddr == False:
             return False
         return True
+        
+sttype = {
+         'aly'          : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['alley']},
+         'alley'        : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['alley']},
+         'apt'          : { 'tag': [  Vocabulary.SAC ], 'lemma': ['apartment']},
+         'apartment'    : { 'tag': [  Vocabulary.SAC ], 'lemma': ['apartment']},
+         'av'           : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['avenue']},
+         'ave'          : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['avenue']},
+         'avenue'       : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['avenue']},
+         'bvd'          : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['boulevard']},
+         'blvd'         : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['boulevard']},
+         'boulevard'    : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['boulevard']},
+         'crt'          : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['court']},
+         'ct'           : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['court']},
+         'court'        : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['court']},
+         'ctr'          : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['center']},
+         'center'       : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['center']},
+         'centre'       : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['center']},
+         'dept'         : { 'tag': [  Vocabulary.SAC ], 'lemma': ['department']},
+         'department'   : { 'tag': [  Vocabulary.SAC ], 'lemma': ['department']},
+         'dr'           : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['drive']},
+         'drive'        : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['drive']},
+         'hwy'          : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['highway']},
+         'highway'      : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['highway']},
+         'jct'          : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['junction']},
+         'junction'     : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['junction']},
+         'ln'           : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['lane']},
+         'lane'         : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['lane']},
+         'pk'           : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['park']},
+         'park'         : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['park']},
+         'pky'          : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['parkway']},
+         'pkwy'         : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['parkway']},
+         'parkway'      : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['parkway']},
+         'pl'           : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['place']},
+         'place'        : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['place']},
+         'po'           : { 'tag': [  Vocabulary.SAC ], 'lemma': ['post office']},
+         'rd'           : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['road']},
+         'road'         : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['road']},
+         'rt'           : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['route']},
+         'rte'          : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['route']},
+         'route'        : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['route']},
+         'st'           : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['street']},
+         'street'       : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['street']},
+         'ste'          : { 'tag': [  Vocabulary.SAC ], 'lemma': ['suite']},
+         'suite'        : { 'tag': [  Vocabulary.SAC ], 'lemma': ['suite']},
+         'fl'           : { 'tag': [  Vocabulary.SAC ], 'lemma': ['floor']},
+         'floor'        : { 'tag': [  Vocabulary.SAC ], 'lemma': ['floor']},
+         'rm'           : { 'tag': [  Vocabulary.SAC ], 'lemma': ['room']},
+         'room'         : { 'tag': [  Vocabulary.SAC ], 'lemma': ['room']},
+         'bldg'         : { 'tag': [  Vocabulary.SAC ], 'lemma': ['building']},
+         'building'     : { 'tag': [  Vocabulary.SAC ], 'lemma': ['building']},
+         'ln'           : { 'tag': [  Vocabulary.STREET_TYPE ], 'lemma': ['lane']},
+}
         
