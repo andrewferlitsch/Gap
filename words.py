@@ -378,7 +378,7 @@ class Words(object):
         for i in range(length):
             word = self._words[i]['word']
             l = len(word)
-
+            
             # Don't stem short words or words already categorized
             if l < 4 or self._words[i]['tag'] != Vocabulary.UNTAG:
                 continue
@@ -602,8 +602,7 @@ class Words(object):
                     if self._telephone is True:
                         words.append( {'word': w, 'tag': Vocabulary.TELEPHONE } )
                     continue
-                    
-                    
+
                 # Check if this word or sequence of words is a USA/CA Address
                 n = self._isAddr(self._words, i)
                 if n > 0:

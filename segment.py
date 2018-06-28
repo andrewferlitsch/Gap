@@ -60,7 +60,9 @@ class Segment(object):
                     # Look for heading
                     heading = True
                     for tok in toks:
-                        if tok[0].isdigit() or tok[0].isupper() or tok[0] == '.':
+                        if tok == '' or len(tok) == 0:
+                            pass
+                        elif tok[0].isdigit() or tok[0].isupper() or tok[0] == '.':
                             pass
                         else:
                             heading = False

@@ -6,7 +6,7 @@ The open source organization for Epipog is proposed as the following:
 
 The Governance Body would be equalivant to a Board in a Corporate or Non-Profit, with the following role:
 
-    1. Formation of the Organization.
+    1. Formation of the Organization, as a non-profit entity.
     2. Set the equivalent of an Articles of Incorporation.
     3. Set the Code of Conduct rules.
     4. Approve Executive Committee members.
@@ -34,4 +34,10 @@ The Project Managers would be equivalent to Project Managers/Leads in a Corporat
 The Contributers would be equivalent to Technical Staff in a Corporate or Non-Profit, with the following role:
 
     1. Make contributions to the source code under the direction of the Project Manager.
+    
+# Epipog Source Code and Intellectual Property
+
+The source code and intellectual property will be assigned to (owned) by the formed entity.
+
+The entity will make the source code and intellectual property freely available to the public through the Creative Commons license CC-BY.
 
