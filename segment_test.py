@@ -58,9 +58,21 @@ class MyTest(unittest.TestCase):
         self.assertEquals(segment.segments, [{'tag': 2, 'text': 'first\nsecond'}, {'tag': 3, 'text': 'Page 1'}])    
         
     def test_009(self):
-        """ page nimbering- abbr """
+        """ page numbering- abbr """
         segment = Segment("first\nsecond\n\np 1\n")
         self.assertEquals(segment.segments, [{'tag': 2, 'text': 'first\nsecond'}, {'tag': 3, 'text': 'p 1'}])
         segment = Segment("first\nsecond\n\np. 1\n")
-        self.assertEquals(segment.segments, [{'tag': 2, 'text': 'first\nsecond'}, {'tag': 3, 'text': 'p. 1'}])
+        self.assertEquals(segment.segments, [{'tag': 2, 'text': 'first\nsecond'}, {'tag': 3, 'text': 'p. 1'}])   
+        
+    def test_010(self):
+        """ more page numbering """
+        with open("tests/segment_page.txt", "r") as f:
+            text = f.read()
+        segment = Segment(text)
+        self.assertEquals(segment.segments, [{'tag': 2, 'text': 'first para'}, {'tag': 3, 'text': 'Page 1'}, {'tag': 2, 'text': 'second para'}, {'tag': 3, 'text': 'p. 2'}, {'tag': 2, 'text': 'third para'}, {'tag': 3, 'text': '3'}])   
+        
+    def test_011(self):
+        """ page numbering - page - """
+        segment = Segment("- 2 -\n")
+        self.assertEquals(segment.segments, [{'tag': 3, 'text': '- 2 -'}])
         

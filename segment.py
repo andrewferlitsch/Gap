@@ -24,7 +24,12 @@ class Segment(object):
             self._segmentation()
         
     def _segmentation(self):
-        """ Split text into paragraphs """
+        """ Split text into:
+        Headings
+        Paragraphs
+        Table of Contents
+        Page Numbering
+        """
         para = ''
         
         # Split the text into lines
@@ -53,8 +58,18 @@ class Segment(object):
                 # Look for page number
                 pageno = False
                 toks = s_line.split(' ')
-                if len(toks) == 2:
+                ntoks = len(toks)
+                
+                # Number by itself on a line
+                if ntoks == 1 and toks[0].isdigit():
+                    pageno = True
+                # page|p[.] number
+                elif ntoks == 2:
                     if toks[0].lower() in [ 'page', 'p', 'p.'] and toks[1].isdigit():
+                        pageno = True
+                # - number -
+                elif ntoks == 3:
+                    if toks[0] == '-' and toks[1].isdigit() and toks[2] == '-':
                         pageno = True
                 if not pageno:
                     # Look for heading
