@@ -41,7 +41,8 @@ The Epipog framework extensives uses a number of open source applications/module
   1. Artifex's Ghostscript - extracting text from text PDF
   2. ImageMagic's Magick - extracting image from scanned PDF
   3. Google's Tesseract - OCR of scanned/image captured text
-  4. NLTK (Natural Language Toolkit)
+  4. NLTK (Natural Language Toolkit) - stemming/lemmatizer/parts of speech annotation
+  5. unidecode - romanization of latin character codes
 
 ## Installation
 
@@ -89,9 +90,16 @@ The Epipog framework extensives uses a number of open source applications/module
 
 #### NLTK
 
-1. Install NLTK using pip
+1. Install NLTK using pip:
 
     pip install nltk
+    
+    
+#### Unidecode
+
+1. Install unidecode using pip:
+
+    pip install unidecode
 
 ## Modules
 
@@ -170,4 +178,10 @@ The automated tests are executed as follows:
     pytest -v document_test.py
     pytest -v page_test.py
     pytest -v words_test.py
+    
+### Code Coverage
+
+Information on the percent of code that is covered (and what source lines not covered) by the automated tests is obtained using pytest-cov. This version of pytest is installed using pip:
+
+    pip install pytest-cov
 
