@@ -147,5 +147,13 @@ The User's (Programming) Guide can be found [here](specs/users%20guide.docx)
 
 ## Testing
 
--- describe here
+The Epipog framework is developed using Test Driven Development methodology. The automated unit tests for the framework use pytest, which is a xUnit style form of testing (e.g., jUnit, nUnit, jsUnit, etc). The pytest application can be installed using pip:
+
+    pip install pytest
+   
+ The following are the pre-built automated unit tests:
+ 
+    document_test.py    # Tests the Document Class in the Splitter Module
+    page_test.py        # Tests the Page Class in the Splitter Module
+    words_test.py       # Tests the Word Class in the Syntax Module
 
