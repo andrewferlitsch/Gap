@@ -143,7 +143,7 @@ Along with the builtin stemmer and lemmatizer, the module can optionally be conf
 
 #### SEGMENTATION
 
--- describe here
+Details announced in release 1.5
 
 ## User's Guide
 
@@ -187,7 +187,19 @@ Information on the percent of code that is covered (and what source lines not co
     
 Testing with code coverage is executed as follows:
 
+    pytest --cov=document document_test.py
+    
+        Statements=318, Missed=70, Percent Covered: 78%
+
+    pytest --cov=document page_test.py
+    
+        Statements=318, Missed=190, Percent Covered: 40%
+
     pytest --cov=words words_test.py
     
         Statements=1037, Missed=68, Percent Covered: 93%
+
+    pytest --cov=address words_test.py
+    
+        Statements=493, Missed=51, Percent Covered: 90%
 
