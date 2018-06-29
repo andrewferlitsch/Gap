@@ -22,7 +22,7 @@ class Words(object):
     DECIMAL		    = '.'	# Standard Unit for Decimal Point
     THOUSANDS 	    = ','	# Standard Unit for Thousandth Separator
     
-    def __init__(self, text=None, bare=False, stem='internal', pos=False, roman = False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, dob=False, unit=False, standard=False, metric=False ):
+    def __init__(self, text=None, bare=False, stem='internal', pos=False, roman = False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, age = False, dob=False, unit=False, standard=False, metric=False ):
         """ Constructor 
         text - raw text as string to tokenize
         """
@@ -56,6 +56,7 @@ class Words(object):
                 self._address       = True          # keep street addresses
                 self._name          = True          # keep proper names
                 self._gender        = True          # keep gender words
+                self._age           = True          # keep age
                 self._dob           = True          # keep date of birth words
                 self._unit          = True          # keep unit of measurement
             # Remove Stopwords
@@ -75,6 +76,7 @@ class Words(object):
                 self._address       = address       # keep/remove street addresses
                 self._name          = name          # keep/remove proper names
                 self._gender        = gender        # keep/remove gender words
+                self._age           = age           # keep/remove age
                 self._dob           = dob           # keep/remove date of birth words
                 self._unit          = unit          # keep/remove unit of measurement words
             
@@ -113,7 +115,9 @@ class Words(object):
         if isinstance(gender, bool) is False:
             raise TypeError("Gender must be a boolean")
         if isinstance(dob, bool) is False:
-            raise TypeError("DOB must be a boolean")
+            raise TypeError("Gender must be a boolean")
+        if isinstance(age, bool) is False:
+            raise TypeError("Age must be a boolean")
         if isinstance(punct, bool) is False:
             raise TypeError("Punct must be a boolean")
         if isinstance(unit, bool) is False:
@@ -624,6 +628,14 @@ class Words(object):
                                 words.append( self._words[_x] )
                     skip -= 1
                     continue
+                    
+                # Check if this word is a gender reference
+                w, n = self._isAge(self._words, i)
+                if w is not None:
+                    skip = n
+                    if self._age is True:
+                        words.append( {'word': w, 'tag': Vocabulary.AGE } )
+                    continue
   
                 # Check if this word is a number
                 w, n = self._isnumber(self._words, i)
@@ -659,7 +671,6 @@ class Words(object):
                             measurement = False
                     continue 
                     
-  
                 # Check if this word is a gender reference
                 w, n, t = self._isGender(self._words, i)
                 if w is not None:
@@ -1254,6 +1265,43 @@ class Words(object):
             return 'transgender', index - start, Vocabulary.TRANSGENDER
             
         return None, 0, Vocabulary.UNTAG
+        
+    def _isAge(self, words, index):
+        """ Check if sequence is age reference """
+        start = index
+        length = len(words)
+        
+        # [age[:]] number [yr/yrs] [old]
+        if words[index]['word'] == 'age':
+            index += 1
+            if index == length:
+                return None, 0
+            if words[index]['word'] == ':':
+                index += 1
+                if index == length:
+                    return None, 0
+            age_key = True
+        else:
+            age_key = False
+            
+        if not words[index]['word'].isdigit():
+            return None, 0
+            
+        age = words[index]['word']
+        
+        index += 1
+        if index < length:
+            if words[index]['word'] in [ 'yr', 'yrs', 'year', 'years' ]:
+                age_key = True
+                index += 1
+                if index < length:
+                    if words[index]['word'] == 'old':
+                        index += 1
+                        
+        if age_key:
+            return age, index - start - 1
+            
+        return None, 0
         
     def _conversion(self):
         """ Do Unit Conversions """

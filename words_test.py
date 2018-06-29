@@ -2616,11 +2616,42 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': '26', 'tag': 1}, {'word': 'fahrenheit', 'tag': 25}])
         words = Words("26 °C", stopwords=True)
         self.assertEqual(words.words, [{'word': '26', 'tag': 1}, {'word': 'celsius', 'tag': 25}])
+              
+    def test_310(self):
+        """ Words - min/max/ave measurements """
+        words = Words("maximum: 36", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'maximum', 'tag': 38}, {'word': '36', 'tag': 1}])
+        words = Words("max. 36", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'maximum', 'tag': 38}, {'word': '36', 'tag': 1}])
+        words = Words("max 36", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'maximum', 'tag': 38}, {'word': '36', 'tag': 1}])
+        words = Words("average: 36", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'average', 'tag': 38}, {'word': '36', 'tag': 1}])
+        words = Words("ave. 36", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'average', 'tag': 38}, {'word': '36', 'tag': 1}])
+        words = Words("ave 36", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'average', 'tag': 38}, {'word': '36', 'tag': 1}])   
+        
+    def test_311(self):
+        """ Words constructor  = age is not a bool """
+        with pytest.raises(TypeError):
+            words = Words("one", age=12)
+        
+    def test_312(self):
+        words = Words("age: 36", age=True)
+        self.assertEqual(words.words, [{'word': '36', 'tag': 43}])   
+        words = Words("36 yrs", age=True)
+        self.assertEqual(words.words, [{'word': '36', 'tag': 43}])  
+        words = Words("36 yr foo", age=True)
+        self.assertEqual(words.words, [{'word': '36', 'tag': 43}, {'word': 'foo', 'tag': 0}])  
+        words = Words("36 years old foo", age=True)
+        self.assertEqual(words.words, [{'word': '36', 'tag': 43}, {'word': 'foo', 'tag': 0}])  
         
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
         words = Words("10 m/s", stopwords=True)
         words = Words("10 ft/s", stopwords=True)
+        words = Words("min 36", stopwords=True)
         # dad -> father, mom -> mother
         
         
