@@ -203,8 +203,11 @@ class Words(object):
             begin = 0
             for i in range(0,length):
                 if not word[i].isdigit() and not word[i].isalpha():
-                    # decimal, thousandths and fraction symbol
+                    # decimal, thousandths, fraction symbol
                     if word[i] in ['.', ',', '/'] and i < length-1 and word[i+1].isdigit():
+                        continue
+                    # degree
+                    if word[i] in ['°'] and i < length-1 and word[i+1] in [ 'f', 'F', 'c', 'C']:
                         continue
                     # sign symbol
                     if word[i] in ['-', '+'] and i < length-1 and (word[i+1].isdigit() or word[i+1] in ['.', ',']):
@@ -276,7 +279,7 @@ class Words(object):
             # Multiple Character 
             else:
                 # All Uppercased (can't start with digit)
-                if word['word'].isupper() and not word['word'][0].isdigit():
+                if word['word'].isupper() and not word['word'][0].isdigit() and not  word['word'][0] == '°':
                     # (2) Identify Acronyms
                     # If the next word is uppercased, it is a title line, not an acronym
                     # If last word is uppercased, it is a title line, not an acronym
@@ -563,6 +566,7 @@ class Words(object):
         words = []
         nwords = len(self._words)
         skip = 0
+        measurement = False
         for i in range(nwords):
             # skip words
             if skip > 0:
@@ -580,7 +584,10 @@ class Words(object):
                 w, n = self._isdate(self._words, i)
                 if w is not None:
                     skip = n
-                    if len(words) > 0 and words[-1]['word'] in ['birth', 'DOB', 'dob']:
+                    if len(words) > 0 and words[-1]['word'] in ['birth', 'birthdate', 'DOB', 'dob']:
+                        if self._dob is True:
+                            words[-1] = {'word': w, 'tag': Vocabulary.DOB }
+                    elif len(words) > 1 and words[-1]['word'] == 'date' and words[-2]['word'] == 'birth':
                         if self._dob is True:
                             words[-1] = {'word': w, 'tag': Vocabulary.DOB }
                     elif self._date is True:
@@ -596,11 +603,11 @@ class Words(object):
                     continue
                 
                 # Check if this word or sequence of words is a Telephone number
-                w, n = self._isTele(self._words, i)
+                w, n, tag = self._isTele(self._words, i)
                 if w is not None:
                     skip = n
                     if self._telephone is True:
-                        words.append( {'word': w, 'tag': Vocabulary.TELEPHONE } )
+                        words.append( {'word': w, 'tag': tag } )
                     continue
 
                 # Check if this word or sequence of words is a USA/CA Address
@@ -622,7 +629,7 @@ class Words(object):
                 w, n = self._isnumber(self._words, i)
                 if w is not None:
                     skip = n
-                    if self._number is True:
+                    if self._number is True or self._unit is True:
                         try:
                             tag = vocab[word]['tag']
                             # If number proceeds a word that can double as a unit, set it as only a unit.
@@ -637,7 +644,19 @@ class Words(object):
                         # Convert to using standard unit decimal
                         if self.DECIMAL == ',':
                             word = word.replace(',', '.')
-                        words.append( {'word': word, 'tag': Vocabulary.NUMBER } )       
+                        words.append( {'word': word, 'tag': Vocabulary.NUMBER } )
+                        
+                        if measurement:
+                            if i + 1 < nwords:
+                                if self._words[i+1]['word'] == "'":
+                                    words.append( {'word': 'foot', 'tag': Vocabulary.UNIT } )
+                                    i += 1
+                                    continue
+                                if self._words[i+1]['word'] == '"':
+                                    words.append( {'word': 'inch', 'tag': Vocabulary.UNIT } )
+                                    i += 1
+                                    continue
+                            measurement = False
                     continue 
                     
   
@@ -734,8 +753,15 @@ class Words(object):
                                 words.append({ 'word': vocab[word]['lemma'][0], 'tag': Vocabulary.UNIT})
                             else:
                                 words.append({ 'word': word, 'tag': Vocabulary.UNTAG})
+                    elif tag[0] == Vocabulary.MEASUREMENT:
+                        if self._unit == True:
+                            if len(word) > 1:
+                                words.append({ 'word': vocab[word]['lemma'][0], 'tag': Vocabulary.MEASUREMENT})
+                                measurement = True
+                            else:
+                                words.append({ 'word': word, 'tag': Vocabulary.UNTAG})
                     elif tag[0] == Vocabulary.NUMBER:
-                        if self._number == True:
+                        if self._number == True or self._unit == True:
                             words.append({ 'word': vocab[word]['lemma'][0], 'tag': Vocabulary.NUMBER})
                     elif tag[0] == Vocabulary.PORTER:
                         if self._porter == True:
@@ -1073,22 +1099,34 @@ class Words(object):
 
     def _isTele(self, words, index):
         """ Check if sequence of words is a USA/CA Telephone """
+        
+        tag = Vocabulary.TELEPHONE
         length = len(words)
+        
         # Expect Phone, Home, Tele[phone], Cell, Mobile, Work, Fax, Office, Contact
         start = index
-        if words[index]['word'] in ['phone', 'tel', 'tele', 'telephone', 'home', 'work', 'office', 'cell', 'mobile', 'fax', 'contact']:
+        if words[index]['word'] in ['phone', 'tel', 'tele', 'telephone', 'home', 'work', 'office', 'cell', 'mobile', 'fax', 'contact', 'support']:
+            if words[index]['word'] == 'home':
+                tag = Vocabulary.TELEPHONE_HOME
+            elif words[index]['word'] in ['work', 'office']:
+                tag = Vocabulary.TELEPHONE_WORK
+            elif words[index]['word'] in ['cell', 'mobile']:
+                tag = Vocabulary.TELEPHONE_CELL
+            elif words[index]['word'] in ['fax']:
+                tag = Vocabulary.TELEPHONE_FAX
+
             index += 1
             if index == length:
-                return None, 0
+                return None, 0, 0
             if words[index]['word'] in ['number', 'no', 'num', ]:
                 index += 1
                 if index == length:
-                    return None, 0
+                    return None, 0, 0
             
             while words[index]['tag'] in [ Vocabulary.PUNCT, Vocabulary.SYMBOL]  or words[index]['word'] in ['is', 'of']:
                 index += 1
                 if index == length:
-                    return None, 0
+                    return None, 0, 0
             prefix = True
         else: 
             prefix = False
@@ -1097,84 +1135,84 @@ class Words(object):
 
         # NNNNNNNNNN
         if prefix == True and len(words[index]['word']) == 10 and words[index]['word'].isdigit():
-            return words[index]['word'], index - start
+            return words[index]['word'], index - start, tag
 
         # 1NNNNNNNNNN
         if prefix == True and len(words[index]['word']) == 11 and words[index]['word'].isdigit() and words[index]['word'][0] == '1':
-            return words[index]['word'], index - start
+            return words[index]['word'], index - start, tag
             
         if '.' in words[index]['word']:
             toks = words[index]['word'].split('.')
             if len(toks) == 3:
                 for i in range(3):
                     if not toks[i].isdigit():
-                        return None, 0
+                        return None, 0, 0
                     tele += toks[i]
-                return tele, index - start
+                return tele, index - start, tag
             if len(toks) == 4:
                 tele = "1"
                 if toks[0] != '1':
-                    return None, 0
+                    return None, 0, 0
                 for i in range(1,4):
                     if not toks[i].isdigit():
-                        return None, 0
+                        return None, 0, 0
                     tele += toks[i]
-                return tele, index - start
+                return tele, index - start, tag
             
         # International Prefix
         if len(words[index]['word']) == 1 and words[index]['word'] == '1':
             tele = "1"
             index += 1
             if index == length:
-                return None, 
+                return None, 0, 0
                 
             if words[index]['word'] in ['-', '.']:
                 index += 1
                 if index == length:
-                    return None, 0
+                    return None, 0, 0
                     
         if words[index]['word'] == '(':
             index += 1
             if index == length:
-                return None, 0
+                return None, 0, 0
             
         # NNN NNN[sp]NNNN or NNN-NNN-NNNN
         if len(words[index]['word']) == 3 and words[index]['word'].isdigit():
             tele += words[index]['word']
             index += 1
             if index == length:
-                return None, 0
+                return None, 0, 0
                 
             if words[index]['word'] in ['-', '.', ')']:
                 index += 1
                 if index == length:
-                    return None, 0
+                    return None, 0, 0
                 
             # NNN[-]NNNNNNN
             if len(words[index]['word']) == 7:
                 tele += words[index]['word']
-                return tele, index - start
+                return tele, index - start, tag
 
             # NNN[-]NNN[-]NNNN
             if len(words[index]['word']) != 3:
-                return None, 0
+                return None, 0, 0
             tele += words[index]['word']
             index += 1
             if index == length:
-                return None, 0
+                return None, 0, 0
             
             if words[index]['word'] in ['-', '.']:
                 index += 1
                 if index == length:
-                    return None, 0
+                    return None, 0, 0
                     
             if len(words[index]['word']) != 4:
-                return None, 0
+                return None, 0, 0
             tele += words[index]['word']
             
-            return tele, index - start
+            return tele, index - start, tag
     
-        return None, 0
+        return None, 0, 0
         
     def _isAddr(self, words, index):
         """ Check if sequence of words is a USA/CA Address """

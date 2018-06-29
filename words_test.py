@@ -1376,7 +1376,7 @@ class MyTest(unittest.TestCase):
         words = Words("Work# 3601231234")
         self.assertEqual(towords(words.words), [])
         words = Words("Work# 3601231234", telephone=True)
-        self.assertEqual(words.words, [{'word': '3601231234', 'tag': 10}])
+        self.assertEqual(words.words, [{'word': '3601231234', 'tag': 40}])
 
     def test_231(self):
         """ Words - Telephone NNN[-]NNNNNNN """
@@ -1400,20 +1400,20 @@ class MyTest(unittest.TestCase):
         words = Words("Mobile Number 360 123 1234")
         self.assertEqual(towords(words.words), [])
         words = Words("Mobile Number 360 123 1234", telephone=True)
-        self.assertEqual(words.words, [{'word': '3601231234', 'tag': 10}])
+        self.assertEqual(words.words, [{'word': '3601231234', 'tag': 41}])
         words = Words("Mobile Number 360 123 1234", telephone=True, number=True)
-        self.assertEqual(words.words, [{'word': '3601231234', 'tag': 10}])
+        self.assertEqual(words.words, [{'word': '3601231234', 'tag': 41}])
 
     def test_233(self):
         """ Words - Telephone (NNN) NNN[-]NNNN """
         words = Words("Mobile Number (360) 123 1234")
         self.assertEqual(towords(words.words), [])
         words = Words("Mobile Number (360) 123 1234", telephone=True)
-        self.assertEqual(words.words, [{'word': '3601231234', 'tag': 10}])
+        self.assertEqual(words.words, [{'word': '3601231234', 'tag': 41}])
         words = Words("Mobile Number (360) 123-1234")
         self.assertEqual(towords(words.words), [])
         words = Words("Mobile Number (360) 123-1234", telephone=True)
-        self.assertEqual(words.words, [{'word': '3601231234', 'tag': 10}]) 
+        self.assertEqual(words.words, [{'word': '3601231234', 'tag': 41}])
         
     def test_234(self):
         """ Words - Single Letter abbreviations """
@@ -2370,7 +2370,7 @@ class MyTest(unittest.TestCase):
         
     def test_289(self):
         """ Words - Derivation endings """
-        words = Words("ongoing advertise normalise alphabetise sexualized franchise industrialise baptise chastise fantasized sized")
+        words = Words("ongoing advertise normalise alphabetise sexualized franchise industrialise baptise chastise fantasized sized", stopwords=True)
         self.assertEqual(towords(words.words), ["ongoing", "advertise", "normal", "alphabet", "sexual", "franchise", "industrial", "baptise", "chastise", "fantasy", "size"])
         words = Words("merchandise legalize legalizing legitimize authorize")
         self.assertEqual(towords(words.words), ["merchandise", "legal", "legal", "legitimate", "authorize"])
@@ -2549,7 +2549,73 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:US-NH', 'tag': 32}])
         words = Words("12A W Main Ave., Mt. View CA", address=True)
         self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'mountain view', 'tag': 31}, {'word': 'ISO3166-2:US-CA', 'tag': 32}])
+   
+    def test_305(self):
+        """ Words - more birthdates """     
+        words = Words("birthdate: 01/02/2018", dob=True)     
+        self.assertEqual(words.words, [{'word': '2018-01-02', 'tag': 20}])
+        words = Words("birth date: 01/02/2018", dob=True)
+        self.assertEqual(words.words, [{'word': 'birth', 'tag': 0}, {'word': '2018-01-02', 'tag': 20}])  
         
+    def test_306(self):
+        """ Words - Units of Measurements """
+        words = Words("Height: 71 inches", unit=True)
+        self.assertEqual(words.words, [{'word': 'height', 'tag': 38}, {'word': '71', 'tag': 1}, {'word': 'inch', 'tag': 25}])
+        words = Words("Height: 71 in.", unit=True)
+        self.assertEqual(words.words, [{'word': 'height', 'tag': 38}, {'word': '71', 'tag': 1}, {'word': 'inch', 'tag': 25}])
+        words = Words("Height: 71in", unit=True)
+        self.assertEqual(words.words, [{'word': 'height', 'tag': 38}, {'word': '71', 'tag': 1}, {'word': 'inch', 'tag': 25}])
+        words = Words("Ht. 71in", unit=True)
+        self.assertEqual(words.words, [{'word': 'height', 'tag': 38}, {'word': '71', 'tag': 1}, {'word': 'inch', 'tag': 25}])
+        words = Words("Ht.: 71in", unit=True)
+        self.assertEqual(words.words, [{'word': 'height', 'tag': 38}, {'word': '71', 'tag': 1}, {'word': 'inch', 'tag': 25}])
+        words = Words("Weight: 71lbs", unit=True)
+        self.assertEqual(words.words, [{'word': 'weight', 'tag': 38}, {'word': '71', 'tag': 1}, {'word': 'pound', 'tag': 25}])
+        words = Words("Wt: 71 lbs", unit=True)
+        self.assertEqual(words.words, [{'word': 'weight', 'tag': 38}, {'word': '71', 'tag': 1}, {'word': 'pound', 'tag': 25}])
+        words = Words("Length: 71in", unit=True)
+        self.assertEqual(words.words, [{'word': 'length', 'tag': 38}, {'word': '71', 'tag': 1}, {'word': 'inch', 'tag': 25}])
+        words = Words("len: 71in", unit=True)
+        self.assertEqual(words.words, [{'word': 'length', 'tag': 38}, {'word': '71', 'tag': 1}, {'word': 'inch', 'tag': 25}])
+        words = Words("Width: 71in", unit=True)
+        self.assertEqual(words.words, [{'word': 'width', 'tag': 38}, {'word': '71', 'tag': 1}, {'word': 'inch', 'tag': 25}])
+        words = Words("Volume: 2 liters", unit=True)
+        self.assertEqual(words.words, [{'word': 'volume', 'tag': 38}, {'word': '2', 'tag': 1}, {'word': 'liter', 'tag': 25}])
+        words = Words("Distance: 3.7mi", unit=True)
+        self.assertEqual(words.words, [{'word': 'length', 'tag': 38}, {'word': '3.7', 'tag': 1}, {'word': 'mile', 'tag': 25}])
+        words = Words("Speed: 10 mph", unit=True)
+        self.assertEqual(words.words, [{'word': 'speed', 'tag': 38}, {'word': '10', 'tag': 1}, {'word': 'mile per hour', 'tag': 25}])
+        words = Words("velocity: 10 mph", unit=True)
+        self.assertEqual(words.words, [{'word': 'speed', 'tag': 38}, {'word': '10', 'tag': 1}, {'word': 'mile per hour', 'tag': 25}])
+        words = Words("quantity: 10", unit=True)
+        self.assertEqual(words.words, [{'word': 'quantity', 'tag': 38}, {'word': '10', 'tag': 1}])
+        words = Words("depth: 20ft", unit=True)
+        self.assertEqual(words.words, [{'word': 'depth', 'tag': 38}, {'word': '20', 'tag': 1}, {'word': 'foot', 'tag': 25}])
+        words = Words("deep: 20ft", unit=True)
+        self.assertEqual(words.words, [{'word': 'depth', 'tag': 38}, {'word': '20', 'tag': 1}, {'word': 'foot', 'tag': 25}])
+        words = Words("size: 3 x 4", unit=True)
+        self.assertEqual(words.words, [{'word': 'size', 'tag': 38}, {'word': '3', 'tag': 1}, {'word': 'x', 'tag': 0}, {'word': '4', 'tag': 1}])
+        words = Words("ht: 5' 6\"", unit=True)
+        self.assertEqual(words.words, [{'word': 'height', 'tag': 38}, {'word': '5', 'tag': 1}, {'word': 'foot', 'tag': 25}, {'word': '6', 'tag': 1}, {'word': 'inch', 'tag': 25}]) 
+        
+    def test_307(self):
+        """ Words - more telephone """
+        words = Words("Customer Support: (360) 123-1234", telephone=True)
+        self.assertEqual(words.words, [{'word': 'customer', 'tag': 0}, {'word': '3601231234', 'tag': 10}]) 
+        words = Words("Fax: (360) 123-1234", telephone=True)
+        self.assertEqual(words.words, [{'word': '3601231234', 'tag': 42}])      
+        
+    def test_308(self):
+        """ Words - not a measurement """
+        words = Words("he said, 'I am 26'", stopwords = True)
+        self.assertEqual(words.words, [{'word': 'he', 'tag': 8}, {'word': 'said', 'tag': 21}, {'word': 'i', 'tag': 8}, {'word': 'am', 'tag': 21}, {'word': '26', 'tag': 1}]) 
+       
+    def test_309(self):
+        """ Words - fahrenheit / celsius """
+        words = Words("26 °F", stopwords=True)
+        self.assertEqual(words.words, [{'word': '26', 'tag': 1}, {'word': 'fahrenheit', 'tag': 25}])
+        words = Words("26 °C", stopwords=True)
+        self.assertEqual(words.words, [{'word': '26', 'tag': 1}, {'word': 'celsius', 'tag': 25}])
         
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
