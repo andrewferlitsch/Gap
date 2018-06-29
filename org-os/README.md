@@ -1,5 +1,21 @@
 # Epipog Open Source Organization
 
+## Background
+
+Open Source Frameworks being released at a record pass (Tensorflow, Theano, Caffe, Keras, MXNet, Neon, ...).
+
+    - The frameworks with wide adoption are supported and sponsored by the Big 5 (Google, Facebook, Microsoft, Apple, Amazon) and others.
+
+    - Mass technical staff, years in development, deep pocket budgets.
+
+On this scale, is it realistic anymore for a grassroots open source project to release a machine learning framework of the same caliber and adoption?
+
+## Purpose / Reason
+
+Why us, why this project?
+
+-- describe here
+
 The open source organization for Epipog is proposed as the following:
 
 ## Governance Body

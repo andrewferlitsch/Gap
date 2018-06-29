@@ -41,7 +41,8 @@ The Epipog framework extensives uses a number of open source applications/module
   1. Artifex's Ghostscript - extracting text from text PDF
   2. ImageMagic's Magick - extracting image from scanned PDF
   3. Google's Tesseract - OCR of scanned/image captured text
-  4. NLTK (Natural Language Toolkit)
+  4. NLTK (Natural Language Toolkit) - stemming/lemmatizer/parts of speech annotation
+  5. unidecode - romanization of latin character codes
 
 ## Installation
 
@@ -89,9 +90,16 @@ The Epipog framework extensives uses a number of open source applications/module
 
 #### NLTK
 
-1. Install NLTK using pip
+1. Install NLTK using pip:
 
     pip install nltk
+    
+    
+#### Unidecode
+
+1. Install unidecode using pip:
+
+    pip install unidecode
 
 ## Modules
 
@@ -135,7 +143,7 @@ Along with the builtin stemmer and lemmatizer, the module can optionally be conf
 
 #### SEGMENTATION
 
--- describe here
+Details announced in release 1.5
 
 ## User's Guide
 
@@ -147,5 +155,51 @@ The User's (Programming) Guide can be found [here](specs/users%20guide.docx)
 
 ## Testing
 
--- describe here
+The Epipog framework is developed using Test Driven Development methodology. The automated unit tests for the framework use pytest, which is a xUnit style form of testing (e.g., jUnit, nUnit, jsUnit, etc). 
+
+#### Installation and Documentation
+
+The pytest application can be installed using pip:
+
+    pip install pytest
+    
+Online documentation for [pytest](https://docs.pytest.org)
+
+#### Execution
+   
+The following are the pre-built automated unit tests:
+ 
+    document_test.py    # Tests the Document Class in the Splitter Module
+    page_test.py        # Tests the Page Class in the Splitter Module
+    words_test.py       # Tests the Word Class in the Syntax Module: 307 tests
+    
+The automated tests are executed as follows:
+
+    pytest -v document_test.py
+    pytest -v page_test.py
+    pytest -v words_test.py
+    
+#### Code Coverage
+
+Information on the percent of code that is covered (and what source lines not covered) by the automated tests is obtained using pytest-cov. This version of pytest is installed using pip:
+
+    pip install pytest-cov
+    
+Testing with code coverage is executed as follows:
+
+    pytest --cov=document document_test.py
+    
+        Statements=318, Missed=70, Percent Covered: 78%
+
+    pytest --cov=document page_test.py
+    
+        Statements=318, Missed=190, Percent Covered: 40%
+
+    pytest --cov=words words_test.py
+    
+        Statements=1037, Missed=68, Percent Covered: 93%
+
+    pytest --cov=address words_test.py
+    
+        Statements=493, Missed=51, Percent Covered: 90%
 
