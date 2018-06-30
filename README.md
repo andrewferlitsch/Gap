@@ -8,10 +8,11 @@ The Epipog NLP framework provides an easy to get started into the world of machi
   - Automatic OCR of scanned and camera captured images.
   - Automatic Text Extraction from documents.
   - Automatic Syntax Analysis.
+  - Optional Romanization of Latin-1 diacritic characters
   - Programmatic control for data extraction or redaction (de-identification)
   
     - Names, Addresses, Proper Places
-    - Social Security Numbers, Data of Birth, Gender
+    - Social Security Numbers, Data of Birth, Gender, Age
     - Telephone Numbers
     - Numerical Information (e.g., medical, financial, …) and units of measurement.
     - Unit conversion from US Standard to Metric, and vice-versa
@@ -117,6 +118,8 @@ NLP processing of the raw text is deferred until first access (JIT), and then pr
 
 The document and corresponding pages may be classified (i.e., category of the content) when the CLASSIFICATION module is installed.
 
+[Specification](specs/splitter_spec.docx)
+
 #### SYNTAX
 
 The syntax module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support. 
@@ -139,6 +142,8 @@ The word classifier recognizes:
 Dates, numbers and units of measure can be converted to either USA Standard or ISO Standard.  USA and Canadian postal addresses are converted to the USPO standard for address matching.
 
 Along with the builtin stemmer and lemmatizer, the module can optionally be configured to use the NLTK (open source) stemmers, lemmatizer and parts of speech annotations.
+
+[Specification](specs/syntax_spec.docx)
 
 
 #### SEGMENTATION
