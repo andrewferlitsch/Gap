@@ -2638,6 +2638,7 @@ class MyTest(unittest.TestCase):
             words = Words("one", age=12)
         
     def test_312(self):
+        """ Words: Age """
         words = Words("age: 36", age=True)
         self.assertEqual(words.words, [{'word': '36', 'tag': 43}])   
         words = Words("36 yrs", age=True)
@@ -2646,6 +2647,12 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': '36', 'tag': 43}, {'word': 'foo', 'tag': 0}])  
         words = Words("36 years old foo", age=True)
         self.assertEqual(words.words, [{'word': '36', 'tag': 43}, {'word': 'foo', 'tag': 0}])  
+        
+    def test_313(self):
+        """ Words bag of words """
+        words = Words("three two one three three two", number=True)
+        self.assertEqual(words.bagOfWords, { '2': 2, '1': 1, '3': 3 }) 
+        self.assertEqual(words.freqDist, [ ('3', 3), ('2', 2), ('1', 1) ]) 
         
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
