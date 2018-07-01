@@ -36,6 +36,8 @@ class Words(object):
         self._bare          = bare          # on/off bare tokenizing
         self._standard      = standard      # convert metric to standard units
         self._metric        = metric        # convert standard to metric units
+        self._bow           = None          # bag of words
+        self._freq          = None
         
         # More than just bare tokenizing
         if self._bare == False:
@@ -1418,6 +1420,26 @@ class Words(object):
         l = len(self._words)
         for i in range(l):
             self._words[i]['pos'] = pos_tag( [ self._words[i]['word'] ])[0][1]
+            
+    @property
+    def bagOfWords(self):
+        """ Generate/return Bag of Words """
+        if self._bow is None:
+            self._bow = {}
+            for word in self._words:
+                if word['word'] in self._bow:
+                    self._bow[word['word']] += 1
+                else:
+                    self._bow[word['word']] = 1
+        return self._bow
+        
+    @property
+    def freqDist(self):
+        """ Generate / return frequency distribution """
+        if self._freq is None:
+            self._freq = sorted( self.bagOfWords.items(), key=lambda x: x[1], reverse=True)
+        return self._freq
+            
                         
     def __len__(self):
         """ Override the len() operator - get the number of tokenized words """
