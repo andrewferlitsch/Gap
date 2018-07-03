@@ -2334,7 +2334,11 @@ class MyTest(unittest.TestCase):
         words = Words("raced racing races", stopwords=True)
         self.assertEqual(towords(words.words), ["race", "race", "race"])
         words = Words("dances danced dancing", stopwords=True)
-        self.assertEqual(towords(words.words), ["dance", "dance", "dance"])      
+        self.assertEqual(towords(words.words), ["dance", "dance", "dance"])    
+        words = Words("combined deaths injuries", stopwords=True)
+        self.assertEqual(towords(words.words), ["combine", "death", "injury"])        
+        words = Words("crashed crashes", stopwords=True)
+        self.assertEqual(towords(words.words), ["crash", "crash"])    
         
     def test_285(self):
         """ Words - more addresses """
@@ -2652,14 +2656,20 @@ class MyTest(unittest.TestCase):
         """ Words bag of words """
         words = Words("three two one three three two", number=True)
         self.assertEqual(words.bagOfWords, { '2': 2, '1': 1, '3': 3 }) 
-        self.assertEqual(words.freqDist, [ ('3', 3), ('2', 2), ('1', 1) ]) 
+        self.assertEqual(words.freqDist, [ ('3', 3), ('2', 2), ('1', 1) ])  
+        
+    def test_314(self):
+        """ hwy / fwy """
+        words = Words("hwy accidents fwy accidents")
+        self.assertEqual(towords(words.words), ["highway", "accident", "freeway", "accident"])
+  
         
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
         words = Words("10 m/s", stopwords=True)
         words = Words("10 ft/s", stopwords=True)
         words = Words("min 36", stopwords=True)
-        # dad -> father, mom -> mother
+        # dad -> father, mom -> 
         
         
 def towords(list):

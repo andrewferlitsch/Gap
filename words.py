@@ -783,7 +783,7 @@ class Words(object):
                         # Not an Address
                         words.append({ 'word': word, 'tag': Vocabulary.UNTAG})
                     elif tag[0] == Vocabulary.UNTAG:
-                        words.append({ 'word': word, 'tag': Vocabulary.UNTAG})
+                        words.append({ 'word': vocab[word]['lemma'][0], 'tag': Vocabulary.UNTAG})
                     continue
                 except:
                     words.append({ 'word': word, 'tag': tag[0] } )
@@ -1439,6 +1439,16 @@ class Words(object):
         if self._freq is None:
             self._freq = sorted( self.bagOfWords.items(), key=lambda x: x[1], reverse=True)
         return self._freq
+        
+    @property
+    def termFreq(self):
+        """ Generate / return term frequencies """
+        nwords = len(self)
+        self._tf = []
+        for t in self.freqDist:
+            self._tf.append( ( t[0], t[1] / nwords ) )
+        return self._tf
+                
             
                         
     def __len__(self):
