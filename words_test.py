@@ -2667,6 +2667,8 @@ class MyTest(unittest.TestCase):
         """ more word endings """
         words = Words("permitted provider provided based shared sharing")
         self.assertEqual(towords(words.words), ["permit", "provide", "provide", "base", "share", "share"])
+        words = Words("includes included including", stopwords=True)
+        self.assertEqual(towords(words.words), ["include", "include", "include"])
   
         
     def xtest_bugs(self):
