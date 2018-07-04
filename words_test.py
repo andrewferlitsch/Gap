@@ -2662,6 +2662,11 @@ class MyTest(unittest.TestCase):
         """ hwy / fwy """
         words = Words("hwy accidents fwy accidents")
         self.assertEqual(towords(words.words), ["highway", "accident", "freeway", "accident"])
+        
+    def test_315(self):
+        """ more word endings """
+        words = Words("permitted provider provided based shared sharing")
+        self.assertEqual(towords(words.words), ["permit", "provide", "provide", "base", "share", "share"])
   
         
     def xtest_bugs(self):

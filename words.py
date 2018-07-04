@@ -37,7 +37,8 @@ class Words(object):
         self._standard      = standard      # convert metric to standard units
         self._metric        = metric        # convert standard to metric units
         self._bow           = None          # bag of words
-        self._freq          = None
+        self._freq          = None          # word count frequency
+        self._tf            = None          # term frequency
         
         # More than just bare tokenizing
         if self._bare == False:
@@ -1443,10 +1444,11 @@ class Words(object):
     @property
     def termFreq(self):
         """ Generate / return term frequencies """
-        nwords = len(self)
-        self._tf = []
-        for t in self.freqDist:
-            self._tf.append( ( t[0], t[1] / nwords ) )
+        if self._tf is None:
+            nwords = len(self)
+            self._tf = []
+            for t in self.freqDist:
+                self._tf.append( ( t[0], t[1] / nwords ) )
         return self._tf
                 
             

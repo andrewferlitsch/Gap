@@ -44,6 +44,8 @@ class Document(object):
         self._time     = 0          # elapse time to do collation
         self._scanned  = False      # flag indicating if scanned PDF, TIFF or image capture
         self._segment  = False      # Segment the text info regions
+        self._bow      = None       # Bag of Words for the document
+        self._freq     = None       # Frequency Distribution (word counts) for the document
         
         # value must be a string
         if dir is not None and isinstance(dir, str) == False:
@@ -357,7 +359,30 @@ class Document(object):
     def scanned(self):
         """ Return whether document is a scanned (captured) image """
         return self._scanned
-        
+    
+    @property
+    def bagOfWords(self):
+        """ Return  bag of words for the document """
+        if self._bow is None:
+            # Seed the dictionary with the first page's bag of words
+            self._bow = self[0].bagOfWords
+            # Incremently merge in each of the remaining page's bag of words
+            for i in range(1, len(self)):
+                bag = self[i].bagOfWords
+                for word, count in bag.items():
+                    if word in self._bow:
+                        self._bow[word] += count
+                    else:
+                        self._bow[word] = count
+        return self._bow
+          
+    @property
+    def freqDist(self):
+        """ Generate / return frequency distribution """
+        if self._freq is None:
+            self._freq = sorted( self.bagOfWords.items(), key=lambda x: x[1], reverse=True)
+        return self._freq
+    
     def __len__(self):
         """ Override the len() operator - return the number of pages """
         return len(self._pages)
@@ -481,7 +506,22 @@ class Page(object):
     @property
     def pageno(self):
         """ Getter for the page number """
-        return self._pageno
+        return self._pageno  
+        
+    @property
+    def bagOfWords(self):
+        """ Getter for bag of words """
+        return self._words.bagOfWords
+        
+    @property
+    def freqDist(self):
+        """ Getter for frequency distribution """
+        return self._words.freqDist
+        
+    @property
+    def termFreq(self):
+        """ Getter for term frequency (TF) distribution """
+        return self._words.termFreq
         
     def store(self, file):
         """ Store the NLP tokenized string to storage """
@@ -496,6 +536,7 @@ class Page(object):
         file = file.replace('.json', '.txt')
         with open(file, 'r', encoding='utf-8') as f:
             self._text = f.read()
+           
         
     def __len__(self):
         """ Override the len() operator - get the number of tokenized words """
