@@ -91,7 +91,9 @@ The Epipog framework extensives uses a number of open source applications/module
 
 #### NLTK
 
-1. Install NLTK using pip:
+1. Documentation: http://www.nltk.org/
+
+2. Install NLTK using pip:
 
     pip install nltk
     
