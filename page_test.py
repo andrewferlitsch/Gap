@@ -223,7 +223,22 @@ class MyTest(unittest.TestCase):
         page.load('tmp.txt')
         Page.ROMAN = False
         self.assertEqual(towords(page.words), ["quebec"])
-        os.remove("tmp.txt")
+        os.remove("tmp.txt")    
+        
+    def test_034(self):
+        """ Page - Bag of Words """
+        page = Page(text="zoo castle zoo bird zoo bird")
+        self.assertEqual(page.bagOfWords, { 'zoo': 3, 'castle': 1, 'bird': 2 })    
+        
+    def test_035(self):
+        """ Page - Word Counts """
+        page = Page(text="zoo castle zoo bird zoo bird")
+        self.assertEqual(page.freqDist, [( 'zoo', 3), ('bird', 2), ('castle', 1 )])   
+        
+    def test_036(self):
+        """ Page - Term Frequency """
+        page = Page(text="zoo castle zoo bird zoo bird zoo bird")
+        self.assertEqual(page.termFreq, [( 'zoo', 0.5), ('bird', 0.375), ('castle', 0.125 )]) 
         
     def xtest_bugs(self):
         """ Page store/load - unicode - cryllic """

@@ -511,16 +511,22 @@ class Page(object):
     @property
     def bagOfWords(self):
         """ Getter for bag of words """
+        # force a NLP processing if not already
+        words = self.words
         return self._words.bagOfWords
         
     @property
     def freqDist(self):
         """ Getter for frequency distribution """
+        # force a NLP processing if not already
+        words = self.words
         return self._words.freqDist
         
     @property
     def termFreq(self):
         """ Getter for term frequency (TF) distribution """
+        # force a NLP processing if not already
+        words = self.words
         return self._words.termFreq
         
     def store(self, file):
