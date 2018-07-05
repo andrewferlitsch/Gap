@@ -1,5 +1,5 @@
 """ Syntax Module for Processing PDF Documents 
-2018(c), Andrew Ferlitsch
+Copyright 2018(c), Andrew Ferlitsch
 """
 
 import re
@@ -588,10 +588,10 @@ class Words(object):
                 
             if self._words[i]['tag'] not in [Vocabulary.PUNCT, Vocabulary.SYMBOL]:
                 # Check if this word or sequence of words is a date string
-                w, n = self._isdate(self._words, i)
+                w, n = self._isDate(self._words, i)
                 if w is not None:
                     skip = n
-                    if len(words) > 0 and words[-1]['word'] in ['birth', 'birthdate', 'DOB', 'dob']:
+                    if len(words) > 0 and words[-1]['word'] in ['birth', 'birthdate', 'birthday', 'DOB', 'dob']:
                         if self._dob is True:
                             words[-1] = {'word': w, 'tag': Vocabulary.DOB }
                     elif len(words) > 1 and words[-1]['word'] == 'date' and words[-2]['word'] == 'birth':
@@ -641,7 +641,7 @@ class Words(object):
                     continue
   
                 # Check if this word is a number
-                w, n = self._isnumber(self._words, i)
+                w, n = self._isNumber(self._words, i)
                 if w is not None:
                     skip = n
                     if self._number is True or self._unit is True:
@@ -795,7 +795,7 @@ class Words(object):
                     
         self._words = words
             
-    def _isnumber(self, words, index):
+    def _isNumber(self, words, index):
         """ Check if word sequence is a number """
         word = words[index]['word']
         
@@ -896,7 +896,7 @@ class Words(object):
             
         return word, 0
         
-    def _isdate(self, words, index):
+    def _isDate(self, words, index):
         """ Check if word sequence is a date """
         length = len(words)
         # Format month dd[,] yy[yy]

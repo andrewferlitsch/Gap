@@ -2559,7 +2559,9 @@ class MyTest(unittest.TestCase):
         words = Words("birthdate: 01/02/2018", dob=True)     
         self.assertEqual(words.words, [{'word': '2018-01-02', 'tag': 20}])
         words = Words("birth date: 01/02/2018", dob=True)
-        self.assertEqual(words.words, [{'word': 'birth', 'tag': 0}, {'word': '2018-01-02', 'tag': 20}])  
+        self.assertEqual(words.words, [{'word': 'birth', 'tag': 0}, {'word': '2018-01-02', 'tag': 20}])       
+        words = Words("birthday: 01/02/2018", dob=True)     
+        self.assertEqual(words.words, [{'word': '2018-01-02', 'tag': 20}])
         
     def test_306(self):
         """ Words - Units of Measurements """

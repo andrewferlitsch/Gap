@@ -1,3 +1,6 @@
+"""
+Copyright 2018(c), Andrew Ferlitsch
+"""
 import os.path
 
 class PDFResource(object):

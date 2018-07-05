@@ -1,6 +1,6 @@
 # -*- coding: latin-1 -*-
 """ Splitter Module for Processing PDF Documents 
-2018(c), Andrew Ferlitsch
+Copyright, 2018(c), Andrew Ferlitsch
 """
 #chcp 65001
 
