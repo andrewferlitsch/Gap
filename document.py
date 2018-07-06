@@ -46,6 +46,7 @@ class Document(object):
         self._segment  = False      # Segment the text info regions
         self._bow      = None       # Bag of Words for the document
         self._freq     = None       # Frequency Distribution (word counts) for the document
+        self._tf       = None       # Term Frequency (TF) for the document
         
         # value must be a string
         if dir is not None and isinstance(dir, str) == False:
@@ -381,7 +382,18 @@ class Document(object):
         """ Generate / return frequency distribution """
         if self._freq is None:
             self._freq = sorted( self.bagOfWords.items(), key=lambda x: x[1], reverse=True)
-        return self._freq
+        return self._freq       
+        
+    @property
+    def termFreq(self):
+        """ Generate / return term frequencies """
+        # REDO
+        if self._tf is None:
+            nwords = len(self)
+            self._tf = []
+            for t in self.freqDist:
+                self._tf.append( ( t[0], t[1] / nwords ) )
+        return self._tf
     
     def __len__(self):
         """ Override the len() operator - return the number of pages """
@@ -580,9 +592,7 @@ class Page(object):
                 self._words += words.words
         return self
 
-        
 
-       
        
 def towords(words):
     ret = []

@@ -508,7 +508,6 @@ class MyTest(unittest.TestCase):
             os.remove("tests/4page" + str(i) + ".pdf")
             os.remove("tests/4page" + str(i) + ".json")
 
-
     def test_053(self):
         # page.path for .txt file
         document = Document("test.txt")
@@ -516,6 +515,16 @@ class MyTest(unittest.TestCase):
         self.assertEquals(document[0].path, "./test1.txt")
         os.remove("test1.txt")
         os.remove("test1.json")
+
+    def test_054(self):
+        """ bag of words / freqDist """
+        document = Document("tests/4page.pdf", "tests")
+        self.assertTrue(document.bagOfWords != None)
+        self.assertTrue(document.freqDist != None)
+        for i in range(1,5):
+            os.remove("tests/4page" + str(i) + ".txt")
+            os.remove("tests/4page" + str(i) + ".pdf")
+            os.remove("tests/4page" + str(i) + ".json")
 
 		
     def done(self, document):

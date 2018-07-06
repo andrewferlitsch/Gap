@@ -2671,6 +2671,8 @@ class MyTest(unittest.TestCase):
         self.assertEqual(towords(words.words), ["permit", "provide", "provide", "base", "share", "share"])
         words = Words("includes included including", stopwords=True)
         self.assertEqual(towords(words.words), ["include", "include", "include"])
+        words = Words("treated treating treatment", stopwords=True)
+        self.assertEqual(towords(words.words), ["treat", "treat", "treat"])
   
         
     def xtest_bugs(self):
