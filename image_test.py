@@ -303,10 +303,12 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.type, "tif")
         os.remove("6page.tif")
         os.remove("6page.h5")
+        os.remove("6page.thumbnail.tif")
         image = Image("tests/text.tiff")
         self.assertEqual(image.name, "text")
         self.assertEqual(image.type, "tiff")
         os.remove("text.tiff")
+        os.remove("text.thumbnail.tiff")
         os.remove("text.h5")
         
     def test_030(self):
@@ -316,6 +318,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.type, "bmp")
         os.remove("text.bmp")
         os.remove("text.h5")
+        os.remove("text.thumbnail.bmp")
         
     def test_031(self):
         """ config - load """
@@ -350,6 +353,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.type, "gif")
         os.remove("text.gif")
         os.remove("text.h5")
+        os.remove("text.thumbnail.gif")
 
 		
     def done(self, image):
