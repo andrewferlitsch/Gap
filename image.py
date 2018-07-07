@@ -6,6 +6,7 @@ Copyright 2018(c), Andrew Ferlitsch
 import os
 import threading
 import time
+import copy
 
 # Import numpy for the high performance in-memory matrix/array storage and operations.
 import numpy as np
@@ -22,7 +23,7 @@ class Image(object):
     
     _debug = False
     
-    def __init__(self, image=None, label=0, dir='./', ehandler=None, thumbnail=(128,128), config=None):
+    def __init__(self, image=None, label=0, dir='./', ehandler=None, thumbnail=(32,32), config=None):
         """ """
         self._image     = image     # image path
         self._name      = None      # name of image (no path or suffix)
@@ -39,6 +40,7 @@ class Image(object):
         self._resize    = None      # resize the image
         self._hd5       = True      # store processed image data to hd5 filesystem
         self._imgdata   = None      # processed image data in memory
+        self._time      = 0          # elapse time to do processing
         
         if self._debug: print(config)
         
@@ -61,6 +63,12 @@ class Image(object):
             
         if config is not None and isinstance(config, list) == False:
             raise TypeError("List expected for config settings")
+            
+        if thumbnail is not None:
+            if isinstance(thumbnail, tuple) == False:
+                raise TypeError("Tuple expected for thumbnail")
+            if len(thumbnail) != 2 or not int(thumbnail[0]) or not int(thumbnail[1]):
+                raise TypeError("Tuple(height, width) expected for thumbnail")
         
         if config is not None:
             for setting in config:
@@ -132,7 +140,9 @@ class Image(object):
             raise IOError("The image is an empty file")
             
     def _collate(self, dir='./'):
-        """ Process the image """
+        """ Process the image """   
+        
+        start = time.time()
         
         # If directory does not exist, create it
         if dir != "./" and os.path.isdir(dir) == False:
@@ -145,10 +155,13 @@ class Image(object):
         pixels.save(dir + "/" + self._name + "." + self._type )
         
         # Store the thumbnail
-        thumb = pixels
-        thumb.thumbnail( self._thumbnail )
-        thumb.save(dir + "/" + self._name + "." + "thumbnail" + "." + self._type )
-        
+        if self._thumbnail:
+            try:
+                thumb = copy.deepcopy(pixels)
+                thumb.thumbnail( self._thumbnail )
+                thumb.save(dir + "/" + self._name + "." + "thumbnail" + "." + self._type )
+            except: pass
+            
         if self._resize:
             pixels = pixels.resize(self._resize, resample=PIL.Image.LANCZOS)
         
@@ -195,7 +208,10 @@ class Image(object):
         self._imgdata = image
         
         if self._hd5:
-            self._store()
+            self._store() 
+            
+        # Total time to do collation
+        self._time = time.time() - start
         
     def _store(self):
         """ Store the processed image data in a HD5 file """
@@ -303,7 +319,12 @@ class Image(object):
     @property
     def size(self):
         """ Return the byte size of the image """
-        return self._size   
+        return self._size    
+        
+    @property
+    def time(self):
+        """ Return the elapse time to do collation """
+        return self._time
 
     @property
     def thumbnail(self):
@@ -322,6 +343,7 @@ class Images(object):
         self._dir      = dir
         self._labels   = labels
         self._ehandler = ehandler
+        self._data     = None
         
         if isinstance(images, list) is False:
             raise TypeError("List expected for image paths")
@@ -340,9 +362,9 @@ class Images(object):
         config.append("nostore")
             
         # Process each image
-        data = []
+        self._data = []
         for ix in range(len(images)):
-            data.append( Image(images[ix], dir=self._dir, label=labels[ix], config=config) )
+            self._data.append( Image(images[ix], dir=self._dir, label=labels[ix], config=config) )
             
         # Store the images as a batch in an HD5 filesystem
         imgdata = []
@@ -382,5 +404,24 @@ class Images(object):
     def classification(self, labels):
         """ Setter for image labels (classification) """
         self._labels = labels
+        
+    @property
+    def imgdata(self):
+        """ Getter for the list of processed images """
+        return self._data
+        
+    def load(self):
+        """ TBD """
+        pass
+        
+    def __len__(self):
+        """ Override the len() operator - return the number of images """
+        return len(self._data)
+        
+    def __getitem__(self, ix):
+        """ Override the index operator - return the image at the corresponding index """
+        if ix > len(self):
+            raise IndexError("Index out of range for Images")
+        return self._data[ ix ]
             
         

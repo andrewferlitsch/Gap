@@ -215,8 +215,8 @@ class MyTest(unittest.TestCase):
         self.assertTrue(os.path.isfile("0_100g.jpg"))
         self.assertTrue(os.path.isfile("0_100g.h5"))
         os.remove("0_100g.jpg")
-        os.remove("0_100g.h5")
-            
+        os.remove("0_100g.thumbnail.jpg")   
+        
     def test_024(self):
         """ config - resize """
         image = Image("tests/0_100.jpg", config=['resize=50,50'])
@@ -298,17 +298,15 @@ class MyTest(unittest.TestCase):
         
     def test_029(self):
         """ tif file """
-        image = Image("tests/6page.tif")
+        image = Image("tests/6page.tif", thumbnail=None)
         self.assertEqual(image.name, "6page")
         self.assertEqual(image.type, "tif")
         os.remove("6page.tif")
         os.remove("6page.h5")
-        os.remove("6page.thumbnail.tif")
-        image = Image("tests/text.tiff")
+        image = Image("tests/text.tiff", thumbnail=None)
         self.assertEqual(image.name, "text")
         self.assertEqual(image.type, "tiff")
         os.remove("text.tiff")
-        os.remove("text.thumbnail.tiff")
         os.remove("text.h5")
         
     def test_030(self):
@@ -344,6 +342,21 @@ class MyTest(unittest.TestCase):
         os.remove("0_100.jpg")
         os.remove("0_100.h5")
         os.remove("0_100.thumbnail.jpg")
+        
+    def test_033(self):
+        """ no thumbnail """
+        image = Image("tests/0_100.jpg", thumbnail=None)
+        self.assertTrue(os.path.isfile("0_100.h5"))
+        self.assertFalse(os.path.isfile("0_100.thumbnail.jpg"))
+        os.remove("0_100.jpg")
+        os.remove("0_100.h5")
+        
+    def test_034(self):
+        """ time """
+        image = Image("tests/0_100.jpg", thumbnail=None)
+        self.assertTrue(image.time > 0)
+        os.remove("0_100.jpg")
+        os.remove("0_100.h5")
         
     def xxtest_031(self):
         """ gif file """

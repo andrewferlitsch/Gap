@@ -41,7 +41,7 @@ class Document(object):
         self._type     = None       # file type of the document
         self._size     = 0          # byte size of the document
         self._ehandler = ehandler   # event completion handler for async execution of splitting
-        self._time     = 0          # elapse time to do collation
+        self._time     = 0          # elapse time to do processing
         self._scanned  = False      # flag indicating if scanned PDF, TIFF or image capture
         self._segment  = False      # Segment the text info regions
         self._bow      = None       # Bag of Words for the document
@@ -269,7 +269,7 @@ class Document(object):
                     
             self._scanned = True 
             
-        # Total time to do collation
+        # Total time to do processing
         self._time = time.time() - start
         
     def load(self, document, dir='./'):
@@ -365,7 +365,7 @@ class Document(object):
         
     @property
     def time(self):
-        """ Return the elapse time to do collation """
+        """ Return the elapse time to do processing """
         return self._time
         
     @property
