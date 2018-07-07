@@ -1,4 +1,4 @@
-"""
+-+6.,"""
 Image Data Processing
 Copyright 2018(c), Andrew Ferlitsch
 """
@@ -52,9 +52,11 @@ class Image(object):
             if dir.endswith("/") == False:
                     dir += "/"  
             self._dir = dir
+        elif dir == None:
+            self._dir = "./"
         
         # value must be a string
-        if label is not None and isinstance(label, int) == False:
+        if label is None or isinstance(label, int) == False:
             raise TypeError("Integer expected for image label")
             
         if config is not None and isinstance(config, list) == False:
@@ -62,6 +64,8 @@ class Image(object):
         
         if config is not None:
             for setting in config:
+                if isinstance(setting, str) == False:
+                     raise TypeError("String expected for each config setting")
                 if setting in ['gray', 'grayscale']:
                     self._grayscale = True
                 elif setting in ['normal', 'normalize']:
@@ -73,11 +77,19 @@ class Image(object):
                 elif setting.startswith('resize='):
                     toks = setting.split('=')
                     if len(toks) != 2:
-                        raise IndexError("Resize is wrong format")
+                        raise AttributeError("Resize is wrong format")
                     vals = toks[1].split(',')
                     if len(vals) != 2:
-                        raise IndexError("Resize is wrong format")
+                        raise AttributeError("Resize is wrong format")
+                    if vals[0][0] == '(':
+                        vals[0] = vals[0][1:]
+                    if vals[1][-1] == ')':
+                        vals[1] = vals[1][:-1]
+                    if not vals[0].isdigit() or not vals[1].isdigit():
+                        raise AttributeError("Resize values must be an integer")
                     self._resize = ( int(vals[1]), int(vals[0]) )
+                else:
+                    raise AttributeError("Setting is not recognized: " + setting)
         
         if self._image is not None:
             self._exist()
@@ -138,11 +150,7 @@ class Image(object):
             pixels.save(dir + "/" + self._name + "." + "thumbnail" + "." + self._type )
         
         if self._resize:
-            if self._grayscale:
-                pixels = pixels.resize(self._resize, resample=PIL.Image.LANCZOS)
-            else:
-                pixels = pixels.resize(self._resize, resample=PIL.Image.LANCZOS)
-        
+            pixels = pixels.resize(self._resize, resample=PIL.Image.LANCZOS)
         
         # Convert to numpy array
         image = np.asarray(pixels)
@@ -155,6 +163,12 @@ class Image(object):
             # Extend to three channels, replicating the single channel
             if self._grayscale == False:
                 pixels = pixels.convert('RGB')
+                image = np.asarray(pixels)
+        # RGB image
+        elif self._shape[2] == 3:
+            if self._grayscale == True:
+                # convert to grayscale
+                pixels = pixels.convert('L')
                 image = np.asarray(pixels)
         # RGBA image (RGB + alpha channel)
         elif self._shape[2] == 4:
@@ -282,6 +296,11 @@ class Image(object):
     def classification(self, label):
         """ Setter for image label (classification) """
         self._label = label
+             
+    @property
+    def size(self):
+        """ Return the byte size of the image """
+        return self._size    
         
  
 class Images(object):

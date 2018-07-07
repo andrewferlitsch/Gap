@@ -50,23 +50,35 @@ class Document(object):
         
         # value must be a string
         if dir is not None and isinstance(dir, str) == False:
-            raise TypeError("String expected for page directory path")
+            raise TypeError("String expected for page directory path")    
+            
+        if config is not None and isinstance(config, list) == False:
+            raise TypeError("List expected for config settings")
                        
         # NLP configuration
         if config is not None:
-            for key in config:
-                if key == 'bare':
+            for setting in config:
+                if isinstance(setting, str) == False:
+                     raise TypeError("String expected for each config setting")
+                if setting == 'bare':
                     Page.BARE = True
-                elif key.startswith('stem'):
-                    vals = key.split('=')
-                    if len(vals) == 2:
-                        Page.STEM = vals[1]
-                elif key.startswith('pos'):
+                elif setting == 'pos':
                         Page.POS = True
-                elif key == 'roman':
+                elif setting == 'roman':
                     Page.ROMAN = True
-                elif key == 'segment':
+                elif setting == 'segment':
                     self._segment = True
+                elif setting.startswith('stem'):
+                    vals = setting.split('=')
+                    if len(vals) == 2:
+                        if vals[1] in ['internal', 'porter', 'snowball', 'lancaster', 'lemma']:
+                            Page.STEM = vals[1]
+                        else:
+                            raise AttributeError("Setting stem set to an invalid value: " + vals[1])
+                    else:
+                        raise AttributeError("Setting stem not assigned to a value")
+                else:
+                    raise AttributeError("Setting is not recognized: " + setting)
                                      
         # Verify that the document exists
         if self._document is not None:

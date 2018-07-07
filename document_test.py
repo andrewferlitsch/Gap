@@ -526,6 +526,75 @@ class MyTest(unittest.TestCase):
             os.remove("tests/4page" + str(i) + ".pdf")
             os.remove("tests/4page" + str(i) + ".json")
 
+    def test_055(self):
+        """ config is not a list """
+        with pytest.raises(TypeError):
+            document = Document(config=12)
+
+    def test_056(self):
+        """ config entry is not a string """
+        with pytest.raises(TypeError):
+            document = Document(config=[12])
+
+    def test_057(self):
+        """ config is None """
+        document = Document("tests/4page.pdf", "tests", config=None)
+        self.assertTrue(document.bagOfWords != None)
+        for i in range(1,5):
+            os.remove("tests/4page" + str(i) + ".txt")
+            os.remove("tests/4page" + str(i) + ".pdf")
+            os.remove("tests/4page" + str(i) + ".json")
+
+    def test_058(self):
+        """ config is empty """
+        document = Document("tests/4page.pdf", "tests", config=[])
+        self.assertTrue(document.bagOfWords != None)
+        for i in range(1,5):
+            os.remove("tests/4page" + str(i) + ".txt")
+            os.remove("tests/4page" + str(i) + ".pdf")
+            os.remove("tests/4page" + str(i) + ".json")
+
+    def test_059(self):
+        """ config has multiple entries """
+        document = Document("tests/4page.pdf", "tests", config=['bare', 'pos', 'roman'])
+        self.assertTrue(document.bagOfWords != None)
+        for i in range(1,5):
+            os.remove("tests/4page" + str(i) + ".txt")
+            os.remove("tests/4page" + str(i) + ".pdf")
+            os.remove("tests/4page" + str(i) + ".json")
+
+    def test_060(self):
+        """ config stem is invalid """
+        with pytest.raises(AttributeError):
+            document = Document(config=['stem'])
+
+    def test_061(self):
+        """ config stem is invalid """
+        with pytest.raises(AttributeError):
+            document = Document(config=['stem='])
+
+    def test_062(self):
+        """ config stem is invalid """
+        with pytest.raises(AttributeError):
+            document = Document(config=['stem=foo'])
+
+    def test_063(self):
+        """ config setting not valid """
+        with pytest.raises(AttributeError):
+            document = Document(config=['foo'])
+
+    def test_064(self):
+        """ config stem is valid """
+        document = Document("tests/4page.pdf", "tests", config=['stem=internal'])
+        document = Document("tests/4page.pdf", "tests", config=['stem=porter'])
+        document = Document("tests/4page.pdf", "tests", config=['stem=snowball'])
+        document = Document("tests/4page.pdf", "tests", config=['stem=lancaster'])
+        document = Document("tests/4page.pdf", "tests", config=['stem=lemma'])
+        for i in range(1,5):
+            os.remove("tests/4page" + str(i) + ".txt")
+            os.remove("tests/4page" + str(i) + ".pdf")
+            os.remove("tests/4page" + str(i) + ".json")
+
 		
     def done(self, document):
         self.isdone = True
