@@ -121,7 +121,7 @@ class Image(object):
         self._name = basename[0]
         self._type = basename[1][1:].lower()
         
-        if self._type not in [ 'png', 'jpg', 'bmp', 'tif']:
+        if self._type not in [ 'png', 'jpg', 'bmp', 'tif', 'tiff', 'gif']:
             raise TypeError("Not an image file")
         
         # Get the size of the image
@@ -144,10 +144,10 @@ class Image(object):
         # Store the image
         pixels.save(dir + "/" + self._name + "." + self._type )
         
-        # Store the thumbnail (TODO)
-        if False:
-            pixels.thumbnail( self._thumbnail )
-            pixels.save(dir + "/" + self._name + "." + "thumbnail" + "." + self._type )
+        # Store the thumbnail
+        thumb = pixels
+        thumb.thumbnail( self._thumbnail )
+        thumb.save(dir + "/" + self._name + "." + "thumbnail" + "." + self._type )
         
         if self._resize:
             pixels = pixels.resize(self._resize, resample=PIL.Image.LANCZOS)
@@ -234,7 +234,10 @@ class Image(object):
             
         self._imgdata = X[0]
         self._label   = Y[0]
-        self._shape   = self._imgdata.shape
+        self._shape   = self._imgdata.shape       
+        
+        # Get the size of the image
+        self._size = os.path.getsize(image)
        
     @property
     def image(self):
@@ -300,7 +303,16 @@ class Image(object):
     @property
     def size(self):
         """ Return the byte size of the image """
-        return self._size    
+        return self._size   
+
+    @property
+    def thumbnail(self):
+        """ Getter for the thumbnail path """
+        return self._dir + "/" + self._name + "." + "thumbnail" + "." + self._type    
+        
+    def __str__(self):
+        """ Override the str() operator - return the document classification """
+        return str(self._class)
         
  
 class Images(object):

@@ -84,6 +84,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(os.path.isfile("tmp/0_100.h5"))
         os.remove("tmp/0_100.jpg")
         os.remove("tmp/0_100.h5")
+        os.remove("tmp/0_100.thumbnail.jpg")
         
     def test_012(self):
         """ image dir is not-None - exist """
@@ -92,6 +93,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(os.path.isfile("tmp/0_100.h5"))
         os.remove("tmp/0_100.jpg")
         os.remove("tmp/0_100.h5")
+        os.remove("tmp/0_100.thumbnail.jpg")
         os.rmdir("tmp")
         
     def test_013(self):
@@ -105,6 +107,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.classification, 16)
         os.remove("tmp/0_100.jpg")
         os.remove("tmp/0_100.h5")
+        os.remove("tmp/0_100.thumbnail.jpg")
         os.rmdir("tmp")
             
     def test_015(self):
@@ -275,6 +278,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.classification, 0)
         self.assertTrue(os.path.isfile("0_100.jpg"))
         self.assertFalse(os.path.isfile("0_100.h5"))
+        os.remove("0_100.jpg")
         
     def test_027(self):
         """ async processing """
@@ -299,15 +303,53 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.type, "tif")
         os.remove("6page.tif")
         os.remove("6page.h5")
-        # .tiff
+        image = Image("tests/text.tiff")
+        self.assertEqual(image.name, "text")
+        self.assertEqual(image.type, "tiff")
+        os.remove("text.tiff")
+        os.remove("text.h5")
         
     def test_030(self):
         """ bmp file """
-        """ webp """
-        """ svc """
-        """ eps """
-        """ load """
-        pass
+        image = Image("tests/text.bmp")
+        self.assertEqual(image.name, "text")
+        self.assertEqual(image.type, "bmp")
+        os.remove("text.bmp")
+        os.remove("text.h5")
+        
+    def test_031(self):
+        """ config - load """
+        image = Image("tests/0_100.jpg", config=['flat'])
+        self.assertTrue(os.path.isfile("0_100.h5"))
+        image = None
+        image = Image()
+        image.load("tests/0_100.jpg")
+        self.assertEqual(image.name, "0_100")
+        self.assertEqual(image.type, "jpg")
+        self.assertEqual(image.dir, "./")
+        self.assertEqual(image.size, 3643)
+        self.assertEqual(image.shape, (30000,))
+        self.assertEqual(image.classification, 0)
+        os.remove("0_100.jpg")
+        os.remove("0_100.h5")
+        
+    def test_032(self):
+        """ thumbnail """
+        image = Image("tests/0_100.jpg", thumbnail=(32,32))
+        self.assertTrue(os.path.isfile("0_100.h5"))
+        self.assertTrue(os.path.isfile("0_100.thumbnail.jpg"))
+        os.remove("0_100.jpg")
+        os.remove("0_100.h5")
+        os.remove("0_100.thumbnail.jpg")
+        
+    def xxtest_031(self):
+        """ gif file """
+        """  BUG: can't handle gifs """
+        image = Image("tests/text.gif")
+        self.assertEqual(image.name, "text")
+        self.assertEqual(image.type, "gif")
+        os.remove("text.gif")
+        os.remove("text.h5")
 
 		
     def done(self, image):
