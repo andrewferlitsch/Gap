@@ -186,6 +186,10 @@ Along with the builtin stemmer and lemmatizer, the module can optionally be conf
 
 Details announced in release Gap 0.9
 
+#### VISION
+
+[Specification](specs/vision_spec.docx)
+
 ## User's Guide
 
 The User's (Programming) Guide can be found [here](specs/users%20guide.docx)
