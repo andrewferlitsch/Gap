@@ -508,6 +508,15 @@ class MyTest(unittest.TestCase):
         os.remove("0_100.thumbnail.jpg")
         os.remove("1_100.thumbnail.jpg")
         os.remove("foobar.h5")
+        
+    def test_053(self):
+        """ Images - time """
+        images = Images(["tests/0_100.jpg"], labels=[2])
+        self.assertEqual(len(images), 1)
+        self.assertTrue(images.time > 0)
+        os.remove("0_100.jpg")
+        os.remove("0_100.thumbnail.jpg")
+        os.remove("batch.0_100.h5")
 
     def xxtest_031(self):
         """ gif file """,
