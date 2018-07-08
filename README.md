@@ -1,4 +1,4 @@
-# epipog-nlp, v1.4
+# epipog-nlp, v1.4 (=> Gap 0.9)
 ## Natural Language Processing for PDF, TIFF, and camera captured documents, and
 ## Computer Vision for Images
 
@@ -27,7 +27,7 @@ The GAP NLP/CV data engineering framework provides an easy to get started into t
   
 *CV*
 
-  - Automatic storage and retrieval with high performance HD5 files.
+  - Automatic storage and retrieval with high performance HDF5 files.
   - Automatic handling of mixed channels (grayscale, RGB and RGBA) and pixel size.
   - Programmtic control of resizing.
   - Programmtic control of conversion into machine ready data format: decompression, normalize, flatten.
@@ -59,7 +59,7 @@ The GAP framework extensively uses a number of open source applications/modules.
   4. NLTK (Natural Language Toolkit) - stemming/lemmatizer/parts of speech annotation
   5. unidecode - romanization of latin character codes
   6. numpy - high performance in-memory arrays (tensors)
-  7. hd5 - high performance of on-disk data (tensors) access
+  7. HDF5 - high performance of on-disk data (tensors) access
 
 ## Installation
 
@@ -116,9 +116,27 @@ The GAP framework extensively uses a number of open source applications/modules.
     
 #### Unidecode
 
-1. Install unidecode using pip:
+1. Documentation: https://pypi.org/project/Unidecode/
+
+2. Install unidecode using pip:
 
     pip install unidecode
+    
+#### Numpy
+
+1. Documentation: http://www.numpy.org/
+
+2. Install numpy using pip:
+
+    pip install numpy
+
+#### HDF5
+
+1. Documentation: https://www.h5py.org/
+
+2. Install HDF5 using pip:
+
+    pip install h5py
 
 ## Modules
 
@@ -166,7 +184,7 @@ Along with the builtin stemmer and lemmatizer, the module can optionally be conf
 
 #### SEGMENTATION
 
-Details announced in release 1.5
+Details announced in release Gap 0.9
 
 ## User's Guide
 
@@ -178,7 +196,7 @@ The User's (Programming) Guide can be found [here](specs/users%20guide.docx)
 
 ## Testing
 
-The Epipog framework is developed using Test Driven Development methodology. The automated unit tests for the framework use pytest, which is a xUnit style form of testing (e.g., jUnit, nUnit, jsUnit, etc). 
+The GAP framework is developed using Test Driven Development methodology. The automated unit tests for the framework use pytest, which is a xUnit style form of testing (e.g., jUnit, nUnit, jsUnit, etc). 
 
 #### Installation and Documentation
 
@@ -194,13 +212,15 @@ The following are the pre-built automated unit tests:
  
     document_test.py    # Tests the Document Class in the Splitter Module
     page_test.py        # Tests the Page Class in the Splitter Module
-    words_test.py       # Tests the Word Class in the Syntax Module: 307 tests
+    words_test.py       # Tests the Words and Addresses Class in the Syntax Module
+    image_test.py       # Tests the Image and Images Class in the Vision Module
     
 The automated tests are executed as follows:
 
     pytest -v document_test.py
     pytest -v page_test.py
     pytest -v words_test.py
+    pytest -v image_test.py
     
 #### Code Coverage
 
