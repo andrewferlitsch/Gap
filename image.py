@@ -338,12 +338,15 @@ class Image(object):
  
 class Images(object):
     """ Base (super) for classifying a group of images """
-    def __init__(self, images=None, labels=None, dir='./', ehandler=None, config=None):
-        self._images   = images
-        self._dir      = dir
-        self._labels   = labels
-        self._ehandler = ehandler
-        self._data     = None
+    def __init__(self, images=None, labels=None, dir='./', batch=None, ehandler=None, config=None):
+        self._images   = images     # batch of images to process
+        self._dir      = dir        # storage directory for processed images
+        self._labels   = labels     # labels corresponding to batch of images
+        self._ehandler = ehandler   # asynchronous processing event handler
+        self._data     = None       # list of image objects
+        self._batch    = batch      # name of batch file
+        self._config   = config     # configuration settings
+        self._time     = time       # time to process the images
         
         if images is None:
             return
@@ -371,18 +374,42 @@ class Images(object):
             if dir.endswith("/") == False:
                     dir += "/"  
         self._dir = dir 
+        
+        if batch is not None:
+            if isinstance(batch, str) == False:
+                raise TypeError("String expected for batch name")
   
         if config is not None and isinstance(config, list) == False:
             raise TypeError("List expected for config settings")
         
-        if config is None:
-            config = []
-        config.append("nostore")
+        if self._config is None:
+            self._config = []
+        self._config.append("nostore")
+        
+        # Process batch synchronously
+        if ehandler is None:
+            self._process()
+        else:
+            # Process batch asynchronously
+            t = threading.Thread(target=self._async, args=())
+            t.start()
+ 
+    def _async(self):
+        """ Asynchronous processing of the batch """
+        self._process()
+        # signal user defined event handler when processing is done
+        self._ehandler(self)
             
+            
+    def _process(self):
+        """ Process a batch of images """
+       
+        start = time.time()
+        
         # Process each image
         self._data = []
-        for ix in range(len(images)):
-            self._data.append( Image(images[ix], dir=self._dir, label=labels[ix], config=config) )
+        for ix in range(len(self._images)):
+            self._data.append( Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config) )
             
         # Store the images as a batch in an HD5 filesystem
         imgdata = []
@@ -391,10 +418,16 @@ class Images(object):
             imgdata.append( img.data )
             clsdata.append( img.classification )
             
+        # if no batch name specified, use root of first test file.
+        if self._batch is None:
+            self._batch = "batch." + self._data[0].name
+            
         # Write the images and labels to disk as HD5 file
-        with h5py.File(self._dir + "batch." + self._data[0].name + '.h5', 'w') as hf:
+        with h5py.File(self._dir + self._batch + '.h5', 'w') as hf:
             hf.create_dataset("images",  data=imgdata)
             hf.create_dataset("labels",  data=clsdata)
+            
+        self._time = time.time() - start
             
     @property
     def dir(self):
@@ -428,9 +461,31 @@ class Images(object):
         """ Getter for the list of processed images """
         return self._data
         
-    def load(self):
-        """ TBD """
-        pass
+    @property
+    def name(self):
+        """ Getter for the name of the batch """
+        return self._batch
+        
+    @property
+    def time(self):
+        """ Getter for the processing time """
+        return self._time
+        
+    def load(self, batch):
+        """ Load a Batch file of Images """
+        if batch is None:
+            raise ValueError("Batch parameter cannot be None")
+        if not isinstance(batch, str):
+            raise TypeError("String expected for batch name")
+        self._batch = batch
+        
+        if self._dir is None:
+            self._dir = "./"
+        
+        # Read the images and labels from disk as HD5 file
+        with h5py.File(self._dir + self._batch + '.h5', 'r') as hf:
+            self._data = hf["images"][:]
+            self._labels = hf["labels"][:]
         
     def __len__(self):
         """ Override the len() operator - return the number of images """

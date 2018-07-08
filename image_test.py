@@ -434,6 +434,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images.images[0].name, '0_100')
         self.assertEqual(images.images[1].name, '1_100')
         self.assertEqual(images[1].name, '1_100')
+        self.assertEqual(images.name, 'batch.0_100')
         os.remove("0_100.jpg")
         os.remove("0_100.thumbnail.jpg")
         os.remove("1_100.jpg")
@@ -453,13 +454,63 @@ class MyTest(unittest.TestCase):
         """ images constructor - dir not a string """
         with pytest.raises(TypeError):
             images = Images(["tests/0_100.jpg"], labels=[0], dir=0)
-            
-    def test_048(self):
-        """ images load """
-        pass
         
+    def test_048(self):
+        """ images constructor - batch not a string """
+        with pytest.raises(TypeError):
+            images = Images(["tests/0_100.jpg"], labels=[0], batch=0)
+        
+    def test_049(self):
+        """ images properties dir, class """
+        images = Images(["tests/0_100.jpg"], labels=[2], batch="foobar")
+        self.assertEqual(images.name, 'foobar')
+        self.assertTrue(os.path.isfile("foobar.h5"))
+        os.remove("0_100.jpg")
+        os.remove("0_100.thumbnail.jpg")
+        os.remove("foobar.h5")
+            
+    def test_050(self):
+        """ images load - default batch name """
+        images = Images(["tests/0_100.jpg", "tests/1_100.jpg"], labels=[1,2])
+        images = Images()
+        images.load("batch.0_100")
+        self.assertEqual(images.name, 'batch.0_100')
+        self.assertEqual(len(images), 2)
+        os.remove("0_100.jpg")
+        os.remove("1_100.jpg")
+        os.remove("0_100.thumbnail.jpg")
+        os.remove("1_100.thumbnail.jpg")
+        os.remove("batch.0_100.h5")
+            
+    def test_051(self):
+        """ images load - batch name """
+        images = Images(["tests/0_100.jpg", "tests/1_100.jpg"], labels=[1,2], batch='foobar')
+        images = Images()
+        images.load("foobar")
+        self.assertEqual(images.name, 'foobar')
+        self.assertEqual(len(images), 2)
+        os.remove("0_100.jpg")
+        os.remove("1_100.jpg")
+        os.remove("0_100.thumbnail.jpg")
+        os.remove("1_100.thumbnail.jpg")
+        os.remove("foobar.h5")
+            
+    def test_052(self):
+        """ images async """
+        self.isdone = False
+        images = Images(["tests/0_100.jpg", "tests/1_100.jpg"], labels=[1,2], batch='foobar', ehandler=self.done) 
+        time.sleep(3)
+        self.assertTrue(self.isdone)
+        self.assertEqual(images.name, 'foobar')
+        self.assertEqual(len(images), 2)
+        os.remove("0_100.jpg")
+        os.remove("1_100.jpg")
+        os.remove("0_100.thumbnail.jpg")
+        os.remove("1_100.thumbnail.jpg")
+        os.remove("foobar.h5")
+
     def xxtest_031(self):
-        """ gif file """
+        """ gif file """,
         """  BUG: can't handle gifs """
         image = Image("tests/text.gif")
         self.assertEqual(image.name, "text")
