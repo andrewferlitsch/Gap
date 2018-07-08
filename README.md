@@ -1,9 +1,12 @@
 # epipog-nlp, v1.4
-## Natural Language Processing for PDF, TIFF, and camera captured documents.
+## Natural Language Processing for PDF, TIFF, and camera captured documents, and
+## Computer Vision for Images
 
 ### Framework
 
-The Epipog NLP framework provides an easy to get started into the world of machine learning for your unstructured data in PDF documents, scanned documents, TIFF facsimiles and camera captured documents. 
+The GAP NLP/CV data engineering framework provides an easy to get started into the world of machine learning for your unstructured data in PDF documents, scanned documents, TIFF facsimiles and camera captured documents, and your image data in image files and repositories.
+
+*NLP*
 
   - Automatic OCR of scanned and camera captured images.
   - Automatic Text Extraction from documents.
