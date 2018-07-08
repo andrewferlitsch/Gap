@@ -22,6 +22,17 @@ The GAP NLP/CV data engineering framework provides an easy to get started into t
     - Unicode character recognition
 
   - Machine Training of Document and Page Classification.
+  - Asynchronous processing of documents.
+  - Automatic generation of NLP machine learning ready data.
+  
+*CV*
+
+  - Automatic storage and retrieval with high performance HD5 files.
+  - Automatic handling of mixed channels (grayscale, RGB and RGBA) and pixel size.
+  - Programmtic control of resizing.
+  - Programmtic control of conversion into machine ready data format: decompression, normalize, flatten.
+  - Asynchronous processing of images.
+  - Automatic generation of CV machine learning ready data.
   
 The framework consists of a sequence of Python modules which can be retrofitted into a variety of configurations. The framework is designed to fit seamlessly and scale with an accompanying infrastructure. To achieve this, the design incorporates:
 
