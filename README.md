@@ -51,13 +51,15 @@ The source code is made available under the Creative Commons license: [CC-BY](ht
 
 ## Prerequites
 
-The Epipog framework extensives uses a number of open source applications/modules. The following applications and modules will need to be installed on your computer/laptop:
+The GAP framework extensively uses a number of open source applications/modules. The following applications and modules will need to be installed on your computer/laptop:
 
   1. Artifex's Ghostscript - extracting text from text PDF
   2. ImageMagic's Magick - extracting image from scanned PDF
   3. Google's Tesseract - OCR of scanned/image captured text
   4. NLTK (Natural Language Toolkit) - stemming/lemmatizer/parts of speech annotation
   5. unidecode - romanization of latin character codes
+  6. numpy - high performance in-memory arrays (tensors)
+  7. hd5 - high performance of on-disk data (tensors) access
 
 ## Installation
 
