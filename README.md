@@ -43,7 +43,11 @@ The framework consists of a sequence of Python modules which can be retrofitted 
 
 ## Audience
 
-This framework is ideal for any organization planning to do data extraction from their repository of documents into an RDBMS system for CART analysis, linear/logistic regressions or generating word vectors for natural language deep learning (DeepNLP).
+This framework is ideal for any organization planning to do:
+
+  * Data extraction from their repository of documents into an RDBMS system for CART analysis, linear/logistic regressions, or            
+    generating word vectors for natural language deep learning (DeepNLP).
+  * Generating machine learning ready datan from their repository of images for computer vision.
 
 ## License
 
