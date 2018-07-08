@@ -45,8 +45,8 @@ The framework consists of a sequence of Python modules which can be retrofitted 
 
 This framework is ideal for any organization planning to do:
 
-  * Data extraction from their repository of documents into an RDBMS system for CART analysis, linear/logistic regressions, or            
-    generating word vectors for natural language deep learning (DeepNLP).
+  * Data extraction from their repository of documents into an RDBMS system for CART analysis, linear/logistic regressions,            
+    or generating word vectors for natural language deep learning (DeepNLP).
   * Generating machine learning ready datan from their repository of images for computer vision.
 
 ## License
@@ -148,7 +148,7 @@ The framework provides the following pipeline of modules to support your data an
 
 #### SPLITTER
 
-The splitter module is the entry point into the pipeline. It consists of a Document and Page class. The Document class handles the splitting of PDF documents into PDF pages, TIFF facsimiles into TIFF pages, OCR and raw text extraction. PDF splitting and image extraction is handled by the open source Artifex’s Ghostscript ©, and TIFF splitting by open source Image Magic’s Magick ©. OCR is handled by the open source Google’s Tesseract ©. The Document object stores the individual PDF/TIFF/image pages and corresponding raw text and optionally page images (when scanned PDF, TIFF or images) in the specified storage path. The splitting process can be done synchronously or asynchronously, where in the latter case an event handler signals when the splitting/OCR has been completed and the page table is accessible.
+The splitter module is the NLP entry point into the pipeline. It consists of a Document and Page class. The Document class handles the splitting of PDF documents into PDF pages, TIFF facsimiles into TIFF pages, OCR and raw text extraction. PDF splitting and image extraction is handled by the open source Artifex’s Ghostscript ©, and TIFF splitting by open source Image Magic’s Magick ©. OCR is handled by the open source Google’s Tesseract ©. The Document object stores the individual PDF/TIFF/image pages and corresponding raw text and optionally page images (when scanned PDF, TIFF or images) in the specified storage path. The splitting process can be done synchronously or asynchronously, where in the latter case an event handler signals when the splitting/OCR has been completed and the page table is accessible.
 
 For OCR, the resolution of the image extraction is settable, which will affect the quality of the OCR, and corresponding processing time. If the resolution of the original scanned page is lower than the setting, it will be up-sampled, and conversely if it is higher it will be down-sampled.
 
@@ -191,6 +191,13 @@ Along with the builtin stemmer and lemmatizer, the module can optionally be conf
 Details announced in release Gap 0.9
 
 #### VISION
+
+The splitter module is the CV entry point into the pipeline. It consists of a Images and Image class. The Images class handles the storage and (random access) batch retrieval of CV machine learning ready data, using open source numpy high performance arrays (tensors) and HDF5 high performance disk (tensor) access. The Image class handles preprocessing of individual images into CV machine learning ready data. The batch and image preprocessing can be done synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing of an image or batch has been completed and the machine learning ready data is accessible.
+
+The vision module handles:
+
+  - Mixed image size, format, resolution, number of channels
+  - Decompression, Resizing, Normalizing, Flattening
 
 [Specification](specs/vision_spec.docx)
 
