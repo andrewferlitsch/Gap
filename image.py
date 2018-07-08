@@ -338,21 +338,39 @@ class Image(object):
  
 class Images(object):
     """ Base (super) for classifying a group of images """
-    def __init__(self, images, labels, dir='./', ehandler=None, config=None):
+    def __init__(self, images=None, labels=None, dir='./', ehandler=None, config=None):
         self._images   = images
         self._dir      = dir
         self._labels   = labels
         self._ehandler = ehandler
         self._data     = None
         
+        if images is None:
+            return
+        
         if isinstance(images, list) is False:
             raise TypeError("List expected for image paths")
+        else:
+            for ele in images:
+                if not isinstance(ele, str):
+                    raise TypeError("String expected for image paths")
         
         if isinstance(labels, list) is False:
             raise TypeError("List expected for image labels")
+        else:
+            for ele in labels:
+                if not isinstance(ele, int):
+                    raise TypeError("Integer expected for image labels")
             
         if len(images) != len(labels):
             raise IndexError("Number of images and labels do not match")
+            
+        if dir is not None:
+            if isinstance(dir, str) == False:
+                raise TypeError("String expected for image storage path")
+            if dir.endswith("/") == False:
+                    dir += "/"  
+        self._dir = dir 
   
         if config is not None and isinstance(config, list) == False:
             raise TypeError("List expected for config settings")
@@ -369,12 +387,12 @@ class Images(object):
         # Store the images as a batch in an HD5 filesystem
         imgdata = []
         clsdata = []
-        for img in data:
+        for img in self._data:
             imgdata.append( img.data )
             clsdata.append( img.classification )
             
         # Write the images and labels to disk as HD5 file
-        with h5py.File(self._dir + "/" + "tmp" + '.h5', 'w') as hf:
+        with h5py.File(self._dir + "batch." + self._data[0].name + '.h5', 'w') as hf:
             hf.create_dataset("images",  data=imgdata)
             hf.create_dataset("labels",  data=clsdata)
             
@@ -406,7 +424,7 @@ class Images(object):
         self._labels = labels
         
     @property
-    def imgdata(self):
+    def images(self):
         """ Getter for the list of processed images """
         return self._data
         

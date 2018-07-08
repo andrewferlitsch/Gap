@@ -1,4 +1,4 @@
-from image import Image
+from image import Image, Images
 import unittest
 import pytest
 import os
@@ -12,6 +12,8 @@ class MyTest(unittest.TestCase):
             
     def teardown_class(self):
         pass
+        
+    ### Image
     
     def test_001(self):
         """ Image Constructor - no image argument """
@@ -215,6 +217,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(os.path.isfile("0_100g.jpg"))
         self.assertTrue(os.path.isfile("0_100g.h5"))
         os.remove("0_100g.jpg")
+        os.remove("0_100g.h5")
         os.remove("0_100g.thumbnail.jpg")   
         
     def test_024(self):
@@ -283,7 +286,7 @@ class MyTest(unittest.TestCase):
     def test_027(self):
         """ async processing """
         image = Image("tests/0_100.jpg", ehandler=self.done)
-        time.sleep(6)
+        time.sleep(3)
         self.assertTrue(self.isdone)
         os.remove("0_100.jpg")
         os.remove("0_100.h5")
@@ -295,6 +298,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.type, "png")
         os.remove("text.png")
         os.remove("text.h5")
+        os.remove("text.thumbnail.png")
         
     def test_029(self):
         """ tif file """
@@ -357,6 +361,102 @@ class MyTest(unittest.TestCase):
         self.assertTrue(image.time > 0)
         os.remove("0_100.jpg")
         os.remove("0_100.h5")
+        
+    ### Images
+    
+    def test_035(self):
+        """ Images Constructor - no images argument """
+        images = Images()
+        self.assertEqual(images.images, None)
+        
+    def test_036(self):
+        """ Images Constructor - images = None """
+        images = Images(None)
+        self.assertEqual(images.images, None)
+        
+    def test_037(self):
+        """ Images Constructor - images = not a list """
+        with pytest.raises(TypeError):
+            images = Images(1, [0])
+        
+    def test_038(self):
+        """ Images Constructor - images = entries not a string """
+        with pytest.raises(TypeError):
+            images = Images([0], [0])
+        
+    def test_039(self):
+        """ Images Constructor - images = image not exist """
+        with pytest.raises(FileNotFoundError):
+            images = Images(["nonexist.jpg"], [0])
+        
+    def test_040(self):
+        """ Images Constructor - labels not a string """
+        with pytest.raises(TypeError):
+            images = Images(["tests/0_100.jpg"], ['a'])
+        
+    def test_041(self):
+        """ Images Constructor - labels not specified """
+        with pytest.raises(TypeError):
+            images = Images(["tests/0_100.jpg"])
+        
+    def test_042(self):
+        """ Images Constructor - labels not match images """
+        with pytest.raises(IndexError):
+            images = Images(["tests/0_100.jpg"], [0, 1])
+        
+    def test_043(self):
+        """ Images Constructor - labels is None """
+        with pytest.raises(TypeError):
+            images = Images(["tests/0_100.jpg"], labels=None)
+        
+    def test_044(self):
+        """ Images Constructor - single file """
+        images = Images(["tests/0_100.jpg"], labels=[2])
+        self.assertEqual(len(images), 1)
+        self.assertTrue(os.path.isfile("0_100.jpg"))
+        self.assertTrue(os.path.isfile("0_100.thumbnail.jpg"))
+        self.assertTrue(os.path.isfile("batch.0_100.h5"))
+        os.remove("0_100.jpg")
+        os.remove("0_100.thumbnail.jpg")
+        os.remove("batch.0_100.h5")
+        
+    def test_045(self):
+        """ Images Constructor - multi file """
+        images = Images(["tests/0_100.jpg", "tests/1_100.jpg"], labels=[2, 2])
+        self.assertEqual(len(images), 2)
+        self.assertTrue(os.path.isfile("0_100.jpg"))
+        self.assertTrue(os.path.isfile("0_100.thumbnail.jpg"))
+        self.assertTrue(os.path.isfile("1_100.jpg"))
+        self.assertTrue(os.path.isfile("1_100.thumbnail.jpg"))
+        self.assertTrue(os.path.isfile("batch.0_100.h5"))
+        self.assertTrue(images.images != None)
+        self.assertEqual(len(images.images), 2)
+        self.assertEqual(images.images[0].name, '0_100')
+        self.assertEqual(images.images[1].name, '1_100')
+        self.assertEqual(images[1].name, '1_100')
+        os.remove("0_100.jpg")
+        os.remove("0_100.thumbnail.jpg")
+        os.remove("1_100.jpg")
+        os.remove("1_100.thumbnail.jpg")
+        os.remove("batch.0_100.h5")
+        
+    def test_046(self):
+        """ images properties dir, class """
+        images = Images(["tests/0_100.jpg"], labels=[2], dir="tmp")
+        self.assertTrue(images.dir, "tmp")
+        self.assertTrue(images.classification, [2])
+        os.remove("tmp/0_100.jpg")
+        os.remove("tmp/0_100.thumbnail.jpg")
+        os.remove("tmp/batch.0_100.h5")
+        
+    def test_047(self):
+        """ images constructor - dir not a string """
+        with pytest.raises(TypeError):
+            images = Images(["tests/0_100.jpg"], labels=[0], dir=0)
+            
+    def test_048(self):
+        """ images load """
+        pass
         
     def xxtest_031(self):
         """ gif file """
