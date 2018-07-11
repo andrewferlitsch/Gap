@@ -414,9 +414,11 @@ class Images(object):
         # Store the images as a batch in an HD5 filesystem
         imgdata = []
         clsdata = []
+        rawdata = []
         for img in self._data:
             imgdata.append( img.data )
             clsdata.append( img.classification )
+            rawdata.append( img.raw )
             
         # if no batch name specified, use root of first test file.
         if self._batch is None:
@@ -426,6 +428,7 @@ class Images(object):
         with h5py.File(self._dir + self._batch + '.h5', 'w') as hf:
             hf.create_dataset("images",  data=imgdata)
             hf.create_dataset("labels",  data=clsdata)
+            hf.create_dataset("raw",  data=rawdata)
             
         self._time = time.time() - start
             
@@ -492,10 +495,7 @@ class Images(object):
                 image.classification = hf["labels"][i]
                 self._data.append( image )
             self._labels = hf["labels"][:]
-                
-            #self._data = hf["images"][:]
-            #self._labels = hf["labels"][:]
-        
+
     def __len__(self):
         """ Override the len() operator - return the number of images """
         return len(self._data)
