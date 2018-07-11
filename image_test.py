@@ -65,37 +65,35 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (100, 100, 3))
         self.assertEqual(image.classification, 0)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
+        self.assertTrue(len(image.raw) > 0 )
+        self.assertEqual(image.thumbnail, None )
         self.assertTrue(os.path.isfile("0_100.h5"))
-        os.remove("0_100.jpg")
         os.remove("0_100.h5")
         
     def test_010(self):
         """ image dir is None """
         image = Image("tests/0_100.jpg", dir=None)
         self.assertEqual(image.image, "tests/0_100.jpg")
-        self.assertTrue(os.path.isfile("0_100.jpg"))
         self.assertTrue(os.path.isfile("0_100.h5"))
-        os.remove("0_100.jpg")
+        self.assertTrue(len(image.raw) > 0 )
+        self.assertEqual(image.thumbnail, None )
         os.remove("0_100.h5")
         
     def test_011(self):
         """ image dir is not-None - nonexist """
         image = Image("tests/0_100.jpg", dir='tmp')
-        self.assertTrue(os.path.isfile("tmp/0_100.jpg"))
         self.assertTrue(os.path.isfile("tmp/0_100.h5"))
-        os.remove("tmp/0_100.jpg")
+        self.assertTrue(len(image.raw) > 0 )
+        self.assertEqual(image.thumbnail, None )
         os.remove("tmp/0_100.h5")
-        os.remove("tmp/0_100.thumbnail.jpg")
         
     def test_012(self):
         """ image dir is not-None - exist """
         image = Image("tests/0_100.jpg", dir='tmp')
-        self.assertTrue(os.path.isfile("tmp/0_100.jpg"))
         self.assertTrue(os.path.isfile("tmp/0_100.h5"))
-        os.remove("tmp/0_100.jpg")
+        self.assertTrue(len(image.raw) > 0 )
+        self.assertEqual(image.thumbnail, None )
         os.remove("tmp/0_100.h5")
-        os.remove("tmp/0_100.thumbnail.jpg")
         os.rmdir("tmp")
         
     def test_013(self):
@@ -107,9 +105,9 @@ class MyTest(unittest.TestCase):
         """ label is valid """
         image = Image("tests/0_100.jpg", dir='tmp', label=16)
         self.assertEqual(image.classification, 16)
-        os.remove("tmp/0_100.jpg")
+        self.assertTrue(len(image.raw) > 0 )
+        self.assertEqual(image.thumbnail, None )
         os.remove("tmp/0_100.h5")
-        os.remove("tmp/0_100.thumbnail.jpg")
         os.rmdir("tmp")
             
     def test_015(self):
@@ -122,9 +120,9 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (100, 100, 3))
         self.assertEqual(image.classification, 0)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
         self.assertTrue(os.path.isfile("0_100.h5"))
-        os.remove("0_100.jpg")
+        self.assertTrue(len(image.raw) > 0 )
+        self.assertEqual(image.thumbnail, None )
         os.remove("0_100.h5")
             
     def test_016(self):
@@ -137,9 +135,9 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (100, 100, 3))
         self.assertEqual(image.classification, 0)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
         self.assertTrue(os.path.isfile("0_100.h5"))
-        os.remove("0_100.jpg")
+        self.assertTrue(len(image.raw) > 0 )
+        self.assertEqual(image.thumbnail, None )
         os.remove("0_100.h5")
             
     def test_017(self):
@@ -155,10 +153,7 @@ class MyTest(unittest.TestCase):
     def test_019(self):
         """ config has valid setting """
         image = Image("tests/0_100.jpg", config=['gray', 'grayscale'])
-        image = Image("tests/0_100.jpg", config=['flat', 'flatten'])
-        image = Image("tests/0_100.jpg", config=['normal', 'normalize'])
         image = Image("tests/0_100.jpg", config=['nostore'])
-        os.remove("0_100.jpg")
         os.remove("0_100.h5")
             
     def test_020(self):
@@ -187,9 +182,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (100, 100))
         self.assertEqual(image.classification, 0)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
         self.assertTrue(os.path.isfile("0_100.h5"))
-        os.remove("0_100.jpg")
         os.remove("0_100.h5")
         image = Image("tests/0_100.jpg", config=['grayscale'])
         self.assertEqual(image.image, "tests/0_100.jpg")
@@ -199,9 +192,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (100, 100))
         self.assertEqual(image.classification, 0)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
         self.assertTrue(os.path.isfile("0_100.h5"))
-        os.remove("0_100.jpg")
         os.remove("0_100.h5")
             
     def test_023(self):
@@ -214,11 +205,8 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 4253)
         self.assertEqual(image.shape, (100, 100, 3))
         self.assertEqual(image.classification, 0)
-        self.assertTrue(os.path.isfile("0_100g.jpg"))
         self.assertTrue(os.path.isfile("0_100g.h5"))
-        os.remove("0_100g.jpg")
-        os.remove("0_100g.h5")
-        os.remove("0_100g.thumbnail.jpg")   
+        os.remove("0_100g.h5")  
         
     def test_024(self):
         """ config - resize """
@@ -229,9 +217,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (50, 50, 3))
         self.assertEqual(image.classification, 0)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
         self.assertTrue(os.path.isfile("0_100.h5"))
-        os.remove("0_100.jpg")
         os.remove("0_100.h5")
         image = Image("tests/0_100.jpg", config=['resize=(200,200)'])
         self.assertEqual(image.name, "0_100")
@@ -240,9 +226,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (200, 200, 3))
         self.assertEqual(image.classification, 0)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
         self.assertTrue(os.path.isfile("0_100.h5"))
-        os.remove("0_100.jpg")
         os.remove("0_100.h5")
 
     def test_025(self):
@@ -254,9 +238,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (30000,))
         self.assertEqual(image.classification, 0)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
         self.assertTrue(os.path.isfile("0_100.h5"))
-        os.remove("0_100.jpg")
         os.remove("0_100.h5")
         image = Image("tests/0_100.jpg", config=['flatten'])
         self.assertEqual(image.name, "0_100")
@@ -265,9 +247,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (30000,))
         self.assertEqual(image.classification, 0)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
         self.assertTrue(os.path.isfile("0_100.h5"))
-        os.remove("0_100.jpg")
         os.remove("0_100.h5")  
         
     def test_026(self):
@@ -279,16 +259,13 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (30000,))
         self.assertEqual(image.classification, 0)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
         self.assertFalse(os.path.isfile("0_100.h5"))
-        os.remove("0_100.jpg")
         
     def test_027(self):
         """ async processing """
         image = Image("tests/0_100.jpg", ehandler=self.done)
         time.sleep(3)
         self.assertTrue(self.isdone)
-        os.remove("0_100.jpg")
         os.remove("0_100.h5")
         
     def test_028(self):
@@ -296,21 +273,17 @@ class MyTest(unittest.TestCase):
         image = Image("tests/text.png")
         self.assertEqual(image.name, "text")
         self.assertEqual(image.type, "png")
-        os.remove("text.png")
         os.remove("text.h5")
-        os.remove("text.thumbnail.png")
         
     def test_029(self):
         """ tif file """
-        image = Image("tests/6page.tif", thumbnail=None)
+        image = Image("tests/6page.tif")
         self.assertEqual(image.name, "6page")
         self.assertEqual(image.type, "tif")
-        os.remove("6page.tif")
         os.remove("6page.h5")
-        image = Image("tests/text.tiff", thumbnail=None)
+        image = Image("tests/text.tiff")
         self.assertEqual(image.name, "text")
         self.assertEqual(image.type, "tiff")
-        os.remove("text.tiff")
         os.remove("text.h5")
         
     def test_030(self):
@@ -318,9 +291,7 @@ class MyTest(unittest.TestCase):
         image = Image("tests/text.bmp")
         self.assertEqual(image.name, "text")
         self.assertEqual(image.type, "bmp")
-        os.remove("text.bmp")
         os.remove("text.h5")
-        os.remove("text.thumbnail.bmp")
         
     def test_031(self):
         """ config - load """
@@ -335,31 +306,32 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (30000,))
         self.assertEqual(image.classification, 0)
-        os.remove("0_100.jpg")
         os.remove("0_100.h5")
         
     def test_032(self):
         """ thumbnail """
-        image = Image("tests/0_100.jpg", thumbnail=(32,32))
+        image = Image("tests/0_100.jpg", config=['thumbnail=(32,32)'])
         self.assertTrue(os.path.isfile("0_100.h5"))
-        self.assertTrue(os.path.isfile("0_100.thumbnail.jpg"))
-        os.remove("0_100.jpg")
+        self.assertEqual(image.thumbnail.shape, (32, 32, 3))
         os.remove("0_100.h5")
-        os.remove("0_100.thumbnail.jpg")
+        image = Image("tests/0_100.jpg", config=['thumbnail=16,16)'])
+        self.assertTrue(os.path.isfile("0_100.h5"))
+        self.assertEqual(image.thumbnail.shape, (16,16,3))
+        os.remove("0_100.h5")
         
     def test_033(self):
-        """ no thumbnail """
-        image = Image("tests/0_100.jpg", thumbnail=None)
-        self.assertTrue(os.path.isfile("0_100.h5"))
-        self.assertFalse(os.path.isfile("0_100.thumbnail.jpg"))
-        os.remove("0_100.jpg")
-        os.remove("0_100.h5")
+        """ thumbnail invalid """
+        with pytest.raises(AttributeError):
+            image = Image("tests/0_100.jpg", dir='tmp', config=['thumbnail=1'])
+        with pytest.raises(AttributeError):
+            image = Image("tests/0_100.jpg", dir='tmp', config=['thumbnail=a,2'])
+        with pytest.raises(AttributeError):
+            image = Image("tests/0_100.jpg", dir='tmp', config=['thumbnail=2,b'])
         
     def test_034(self):
         """ time """
-        image = Image("tests/0_100.jpg", thumbnail=None)
+        image = Image("tests/0_100.jpg")
         self.assertTrue(image.time > 0)
-        os.remove("0_100.jpg")
         os.remove("0_100.h5")
         
     ### Images
@@ -413,32 +385,35 @@ class MyTest(unittest.TestCase):
         """ Images Constructor - single file """
         images = Images(["tests/0_100.jpg"], labels=[2])
         self.assertEqual(len(images), 1)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
-        self.assertTrue(os.path.isfile("0_100.thumbnail.jpg"))
         self.assertTrue(os.path.isfile("batch.0_100.h5"))
-        os.remove("0_100.jpg")
-        os.remove("0_100.thumbnail.jpg")
+        self.assertEqual(images[0].name, "0_100")
+        self.assertEqual(images[0].type, "jpg")
+        self.assertEqual(images[0].dir, "./")
+        self.assertEqual(images[0].size, 3643)
+        self.assertEqual(images[0].shape, (100, 100, 3))
+        self.assertEqual(images[0].classification, 2)
+        self.assertTrue(len(images[0].raw) > 0 )
+        self.assertEqual(images[0].thumbnail, None )
         os.remove("batch.0_100.h5")
         
     def test_045(self):
         """ Images Constructor - multi file """
         images = Images(["tests/0_100.jpg", "tests/1_100.jpg"], labels=[2, 2])
         self.assertEqual(len(images), 2)
-        self.assertTrue(os.path.isfile("0_100.jpg"))
-        self.assertTrue(os.path.isfile("0_100.thumbnail.jpg"))
-        self.assertTrue(os.path.isfile("1_100.jpg"))
-        self.assertTrue(os.path.isfile("1_100.thumbnail.jpg"))
         self.assertTrue(os.path.isfile("batch.0_100.h5"))
         self.assertTrue(images.images != None)
         self.assertEqual(len(images.images), 2)
         self.assertEqual(images.images[0].name, '0_100')
         self.assertEqual(images.images[1].name, '1_100')
         self.assertEqual(images[1].name, '1_100')
+        self.assertEqual(images[1].type, "jpg")
+        self.assertEqual(images[1].dir, "./")
+        self.assertEqual(images[1].size, 3574)
+        self.assertEqual(images[1].shape, (100, 100, 3))
+        self.assertEqual(images[1].classification, 2)
+        self.assertTrue(len(images[1].raw) > 0 )
+        self.assertEqual(images[1].thumbnail, None)
         self.assertEqual(images.name, 'batch.0_100')
-        os.remove("0_100.jpg")
-        os.remove("0_100.thumbnail.jpg")
-        os.remove("1_100.jpg")
-        os.remove("1_100.thumbnail.jpg")
         os.remove("batch.0_100.h5")
         
     def test_046(self):
@@ -446,9 +421,8 @@ class MyTest(unittest.TestCase):
         images = Images(["tests/0_100.jpg"], labels=[2], dir="tmp")
         self.assertTrue(images.dir, "tmp")
         self.assertTrue(images.classification, [2])
-        os.remove("tmp/0_100.jpg")
-        os.remove("tmp/0_100.thumbnail.jpg")
         os.remove("tmp/batch.0_100.h5")
+        os.rmdir("tmp")
         
     def test_047(self):
         """ images constructor - dir not a string """
@@ -465,37 +439,53 @@ class MyTest(unittest.TestCase):
         images = Images(["tests/0_100.jpg"], labels=[2], batch="foobar")
         self.assertEqual(images.name, 'foobar')
         self.assertTrue(os.path.isfile("foobar.h5"))
-        os.remove("0_100.jpg")
-        os.remove("0_100.thumbnail.jpg")
         os.remove("foobar.h5")
-            
+        
     def test_050(self):
+        """ Images Constructor - multi file """
+        images = Images(["tests/0_100.jpg", "tests/1_100.jpg"], labels=2)
+        self.assertEqual(len(images), 2)
+        self.assertTrue(os.path.isfile("batch.0_100.h5"))
+        self.assertTrue(images.images != None)
+        self.assertEqual(len(images.images), 2)
+        self.assertEqual(images.images[0].name, '0_100')
+        self.assertEqual(images.images[1].name, '1_100')
+        self.assertEqual(images[1].name, '1_100')
+        self.assertEqual(images[1].type, "jpg")
+        self.assertEqual(images[1].dir, "./")
+        self.assertEqual(images[1].size, 3574)
+        self.assertEqual(images[1].shape, (100, 100, 3))
+        self.assertEqual(images[1].classification, 2)
+        self.assertTrue(len(images[1].raw) > 0 )
+        self.assertEqual(images[1].thumbnail, None)
+        self.assertEqual(images.name, 'batch.0_100')
+        os.remove("batch.0_100.h5")
+            
+    def test_051(self):
         """ images load - default batch name """
         images = Images(["tests/0_100.jpg", "tests/1_100.jpg"], labels=[1,2])
+        self.assertEqual(images.name, 'batch.0_100')
         images = Images()
         images.load("batch.0_100")
         self.assertEqual(images.name, 'batch.0_100')
         self.assertEqual(len(images), 2)
-        os.remove("0_100.jpg")
-        os.remove("1_100.jpg")
-        os.remove("0_100.thumbnail.jpg")
-        os.remove("1_100.thumbnail.jpg")
+        self.assertEqual(images[0].classification, 1)
+        self.assertEqual(images[1].classification, 2)
         os.remove("batch.0_100.h5")
             
-    def test_051(self):
+    def test_052(self):
         """ images load - batch name """
         images = Images(["tests/0_100.jpg", "tests/1_100.jpg"], labels=[1,2], batch='foobar')
+        self.assertEqual(images.name, 'foobar')
         images = Images()
         images.load("foobar")
         self.assertEqual(images.name, 'foobar')
         self.assertEqual(len(images), 2)
-        os.remove("0_100.jpg")
-        os.remove("1_100.jpg")
-        os.remove("0_100.thumbnail.jpg")
-        os.remove("1_100.thumbnail.jpg")
+        self.assertEqual(images[0].classification, 1)
+        self.assertEqual(images[1].classification, 2)
         os.remove("foobar.h5")
             
-    def test_052(self):
+    def test_053(self):
         """ images async """
         self.isdone = False
         images = Images(["tests/0_100.jpg", "tests/1_100.jpg"], labels=[1,2], batch='foobar', ehandler=self.done) 
@@ -503,20 +493,20 @@ class MyTest(unittest.TestCase):
         self.assertTrue(self.isdone)
         self.assertEqual(images.name, 'foobar')
         self.assertEqual(len(images), 2)
-        os.remove("0_100.jpg")
-        os.remove("1_100.jpg")
-        os.remove("0_100.thumbnail.jpg")
-        os.remove("1_100.thumbnail.jpg")
+        self.assertEqual(images[0].classification, 1)
+        self.assertEqual(images[1].classification, 2)
         os.remove("foobar.h5")
         
-    def test_053(self):
+    def test_054(self):
         """ Images - time """
         images = Images(["tests/0_100.jpg"], labels=[2])
         self.assertEqual(len(images), 1)
         self.assertTrue(images.time > 0)
-        os.remove("0_100.jpg")
-        os.remove("0_100.thumbnail.jpg")
         os.remove("batch.0_100.h5")
+        
+    # create dir in Images
+    # grayscale image with only (height, width) shape
+    # other image properties: name, dir, size, shape, type
 
     def xxtest_031(self):
         """ gif file """,

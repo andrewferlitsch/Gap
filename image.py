@@ -14,16 +14,18 @@ import numpy as np
 # Import h5py for the HD5 filesystem high performance file storage of big data.
 import h5py
 
-# Import PIL.Image for Python image manipulation library. 
-import PIL
-from PIL import Image
+# Performance Testing note:
+#   cv2 loaded grayscale images 25% faster than PIL, and 10% faster for color images
+
+# Import cv2 for Python image manipulation library. 
+import cv2
 
 class Image(object):
     """ Base (super) Class for Classifying an Image """
     
     _debug = False
     
-    def __init__(self, image=None, label=0, dir='./', ehandler=None, thumbnail=(32,32), config=None):
+    def __init__(self, image=None, label=0, dir='./', ehandler=None, config=None):
         """ """
         self._image     = image     # image path
         self._name      = None      # name of image (no path or suffix)
@@ -32,15 +34,16 @@ class Image(object):
         self._dir       = None      # image storage
         self._shape     = None      # shape of the image
         self._ehandler  = ehandler  # event handler for asynchronous processing 
-        self._thumbnail = thumbnail # thumbnail size
+        self._thumbnail = None      # thumbnail size
         self._label     = label     # image label
         self._grayscale = False     # convert to grayscale
-        self._normalize = False     # normalize the image
-        self._flatten   = False     # flatten the image
+        self._flatten   = False     # flatten the data (into 1D vector)
         self._resize    = None      # resize the image
         self._hd5       = True      # store processed image data to hd5 filesystem
         self._imgdata   = None      # processed image data in memory
-        self._time      = 0          # elapse time to do processing
+        self._raw       = None      # unprocessed image data in memory
+        self._thumb     = None      # thumb image data in memory
+        self._time      = 0         # elapse time to do processing
         
         if self._debug: print(config)
         
@@ -63,12 +66,6 @@ class Image(object):
             
         if config is not None and isinstance(config, list) == False:
             raise TypeError("List expected for config settings")
-            
-        if thumbnail is not None:
-            if isinstance(thumbnail, tuple) == False:
-                raise TypeError("Tuple expected for thumbnail")
-            if len(thumbnail) != 2 or not int(thumbnail[0]) or not int(thumbnail[1]):
-                raise TypeError("Tuple(height, width) expected for thumbnail")
         
         if config is not None:
             for setting in config:
@@ -76,8 +73,6 @@ class Image(object):
                      raise TypeError("String expected for each config setting")
                 if setting in ['gray', 'grayscale']:
                     self._grayscale = True
-                elif setting in ['normal', 'normalize']:
-                    self._normalize = True
                 elif setting in ['flat', 'flatten']:
                     self._flatten = True
                 elif setting in ['nostore']:
@@ -85,10 +80,10 @@ class Image(object):
                 elif setting.startswith('resize='):
                     toks = setting.split('=')
                     if len(toks) != 2:
-                        raise AttributeError("Resize is wrong format")
+                        raise AttributeError("Tuple(height, width) expected for resize")
                     vals = toks[1].split(',')
                     if len(vals) != 2:
-                        raise AttributeError("Resize is wrong format")
+                        raise AttributeError("Tuple(height, width) expected for resize")
                     if vals[0][0] == '(':
                         vals[0] = vals[0][1:]
                     if vals[1][-1] == ')':
@@ -96,6 +91,20 @@ class Image(object):
                     if not vals[0].isdigit() or not vals[1].isdigit():
                         raise AttributeError("Resize values must be an integer")
                     self._resize = ( int(vals[1]), int(vals[0]) )
+                elif setting.startswith('thumbnail='):
+                    toks = setting.split('=')
+                    if len(toks) != 2:
+                        raise AttributeError("Tuple(height, width) expected for thumbnail")
+                    vals = toks[1].split(',')
+                    if len(vals) != 2:
+                        raise AttributeError("Tuple(height, width) expected for thumbnail")
+                    if vals[0][0] == '(':
+                        vals[0] = vals[0][1:]
+                    if vals[1][-1] == ')':
+                        vals[1] = vals[1][:-1]
+                    if not vals[0].isdigit() or not vals[1].isdigit():
+                        raise AttributeError("Thumbnail values must be an integer")
+                    self._thumbnail = ( int(vals[1]), int(vals[0]) )
                 else:
                     raise AttributeError("Setting is not recognized: " + setting)
         
@@ -130,9 +139,9 @@ class Image(object):
         self._type = basename[1][1:].lower()
         
         if self._type not in [ 'png', 'jpg', 'bmp', 'tif', 'tiff', 'gif']:
-            raise TypeError("Not an image file")
+            raise TypeError("Not an image file:", self._image)
         
-        # Get the size of the image
+        # Get the size of the image 
         self._size = os.path.getsize(self._image)
         
         # Size sanity check
@@ -149,57 +158,31 @@ class Image(object):
             os.mkdir(dir)
         
         # Read in the image data
-        pixels = PIL.Image.open(self._image)
-        
-        # Store the image
-        pixels.save(dir + "/" + self._name + "." + self._type )
-        
+        if self._grayscale:
+            image = cv2.imread(self._image, cv2.IMREAD_GRAYSCALE)
+        # Load RGB image (dropping any alpha channel)
+        else:
+            image = cv2.imread(self._image, cv2.IMREAD_COLOR)
+            
+        self._raw = image   
+
         # Store the thumbnail
-        if self._thumbnail:
+        if self._hd5 and self._thumbnail:
             try:
-                thumb = copy.deepcopy(pixels)
-                thumb.thumbnail( self._thumbnail )
-                thumb.save(dir + "/" + self._name + "." + "thumbnail" + "." + self._type )
-            except: pass
+                self._thumb = cv2.resize(image, self._thumbnail,interpolation=cv2.INTER_AREA)
+            except Exception as e: print(e)
             
         if self._resize:
-            pixels = pixels.resize(self._resize, resample=PIL.Image.LANCZOS)
-        
-        # Convert to numpy array
-        image = np.asarray(pixels)
+            image = cv2.resize(image, self._resize)
         
         # Get the shape of the array
         self._shape = image.shape
-        
-        # Grayscale image
-        if self._shape[2] == 1:
-            # Extend to three channels, replicating the single channel
-            if self._grayscale == False:
-                pixels = pixels.convert('RGB')
-                image = np.asarray(pixels)
-        # RGB image
-        elif self._shape[2] == 3:
-            if self._grayscale == True:
-                # convert to grayscale
-                pixels = pixels.convert('L')
-                image = np.asarray(pixels)
-        # RGBA image (RGB + alpha channel)
-        elif self._shape[2] == 4:
-            if self._grayscale == False:
-                # Remove Alpha Channel from Image
-                pixels = pixels.convert('RGB')
-                image = np.asarray(pixels)
-            else:
-                # convert to grayscale
-                pixels = pixels.convert('L')
-                image = np.asarray(pixels)
             
         # Normalize the image (convert pixel values from int range 0 .. 255 to float range 0 .. 1)
-        if self._normalize == True:
-            image = image / 255
+        image = image / 255
             
         # Flatten the image into a 1D vector
-        if self._flatten == True:
+        if self._flatten:
             image = image.flatten()
         
         # Get the shape of the array
@@ -220,8 +203,16 @@ class Image(object):
             
         # Write the image to disk as HD5 file
         with h5py.File(self._dir + "/" + self._name + '.h5', 'w') as hf:
-            hf.create_dataset("images",  data=[self._imgdata])
-            hf.create_dataset("labels",  data=[self._label])
+            imgset = hf.create_dataset("images",  data=[self._imgdata])
+            labset = hf.create_dataset("labels",  data=[self._label])
+            imgset.attrs['shape'] = self._shape
+            imgset.attrs['name']  = self._name
+            imgset.attrs['type']  = self._type
+            imgset.attrs['size']  = self._size
+            hf.create_dataset("raw", data=[self._raw])
+            try:
+                hf.create_dataset("thumb", data=[self._thumb])
+            except: pass
             
     def load(self, image, dir='./'):
         """ Load an image from storage """
@@ -245,11 +236,12 @@ class Image(object):
             
         # Read the image from disk as HD5 file
         with h5py.File(self._dir + "/" + self._name + '.h5', 'r') as hf:
-            X =  hf['images'][:]
-            Y =  hf['labels'][:]
-            
-        self._imgdata = X[0]
-        self._label   = Y[0]
+            self._imgdata =  hf['images'][0]
+            self._label   =  hf['labels'][0]
+            self._raw     =  hf['raw'][0]
+            try:
+                self._thumb =  hf['thumb'][0]
+            except: pass
         self._shape   = self._imgdata.shape       
         
         # Get the size of the image
@@ -328,8 +320,13 @@ class Image(object):
 
     @property
     def thumbnail(self):
-        """ Getter for the thumbnail path """
-        return self._dir + "/" + self._name + "." + "thumbnail" + "." + self._type    
+        """ Getter for the thumbnail data """
+        return self._thumb    
+
+    @property
+    def raw(self):
+        """ Getter for the raw unprocessed data """
+        return self._raw    
         
     def __str__(self):
         """ Override the str() operator - return the document classification """
@@ -358,15 +355,18 @@ class Images(object):
                 if not isinstance(ele, str):
                     raise TypeError("String expected for image paths")
         
-        if isinstance(labels, list) is False:
+        # if labels is a single value, then all the images share the same label
+        if isinstance(labels, int):
+            self._labels = [ labels for _ in range(len(images)) ]
+        elif not isinstance(labels, list):
             raise TypeError("List expected for image labels")
         else:
             for ele in labels:
                 if not isinstance(ele, int):
                     raise TypeError("Integer expected for image labels")
             
-        if len(images) != len(labels):
-            raise IndexError("Number of images and labels do not match")
+            if len(images) != len(labels):
+                raise IndexError("Number of images and labels do not match")
             
         if dir is not None:
             if isinstance(dir, str) == False:
@@ -484,8 +484,17 @@ class Images(object):
         
         # Read the images and labels from disk as HD5 file
         with h5py.File(self._dir + self._batch + '.h5', 'r') as hf:
-            self._data = hf["images"][:]
+            self._data = []
+            length = len(hf["images"])
+            for i in range(length):
+                image = Image()
+                image._imgdata = hf["images"][i]
+                image.classification = hf["labels"][i]
+                self._data.append( image )
             self._labels = hf["labels"][:]
+                
+            #self._data = hf["images"][:]
+            #self._labels = hf["labels"][:]
         
     def __len__(self):
         """ Override the len() operator - return the number of images """
