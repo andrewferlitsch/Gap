@@ -66,7 +66,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.shape, (100, 100, 3))
         self.assertEqual(image.classification, 0)
         self.assertTrue(len(image.raw) > 0 )
-        self.assertEqual(image.thumbnail, None )
+        self.assertEqual(image.thumb, None )
         self.assertTrue(os.path.isfile("0_100.h5"))
         os.remove("0_100.h5")
         
@@ -76,7 +76,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.image, "tests/0_100.jpg")
         self.assertTrue(os.path.isfile("0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
-        self.assertEqual(image.thumbnail, None )
+        self.assertEqual(image.thumb, None )
         os.remove("0_100.h5")
         
     def test_011(self):
@@ -84,7 +84,7 @@ class MyTest(unittest.TestCase):
         image = Image("tests/0_100.jpg", dir='tmp')
         self.assertTrue(os.path.isfile("tmp/0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
-        self.assertEqual(image.thumbnail, None )
+        self.assertEqual(image.thumb, None )
         os.remove("tmp/0_100.h5")
         
     def test_012(self):
@@ -92,7 +92,7 @@ class MyTest(unittest.TestCase):
         image = Image("tests/0_100.jpg", dir='tmp')
         self.assertTrue(os.path.isfile("tmp/0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
-        self.assertEqual(image.thumbnail, None )
+        self.assertEqual(image.thumb, None )
         os.remove("tmp/0_100.h5")
         os.rmdir("tmp")
         
@@ -106,7 +106,7 @@ class MyTest(unittest.TestCase):
         image = Image("tests/0_100.jpg", dir='tmp', label=16)
         self.assertEqual(image.classification, 16)
         self.assertTrue(len(image.raw) > 0 )
-        self.assertEqual(image.thumbnail, None )
+        self.assertEqual(image.thumb, None )
         os.remove("tmp/0_100.h5")
         os.rmdir("tmp")
             
@@ -122,7 +122,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.classification, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
-        self.assertEqual(image.thumbnail, None )
+        self.assertEqual(image.thumb, None )
         os.remove("0_100.h5")
             
     def test_016(self):
@@ -137,7 +137,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.classification, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
-        self.assertEqual(image.thumbnail, None )
+        self.assertEqual(image.thumb, None )
         os.remove("0_100.h5")
             
     def test_017(self):
@@ -310,23 +310,23 @@ class MyTest(unittest.TestCase):
         
     def test_032(self):
         """ thumbnail """
-        image = Image("tests/0_100.jpg", config=['thumbnail=(32,32)'])
+        image = Image("tests/0_100.jpg", config=['thumb=(32,32)'])
         self.assertTrue(os.path.isfile("0_100.h5"))
-        self.assertEqual(image.thumbnail.shape, (32, 32, 3))
+        self.assertEqual(image.thumb.shape, (32, 32, 3))
         os.remove("0_100.h5")
-        image = Image("tests/0_100.jpg", config=['thumbnail=16,16)'])
+        image = Image("tests/0_100.jpg", config=['thumb=(16,16)'])
         self.assertTrue(os.path.isfile("0_100.h5"))
-        self.assertEqual(image.thumbnail.shape, (16,16,3))
+        self.assertEqual(image.thumb.shape, (16,16,3))
         os.remove("0_100.h5")
         
     def test_033(self):
         """ thumbnail invalid """
         with pytest.raises(AttributeError):
-            image = Image("tests/0_100.jpg", dir='tmp', config=['thumbnail=1'])
+            image = Image("tests/0_100.jpg", dir='tmp', config=['thumb=1'])
         with pytest.raises(AttributeError):
-            image = Image("tests/0_100.jpg", dir='tmp', config=['thumbnail=a,2'])
+            image = Image("tests/0_100.jpg", dir='tmp', config=['thumb=a,2'])
         with pytest.raises(AttributeError):
-            image = Image("tests/0_100.jpg", dir='tmp', config=['thumbnail=2,b'])
+            image = Image("tests/0_100.jpg", dir='tmp', config=['thumb=2,b'])
         
     def test_034(self):
         """ time """
@@ -393,7 +393,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[0].shape, (100, 100, 3))
         self.assertEqual(images[0].classification, 2)
         self.assertTrue(len(images[0].raw) > 0 )
-        self.assertEqual(images[0].thumbnail, None )
+        self.assertEqual(images[0].thumb, None )
         os.remove("batch.0_100.h5")
         
     def test_045(self):
@@ -412,7 +412,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[1].shape, (100, 100, 3))
         self.assertEqual(images[1].classification, 2)
         self.assertTrue(len(images[1].raw) > 0 )
-        self.assertEqual(images[1].thumbnail, None)
+        self.assertEqual(images[1].thumb, None)
         self.assertEqual(images.name, 'batch.0_100')
         os.remove("batch.0_100.h5")
         
@@ -457,7 +457,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[1].shape, (100, 100, 3))
         self.assertEqual(images[1].classification, 2)
         self.assertTrue(len(images[1].raw) > 0 )
-        self.assertEqual(images[1].thumbnail, None)
+        self.assertEqual(images[1].thumb, None)
         self.assertEqual(images.name, 'batch.0_100')
         os.remove("batch.0_100.h5")
             

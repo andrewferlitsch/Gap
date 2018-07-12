@@ -91,7 +91,7 @@ class Image(object):
                     if not vals[0].isdigit() or not vals[1].isdigit():
                         raise AttributeError("Resize values must be an integer")
                     self._resize = ( int(vals[1]), int(vals[0]) )
-                elif setting.startswith('thumbnail='):
+                elif setting.startswith('thumb='):
                     toks = setting.split('=')
                     if len(toks) != 2:
                         raise AttributeError("Tuple(height, width) expected for thumbnail")
@@ -319,7 +319,7 @@ class Image(object):
         return self._time
 
     @property
-    def thumbnail(self):
+    def thumb(self):
         """ Getter for the thumbnail data """
         return self._thumb    
 
