@@ -415,10 +415,20 @@ class Images(object):
         imgdata = []
         clsdata = []
         rawdata = []
+        sizdata = []
+        thmdata = []
+        names   = []
+        types   = []
+        paths   = []
         for img in self._data:
             imgdata.append( img.data )
             clsdata.append( img.classification )
             rawdata.append( img.raw )
+            sizdata.append( img.size )
+            #thmdata.append( img.thumb )
+            names.append( bytes(img.name, 'utf-8') )
+            types.append( bytes(img.type, 'utf-8') )
+            paths.append( bytes(img.image, 'utf-8') )
             
         # if no batch name specified, use root of first test file.
         if self._batch is None:
@@ -428,8 +438,13 @@ class Images(object):
         with h5py.File(self._dir + self._batch + '.h5', 'w') as hf:
             hf.create_dataset("images",  data=imgdata)
             hf.create_dataset("labels",  data=clsdata)
-            hf.create_dataset("raw",  data=rawdata)
-            
+            hf.create_dataset("raw",     data=rawdata)
+            #hf.create_dataset("thumb",   data=thmdata)
+            hf.create_dataset("size",    data=sizdata)
+            hf.attrs.create("names", names)
+            hf.attrs.create("types", types)
+            hf.attrs.create("paths", paths)
+
         self._time = time.time() - start
             
     @property
@@ -492,7 +507,15 @@ class Images(object):
             for i in range(length):
                 image = Image()
                 image._imgdata = hf["images"][i]
-                image.classification = hf["labels"][i]
+                image._raw = hf["raw"][i]
+                image._size = hf["size"][i]
+                image._label = hf["labels"][i]
+                #image._thumb = hf["thumb"][i]
+                image._name  = hf.attrs["names"][i].decode()
+                image._type  = hf.attrs["types"][i].decode()
+                image._image = hf.attrs["paths"][i].decode()
+                image._shape = image._imgdata.shape
+                image._dir   = self._dir
                 self._data.append( image )
             self._labels = hf["labels"][:]
 
