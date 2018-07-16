@@ -389,8 +389,8 @@ class Words(object):
             word = self._words[i]['word']
             l = len(word)
             
-            # Don't stem short words or words already categorized
-            if l < 4 or self._words[i]['tag'] != Vocabulary.UNTAG:
+            # Don't stem words already categorized
+            if self._words[i]['tag'] != Vocabulary.UNTAG:
                 continue
             
             # If in vocabulary, do not stem
@@ -398,12 +398,17 @@ class Words(object):
                 v = vocab[word]
                 t = v['tag']
                 if len(t) == 1:
-                    if t[0] != Vocabulary.QUANTIFIER and t[0] != Vocabulary.UNIT:
+                    if t[0] not in [ Vocabulary.QUANTIFIER, Vocabulary.UNIT, Vocabulary.MEASUREMENT ]:
                         l = v['lemma']
                         if l is not None:
                             self._words[i]['word'] = l[0]
+                            self._words[i]['tag']  = t[0]
                 continue
             except: pass
+            
+            # Don't stem short words
+            if l < 4:
+                continue
                         
             # purals
             if word.endswith("ies"):

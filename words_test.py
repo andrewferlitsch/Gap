@@ -686,7 +686,7 @@ class MyTest(unittest.TestCase):
         words = Words("dad daddy mom mommy sir auntie madam", gender=False)
         self.assertEqual(words.words, []) 
         words = Words("dad daddy mom mommy sir auntie madam", gender=True)
-        self.assertEqual(towords(words.words), ["dad", "father", "mom", "mother", "sir", "aunt", "madam"])
+        self.assertEqual(towords(words.words), ["father", "father", "mother", "mother", "sir", "aunt", "madam"])
                     		
     def test_127(self): 
         """ Words other transgender words """
@@ -1842,7 +1842,7 @@ class MyTest(unittest.TestCase):
     def test_266(self):
         """ Words - more contradictions """
         words = Words("they're won't ", stopwords=True)
-        self.assertEqual(words.words, [{'word': 'they', 'tag': 8}, {'word': 'are', 'tag': 21}, {'word': 'will', 'tag': 21}, {'word': 'not', 'tag': 19}])
+        self.assertEqual(words.words, [{'word': 'they', 'tag': 8}, {'word': 'is', 'tag': 21}, {'word': 'will', 'tag': 21}, {'word': 'not', 'tag': 19}])
                 
     def test_267(self):
         """ Words - Number and Unit of Measurement combined """
