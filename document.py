@@ -283,10 +283,11 @@ class Document(object):
         self._type = basename[1][1:].lower()
         
         files = glob.glob(dir + self._name + '*.json')
+        npages = len(files)
         pageno = 1
-        for file in files:
+        for pageno in range(1, npages+1):
             page = Page(pageno=pageno)
-            page.load(file)
+            page.load(dir + self._name + str(pageno) + '.json')
             self.__iadd__(page) 
         
        
