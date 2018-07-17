@@ -22,7 +22,7 @@ class Words(object):
     DECIMAL		    = '.'	# Standard Unit for Decimal Point
     THOUSANDS 	    = ','	# Standard Unit for Thousandth Separator
     
-    def __init__(self, text=None, bare=False, stem='internal', pos=False, roman = False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, age = False, dob=False, unit=False, standard=False, metric=False ):
+    def __init__(self, text=None, bare=False, stem='gap', pos=False, roman = False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, age = False, dob=False, unit=False, standard=False, metric=False ):
         """ Constructor 
         text - raw text as string to tokenize
         """
@@ -138,7 +138,7 @@ class Words(object):
                 # preprocess the tokens
                 self._preprocess()
                 # word stemming
-                if self._stemming == 'internal':
+                if self._stemming == 'gap':
                     self._stem()
                 elif self._stemming == 'porter':
                     self._nltkStemmer('porter')
