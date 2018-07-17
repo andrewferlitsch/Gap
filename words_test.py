@@ -2393,10 +2393,12 @@ class MyTest(unittest.TestCase):
         self.assertEqual(towords(words.words), ["dine", "transfer", "transfer"])       
         
     def test_291(self):
-        """ More NER male """
-        words = Words("grandfather grandpa papa grandmother grandma momma", stopwords=True)
-        self.assertEqual(words.words, [{'word': 'grandfather', 'tag': 15}, {'word': 'grandfather', 'tag': 15}, {'word': 'father', 'tag': 15}, {'word': 'grandmother', 'tag': 16}, {'word': 'grandmother', 'tag': 16}, {'word': 'mother', 'tag': 16}])    
-                 
+        """ More NER gender """
+        words = Words("grandfather grandpa papa grandmother grandma momma son daughter", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'grandfather', 'tag': 15}, {'word': 'grandfather', 'tag': 15}, {'word': 'father', 'tag': 15}, {'word': 'grandmother', 'tag': 16}, {'word': 'grandmother', 'tag': 16}, {'word': 'mother', 'tag': 16}, {'word': 'son', 'tag': 15}, {'word': 'daughter', 'tag': 16}])    
+        words = Words("sis bro", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'sister', 'tag': 16}, {'word': 'brother', 'tag': 15}])
+        
     def test_292(self):
         """ Porter Stemmer """
         words = Words("taxes lives elves hides haves halves grasses braves", stem='porter')
@@ -2671,8 +2673,8 @@ class MyTest(unittest.TestCase):
         self.assertEqual(towords(words.words), ["permit", "provide", "provide", "base", "share", "share"])
         words = Words("includes included including", stopwords=True)
         self.assertEqual(towords(words.words), ["include", "include", "include"])
-        words = Words("treated treating treatment", stopwords=True)
-        self.assertEqual(towords(words.words), ["treat", "treat", "treat"])
+        words = Words("treated treating treatment lazy", stopwords=True)
+        self.assertEqual(towords(words.words), ["treat", "treat", "treat", "lazy"])
   
         
     def xtest_bugs(self):
