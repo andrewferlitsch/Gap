@@ -664,7 +664,7 @@ class MyTest(unittest.TestCase):
     def test_122(self): 
         """ Words _gender() bro/sis """ 
         words = Words("bro sis", gender=True)
-        self.assertEqual(words.words, [{'word': 'bro', 'tag': 15}, {'word': 'sis', 'tag': 16}])    
+        self.assertEqual(words.words, [{'word': 'brother', 'tag': 15}, {'word': 'sister', 'tag': 16}])    
 
     def test_123(self): 
         """ Words - gender = False """
