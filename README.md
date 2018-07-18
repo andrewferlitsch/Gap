@@ -13,7 +13,7 @@ The GAP NLP/CV data engineering framework provides an easy to get started into t
   - Automatic Syntax Analysis.
   - Optional Romanization of Latin-1 diacritic characters
   - Programmatic control for data extraction or redaction (de-identification)
-  
+
     - Names, Addresses, Proper Places
     - Social Security Numbers, Data of Birth, Gender, Age
     - Telephone Numbers
@@ -24,7 +24,7 @@ The GAP NLP/CV data engineering framework provides an easy to get started into t
   - Machine Training of Document and Page Classification.
   - Asynchronous processing of documents.
   - Automatic generation of NLP machine learning ready data.
-  
+
 *CV*
 
   - Automatic storage and retrieval with high performance HDF5 files.
@@ -33,7 +33,7 @@ The GAP NLP/CV data engineering framework provides an easy to get started into t
   - Programmtic control of conversion into machine ready data format: decompression, normalize, flatten.
   - Asynchronous processing of images.
   - Automatic generation of CV machine learning ready data.
-  
+
 The framework consists of a sequence of Python modules which can be retrofitted into a variety of configurations. The framework is designed to fit seamlessly and scale with an accompanying infrastructure. To achieve this, the design incorporates:
 
   - Problem and Modular Decomposition utilizing Object Oriented Programming Principles.
@@ -65,17 +65,17 @@ The GAP framework extensively uses a number of open source applications/modules.
   6. numpy - high performance in-memory arrays (tensors)
   7. HDF5 - high performance of on-disk data (tensors) access
 
-## Installation
+## Installation: MSWin64
 
 #### Ghostscript
 
 1. Download link : https://www.ghostscript.com/download/gsdnld.html
-        
+
     Use the Free Version<br/>
 
     Example: Ghostscript 9.23 for Windows (64 bit).<br/>
 
-2. Check if path to the program is in your PATH variable. 
+2. Check if path to the program is in your PATH variable.
 
     A. Open a command shell.<br/>
     B. Type gswin64c in the command line.<br/>
@@ -114,33 +114,46 @@ The GAP framework extensively uses a number of open source applications/modules.
 1. Documentation: http://www.nltk.org/
 
 2. Install NLTK using pip:
-
+```bash
     pip install nltk
-    
-    
+```
+
 #### Unidecode
 
 1. Documentation: https://pypi.org/project/Unidecode/
 
 2. Install unidecode using pip:
-
+```bash
     pip install unidecode
-    
+```
 #### Numpy
 
 1. Documentation: http://www.numpy.org/
 
 2. Install numpy using pip:
-
+```bash
     pip install numpy
-
+```
 #### HDF5
 
 1. Documentation: https://www.h5py.org/
 
 2. Install HDF5 using pip:
-
+```bash
     pip install h5py
+```
+## Installation: macOS
+1. Install [homebrew](https://brew.sh/), then:
+```bash
+    brew update
+    brew install ghostscript imagemagick tesseract
+```
+
+2. Install [Anaconda](https://www.continuum.io/downloads), then:
+```bash
+    conda install numpy pytest nltk unidecode h5py opencv
+```
+
 
 ## Modules
 
@@ -162,7 +175,7 @@ The document and corresponding pages may be classified (i.e., category of the co
 
 #### SYNTAX
 
-The syntax module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support. 
+The syntax module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.
 
 The word classifier recognizes:
 
@@ -175,7 +188,7 @@ The word classifier recognizes:
   - USA and Canadian Telephone Numbers
   - USA Social Security numbers
   - USA and ISO Standard for Dates
-  - USA and ISO Standard for Numbers and units of measure. 
+  - USA and ISO Standard for Numbers and units of measure.
   - Geographic Locations
   - Sentiment
 
@@ -211,53 +224,52 @@ The User's (Programming) Guide can be found [here](specs/users%20guide.docx)
 
 ## Testing
 
-The GAP framework is developed using Test Driven Development methodology. The automated unit tests for the framework use pytest, which is a xUnit style form of testing (e.g., jUnit, nUnit, jsUnit, etc). 
+The GAP framework is developed using Test Driven Development methodology. The automated unit tests for the framework use pytest, which is a xUnit style form of testing (e.g., jUnit, nUnit, jsUnit, etc).
 
 #### Installation and Documentation
 
 The pytest application can be installed using pip:
 
     pip install pytest
-    
+
 Online documentation for [pytest](https://docs.pytest.org)
 
 #### Execution
-   
+
 The following are the pre-built automated unit tests:
- 
+
     document_test.py    # Tests the Document Class in the Splitter Module
     page_test.py        # Tests the Page Class in the Splitter Module
     words_test.py       # Tests the Words and Addresses Class in the Syntax Module
     image_test.py       # Tests the Image and Images Class in the Vision Module
-    
+
 The automated tests are executed as follows:
 
     pytest -v document_test.py
     pytest -v page_test.py
     pytest -v words_test.py
     pytest -v image_test.py
-    
+
 #### Code Coverage
 
 Information on the percent of code that is covered (and what source lines not covered) by the automated tests is obtained using pytest-cov. This version of pytest is installed using pip:
 
     pip install pytest-cov
-    
+
 Testing with code coverage is executed as follows:
 
     pytest --cov=document document_test.py page_test.py
-    
+
         Statements=359, Missed=31, Percent Covered: 91%
 
     pytest --cov=words words_test.py
-    
+
         Statements=1102, Missed=75, Percent Covered: 93%
 
     pytest --cov=address words_test.py
-    
+
         Statements=493, Missed=51, Percent Covered: 90%
 
     pytest --cov=image image_test.py
-    
-        Statements=296, Missed=41, Percent Covered: 86%
 
+        Statements=296, Missed=41, Percent Covered: 86%
