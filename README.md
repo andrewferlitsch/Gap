@@ -259,11 +259,11 @@ Information on the percent of code that is covered (and what source lines not co
 
 Testing with code coverage is executed as follows:
 
-    pytest --cov=document document_test.py page_test.py
+    pytest --cov=splitter document_test.py page_test.py
 
         Statements=359, Missed=31, Percent Covered: 91%
 
-    pytest --cov=words words_test.py
+    pytest --cov=syntax words_test.py
 
         Statements=1102, Missed=75, Percent Covered: 93%
 
@@ -271,6 +271,6 @@ Testing with code coverage is executed as follows:
 
         Statements=493, Missed=51, Percent Covered: 90%
 
-    pytest --cov=image image_test.py
+    pytest --cov=vision image_test.py
 
         Statements=296, Missed=41, Percent Covered: 86%
