@@ -1,4 +1,4 @@
-from document import Document, Page
+from splitter import Document, Page
 from pdf_res import PDFResource
 import unittest
 import pytest

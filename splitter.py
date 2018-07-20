@@ -16,7 +16,7 @@ import json
 import shutil
 
 from segment import Segment
-from words import Words
+from syntax import Words
 from pdf_res import PDFResource
 
 

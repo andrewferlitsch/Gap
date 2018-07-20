@@ -1,5 +1,5 @@
-from document import Page
-from words import Words
+from splitter import Page
+from syntax import Words
 import unittest
 import pytest
 import os

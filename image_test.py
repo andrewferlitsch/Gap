@@ -1,4 +1,4 @@
-from image import Image, Images
+from vision import Image, Images
 import unittest
 import pytest
 import os
