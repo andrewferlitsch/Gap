@@ -160,7 +160,7 @@ The GAP framework extensively uses a number of open source applications/modules.
 
 The framework provides the following pipeline of modules to support your data and knowledge extraction from both digital and scanned PDF documents, TIFF facsimiles and image captured documents.
 
-#### SPLITTER
+#### <span style='color: saddlebrown'>SPLITTER</span>
 
 The splitter module is the NLP entry point into the pipeline. It consists of a Document and Page class. The Document class handles the splitting of PDF documents into PDF pages, TIFF facsimiles into TIFF pages, OCR and raw text extraction. PDF splitting and image extraction is handled by the open source Artifex’s Ghostscript ©, and TIFF splitting by open source Image Magic’s Magick ©. OCR is handled by the open source Google’s Tesseract ©. The Document object stores the individual PDF/TIFF/image pages and corresponding raw text and optionally page images (when scanned PDF, TIFF or images) in the specified storage path. The splitting process can be done synchronously or asynchronously, where in the latter case an event handler signals when the splitting/OCR has been completed and the page table is accessible.
 
@@ -174,7 +174,7 @@ The document and corresponding pages may be classified (i.e., category of the co
 
 [Specification](specs/splitter_spec.docx)
 
-#### SYNTAX
+#### <span style='color: saddlebrown'>SYNTAX</span>
 
 The syntax module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.
 
@@ -200,11 +200,11 @@ Along with the builtin stemmer and lemmatizer, the module can optionally be conf
 [Specification](specs/syntax_spec.docx)
 
 
-#### SEGMENTATION
+#### <span style='color: saddlebrown'>SEGMENTATION</span>
 
-Details announced in release Gap 0.9
+In development for feature complete in release Gap 0.9
 
-#### VISION
+#### <span style='color: saddlebrown'>VISION</span>
 
 The splitter module is the CV entry point into the pipeline. It consists of a Images and Image class. The Images class handles the storage and (random access) batch retrieval of CV machine learning ready data, using open source numpy high performance arrays (tensors) and HDF5 high performance disk (tensor) access. The Image class handles preprocessing of individual images into CV machine learning ready data. The batch and image preprocessing can be done synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing of an image or batch has been completed and the machine learning ready data is accessible.
 
