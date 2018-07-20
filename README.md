@@ -1,4 +1,5 @@
-# epipog-nlp, v1.4 (=> Gap 0.9)
+# Gap NLP and CV Data Engineering Framework, version 0.9 (Pre-launch)
+
 ## Natural Language Processing for PDF, TIFF, and camera captured documents, and
 ## Computer Vision for Images
 
