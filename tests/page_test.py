@@ -265,9 +265,9 @@ class MyTest(unittest.TestCase):
         
     def test_040(self):
         """ segment option - path and segments """
-        with open('tests/segment_para.txt', 'r', encoding="utf-8") as f:
+        with open('segment_para.txt', 'r', encoding="utf-8") as f:
             segment = Segment(f.read())
-        page = Page('tests/segment_para.txt', segment.segments)
+        page = Page('segment_para.txt', segment.segments)
         
     def xtest_bugs(self):
         """ Page store/load - unicode - cryllic """
