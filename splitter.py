@@ -78,7 +78,7 @@ class Document(object):
                 elif setting.startswith('stem'):
                     vals = setting.split('=')
                     if len(vals) == 2:
-                        if vals[1] in ['internal', 'porter', 'snowball', 'lancaster', 'lemma']:
+                        if vals[1] in ['gap', 'porter', 'snowball', 'lancaster', 'lemma']:
                             Page.STEM = vals[1]
                         else:
                             raise AttributeError("Setting stem set to an invalid value: " + vals[1])
@@ -174,6 +174,12 @@ class Document(object):
             # Read text file
             with open(text_file, 'r', encoding="utf-8") as f:
                 text = f.read()
+
+            # Separate text into regions (headings, paragraphs, etc)
+            if self._segment:
+                segment = Segment(text)
+                text = segment.segments
+                
             page = Page(img_file, text, 1)
             self.__iadd__(page)
             # Store the tokenized text
@@ -218,8 +224,16 @@ class Document(object):
 
                 # Add a page object to this document
                 with open(text_file, 'r', encoding="utf-8") as f:
+                    # read in the text for the page
+                    text = f.read()
+
+                    # Separate text into regions (headings, paragraphs, etc)
+                    if self._segment:
+                        segment = Segment(text)
+                        text = segment.segments
+                    
                     # Create Page Object and read in the text for the page
-                    page = Page(pdf_file, f.read(), n+1)
+                    page = Page(pdf_file, text, n+1)
                     # Store the tokenized text
                     json_file = dir + self._name + str(n+1) + '.json'
                     page.store(json_file)
@@ -270,6 +284,12 @@ class Document(object):
                 with open(text_file, 'r', encoding="utf-8", errors='ignore') as f:
                     # Create Page Object and read in the text for the page
                     text = f.read()
+
+                    # Separate text into regions (headings, paragraphs, etc)
+                    if self._segment:
+                        segment = Segment(text)
+                        text = segment.segments
+                        
                     page = Page(tif_file, text, n+1)
                     # Store the tokenized text
                     json_file = dir + self._name + str(n+1) + '.json'
@@ -472,9 +492,14 @@ class Page(object):
                 raise FileNotFoundError("Not a valid path for the page")
         if text is not None:
             if isinstance(text, list):
+                self._size = 0
                 for segment in text:
                     if isinstance(segment, dict) == False:
                         raise TypeError("Dictionary expected for text segment:", type(segment))
+                    if segment['tag'] == Segment.PARAGRAPH:
+                        self._size += 2 + len(segment['text'])
+                    else:
+                        self._size += 1 + len(segment['text'])
             elif isinstance(text, str):
                 self._text = text.strip()
                 self._size = len(text)
@@ -530,17 +555,7 @@ class Page(object):
         """ Getter for byte size of page """
         if self._text is None:
             return 0
-        if isinstance(self._text, str):
-            return self._size
-            
-        # Segmented Text
-        size = 0
-        for segment in self._text:
-            if segment['tag'] == Segment.PARAGRAPH:
-                size += 2 + len(segment['text'])
-            else:
-                size += 1 + len(segment['text'])
-        return size
+        return self._size
 
     @property
     def label(self):
@@ -583,7 +598,16 @@ class Page(object):
         """ Getter for bag of words """
         # force a NLP processing if not already
         words = self.words
-        return self._words.bagOfWords
+        if isinstance(self._text, str):
+            return self._words.bagOfWords
+        # Segmented Text
+        else:
+            if len(self._words._words) == 0:
+                return None
+            # TODO
+            for segment in self._words._words:
+                pass
+            return None
 
     @property
     def freqDist(self):

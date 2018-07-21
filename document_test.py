@@ -588,7 +588,7 @@ class MyTest(unittest.TestCase):
 
     def test_064(self):
         """ config stem is valid """
-        document = Document("tests/4page.pdf", "tests", config=['stem=internal'])
+        document = Document("tests/4page.pdf", "tests", config=['stem=gap'])
         document = Document("tests/4page.pdf", "tests", config=['stem=porter'])
         document = Document("tests/4page.pdf", "tests", config=['stem=snowball'])
         document = Document("tests/4page.pdf", "tests", config=['stem=lancaster'])
@@ -598,6 +598,30 @@ class MyTest(unittest.TestCase):
             os.remove("tests/4page" + str(i) + ".pdf")
             os.remove("tests/4page" + str(i) + ".json")
 
+    def test_065(self):
+        """ config segment txt """
+        document = Document('tests/segment_para.txt', 'tests', config=['segment'])
+        self.assertEquals(document[0].size, 91)
+        self.assertEquals(document[0].text, 'This is a first paragraph\nand continues to next line.\n\nThen this is the second\nparagraph.')
+        self.assertEquals(len(document[0].words), 2)
+        os.remove('tests/segment_para1.txt')
+        os.remove('tests/segment_para1.json')
+
+    def test_066(self):
+        """ config segment pdf """
+        document = Document('tests/invoice.pdf', 'tests', config=['segment'])
+        self.assertEquals(len(document[0].words), 15)
+        os.remove('tests/invoice1.pdf')
+        os.remove('tests/invoice1.txt')
+        os.remove('tests/invoice1.json')
+
+    def test_067(self):
+        """ config segment image """
+        document = Document('tests/text.png', 'tests', config=['segment'])
+        self.assertEquals(len(document[0].words), 7)
+        os.remove('tests/text1.png')
+        os.remove('tests/text1.txt')
+        os.remove('tests/text1.json')
 		
     def done(self, document):
         self.isdone = True
