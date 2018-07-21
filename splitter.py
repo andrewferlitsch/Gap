@@ -42,7 +42,7 @@ class Document(object):
         """
         self._document = document   # document path
         self._name     = None       # Name of document (no path and no suffix)
-        self._class    = None       # classification of the document
+        self._label    = None       # classification of the document
         self._pages    = []         # document pages
         self._dir      = dir        # directory where extracted pages and text are stored
         self._type     = None       # file type of the document
@@ -346,17 +346,17 @@ class Document(object):
         self._dir = dir
 
     @property
-    def classification(self):
+    def label(self):
         """ Getter for the document classification """
-        return self._class
+        return self._label
 
-    @classification.setter
-    def classification(self, classification):
+    @label.setter
+    def label(self, label):
         """ Setter for document classification """
         # value must be an integer
-        if classification is not None and isinstance(classification, str) == False:
+        if label is not None and isinstance(classification, str) == False:
             raise TypeError("String expected for classification (label)")
-        self._class = classification
+        self._label = label
 
     @property
     def pages(self):
@@ -442,7 +442,7 @@ class Document(object):
 
     def __str__(self):
         """ Override the str() operator - return the document classification """
-        return self._class
+        return self._label
 
 
 class Page(object):
@@ -462,7 +462,7 @@ class Page(object):
         self._text   = text     # Raw text extracted from page
         self._pageno = pageno   # Page Number
         self._words  = None     # Tokenized List of words on page
-        self._class  = None     # The page classification (label)
+        self._label  = None     # The page classification (label)
         self._size   = 0        # byte size of the page
 
         if path is not None:
@@ -543,17 +543,17 @@ class Page(object):
         return size
 
     @property
-    def classification(self):
+    def label(self):
         """ Getter for the document classification """
-        return self._class
+        return self._label
 
-    @classification.setter
-    def classification(self, classification):
+    @label.setter
+    def label(self, label):
         """ Setter for document classification """
         # value must be an integer
         if classification is not None and isinstance(classification, str) == False:
             raise TypeError("String expected for classification (label)")
-        self._class = classification
+        self._label = label
 
     @property
     def words(self):
@@ -626,7 +626,7 @@ class Page(object):
 
     def __str__(self):
         """ Override the str() operator - return the document classification """
-        return self._class
+        return self._label
 
     def __iadd__(self, text):
         """ Override the += operator - add text to the page """

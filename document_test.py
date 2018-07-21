@@ -274,24 +274,24 @@ class MyTest(unittest.TestCase):
     def test_029(self):
         """ Document classification getter (default) """
         document = Document(dir="tests")
-        self.assertEqual(document.classification, None)
+        self.assertEqual(document.label, None)
         
     def test_030(self):
         """ Document classification getter/setter """
         document = Document(dir="tests")
-        document.classification = "foobar"
-        self.assertEqual(document.classification, "foobar")
+        document.label = "foobar"
+        self.assertEqual(document.label, "foobar")
         
     def test_031(self):
         """ Document classification setter - not a string """
         document = Document()
         with pytest.raises(TypeError):
-            document.classification = 12
+            document.label = 12
         
     def test_032(self):
         """ Document overridden str() """
         document = Document()
-        document.classification = "foobar"
+        document.label = "foobar"
         self.assertEqual(str(document), "foobar")
         
     def test_033(self):

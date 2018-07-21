@@ -299,12 +299,12 @@ class Image(object):
         self._dir = dir 
         
     @property
-    def classification(self):
+    def label(self):
         """ Getter for image label (classification) """
         return self._label
         
-    @classification.setter
-    def classification(self, label):
+    @label.setter
+    def label(self, label):
         """ Setter for image label (classification) """
         self._label = label
              
