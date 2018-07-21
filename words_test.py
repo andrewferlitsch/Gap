@@ -1,4 +1,7 @@
 # -*- coding: latin-1 -*-
+"""
+Copyright, 2018(c), Andrew Ferlitsch
+"""
 from syntax import Words
 import unittest
 import pytest

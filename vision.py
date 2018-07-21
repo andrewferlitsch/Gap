@@ -1,4 +1,4 @@
--+6.,"""
+"""
 Image Data Processing
 Copyright 2018(c), Andrew Ferlitsch
 """

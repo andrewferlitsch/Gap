@@ -1,3 +1,6 @@
+"""
+Copyright, 2018(c), Andrew Ferlitsch
+"""
 from vision import Image, Images
 import unittest
 import pytest
