@@ -1,0 +1,6 @@
+nltk
+unidecode
+numpy
+h5py
+pytest
+pytest-cov
