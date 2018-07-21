@@ -202,7 +202,9 @@ Along with the builtin stemmer and lemmatizer, the module can optionally be conf
 
 #### <span style='color: saddlebrown'>SEGMENTATION</span>
 
-In development for feature complete in release Gap 0.9
+The segmentation module was introduced as part of the pre-launch of Gap v0.9. It currently is in the demonstration stage, and not ready for commericial-product code ready. The segmentation module examines the whitespace layout of the text to identify 'human' layout of text and corresponding context, such as paragraphs, headings, columns, page numbering, letterhead, etc. The text is then separated into segments based on recognized layout and within the segments the text is NLP preprocessed. In this mode, the NLP preprocessed text is hierarchical. At the top level are the segments, with corresponding segment tag, and the child is the NLP preprocessed text within the segment.
+
+[Specification](specs/segment_spec.docx)
 
 #### <span style='color: saddlebrown'>VISION</span>
 
