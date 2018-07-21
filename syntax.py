@@ -132,7 +132,7 @@ class Words(object):
         if text is not None:
             if isinstance(text, str) is False:
                 raise TypeError("String expected for text")
-            # tokenize the text
+            
             self._split()
             if self._bare == False:
                 # preprocess the tokens

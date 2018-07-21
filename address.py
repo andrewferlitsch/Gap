@@ -1,5 +1,5 @@
-""" Address Module for Processing PDF Documents 
-2018(c), Andrew Ferlitsch
+""" Address Module for Identifying/Reducing US/CA Street and Postal Addresses
+Copyright, 2018(c), Andrew Ferlitsch
 """
 from vocabulary import Vocabulary, vocab
 

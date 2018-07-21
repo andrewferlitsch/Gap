@@ -5,10 +5,10 @@ Copyright 2018(c), Andrew Ferlitsch
 class Segment(object):
     """ Segment text into Regions """
     
-    HEADING     = 1
-    PARAGRAPH   = 2
-    PAGENO      = 3
-    COPYRIGHT   = 4
+    HEADING     = 1001
+    PARAGRAPH   = 1002
+    PAGENO      = 1003
+    COPYRIGHT   = 1004
     
     def __init__(self, text):
         """ constructor """  

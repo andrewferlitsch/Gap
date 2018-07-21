@@ -1,3 +1,6 @@
+"""
+Copyright, 2018(c), Andrew Ferlitsch
+"""
 from splitter import Document, Page
 from pdf_res import PDFResource
 import unittest

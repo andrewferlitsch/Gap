@@ -1,5 +1,10 @@
+"""
+Copyright, 2018(c), Andrew Ferlitsch
+"""
+
 from splitter import Page
 from syntax import Words
+from segment import Segment
 import unittest
 import pytest
 import os
@@ -238,7 +243,31 @@ class MyTest(unittest.TestCase):
     def test_036(self):
         """ Page - Term Frequency """
         page = Page(text="zoo castle zoo bird zoo bird zoo bird")
-        self.assertEqual(page.termFreq, [( 'zoo', 0.5), ('bird', 0.375), ('castle', 0.125 )]) 
+        self.assertEqual(page.termFreq, [( 'zoo', 0.5), ('bird', 0.375), ('castle', 0.125 )])   
+        
+    def test_037(self):
+        """ segment option - empty list """
+        page = Page(text=[])
+        self.assertEqual(page.words, [])
+        
+    def test_038(self):
+        """ segment option - element not a dictionary """
+        with pytest.raises(TypeError):
+            page = Page(text=[ 3 ])
+        
+    def test_039(self):
+        """ segment option - paragraphs """
+        segment = Segment('para 1\n\npara 2')
+        page = Page(text=segment.segments)
+        self.assertEqual(page.text, 'para 1\n\npara 2')
+        self.assertEqual(page.size, 16)
+        self.assertEqual(page.words, [{ 'tag': 1002, 'words': [{ 'tag': 0, 'word': 'para'}]}, { 'tag': 1002, 'words': [{ 'tag': 0, 'word': 'para'}]}])
+        
+    def test_040(self):
+        """ segment option - path and segments """
+        with open('tests/segment_para.txt', 'r', encoding="utf-8") as f:
+            segment = Segment(f.read())
+        page = Page('tests/segment_para.txt', segment.segments)
         
     def xtest_bugs(self):
         """ Page store/load - unicode - cryllic """

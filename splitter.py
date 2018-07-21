@@ -152,9 +152,11 @@ class Document(object):
             with open(text_file, 'w', encoding="utf-8") as f:
                 f.write(text)
 
+            # Separate text into regions (headings, paragraphs, etc)
             if self._segment:
-                segments = Segment(text)
-
+                segment = Segment(text)
+                text = segment.segments
+        
             page = Page(text_file, text, 1)
             self.__iadd__(page)
             # Store the tokenized text
@@ -465,14 +467,19 @@ class Page(object):
 
         if path is not None:
             if isinstance(path, str) == False:
-                raise TypeError("string expected for path parameter")
+                raise TypeError("String expected for path parameter")
             if os.path.isfile(path) == False:
-                raise FileNotFoundError("not a valid path for the page")
+                raise FileNotFoundError("Not a valid path for the page")
         if text is not None:
-            if isinstance(text, str) == False:
-                raise TypeError("string expected for text parameter")
-            self._text = text.strip()
-            self._size = len(text)
+            if isinstance(text, list):
+                for segment in text:
+                    if isinstance(segment, dict) == False:
+                        raise TypeError("Dictionary expected for text segment:", type(segment))
+            elif isinstance(text, str):
+                self._text = text.strip()
+                self._size = len(text)
+            else:
+                raise TypeError("String expected for text parameter:" , type(text))
 
     @property
     def path(self):
@@ -492,14 +499,26 @@ class Page(object):
     @property
     def text(self):
         """ Getter for page text content """
-        return self._text
+        if self._text is None:
+            return None
+        if isinstance(self._text, str):
+            return self._text
+            
+        # Segmented Text
+        text = ''
+        for segment in self._text:
+            if segment['tag'] == Segment.PARAGRAPH:
+                text += '\n\n' + segment['text']
+            else:
+                text += '\n' + segment['text']
+        return text.strip()
 
     @text.setter
     def text(self, text):
         """ Setter for page text """
         if text is not None:
             if isinstance(text, str) == False:
-                raise TypeError("string expected for text parameter")
+                raise TypeError("String expected for text parameter:", type(text))
             text = text.strip()
             self._size = len(text)
         else:
@@ -509,7 +528,19 @@ class Page(object):
     @property
     def size(self):
         """ Getter for byte size of page """
-        return self._size
+        if self._text is None:
+            return 0
+        if isinstance(self._text, str):
+            return self._size
+            
+        # Segmented Text
+        size = 0
+        for segment in self._text:
+            if segment['tag'] == Segment.PARAGRAPH:
+                size += 2 + len(segment['text'])
+            else:
+                size += 1 + len(segment['text'])
+        return size
 
     @property
     def classification(self):
@@ -532,7 +563,14 @@ class Page(object):
 
         # If text has not been tokenized yet, then tokenize it
         if self._words is None:
-            self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN)
+            if isinstance(self._text, str):
+                self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN)
+            else:
+                words = []
+                for segment in self._text:
+                    words.append( { 'tag': segment['tag'], 'words': Words(segment['text'], bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN).words } )
+                self._words = Words()
+                self._words._words = words
         return self._words.words
 
     @property
