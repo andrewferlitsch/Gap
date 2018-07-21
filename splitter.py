@@ -354,7 +354,7 @@ class Document(object):
     def label(self, label):
         """ Setter for document classification """
         # value must be an integer
-        if label is not None and isinstance(classification, str) == False:
+        if label is not None and isinstance(label, str) == False:
             raise TypeError("String expected for classification (label)")
         self._label = label
 
@@ -551,7 +551,7 @@ class Page(object):
     def label(self, label):
         """ Setter for document classification """
         # value must be an integer
-        if classification is not None and isinstance(classification, str) == False:
+        if label is not None and isinstance(label, str) == False:
             raise TypeError("String expected for classification (label)")
         self._label = label
 

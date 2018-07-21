@@ -330,7 +330,7 @@ class Image(object):
         
     def __str__(self):
         """ Override the str() operator - return the document classification """
-        return str(self._class)
+        return str(self._label)
         
  
 class Images(object):
@@ -422,7 +422,7 @@ class Images(object):
         paths   = []
         for img in self._data:
             imgdata.append( img.data )
-            clsdata.append( img.classification )
+            clsdata.append( img.label )
             rawdata.append( img.raw )
             sizdata.append( img.size )
             #thmdata.append( img.thumb )
@@ -465,12 +465,12 @@ class Images(object):
         self._dir = dir 
         
     @property
-    def classification(self):
+    def label(self):
         """ Getter for image labels (classification) """
         return self._labels
         
-    @classification.setter
-    def classification(self, labels):
+    @label.setter
+    def label(self, labels):
         """ Setter for image labels (classification) """
         self._labels = labels
         

@@ -114,24 +114,24 @@ class MyTest(unittest.TestCase):
     def test_016(self):
         """ Page classification getter (default) """
         page = Page()
-        self.assertEqual(page.classification, None)
+        self.assertEqual(page.label, None)
         
     def test_017(self):
         """ Page classification getter/setter """
         page = Page()
-        page.classification = "foobar"
-        self.assertEqual(page.classification, "foobar")
+        page.label = "foobar"
+        self.assertEqual(page.label, "foobar")
         
     def test_018(self):
         """ Page classification setter - not an int """
         page = Page()
         with pytest.raises(TypeError):
-            page.classification = 10
+            page.label = 10
         
     def test_019(self):
         """ Page overridden str() """
         page = Page()
-        page.classification = "foobar"
+        page.label = "foobar"
         self.assertEqual(str(page), "foobar")
         
     def test_020(self):

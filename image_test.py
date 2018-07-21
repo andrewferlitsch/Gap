@@ -67,7 +67,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (100, 100, 3))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         self.assertTrue(len(image.raw) > 0 )
         self.assertEqual(image.thumb, None )
         self.assertTrue(os.path.isfile("0_100.h5"))
@@ -107,7 +107,7 @@ class MyTest(unittest.TestCase):
     def test_014(self):
         """ label is valid """
         image = Image("tests/0_100.jpg", dir='tmp', label=16)
-        self.assertEqual(image.classification, 16)
+        self.assertEqual(image.label, 16)
         self.assertTrue(len(image.raw) > 0 )
         self.assertEqual(image.thumb, None )
         os.remove("tmp/0_100.h5")
@@ -122,7 +122,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (100, 100, 3))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
         self.assertEqual(image.thumb, None )
@@ -137,7 +137,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (100, 100, 3))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
         self.assertEqual(image.thumb, None )
@@ -184,7 +184,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (100, 100))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         os.remove("0_100.h5")
         image = Image("tests/0_100.jpg", config=['grayscale'])
@@ -194,7 +194,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (100, 100))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         os.remove("0_100.h5")
             
@@ -207,7 +207,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 4253)
         self.assertEqual(image.shape, (100, 100, 3))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100g.h5"))
         os.remove("0_100g.h5")  
         
@@ -219,7 +219,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (50, 50, 3))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         os.remove("0_100.h5")
         image = Image("tests/0_100.jpg", config=['resize=(200,200)'])
@@ -228,7 +228,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (200, 200, 3))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         os.remove("0_100.h5")
 
@@ -240,7 +240,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (30000,))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         os.remove("0_100.h5")
         image = Image("tests/0_100.jpg", config=['flatten'])
@@ -249,7 +249,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (30000,))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         os.remove("0_100.h5")  
         
@@ -261,7 +261,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (30000,))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         self.assertFalse(os.path.isfile("0_100.h5"))
         
     def test_027(self):
@@ -308,7 +308,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.dir, "./")
         self.assertEqual(image.size, 3643)
         self.assertEqual(image.shape, (30000,))
-        self.assertEqual(image.classification, 0)
+        self.assertEqual(image.label, 0)
         os.remove("0_100.h5")
         
     def test_032(self):
@@ -394,7 +394,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[0].dir, "./")
         self.assertEqual(images[0].size, 3643)
         self.assertEqual(images[0].shape, (100, 100, 3))
-        self.assertEqual(images[0].classification, 2)
+        self.assertEqual(images[0].label, 2)
         self.assertTrue(len(images[0].raw) > 0 )
         self.assertEqual(images[0].thumb, None )
         os.remove("batch.0_100.h5")
@@ -413,7 +413,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[1].dir, "./")
         self.assertEqual(images[1].size, 3574)
         self.assertEqual(images[1].shape, (100, 100, 3))
-        self.assertEqual(images[1].classification, 2)
+        self.assertEqual(images[1].label, 2)
         self.assertTrue(len(images[1].raw) > 0 )
         self.assertEqual(images[1].thumb, None)
         self.assertEqual(images.name, 'batch.0_100')
@@ -423,7 +423,7 @@ class MyTest(unittest.TestCase):
         """ images properties dir, class """
         images = Images(["tests/0_100.jpg"], labels=[2], dir="tmp")
         self.assertTrue(images.dir, "tmp")
-        self.assertTrue(images.classification, [2])
+        self.assertTrue(images.label, [2])
         os.remove("tmp/batch.0_100.h5")
         os.rmdir("tmp")
         
@@ -458,7 +458,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[1].dir, "./")
         self.assertEqual(images[1].size, 3574)
         self.assertEqual(images[1].shape, (100, 100, 3))
-        self.assertEqual(images[1].classification, 2)
+        self.assertEqual(images[1].label, 2)
         self.assertTrue(len(images[1].raw) > 0 )
         self.assertEqual(images[1].thumb, None)
         self.assertEqual(images.name, 'batch.0_100')
@@ -472,8 +472,8 @@ class MyTest(unittest.TestCase):
         images.load("batch.0_100")
         self.assertEqual(images.name, 'batch.0_100')
         self.assertEqual(len(images), 2)
-        self.assertEqual(images[0].classification, 1)
-        self.assertEqual(images[1].classification, 2)
+        self.assertEqual(images[0].label, 1)
+        self.assertEqual(images[1].label, 2)
         os.remove("batch.0_100.h5")
             
     def test_052(self):
@@ -484,8 +484,8 @@ class MyTest(unittest.TestCase):
         images.load("foobar")
         self.assertEqual(images.name, 'foobar')
         self.assertEqual(len(images), 2)
-        self.assertEqual(images[0].classification, 1)
-        self.assertEqual(images[1].classification, 2)
+        self.assertEqual(images[0].label, 1)
+        self.assertEqual(images[1].label, 2)
         os.remove("foobar.h5")
             
     def test_053(self):
@@ -496,8 +496,8 @@ class MyTest(unittest.TestCase):
         self.assertTrue(self.isdone)
         self.assertEqual(images.name, 'foobar')
         self.assertEqual(len(images), 2)
-        self.assertEqual(images[0].classification, 1)
-        self.assertEqual(images[1].classification, 2)
+        self.assertEqual(images[0].label, 1)
+        self.assertEqual(images[1].label, 2)
         os.remove("foobar.h5")
         
     def test_054(self):
