@@ -443,7 +443,9 @@ class Images(object):
             hf.create_dataset("size",    data=sizdata)
             hf.attrs.create("names", names)
             hf.attrs.create("types", types)
-            hf.attrs.create("paths", paths)
+            try:
+                hf.attrs.create("paths", paths)
+            except Exception as e: print(e)
 
         self._time = time.time() - start
             

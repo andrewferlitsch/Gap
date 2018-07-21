@@ -12,6 +12,7 @@ import cv2
 from vision import Image, Images
 
 def test1():
+    global files, dir
     """ PIL Performance Tests """
     total = 0
     for _ in range(10):
@@ -33,6 +34,7 @@ def test1():
 
 def test2():
     """ openCV Performance Tests """
+    global files, dir
     total = 0
     for _ in range(10):
         start = time.time()
@@ -54,6 +56,7 @@ def test2():
         
 def test3():
     """ Vision/Image Performance Tests """
+    global files, dir
     total = 0
     for _ in range(10):
         start = time.time()
@@ -74,6 +77,7 @@ def test3():
     
 def test4():
     """ Vision/Images Performance Tests """
+    global files, dir
     images = []
     for file in files:
         images.append( dir + "/" + file )
@@ -84,11 +88,12 @@ def test4():
         batch_time = time.time() - start
         print("BATCH", batch_time)
         total += batch_time
-        #os.remove("tmp/foobar.h5")
+        os.remove("tmp/foobar.h5")
     print("VISION/IMAGES AVE", total / 10 )
     
 if __name__ == "__main__":
     dir = sys.argv[1]
+    #dir = '../Training/AITraining/Intermediate/Machine Learning/sign-lang/gestures/1'
     files = os.listdir(dir)
     if sys.argv[2] == '1':
         test1()
