@@ -10,4 +10,10 @@ setup(name='Gap-ML',
       license='CC-BY',
       url='',
       packages=['./'],
+       install_requires=[
+          'numpy',
+          'h5py',
+          'unidecode',
+          'nltk',
+      ],
      )
