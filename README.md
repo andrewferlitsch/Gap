@@ -110,39 +110,19 @@ The GAP framework extensively uses a number of open source applications/modules.
 
 3. Install the English Training Data files as: C:\Program Files\tesseract-Win64\tessdata . You can get a copy from my [github account.](tools/tessdata)
 
-#### NLTK
+#### PyPi Dependencies
 
-1. Documentation: http://www.nltk.org/
+The remaining dependencies for python packages distributed at PyPi are automatically checked for and installed by the setup.py script. These include:
 
-2. Install NLTK using pip:
-```bash
-    pip install nltk
-```
+  - nltk : http://www.nltk.org/
+  - numpy : http://www.numpy.org/
+  - h5py : https://www.h5py.org/
+  - unidecode : https://pypi.org/project/Unidecode/```
 
-#### Unidecode
+After you have clone the source code, from the root of the source tree do the following to complete the install:
 
-1. Documentation: https://pypi.org/project/Unidecode/
-
-2. Install unidecode using pip:
-```bash
-    pip install unidecode
-```
-#### Numpy
-
-1. Documentation: http://www.numpy.org/
-
-2. Install numpy using pip:
-```bash
-    pip install numpy
-```
-#### HDF5
-
-1. Documentation: https://www.h5py.org/
-
-2. Install HDF5 using pip:
-```bash
-    pip install h5py
-```
+  pip install -e .
+  
 ## Installation: macOS
 1. Install [homebrew](https://brew.sh/), then:
 ```bash
