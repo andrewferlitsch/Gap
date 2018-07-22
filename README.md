@@ -239,11 +239,12 @@ Online documentation for [pytest](https://docs.pytest.org)
 
 #### Execution
 
-The following are the pre-built automated unit tests:
+The following are the pre-built automated unit tests, which are located under the subdirectory tests:
 
     document_test.py    # Tests the Document Class in the Splitter Module
     page_test.py        # Tests the Page Class in the Splitter Module
     words_test.py       # Tests the Words and Addresses Class in the Syntax Module
+    segment_test.py     # Tests the Segment Class in the Segment Module
     image_test.py       # Tests the Image and Images Class in the Vision Module
 
 The automated tests are executed as follows:
@@ -251,6 +252,7 @@ The automated tests are executed as follows:
     pytest -v document_test.py
     pytest -v page_test.py
     pytest -v words_test.py
+    pytest -v segment_test.py
     pytest -v image_test.py
 
 #### Code Coverage
