@@ -135,6 +135,21 @@ After you have clone the source code, from the root of the source tree do the fo
     conda install numpy pytest nltk unidecode h5py opencv
 ```
 
+## Installation: Ubuntu
+1. Ghostscript:
+```bash
+    sudo apt-get install ghostscript
+```
+
+2. ImageMagick:
+```bash
+    sudo apt-get install imagemagick
+```
+
+3. Tesseract:
+```bash
+    sudo apt-get install tesseract-ocr-eng
+```
 
 ## Modules
 
