@@ -7,6 +7,7 @@ import os
 import threading
 import time
 import copy
+import random
 
 # Import numpy for the high performance in-memory matrix/array storage and operations.
 import numpy as np
@@ -338,15 +339,18 @@ class Image(object):
  
 class Images(object):
     """ Base (super) for classifying a group of images """
-    def __init__(self, images=None, labels=None, dir='./', batch=None, ehandler=None, config=None):
-        self._images   = images     # batch of images to process
+    def __init__(self, images=None, labels=None, dir='./', collection=None, ehandler=None, config=None):
+        self._images   = images     # collection of images to process
         self._dir      = dir        # storage directory for processed images
-        self._labels   = labels     # labels corresponding to batch of images
+        self._labels   = labels     # labels corresponding to collection of images
         self._ehandler = ehandler   # asynchronous processing event handler
         self._data     = None       # list of image objects
-        self._batch    = batch      # name of batch file
+        self._collection  = collection     # name of collection file
         self._config   = config     # configuration settings
         self._time     = time       # time to process the images
+        self._train    = None      # indices for training set
+        self._test     = None      # indices for test set
+        self._next     = 0         # next item in training set
         
         if images is None:
             return
@@ -378,9 +382,9 @@ class Images(object):
                     dir += "/"  
         self._dir = dir 
         
-        if batch is not None:
-            if isinstance(batch, str) == False:
-                raise TypeError("String expected for batch name")
+        if collection is not None:
+            if isinstance(collection, str) == False:
+                raise TypeError("String expected for collection name")
   
         if config is not None and isinstance(config, list) == False:
             raise TypeError("List expected for config settings")
@@ -389,23 +393,23 @@ class Images(object):
             self._config = []
         self._config.append("nostore")
         
-        # Process batch synchronously
+        # Process collection synchronously
         if ehandler is None:
             self._process()
         else:
-            # Process batch asynchronously
+            # Process collection asynchronously
             t = threading.Thread(target=self._async, args=())
             t.start()
  
     def _async(self):
-        """ Asynchronous processing of the batch """
+        """ Asynchronous processing of the collection """
         self._process()
         # signal user defined event handler when processing is done
         self._ehandler(self)
             
             
     def _process(self):
-        """ Process a batch of images """
+        """ Process a collection of images """
        
         start = time.time()
         
@@ -414,7 +418,7 @@ class Images(object):
         for ix in range(len(self._images)):
             self._data.append( Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config) )
             
-        # Store the images as a batch in an HD5 filesystem
+        # Store the images as a collection in an HD5 filesystem
         imgdata = []
         clsdata = []
         rawdata = []
@@ -433,12 +437,12 @@ class Images(object):
             types.append( bytes(img.type, 'utf-8') )
             paths.append( bytes(img.image, 'utf-8') )
             
-        # if no batch name specified, use root of first test file.
-        if self._batch is None:
-            self._batch = "batch." + self._data[0].name
+        # if no collection name specified, use root of first test file.
+        if self._collection is None:
+            self._collection = "collection." + self._data[0].name
             
         # Write the images and labels to disk as HD5 file
-        with h5py.File(self._dir + self._batch + '.h5', 'w') as hf:
+        with h5py.File(self._dir + self._collection + '.h5', 'w') as hf:
             hf.create_dataset("images",  data=imgdata)
             hf.create_dataset("labels",  data=clsdata)
             hf.create_dataset("raw",     data=rawdata)
@@ -486,27 +490,27 @@ class Images(object):
         
     @property
     def name(self):
-        """ Getter for the name of the batch """
-        return self._batch
+        """ Getter for the name of the collection """
+        return self._collection
         
     @property
     def time(self):
         """ Getter for the processing time """
         return self._time
         
-    def load(self, batch):
-        """ Load a Batch file of Images """
-        if batch is None:
-            raise ValueError("Batch parameter cannot be None")
-        if not isinstance(batch, str):
-            raise TypeError("String expected for batch name")
-        self._batch = batch
+    def load(self, collection):
+        """ Load a Collection of Images """
+        if collection is None:
+            raise ValueError("Collection parameter cannot be None")
+        if not isinstance(collection, str):
+            raise TypeError("String expected for collection name")
+        self._collection = collection
         
         if self._dir is None:
             self._dir = "./"
         
         # Read the images and labels from disk as HD5 file
-        with h5py.File(self._dir + self._batch + '.h5', 'r') as hf:
+        with h5py.File(self._dir + self._collection + '.h5', 'r') as hf:
             self._data = []
             length = len(hf["images"])
             for i in range(length):
@@ -523,6 +527,42 @@ class Images(object):
                 image._dir   = self._dir
                 self._data.append( image )
             self._labels = hf["labels"][:]
+            
+    def split(self, percent=0.8):
+        """ Set the split for training/test and create a randomized index """
+        if not isinstance(percent, float):
+            raise TypeError("Integer expected for percent")
+        if percent <= 0 or percent >= 1:
+            raise ValueError("Percent parameter must be between 0 and 1")
+        self._percent = percent
+        
+        # create a randomized index to the images
+        self._indices = random.sample([ index for index in range(len(self._data))], len(self._data))
+        
+        # split the indices into train and test
+        split = int(percent * len(self._data))
+        self._train = self._indices[:split]
+        self._test  = self._indices[split:]
+        self._next  = 0
+        return self._train, self._test
+        
+    def __next__(self):
+        """ Iterate through the training set """
+        
+        # training set was not pre-split, implicitly split it.
+        if self._train == None:
+            self.split()
+            
+        # End of training set
+        if self._next >= len(self._train):
+            # TODO: reshuffle training set
+            self._next = 0
+            return None
+            
+        ix = self._train[self._next]
+        self._next += 1
+        return self._data[ix]._imgdata
+        
 
     def __len__(self):
         """ Override the len() operator - return the number of images """
