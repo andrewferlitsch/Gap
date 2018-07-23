@@ -8,12 +8,13 @@ setup(name='Gap-ML',
       author='Andrew Ferlitsch',
       author_email='aferlitsch@gmail.com',
       license='CC-BY',
-      url='',
+      url='https://github.com/andrewferlitsch/Gap',
       packages=['./'],
        install_requires=[
           'numpy',
           'h5py',
           'unidecode',
           'nltk',
+          'cv2'
       ],
      )

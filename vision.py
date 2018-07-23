@@ -56,6 +56,9 @@ class Image(object):
                 raise TypeError("String expected for image storage path")
             if dir.endswith("/") == False:
                     dir += "/"  
+            # Create Directory if it does not exist  
+            if not os.path.isdir(dir):
+               os.mkdir(dir)
             self._dir = dir
         elif dir == None:
             self._dir = "./"
