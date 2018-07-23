@@ -65,7 +65,8 @@ The GAP framework extensively uses a number of open source applications/modules.
   5. unidecode - romanization of latin character codes
   6. numpy - high performance in-memory arrays (tensors)
   7. HDF5 - high performance of on-disk data (tensors) access
-
+  8. openCV - image manipulation and processing for computer vision
+  
 ## Installation: MSWin64
 
 #### Ghostscript
@@ -117,7 +118,8 @@ The remaining dependencies for python packages distributed at PyPi are automatic
   - nltk : http://www.nltk.org/
   - numpy : http://www.numpy.org/
   - h5py : https://www.h5py.org/
-  - unidecode : https://pypi.org/project/Unidecode/```
+  - unidecode : https://pypi.org/project/Unidecode/
+  - openCV : https://www.opencv.org/
 
 After you have clone the source code, from the root of the source tree do the following to complete the install:
 
@@ -203,7 +205,7 @@ The segmentation module was introduced as part of the pre-launch of Gap v0.9. It
 
 #### <span style='color: saddlebrown'>VISION</span>
 
-The splitter module is the CV entry point into the pipeline. It consists of a Images and Image class. The Images class handles the storage and (random access) batch retrieval of CV machine learning ready data, using open source numpy high performance arrays (tensors) and HDF5 high performance disk (tensor) access. The Image class handles preprocessing of individual images into CV machine learning ready data. The batch and image preprocessing can be done synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing of an image or batch has been completed and the machine learning ready data is accessible.
+The splitter module is the CV entry point into the pipeline. It consists of a Images and Image class. The Images class handles the storage and (random access) batch retrieval of CV machine learning ready data, using open source openCV image processing, numpy high performance arrays (tensors) and HDF5 high performance disk (tensor) access. The Image class handles preprocessing of individual images into CV machine learning ready data. The batch and image preprocessing can be done synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing of an image or batch has been completed and the machine learning ready data is accessible.
 
 The vision module handles:
 
