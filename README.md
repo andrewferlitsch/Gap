@@ -138,6 +138,8 @@ After you have clone the source code, from the root of the source tree do the fo
 ```
 
 ## Installation: Ubuntu
+Execute `sudo apt-get update`, then:
+
 1. Ghostscript:
 ```bash
     sudo apt-get install ghostscript
@@ -150,6 +152,7 @@ After you have clone the source code, from the root of the source tree do the fo
 
 3. Tesseract:
 ```bash
+    sudo apt-get install tesseract-ocr
     sudo apt-get install tesseract-ocr-eng
 ```
 
