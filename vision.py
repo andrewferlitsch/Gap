@@ -339,18 +339,21 @@ class Image(object):
  
 class Images(object):
     """ Base (super) for classifying a group of images """
-    def __init__(self, images=None, labels=None, dir='./', collection=None, ehandler=None, config=None):
+    def __init__(self, images=None, labels=None, dir='./', name=None, ehandler=None, config=None):
         self._images   = images     # collection of images to process
         self._dir      = dir        # storage directory for processed images
         self._labels   = labels     # labels corresponding to collection of images
         self._ehandler = ehandler   # asynchronous processing event handler
         self._data     = None       # list of image objects
-        self._collection  = collection     # name of collection file
+        self._name     = name       # name of collection file
         self._config   = config     # configuration settings
         self._time     = time       # time to process the images
         self._split    = 0.8        # percentage of split between train / test
         self._train    = None       # indices for training set
         self._test     = None       # indices for test set
+        self._trainsz  = 0          # size of training set
+        self._testsz   = 0          # size of test set
+        self._minisz   = 0          # mini batch size
         self._next     = 0          # next item in training set
         
         if images is None:
@@ -383,8 +386,8 @@ class Images(object):
                     dir += "/"  
         self._dir = dir 
         
-        if collection is not None:
-            if isinstance(collection, str) == False:
+        if name is not None:
+            if isinstance(name, str) == False:
                 raise TypeError("String expected for collection name")
   
         if config is not None and isinstance(config, list) == False:
@@ -439,11 +442,11 @@ class Images(object):
             paths.append( bytes(img.image, 'utf-8') )
             
         # if no collection name specified, use root of first test file.
-        if self._collection is None:
-            self._collection = "collection." + self._data[0].name
+        if self._name is None:
+            self._name = "collection." + self._data[0].name
             
         # Write the images and labels to disk as HD5 file
-        with h5py.File(self._dir + self._collection + '.h5', 'w') as hf:
+        with h5py.File(self._dir + self._name + '.h5', 'w') as hf:
             hf.create_dataset("images",  data=imgdata)
             hf.create_dataset("labels",  data=clsdata)
             hf.create_dataset("raw",     data=rawdata)
@@ -492,26 +495,26 @@ class Images(object):
     @property
     def name(self):
         """ Getter for the name of the collection """
-        return self._collection
+        return self._name
         
     @property
     def time(self):
         """ Getter for the processing time """
         return self._time
         
-    def load(self, collection):
+    def load(self, name):
         """ Load a Collection of Images """
-        if collection is None:
-            raise ValueError("Collection parameter cannot be None")
-        if not isinstance(collection, str):
+        if name is None:
+            raise ValueError("Name parameter cannot be None")
+        if not isinstance(name, str):
             raise TypeError("String expected for collection name")
-        self._collection = collection
+        self._name = name
         
         if self._dir is None:
             self._dir = "./"
         
         # Read the images and labels from disk as HD5 file
-        with h5py.File(self._dir + self._collection + '.h5', 'r') as hf:
+        with h5py.File(self._dir + self._name + '.h5', 'r') as hf:
             self._data = []
             length = len(hf["images"])
             for i in range(length):
@@ -538,7 +541,7 @@ class Images(object):
     def split(self, percent):
         """ Set the split for training/test and create a randomized index """
         if not isinstance(percent, float):
-            raise TypeError("Integer expected for percent")
+            raise TypeError("Float expected for percent")
         if percent <= 0 or percent >= 1:
             raise ValueError("Percent parameter must be between 0 and 1")
         self._split = percent
@@ -548,12 +551,37 @@ class Images(object):
         
         # split the indices into train and test
         split = int(percent * len(self._data))
-        self._train = self._indices[:split]
-        self._test  = self._indices[split:]
-        self._next  = 0
+        self._train   = self._indices[:split]
+        self._test    = self._indices[split:]
+        self._trainsz = len(self._train)
+        self._testsz  = len(self._test)
+        self._next    = 0
+        
+    nth_mini = 0
+    nbatches = 0
+    
+    @property
+    def minibatch(self):
+        """ """
+        return self._minisize
+        
+    @minibatch.setter
+    def minibatch(self, batch_size):
+        """ Generator for creating minibatches """
+        if not isinstance(batch_size, int):
+            raise TypeError("Integer expected for mini batch size")
+        
+        # training set was not pre-split, implicitly split it.
+        if self._train == None:
+            self.split = 0.8
+            
+        if batch_size < 2 or batch_size >= self._trainsz:
+            raise ValueError("Mini batch size is out of range")
+            
+        self._minibatch = batch_size
         
     def __next__(self):
-        """ Iterate through the training set """
+        """ Iterate through the training set (single image at a time) """
         
         # training set was not pre-split, implicitly split it.
         if self._train == None:
@@ -561,13 +589,14 @@ class Images(object):
             
         # End of training set
         if self._next >= len(self._train):
-            # TODO: reshuffle training set
-            self._next = 0
+            # Reshuffle the training data for the next round
+            self._train = random.sample([ index for index in range(self._trainsz)], self._trainsz)
+            self._next = 0 
             return None
             
         ix = self._train[self._next]
         self._next += 1
-        return self._data[ix]._imgdata
+        return self._data[ix]._imgdata , self._data[ix]._label
         
 
     def __len__(self):
