@@ -4,27 +4,39 @@ from setuptools import setup, find_packages
 import os, sys
 
 install_requires=[
-          'numpy',
-          'h5py',
-          'unidecode',
-          'nltk',
-          'opencv-python']
+  'numpy',
+  'h5py',
+  'unidecode',
+  'nltk',
+  'opencv-python']
 		  
 tests_require=[
-            'pytest',
-            'pytest-cov']
+  'pytest',
+  'pytest-cov']
+		  
+scripts=[
+  'scripts/address.py',
+  'scripts/pdf_res.py',
+  'scripts/perf.py',
+  'scripts/segment.py',
+  'scripts/splitter.py',
+  'scripts/syntax.py',
+  'scripts/vision.py',
+  'scripts/vocabulary.py']
 
-setup(name='Gap-ML',
-      version='0.9',
-      description='NLP and CV Data Engineering Framework',
-      author='Andrew Ferlitsch',
-      author_email='aferlitsch@gmail.com',
-      license='CC-BY',
-      url='https://github.com/andrewferlitsch/Gap',
-      packages=find_packages(),
-	install_requires=install_requires,
-      tests_require=tests_require
-     )
+setup(
+  name='Gap-ML',
+  version='0.9',
+  description='NLP and CV Data Engineering Framework',
+  author='Andrew Ferlitsch',
+  author_email='aferlitsch@gmail.com',
+  license='CC-BY',
+  url='https://github.com/andrewferlitsch/Gap',
+  packages=find_packages(),
+  install_requires=install_requires,
+  tests_require=tests_require,
+  scripts=scripts
+)
 
 if sys.platform.startswith('win'):
     pass
