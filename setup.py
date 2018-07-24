@@ -3,6 +3,9 @@
 from setuptools import setup, find_packages
 import os, sys
 
+with open('README.md') as f:
+	long_description = f.read()
+
 install_requires=[
   'numpy',
   'h5py',
@@ -32,6 +35,7 @@ setup(
   author_email='aferlitsch@gmail.com',
   license='CC-BY',
   url='https://github.com/andrewferlitsch/Gap',
+  long_description=long_description,
   packages=find_packages(),
   install_requires=install_requires,
   tests_require=tests_require,
