@@ -533,19 +533,33 @@ class MyTest(unittest.TestCase):
     def test_058(self):
         """ Images - split by default """
         images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
-        self.assertEqual(images.split, 0.8)
+        x1, x2, y1, y2 = images.split
+        self.assertEquals(len(x1), 3)
+        self.assertEquals(len(x2), 1)
+        self.assertEquals(len(y1), 3)
+        self.assertEquals(len(y2), 1)
         os.remove('collection.0_100.h5')
         
     def test_059(self):
-        """ Images - split, percent specified """
+        """ Images - split, set percent """
         images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
         images.split = 0.5
-        self.assertEqual(images.split, 0.5)
         self.assertEqual(len(images._train), 2)
         self.assertEqual(len(images._test), 2)
         os.remove('collection.0_100.h5')
         
     def test_060(self):
+        """ Images - split, percent specified """
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+        images.split = 0.25
+        x1, x2, y1, y2 = images.split
+        self.assertEquals(len(x1), 1)
+        self.assertEquals(len(x2), 3)
+        self.assertEquals(len(y1), 1)
+        self.assertEquals(len(y2), 3)
+        os.remove('collection.0_100.h5')
+        
+    def test_061(self):
         """ Images - iterate through collection """
         images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
         images.split = 0.75
@@ -555,7 +569,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(next(images), None)
         os.remove('collection.0_100.h5')
             
-    def test_061(self):
+    def test_062(self):
         """ Images - iterate 2nd pass """
         images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg', '3_100.jpg'], [1,2,3,4,5], name='foobar')
         images.split = 0.5
@@ -567,14 +581,14 @@ class MyTest(unittest.TestCase):
         self.assertEqual(next(images), None)
         os.remove('foobar.h5')
         
-    def test_062(self):
+    def test_063(self):
         """ Images - minibatch not an integer """
         images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4], name='foobar')
         with pytest.raises(TypeError):
             images.minibatch = 'a'
         os.remove('foobar.h5')
         
-    def test_063(self):
+    def test_064(self):
         """ Images - minibatch invalid range """
         images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4], name='foobar')
         with pytest.raises(ValueError):
@@ -583,20 +597,23 @@ class MyTest(unittest.TestCase):
             images.minibatch = 4
         os.remove('foobar.h5')
         
-    # grayscale image with only (height, width) shape
-    
-    # mix 0_100.jpg and test.jpg together and it fails
-
-    def xxtest_031(self):
-        """ gif file """,
-        """  BUG: can't handle gifs """
-        image = Image("text.gif")
-        self.assertEqual(image.name, "text")
-        self.assertEqual(image.type, "gif")
-        os.remove("text.gif")
-        os.remove("text.h5")
-        os.remove("text.thumbnail.gif")
-
+    def test_065(self):
+        """ minibatch - fetch """
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg', '3_100.jpg', '1_100.jpg'], [1,2,3,4,5,6], name='foobar')
+        images.split = 0.5
+        images.minibatch = 2
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 2)
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 1)
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 0)
 		
     def done(self, image):
         self.isdone = True

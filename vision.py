@@ -353,7 +353,7 @@ class Images(object):
         self._test     = None       # indices for test set
         self._trainsz  = 0          # size of training set
         self._testsz   = 0          # size of test set
-        self._minisz   = 0          # mini batch size
+        self._minisz   = 1          # mini batch size
         self._next     = 0          # next item in training set
         
         if images is None:
@@ -534,8 +534,26 @@ class Images(object):
         
     @property
     def split(self):
-        """ Getter for split percent of train vs test """
-        return self._split
+        """ Getter for return a split training set """
+        
+        # Training set not already split, so split it
+        if self._train == None:
+            self.split = self._split
+            
+        # Construct the train and test lists
+        X_train = []
+        Y_train = []
+        X_test  = []
+        Y_test  = []
+        for _ in range(0, self._trainsz):
+            ix = self._train[_]
+            X_train.append( self._data[ix]._imgdata )
+            Y_train.append( self._data[ix]._label )
+        for _ in range(0, self._testsz):
+            ix = self._test[_]
+            X_test.append( self._data[ix]._imgdata )
+            Y_test.append( self._data[ix]._label )
+        return X_train, X_test, Y_train, Y_test
         
     @split.setter
     def split(self, percent):
@@ -556,14 +574,15 @@ class Images(object):
         self._trainsz = len(self._train)
         self._testsz  = len(self._test)
         self._next    = 0
-        
-    nth_mini = 0
-    nbatches = 0
     
     @property
     def minibatch(self):
-        """ """
-        return self._minisize
+        """ Return a generator for the next mini batch """
+        # Minibatch, return a generator
+        for _ in range(self._next, min(self._next + self._minisz, self._trainsz)): 
+            ix = self._train[_]
+            self._next += 1 
+            yield self._data[ix]._imgdata , self._data[ix]._label
         
     @minibatch.setter
     def minibatch(self, batch_size):
@@ -578,26 +597,26 @@ class Images(object):
         if batch_size < 2 or batch_size >= self._trainsz:
             raise ValueError("Mini batch size is out of range")
             
-        self._minibatch = batch_size
+        self._minisz = batch_size
         
     def __next__(self):
         """ Iterate through the training set (single image at a time) """
-        
+
         # training set was not pre-split, implicitly split it.
         if self._train == None:
-            self.split = 0.8
-            
+            self.split = self._split
+
         # End of training set
-        if self._next >= len(self._train):
+        if self._next >= self._trainsz:
             # Reshuffle the training data for the next round
             self._train = random.sample([ index for index in range(self._trainsz)], self._trainsz)
             self._next = 0 
             return None
-            
+ 
         ix = self._train[self._next]
         self._next += 1
         return self._data[ix]._imgdata , self._data[ix]._label
-        
+                
 
     def __len__(self):
         """ Override the len() operator - return the number of images """
