@@ -348,9 +348,10 @@ class Images(object):
         self._collection  = collection     # name of collection file
         self._config   = config     # configuration settings
         self._time     = time       # time to process the images
-        self._train    = None      # indices for training set
-        self._test     = None      # indices for test set
-        self._next     = 0         # next item in training set
+        self._split    = 0.8        # percentage of split between train / test
+        self._train    = None       # indices for training set
+        self._test     = None       # indices for test set
+        self._next     = 0          # next item in training set
         
         if images is None:
             return
@@ -527,14 +528,20 @@ class Images(object):
                 image._dir   = self._dir
                 self._data.append( image )
             self._labels = hf["labels"][:]
-            
-    def split(self, percent=0.8):
+        
+    @property
+    def split(self):
+        """ Getter for split percent of train vs test """
+        return self._split
+        
+    @split.setter
+    def split(self, percent):
         """ Set the split for training/test and create a randomized index """
         if not isinstance(percent, float):
             raise TypeError("Integer expected for percent")
         if percent <= 0 or percent >= 1:
             raise ValueError("Percent parameter must be between 0 and 1")
-        self._percent = percent
+        self._split = percent
         
         # create a randomized index to the images
         self._indices = random.sample([ index for index in range(len(self._data))], len(self._data))
@@ -544,14 +551,13 @@ class Images(object):
         self._train = self._indices[:split]
         self._test  = self._indices[split:]
         self._next  = 0
-        return self._train, self._test
         
     def __next__(self):
         """ Iterate through the training set """
         
         # training set was not pre-split, implicitly split it.
         if self._train == None:
-            self.split()
+            self.split = 0.8
             
         # End of training set
         if self._next >= len(self._train):

@@ -507,6 +507,40 @@ class MyTest(unittest.TestCase):
         self.assertTrue(images.time > 0)
         os.remove("collection.0_100.h5")
         
+    def test_055(self):
+        """ Images - split by default """
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+        self.assertEqual(images.split, 0.8)
+        
+    def test_056(self):
+        """ Images - split, percent specified """
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+        images.split = 0.5
+        self.assertEqual(images.split, 0.5)
+        self.assertEqual(len(images._train), 2)
+        self.assertEqual(len(images._test), 2)
+        
+    def test_057(self):
+        """ Images - iterate through collection """
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+        images.split = 0.75
+        self.assertEqual(len(next(images)), 100)
+        self.assertEqual(len(next(images)), 100)
+        self.assertEqual(len(next(images)), 100)
+        self.assertEqual(next(images), None)
+        
+        
+    def test_058(self):
+        """ Images - iterate 2nd pass """
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+        images.split = 0.5
+        self.assertEqual(len(next(images)), 100)
+        self.assertEqual(len(next(images)), 100)
+        self.assertEqual(next(images), None)
+        self.assertEqual(len(next(images)), 100)
+        self.assertEqual(len(next(images)), 100)
+        self.assertEqual(next(images), None)
+        
     # create dir in Images
     # grayscale image with only (height, width) shape
     # other image properties: name, dir, size, shape, type
