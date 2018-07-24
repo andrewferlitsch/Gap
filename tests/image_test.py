@@ -534,6 +534,7 @@ class MyTest(unittest.TestCase):
         """ Images - split by default """
         images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
         self.assertEqual(images.split, 0.8)
+        os.remove('collection.0_100.h5')
         
     def test_059(self):
         """ Images - split, percent specified """
@@ -552,6 +553,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(len(next(images)), 2)
         self.assertEqual(len(next(images)), 2)
         self.assertEqual(next(images), None)
+        os.remove('collection.0_100.h5')
             
     def test_061(self):
         """ Images - iterate 2nd pass """
