@@ -23,7 +23,7 @@ setup(name='Gap-ML',
 if sys.platform.startswith('win'):
     pass
 elif sys.platform.startswith('linux'):
-    #install Ghostscript
+    #install Ghostscript:
     os.system('sudo apt-get update && sudo apt-get install ghostscript')
     #install ImageMagick:
     os.system('sudo apt-get install imagemagick')
