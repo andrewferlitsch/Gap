@@ -28,7 +28,7 @@ class MyTest(unittest.TestCase):
         
     def test_003(self):
         """ paragraph """
-        with open("segment_para.txt", "r") as f:
+        with open("files/segment_para.txt", "r") as f:
             text = f.read()
         segment = Segment(text)
         self.assertEquals(segment.segments, [{'tag': 1002, 'text': 'This is a first paragraph\nand continues to next line.'}, {'tag': 1002, 'text': 'Then this is the second\nparagraph.'}])
@@ -45,7 +45,7 @@ class MyTest(unittest.TestCase):
         
     def test_006(self):
         """ headings """
-        with open("segment_heading.txt", "r") as f:
+        with open("files/segment_heading.txt", "r") as f:
             text = f.read()
         segment = Segment(text)
         self.assertEquals(segment.segments, [{'tag': 1001, 'text': 'TABLE OF CONTENTS'}, {'tag': 1001, 'text': '1. Section One'}, {'tag': 1001, 'text': '2. Section Two'}])
@@ -69,7 +69,7 @@ class MyTest(unittest.TestCase):
         
     def test_010(self):
         """ more page numbering """
-        with open("segment_page.txt", "r") as f:
+        with open("files/segment_page.txt", "r") as f:
             text = f.read()
         segment = Segment(text)
         self.assertEquals(segment.segments, [{'tag': 1002, 'text': 'first para'}, {'tag': 1003, 'text': 'Page 1'}, {'tag': 1002, 'text': 'second para'}, {'tag': 1003, 'text': 'p. 2'}, {'tag': 1002, 'text': 'third para'}, {'tag': 1003, 'text': '3'}])   

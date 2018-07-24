@@ -36,12 +36,12 @@ class MyTest(unittest.TestCase):
     def test_004(self):
         """ Image Constructor - image = nonexistent image """
         with pytest.raises(FileNotFoundError):
-            image = Image("nonexist.txt")
+            image = Image("files/nonexist.txt")
         
     def test_005(self):
         """ Image Constructor - not an image """
         with pytest.raises(TypeError):
-            image = Image("4page.pdf")
+            image = Image("files/4page.pdf")
 
     def test_006(self):
         """ Image constructor - directory is not a string """
@@ -60,8 +60,8 @@ class MyTest(unittest.TestCase):
 
     def test_009(self):
         """ image properties """
-        image = Image("0_100.jpg")
-        self.assertEqual(image.image, "0_100.jpg")
+        image = Image("files/0_100.jpg")
+        self.assertEqual(image.image, "files/0_100.jpg")
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -75,8 +75,8 @@ class MyTest(unittest.TestCase):
         
     def test_010(self):
         """ image dir is None """
-        image = Image("0_100.jpg", dir=None)
-        self.assertEqual(image.image, "0_100.jpg")
+        image = Image("files/0_100.jpg", dir=None)
+        self.assertEqual(image.image, "files/0_100.jpg")
         self.assertTrue(os.path.isfile("0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
         self.assertEqual(image.thumb, None )
@@ -84,7 +84,7 @@ class MyTest(unittest.TestCase):
         
     def test_011(self):
         """ image dir is not-None - nonexist """
-        image = Image("0_100.jpg", dir='tmp')
+        image = Image("files/0_100.jpg", dir='tmp')
         self.assertTrue(os.path.isfile("tmp/0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
         self.assertEqual(image.thumb, None )
@@ -92,7 +92,7 @@ class MyTest(unittest.TestCase):
         
     def test_012(self):
         """ image dir is not-None - exist """
-        image = Image("0_100.jpg", dir='tmp')
+        image = Image("files/0_100.jpg", dir='tmp')
         self.assertTrue(os.path.isfile("tmp/0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
         self.assertEqual(image.thumb, None )
@@ -102,11 +102,11 @@ class MyTest(unittest.TestCase):
     def test_013(self):
         """ label is None """
         with pytest.raises(TypeError):
-            image = Image("tests/0_100.jpg", dir='tmp', label=None)
+            image = Image("tests/files/0_100.jpg", dir='tmp', label=None)
             
     def test_014(self):
         """ label is valid """
-        image = Image("0_100.jpg", dir='tmp', label=16)
+        image = Image("files/0_100.jpg", dir='tmp', label=16)
         self.assertEqual(image.label, 16)
         self.assertTrue(len(image.raw) > 0 )
         self.assertEqual(image.thumb, None )
@@ -115,8 +115,8 @@ class MyTest(unittest.TestCase):
             
     def test_015(self):
         """ config is None """
-        image = Image("0_100.jpg", config=None)
-        self.assertEqual(image.image, "0_100.jpg")
+        image = Image("files/0_100.jpg", config=None)
+        self.assertEqual(image.image, "files/0_100.jpg")
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -130,8 +130,8 @@ class MyTest(unittest.TestCase):
             
     def test_016(self):
         """ config is empty """
-        image = Image("0_100.jpg", config=[])
-        self.assertEqual(image.image, "0_100.jpg")
+        image = Image("files/0_100.jpg", config=[])
+        self.assertEqual(image.image, "files/0_100.jpg")
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -146,39 +146,39 @@ class MyTest(unittest.TestCase):
     def test_017(self):
         """ config has non-string entry """
         with pytest.raises(TypeError):
-            image = Image("0_100.jpg", dir='tmp', config=[1])
+            image = Image("files/0_100.jpg", dir='tmp', config=[1])
             
     def test_018(self):
         """ config has invalid setting """
         with pytest.raises(AttributeError):
-            image = Image("0_100.jpg", dir='tmp', config=['foo'])
+            image = Image("files/0_100.jpg", dir='tmp', config=['foo'])
             
     def test_019(self):
         """ config has valid setting """
-        image = Image("0_100.jpg", config=['gray', 'grayscale'])
-        image = Image("0_100.jpg", config=['nostore'])
+        image = Image("files/0_100.jpg", config=['gray', 'grayscale'])
+        image = Image("files/0_100.jpg", config=['nostore'])
         os.remove("0_100.h5")
             
     def test_020(self):
         """ config resize has no value """
         with pytest.raises(AttributeError):
-            image = Image("0_100.jpg", dir='tmp', config=['resize'])
+            image = Image("files/0_100.jpg", dir='tmp', config=['resize'])
         with pytest.raises(AttributeError):
-            image = Image("0_100.jpg", dir='tmp', config=['resize='])
+            image = Image("files/0_100.jpg", dir='tmp', config=['resize='])
             
     def test_021(self):
         """ config resize is wrong format """
         with pytest.raises(AttributeError):
-            image = Image("0_100.jpg", dir='tmp', config=['resize=1'])
+            image = Image("files/0_100.jpg", dir='tmp', config=['resize=1'])
         with pytest.raises(AttributeError):
-            image = Image("0_100.jpg", dir='tmp', config=['resize=a,2'])
+            image = Image("files/0_100.jpg", dir='tmp', config=['resize=a,2'])
         with pytest.raises(AttributeError):
-            image = Image("0_100.jpg", dir='tmp', config=['resize=2,b'])
+            image = Image("files/0_100.jpg", dir='tmp', config=['resize=2,b'])
             
     def test_022(self):
         """ config - RGB to grayscale """
-        image = Image("0_100.jpg", config=['gray'])
-        self.assertEqual(image.image, "0_100.jpg")
+        image = Image("files/0_100.jpg", config=['gray'])
+        self.assertEqual(image.image, "files/0_100.jpg")
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -187,8 +187,8 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         os.remove("0_100.h5")
-        image = Image("0_100.jpg", config=['grayscale'])
-        self.assertEqual(image.image, "0_100.jpg")
+        image = Image("files/0_100.jpg", config=['grayscale'])
+        self.assertEqual(image.image, "files/0_100.jpg")
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -200,8 +200,8 @@ class MyTest(unittest.TestCase):
             
     def test_023(self):
         """ config - grayscale to RGB """
-        image = Image("0_100g.jpg")
-        self.assertEqual(image.image, "0_100g.jpg")
+        image = Image("files/0_100g.jpg")
+        self.assertEqual(image.image, "files/0_100g.jpg")
         self.assertEqual(image.name, "0_100g")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -213,7 +213,7 @@ class MyTest(unittest.TestCase):
         
     def test_024(self):
         """ config - resize """
-        image = Image("0_100.jpg", config=['resize=50,50'])
+        image = Image("files/0_100.jpg", config=['resize=50,50'])
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -222,7 +222,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         os.remove("0_100.h5")
-        image = Image("0_100.jpg", config=['resize=(200,200)'])
+        image = Image("files/0_100.jpg", config=['resize=(200,200)'])
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -234,7 +234,7 @@ class MyTest(unittest.TestCase):
 
     def test_025(self):
         """ config - flatten """
-        image = Image("0_100.jpg", config=['flat'])
+        image = Image("files/0_100.jpg", config=['flat'])
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -243,7 +243,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
         os.remove("0_100.h5")
-        image = Image("0_100.jpg", config=['flatten'])
+        image = Image("files/0_100.jpg", config=['flatten'])
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -255,7 +255,7 @@ class MyTest(unittest.TestCase):
         
     def test_026(self):
         """ config - nostore """
-        image = Image("0_100.jpg", config=['flat', 'nostore'])
+        image = Image("files/0_100.jpg", config=['flat', 'nostore'])
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -266,43 +266,43 @@ class MyTest(unittest.TestCase):
         
     def test_027(self):
         """ async processing """
-        image = Image("0_100.jpg", ehandler=self.done)
+        image = Image("files/0_100.jpg", ehandler=self.done)
         time.sleep(3)
         self.assertTrue(self.isdone)
         os.remove("0_100.h5")
         
     def test_028(self):
         """ png file """
-        image = Image("text.png")
+        image = Image("files/text.png")
         self.assertEqual(image.name, "text")
         self.assertEqual(image.type, "png")
         os.remove("text.h5")
         
     def test_029(self):
         """ tif file """
-        image = Image("6page.tif")
+        image = Image("files/6page.tif")
         self.assertEqual(image.name, "6page")
         self.assertEqual(image.type, "tif")
         os.remove("6page.h5")
-        image = Image("text.tiff")
+        image = Image("files/text.tiff")
         self.assertEqual(image.name, "text")
         self.assertEqual(image.type, "tiff")
         os.remove("text.h5")
         
     def test_030(self):
         """ bmp file """
-        image = Image("text.bmp")
+        image = Image("files/text.bmp")
         self.assertEqual(image.name, "text")
         self.assertEqual(image.type, "bmp")
         os.remove("text.h5")
         
     def test_031(self):
         """ config - load """
-        image = Image("0_100.jpg", config=['flat'])
+        image = Image("files/0_100.jpg", config=['flat'])
         self.assertTrue(os.path.isfile("0_100.h5"))
         image = None
         image = Image()
-        image.load("0_100.jpg")
+        image.load("files/0_100.jpg")
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.dir, "./")
@@ -313,11 +313,11 @@ class MyTest(unittest.TestCase):
         
     def test_032(self):
         """ thumbnail """
-        image = Image("0_100.jpg", config=['thumb=(32,32)'])
+        image = Image("files/0_100.jpg", config=['thumb=(32,32)'])
         self.assertTrue(os.path.isfile("0_100.h5"))
         self.assertEqual(image.thumb.shape, (32, 32, 3))
         os.remove("0_100.h5")
-        image = Image("0_100.jpg", config=['thumb=(16,16)'])
+        image = Image("files/0_100.jpg", config=['thumb=(16,16)'])
         self.assertTrue(os.path.isfile("0_100.h5"))
         self.assertEqual(image.thumb.shape, (16,16,3))
         os.remove("0_100.h5")
@@ -325,15 +325,15 @@ class MyTest(unittest.TestCase):
     def test_033(self):
         """ thumbnail invalid """
         with pytest.raises(AttributeError):
-            image = Image("0_100.jpg", dir='tmp', config=['thumb=1'])
+            image = Image("files/0_100.jpg", dir='tmp', config=['thumb=1'])
         with pytest.raises(AttributeError):
-            image = Image("0_100.jpg", dir='tmp', config=['thumb=a,2'])
+            image = Image("files/0_100.jpg", dir='tmp', config=['thumb=a,2'])
         with pytest.raises(AttributeError):
-            image = Image("0_100.jpg", dir='tmp', config=['thumb=2,b'])
+            image = Image("files/0_100.jpg", dir='tmp', config=['thumb=2,b'])
         
     def test_034(self):
         """ time """
-        image = Image("0_100.jpg")
+        image = Image("files/0_100.jpg")
         self.assertTrue(image.time > 0)
         os.remove("0_100.h5")
         
@@ -362,31 +362,31 @@ class MyTest(unittest.TestCase):
     def test_039(self):
         """ Images Constructor - images = image not exist """
         with pytest.raises(FileNotFoundError):
-            images = Images(["nonexist.jpg"], [0])
+            images = Images(["files/nonexist.jpg"], [0])
         
     def test_040(self):
         """ Images Constructor - labels not a string """
         with pytest.raises(TypeError):
-            images = Images(["0_100.jpg"], ['a'])
+            images = Images(["files/0_100.jpg"], ['a'])
         
     def test_041(self):
         """ Images Constructor - labels not specified """
         with pytest.raises(TypeError):
-            images = Images(["0_100.jpg"])
+            images = Images(["files/0_100.jpg"])
         
     def test_042(self):
         """ Images Constructor - labels not match images """
         with pytest.raises(IndexError):
-            images = Images(["0_100.jpg"], [0, 1])
+            images = Images(["files/0_100.jpg"], [0, 1])
         
     def test_043(self):
         """ Images Constructor - labels is None """
         with pytest.raises(TypeError):
-            images = Images(["0_100.jpg"], labels=None)
+            images = Images(["files/0_100.jpg"], labels=None)
         
     def test_044(self):
         """ Images Constructor - single file """
-        images = Images(["0_100.jpg"], labels=[2])
+        images = Images(["files/0_100.jpg"], labels=[2])
         self.assertEqual(len(images), 1)
         self.assertTrue(os.path.isfile("collection.0_100.h5"))
         self.assertEqual(images[0].name, "0_100")
@@ -401,7 +401,7 @@ class MyTest(unittest.TestCase):
         
     def test_045(self):
         """ Images Constructor - multi file """
-        images = Images(["0_100.jpg", "1_100.jpg"], labels=[2, 2])
+        images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=[2, 2])
         self.assertEqual(len(images), 2)
         self.assertTrue(os.path.isfile("collection.0_100.h5"))
         self.assertTrue(images.images != None)
@@ -421,7 +421,7 @@ class MyTest(unittest.TestCase):
         
     def test_046(self):
         """ images properties dir, class """
-        images = Images(["0_100.jpg"], labels=[2], dir="tmp")
+        images = Images(["files/0_100.jpg"], labels=[2], dir="tmp")
         self.assertTrue(images.dir, "tmp")
         self.assertTrue(images.label, [2])
         os.remove("tmp/collection.0_100.h5")
@@ -430,23 +430,23 @@ class MyTest(unittest.TestCase):
     def test_047(self):
         """ images constructor - dir not a string """
         with pytest.raises(TypeError):
-            images = Images(["0_100.jpg"], labels=[0], dir=0)
+            images = Images(["files/0_100.jpg"], labels=[0], dir=0)
         
     def test_048(self):
         """ images constructor - collection not a string """
         with pytest.raises(TypeError):
-            images = Images(["0_100.jpg"], labels=[0], collection=0)
+            images = Images(["files/0_100.jpg"], labels=[0], collection=0)
         
     def test_049(self):
         """ images properties dir, class """
-        images = Images(["0_100.jpg"], labels=[2], collection="foobar")
+        images = Images(["files/0_100.jpg"], labels=[2], collection="foobar")
         self.assertEqual(images.name, 'foobar')
         self.assertTrue(os.path.isfile("foobar.h5"))
         os.remove("foobar.h5")
         
     def test_050(self):
         """ Images Constructor - multi file """
-        images = Images(["0_100.jpg", "1_100.jpg"], labels=2)
+        images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=2)
         self.assertEqual(len(images), 2)
         self.assertTrue(os.path.isfile("collection.0_100.h5"))
         self.assertTrue(images.images != None)
@@ -466,7 +466,7 @@ class MyTest(unittest.TestCase):
             
     def test_051(self):
         """ images load - default collection name """
-        images = Images(["0_100.jpg", "1_100.jpg"], labels=[1,2])
+        images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=[1,2])
         self.assertEqual(images.name, 'collection.0_100')
         images = Images()
         images.load("collection.0_100")
@@ -478,7 +478,7 @@ class MyTest(unittest.TestCase):
             
     def test_052(self):
         """ images load - collection name """
-        images = Images(["0_100.jpg", "1_100.jpg"], labels=[1,2], collection='foobar')
+        images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=[1,2], collection='foobar')
         self.assertEqual(images.name, 'foobar')
         images = Images()
         images.load("foobar")
@@ -491,7 +491,7 @@ class MyTest(unittest.TestCase):
     def test_053(self):
         """ images async """
         self.isdone = False
-        images = Images(["0_100.jpg", "1_100.jpg"], labels=[1,2], collection='foobar', ehandler=self.done) 
+        images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=[1,2], collection='foobar', ehandler=self.done) 
         time.sleep(3)
         self.assertTrue(self.isdone)
         self.assertEqual(images.name, 'foobar')
@@ -502,19 +502,19 @@ class MyTest(unittest.TestCase):
         
     def test_054(self):
         """ Images - time """
-        images = Images(["0_100.jpg"], labels=[2])
+        images = Images(["files/0_100.jpg"], labels=[2])
         self.assertEqual(len(images), 1)
         self.assertTrue(images.time > 0)
         os.remove("collection.0_100.h5")
         
     def test_055(self):
         """ Images - split by default """
-        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
         self.assertEqual(images.split, 0.8)
         
     def test_056(self):
         """ Images - split, percent specified """
-        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
         images.split = 0.5
         self.assertEqual(images.split, 0.5)
         self.assertEqual(len(images._train), 2)
@@ -522,7 +522,7 @@ class MyTest(unittest.TestCase):
         
     def test_057(self):
         """ Images - iterate through collection """
-        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
         images.split = 0.75
         self.assertEqual(len(next(images)), 100)
         self.assertEqual(len(next(images)), 100)
@@ -532,7 +532,7 @@ class MyTest(unittest.TestCase):
         
     def test_058(self):
         """ Images - iterate 2nd pass """
-        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
         images.split = 0.5
         self.assertEqual(len(next(images)), 100)
         self.assertEqual(len(next(images)), 100)
@@ -548,7 +548,7 @@ class MyTest(unittest.TestCase):
     def xxtest_031(self):
         """ gif file """,
         """  BUG: can't handle gifs """
-        image = Image("text.gif")
+        image = Image("files/text.gif")
         self.assertEqual(image.name, "text")
         self.assertEqual(image.type, "gif")
         os.remove("text.gif")

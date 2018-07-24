@@ -12,11 +12,11 @@ import sys
 
 class MyTest(unittest.TestCase):
     def setup_class(self):
-        with open("test.txt", "w") as f:
+        with open("files/test.txt", "w") as f:
             f.write("foo")
             
     def teardown_class(self):
-        os.remove("test.txt")
+        os.remove("files/test.txt")
 
     def test_001(self):
         """ Page constructor - no parameters """
@@ -27,22 +27,22 @@ class MyTest(unittest.TestCase):
         
     def test_002(self):
         """ Page constructor - path parameter """
-        page = Page("test.txt")
-        self.assertEqual(page.path,  "test.txt")
+        page = Page("files/test.txt")
+        self.assertEqual(page.path,  "files/test.txt")
         self.assertEqual(page.text,  None)
         self.assertEqual(page.words, None)
         
     def test_003(self):
         """ Page constructor - path and text parameter """
-        page = Page("test.txt", "foo")
-        self.assertEqual(page.path,  "test.txt")
+        page = Page("files/test.txt", "foo")
+        self.assertEqual(page.path,  "files/test.txt")
         self.assertEqual(page.text,  "foo")
         self.assertEqual(towords(page.words), [ "foo" ] )
 
     def test_004(self):
         """ Page constructor - path keyword parameter """
-        page = Page(path="test.txt")
-        self.assertEqual(page.path,  "test.txt")
+        page = Page(path="files/test.txt")
+        self.assertEqual(page.path,  "files/test.txt")
         self.assertEqual(page.text,  None)
         self.assertEqual(page.words, None)
 
@@ -66,14 +66,14 @@ class MyTest(unittest.TestCase):
     def test_008(self):
         """ Page constructor - path is not a file """
         with pytest.raises(FileNotFoundError):
-            page = Page(path='nonexist.txt')
+            page = Page(path='files/nonexist.txt')
 
     def test_009(self):
         """ Page path getter/setter """
         page = Page()
         self.assertEqual(page.path,  None)
-        page.path = "test.txt"
-        self.assertEqual(page.path,  'test.txt')
+        page.path = "files/test.txt"
+        self.assertEqual(page.path,  'files/test.txt')
 
     def test_010(self):
         """ Page path setter - not a string """
@@ -85,7 +85,7 @@ class MyTest(unittest.TestCase):
         """ Page path setter - not a valid file """
         page = Page()
         with pytest.raises(FileNotFoundError):
-            page.path = 'nonexist.txt'
+            page.path = 'files/nonexist.txt'
 
     def test_012(self):
         """ Page path setter - None """
@@ -199,36 +199,36 @@ class MyTest(unittest.TestCase):
         
     def test_031(self):
         """ Page number """
-        page = Page("test.txt")
+        page = Page("files/test.txt")
         self.assertEqual(page.pageno, None)
-        page = Page("test.txt", pageno=2)
+        page = Page("files/test.txt", pageno=2)
         self.assertEqual(page.pageno, 2)
         
     def test_032(self):
         """ Page store/load """
         page = Page(text="hello world, goodbye")
-        page.store('tmp.txt')
+        page.store('files/tmp.txt')
         page._words = None
-        page.load('tmp.txt')
-        os.remove("tmp.txt")
+        page.load('files/tmp.txt')
+        os.remove("files/tmp.txt")
         self.assertEqual(towords(page.words), ["hello", "world", "goodbye"])
         
     def test_033(self):
         """ Page store/load - unicode - latin """
         page = Page(text="hāllo world, goodbye")
-        page.store('tmp.txt')
+        page.store('files/tmp.txt')
         page._words = None
-        page.load('tmp.txt')
+        page.load('files/tmp.txt')
         self.assertEqual(towords(page.words), ["hāllo", "world", "goodbye"])
-        os.remove("tmp.txt")
+        os.remove("files/tmp.txt")
         Page.ROMAN = True
         page = Page(text="québec")
-        page.store('tmp.txt')
+        page.store('files/tmp.txt')
         page._words = None
-        page.load('tmp.txt')
+        page.load('files/tmp.txt')
         Page.ROMAN = False
         self.assertEqual(towords(page.words), ["quebec"])
-        os.remove("tmp.txt")    
+        os.remove("files/tmp.txt")    
         
     def test_034(self):
         """ Page - Bag of Words """
@@ -265,17 +265,17 @@ class MyTest(unittest.TestCase):
         
     def test_040(self):
         """ segment option - path and segments """
-        with open('segment_para.txt', 'r', encoding="utf-8") as f:
+        with open('files/segment_para.txt', 'r', encoding="utf-8") as f:
             segment = Segment(f.read())
-        page = Page('segment_para.txt', segment.segments)
+        page = Page('files/segment_para.txt', segment.segments)
         
     def xtest_bugs(self):
         """ Page store/load - unicode - cryllic """
         page = Page(text="Й й")
-        page.store('tmp.txt')
+        page.store('files/tmp.txt')
         page._words = None
-        page.load('tmp.txt')
-        os.remove("tmp.txt")
+        page.load('files/tmp.txt')
+        os.remove("files/tmp.txt")
         self.assertEqual(towords(page.words), ["Й", "й"])
         
         

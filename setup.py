@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 import os, sys
 
 with open('README.md') as f:
-	long_description = f.read()
+  long_description = f.read()
 
 install_requires=[
   'numpy',
