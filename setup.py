@@ -3,6 +3,17 @@
 from setuptools import setup, find_packages
 import os, sys
 
+install_requires=[
+          'numpy',
+          'h5py',
+          'unidecode',
+          'nltk',
+          'opencv-python']
+		  
+tests_require=[
+            'pytest',
+            'pytest-cov']
+
 setup(name='Gap-ML',
       version='0.9',
       description='NLP and CV Data Engineering Framework',
@@ -11,13 +22,8 @@ setup(name='Gap-ML',
       license='CC-BY',
       url='https://github.com/andrewferlitsch/Gap',
       packages=find_packages(),
-      install_requires=[
-          'numpy',
-          'h5py',
-          'unidecode',
-          'nltk',
-          'opencv-python'
-      ],
+	install_requires=install_requires,
+      tests_require=tests_require
      )
 
 if sys.platform.startswith('win'):
