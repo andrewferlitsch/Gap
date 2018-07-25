@@ -67,7 +67,7 @@ The GAP framework extensively uses a number of open source applications/modules.
   7. HDF5 - high performance of on-disk data (tensors) access
   8. openCV - image manipulation and processing for computer vision
   
-## Installation: MSWin64
+## Installation: Windows
 
 #### Ghostscript
 

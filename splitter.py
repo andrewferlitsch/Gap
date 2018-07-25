@@ -15,9 +15,9 @@ import sys
 import json
 import shutil
 
-from .segment import Segment
-from .syntax import Words
-from .pdf_res import PDFResource
+from segment import Segment
+from syntax import Words
+from pdf_res import PDFResource
 
 
 if shutil.which('gswin64c'):

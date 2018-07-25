@@ -12,8 +12,8 @@ nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 from unidecode import unidecode
 
-from .vocabulary import Vocabulary, vocab
-from .address import Address
+from vocabulary import Vocabulary, vocab
+from address import Address
 
         
 class Words(object):
