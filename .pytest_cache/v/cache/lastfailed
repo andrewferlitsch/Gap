@@ -1,0 +1,6 @@
+{
+  "tests/document_test.py::MyTest::test_022": true,
+  "tests/document_test.py::MyTest::test_024": true,
+  "tests/document_test.py::MyTest::test_049": true,
+  "tests/document_test.py::MyTest::test_050": true
+}
