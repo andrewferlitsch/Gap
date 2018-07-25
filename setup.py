@@ -17,7 +17,6 @@ tests_require=[
   'pytest',
   'pytest-cov']
 
-<<<<<<< HEAD
 data_files=[('gapml', ['org-os', 'plan', 'specs', 'tools', 'train'])]
 
 #https://pypi.org/pypi?%3Aaction=list_classifiers
@@ -40,8 +39,6 @@ classifiers=[
   'Programming Language :: Python :: 3.7'
 ]
 
-=======
->>>>>>> 546a0c42d4b25a37abd4dc264e39ec1fd2dd3892
 setup(
   name='Gap-ML',
   version='0.9',
@@ -53,13 +50,9 @@ setup(
   long_description=long_description,
   packages=find_packages(exclude=['tests', 'tests*']),
   install_requires=install_requires,
-<<<<<<< HEAD
-  tests_require=tests_require,
+  tests_require=tests_require
   #data_files=data_files,
   #classifiers=classifiers
-=======
-  tests_require=tests_require
->>>>>>> 546a0c42d4b25a37abd4dc264e39ec1fd2dd3892
 )
 
 if sys.platform.startswith('win'):
