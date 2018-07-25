@@ -20,7 +20,6 @@ tests_require=[
 scripts=[
   'Gap-ML/address.py',
   'Gap-ML/pdf_res.py',
-  'Gap-ML/perf.py',
   'Gap-ML/segment.py',
   'Gap-ML/splitter.py',
   'Gap-ML/syntax.py',
