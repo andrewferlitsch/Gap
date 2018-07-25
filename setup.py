@@ -17,6 +17,18 @@ tests_require=[
   'pytest',
   'pytest-cov']
 
+<<<<<<< HEAD
+=======
+scripts=[
+  'Gap-ML/address.py',
+  'Gap-ML/pdf_res.py',
+  'Gap-ML/segment.py',
+  'Gap-ML/splitter.py',
+  'Gap-ML/syntax.py',
+  'Gap-ML/vision.py',
+  'Gap-ML/vocabulary.py']
+
+>>>>>>> b3f2799ead94ef0f6859661fe6b60fa830d00370
 setup(
   name='Gap-ML',
   version='0.9',
