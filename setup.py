@@ -17,6 +17,28 @@ tests_require=[
   'pytest',
   'pytest-cov']
 
+data_files=[('gapml', ['org-os', 'plan', 'specs', 'tools', 'train'])]
+
+#https://pypi.org/pypi?%3Aaction=list_classifiers
+classifiers=[
+  'Development Status :: 4 - Beta',
+  'Intended Audience :: Healthcare Industry',
+  'Topic :: Text Processing',
+  'License :: CC-BY',
+  'Operating System :: Microsoft :: Windows',
+  'Operating System :: MacOS',
+  'Operating System :: POSIX :: Linux',
+  'Programming Language :: Python :: 3',
+  'Programming Language :: Python :: 3.0',
+  'Programming Language :: Python :: 3.1',
+  'Programming Language :: Python :: 3.2',
+  'Programming Language :: Python :: 3.3',
+  'Programming Language :: Python :: 3.4',
+  'Programming Language :: Python :: 3.5',
+  'Programming Language :: Python :: 3.6',
+  'Programming Language :: Python :: 3.7'
+]
+
 setup(
   name='Gap-ML',
   version='0.9',
@@ -26,9 +48,11 @@ setup(
   license='CC-BY',
   url='https://github.com/andrewferlitsch/Gap',
   long_description=long_description,
-  packages=find_packages(),
+  packages=find_packages(exclude=['tests', 'tests*']),
   install_requires=install_requires,
-  tests_require=tests_require
+  tests_require=tests_require,
+  #data_files=data_files,
+  #classifiers=classifiers
 )
 
 if sys.platform.startswith('win'):
