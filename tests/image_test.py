@@ -540,6 +540,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(len(next(images)), 100)
         self.assertEqual(len(next(images)), 100)
         self.assertEqual(next(images), None)
+        os.remove("collection.0_100.h5")
         
     # create dir in Images
     # grayscale image with only (height, width) shape
