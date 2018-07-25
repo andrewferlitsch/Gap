@@ -614,6 +614,7 @@ class MyTest(unittest.TestCase):
         x = 0
         for _ in g: x += 1
         self.assertEquals(x, 0)
+        os.remove('foobar.h5')
         
     def done(self, image):
         self.isdone = True

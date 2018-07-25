@@ -17,15 +17,6 @@ tests_require=[
   'pytest',
   'pytest-cov']
 
-scripts=[
-  'address.py',
-  'pdf_res.py',
-  'segment.py',
-  'splitter.py',
-  'syntax.py',
-  'vision.py',
-  'vocabulary.py']
-
 setup(
   name='Gap-ML',
   version='0.9',
@@ -37,8 +28,7 @@ setup(
   long_description=long_description,
   packages=find_packages(),
   install_requires=install_requires,
-  tests_require=tests_require,
-  scripts=scripts,
+  tests_require=tests_require
 )
 
 if sys.platform.startswith('win'):
