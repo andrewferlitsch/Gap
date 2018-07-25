@@ -43,7 +43,7 @@ class MyTest(unittest.TestCase):
     def test_004(self):
         """ Document Constructor - document = nonexistent document """
         with pytest.raises(FileNotFoundError):
-            document = Document("nonexist.txt")
+            document = Document("files/nonexist.txt")
         
     def test_005(self):
         """ Document Constructor - document = valid text document """
@@ -59,8 +59,8 @@ class MyTest(unittest.TestCase):
         
     def test_006(self):
         """ Document Constructor - document = valid pdf document """
-        document = Document("4page.pdf")
-        self.assertEqual(document.document, "4page.pdf")
+        document = Document("files/4page.pdf")
+        self.assertEqual(document.document, "files/4page.pdf")
         self.assertEqual(document.name, "4page")
         self.assertEqual(len(document), 4)
         for i in range(1,5):
@@ -74,8 +74,8 @@ class MyTest(unittest.TestCase):
         
     def test_007(self):
         """ Document Constructor - document = valid pdf document with page directory specified """
-        document = Document("4page.pdf", "./")
-        self.assertEqual(document.document, "4page.pdf")
+        document = Document("files/4page.pdf", "./")
+        self.assertEqual(document.document, "files/4page.pdf")
         self.assertEqual(document.name, "4page")
         self.assertEqual(len(document), 4)
         for i in range(1,5):
@@ -115,7 +115,7 @@ class MyTest(unittest.TestCase):
         
     def test_012(self):
         """ Document constructr - non-ascii characters in document (UTF-8 encoding) """
-        document = Document("7page.pdf", "./")
+        document = Document("files/7page.pdf", "./")
         self.assertEqual(document[0].text.strip()[0:7], "MEDICAL")
         for i in range(1,8):
             os.remove("7page" + str(i) + ".pdf")
@@ -124,7 +124,7 @@ class MyTest(unittest.TestCase):
         
     def test_013(self):
         """ Document constructor - create page directory """
-        document = Document("4page.pdf", "tests2")
+        document = Document("files/4page.pdf", "tests2")
         self.assertTrue(os.path.isdir("tests2"))
         for i in range(1,5):
             os.remove("tests2/4page" + str(i) + ".pdf")
@@ -135,13 +135,13 @@ class MyTest(unittest.TestCase):
     def test_014(self):
         """ Document constructor - cannot create page directory """
         with pytest.raises(FileNotFoundError):
-            document = Document("4page.pdf", "tests3/foobar")
+            document = Document("files/4page.pdf", "tests3/foobar")
         
     def test_015(self):
         """ Document document setter - nonexistent file """
         document = Document()
         with pytest.raises(FileNotFoundError):
-            document.document = "nonexist.txt"
+            document.document = "files/nonexist.txt"
         
     def test_016(self):
         """ Document document setter - valid text file """
@@ -155,8 +155,8 @@ class MyTest(unittest.TestCase):
     def test_017(self):
         """ Document document setter - valid PDF file """
         document = Document()
-        document.document = "4page.pdf"
-        self.assertEqual(document.document, "4page.pdf")
+        document.document = "files/4page.pdf"
+        self.assertEqual(document.document, "files/4page.pdf")
         self.assertEqual(document.name, "4page")
         self.assertEqual(len(document), 4)
         for i in range(1,5):
@@ -172,7 +172,7 @@ class MyTest(unittest.TestCase):
         """ Document document setter - valid PDF file with page directory """
         document = Document()
         document.dir = "./"
-        document.document = "4page.pdf"
+        document.document = "files/4page.pdf"
         self.assertEqual(document.name, "4page")
         self.assertEqual(len(document), 4)
         for i in range(1,5):
@@ -204,7 +204,7 @@ class MyTest(unittest.TestCase):
         
     def test_022(self):
         """ Document text getter - PDF file """
-        document = Document("4page.pdf", "./")
+        document = Document("files/4page.pdf", "./")
         self.assertEqual(document.text[0].strip()[0:6], "TIER 1")
         self.assertEqual(document.text[1].strip()[0:15], "COVERED MEDICAL")
         self.assertEqual(document.text[2].strip()[0:14], "Emergency mean")
@@ -216,7 +216,7 @@ class MyTest(unittest.TestCase):
         
     def test_023(self):
         """ Document text setter """
-        document = Document("4page.pdf", "./")
+        document = Document("files/4page.pdf", "./")
         document.text[0] = "goo"
         # TODO
         #self.assertEqual(document.text[0], "goo")
@@ -227,7 +227,7 @@ class MyTest(unittest.TestCase):
         
     def test_024(self):
         """ Document [] getter """
-        document = Document("4page.pdf", "./")
+        document = Document("files/4page.pdf", "./")
         for i in range(1,5):
             self.assertEqual(document[i-1].path, "./4page" + str(i) + ".pdf")
         self.assertEqual(document[0].text.strip()[0:6], "TIER 1")
@@ -241,7 +241,7 @@ class MyTest(unittest.TestCase):
         
     def test_025(self):
         """ Document [] getter - index out of range """
-        document = Document("4page.pdf", "./")
+        document = Document("files/4page.pdf", "./")
         self.assertEqual(document[4], None)
         for i in range(1,5):
             os.remove("4page" + str(i) + ".pdf")
@@ -308,7 +308,7 @@ class MyTest(unittest.TestCase):
         
     def test_035(self): 
         """ Document size getter - non-zero """
-        document = Document("4page.pdf", "./")
+        document = Document("files/4page.pdf", "./")
         self.assertEqual(document.size, 32667)
         for i in range(1,5):
             os.remove("4page" + str(i) + ".pdf")
@@ -322,7 +322,7 @@ class MyTest(unittest.TestCase):
         
     def test_037(self): 
         """ Document type getter - PDF """
-        document = Document("4page.pdf", "./")
+        document = Document("files/4page.pdf", "./")
         self.assertEqual(document.type, "pdf")
         for i in range(1,5):
             os.remove("4page" + str(i) + ".pdf")
@@ -332,16 +332,16 @@ class MyTest(unittest.TestCase):
     def test_038(self): 
         """ Document - empty file """ 
         with pytest.raises(IOError): 
-            document = Document("empty.txt")        
+            document = Document("files/empty.txt")        
         
     def test_039(self): 
         """ Document - too small PDF""" 
         with pytest.raises(IOError): 
-            document = Document("toosmall.pdf") 
+            document = Document("files/toosmall.pdf") 
         
     def test_040(self): 
         """ Document - color PDF with overlay """
-        document = Document("5page.pdf", "./")
+        document = Document("files/5page.pdf", "./")
         self.assertEqual(len(document), 5)
         for i in range(1,6):
             self.assertTrue(os.path.isfile("5page"  + str(i) + ".txt"))
@@ -353,7 +353,7 @@ class MyTest(unittest.TestCase):
         
     def test_041(self): 
         """ Document - invoice PDF """
-        document = Document("invoice.pdf", "./")
+        document = Document("files/invoice.pdf", "./")
         self.assertEqual(len(document), 1)
         self.assertTrue(os.path.isfile("invoice1.txt"))
         self.assertTrue(os.path.isfile("invoice1.pdf"))
@@ -364,7 +364,7 @@ class MyTest(unittest.TestCase):
 		
     def test_042(self):
         """ Document - Adobe Example """
-        document = Document("adobepdf.pdf", "./")
+        document = Document("files/adobepdf.pdf", "./")
         self.assertEqual(len(document), 4)
         self.assertFalse(document.scanned)
         for i in range(1,5):
@@ -380,7 +380,7 @@ class MyTest(unittest.TestCase):
         
     def test_043(self): 
         """ Document - scanned PDF - single page, text file is empty """
-        document = Document("scan.pdf", "./")
+        document = Document("files/scan.pdf", "./")
         self.assertEqual(len(document), 1)
         self.assertTrue(os.path.isfile("scan1.png"))
         self.assertTrue(document.scanned)
@@ -393,7 +393,7 @@ class MyTest(unittest.TestCase):
         
     def test_044(self): 
         """ Document - scanned PDF - multi page, no text, but noise """
-        document = Document("4scan.pdf", "./")
+        document = Document("files/4scan.pdf", "./")
         self.assertEqual(len(document), 4)
         self.assertTrue(document.scanned)
         for i in range(1,5):
@@ -408,7 +408,7 @@ class MyTest(unittest.TestCase):
     def test_045(self): 
         """ Document - scanned PDF - single page, set resolution """
         Document.RESOLUTION = 100
-        document = Document("scan.pdf", "./")
+        document = Document("files/scan.pdf", "./")
         self.assertEqual(len(document), 1)
         self.assertTrue(document.scanned)
         self.assertTrue(os.path.isfile("scan1.png"))
@@ -417,11 +417,12 @@ class MyTest(unittest.TestCase):
         os.remove("scan1.txt")
         os.remove("scan1.pdf")
         os.remove("scan1.png")
+        os.remove("scan1.json")
         
     def test_046(self): 
         """ Document - scanned PDF - single page, with text back """
         Document.RESOLUTION = 200
-        document = Document("scan_textback.pdf", "./")
+        document = Document("files/scan_textback.pdf", "./")
         self.assertEqual(len(document), 1)
         self.assertFalse(document.scanned)
         self.assertTrue(os.path.isfile("scan_textback1.txt"))
@@ -434,7 +435,7 @@ class MyTest(unittest.TestCase):
     def test_047(self): 
         """ Document - scanned PDF - single page, non-text example """
         Document.RESOLUTION = 200
-        document = Document("nontext.pdf", "./")
+        document = Document("files/nontext.pdf", "./")
         self.assertEqual(len(document), 1)
         self.assertTrue(document.scanned)
         self.assertTrue(os.path.isfile("nontext1.txt"))
@@ -448,7 +449,7 @@ class MyTest(unittest.TestCase):
     def test_048(self): 
         """ Document - PNG text """
         Document.RESOLUTION = 200
-        document = Document("text.png", "./")
+        document = Document("files/text.png", "./")
         self.assertEqual(len(document), 1)
         self.assertTrue(os.path.isfile("text1.txt"))
         self.assertTrue(os.path.isfile("text1.png"))
@@ -462,7 +463,7 @@ class MyTest(unittest.TestCase):
     def test_049(self): 
         """ Document - JPG text """
         Document.RESOLUTION = 300
-        document = Document("text.jpg", "./")
+        document = Document("files/text.jpg", "./")
         self.assertEqual(len(document), 1)
         self.assertTrue(document.scanned)
         self.assertTrue(os.path.isfile("text1.txt"))
@@ -476,7 +477,7 @@ class MyTest(unittest.TestCase):
         
     def test_050(self): 
         """ Document - TIF text """
-        document = Document("6page.tif", "./")
+        document = Document("files/6page.tif", "./")
         self.assertEqual(len(document), 6)
         for i in range(1,7):
             self.assertTrue(os.path.isfile("6page" + str(i) + ".tif"))
@@ -491,7 +492,7 @@ class MyTest(unittest.TestCase):
         
     def test_051(self):
         """ async processing """
-        document = Document("invoice.pdf", "./", self.done)
+        document = Document("files/invoice.pdf", "./", self.done)
         time.sleep(6)
         self.assertTrue(self.isdone)
         os.remove("invoice1.pdf")
@@ -500,9 +501,9 @@ class MyTest(unittest.TestCase):
         
     def test_052(self):
         """ document load from store """
-        document = Document("4page.pdf", "./")
+        document = Document("files/4page.pdf", "./")
         document = Document()
-        document.load("4page.pdf", "./")
+        document.load("files/4page.pdf", "./")
         self.assertEquals(len(document), 4)
         self.assertTrue(document[0].words != None)
         self.assertTrue(document[0].text != None)
@@ -521,7 +522,7 @@ class MyTest(unittest.TestCase):
 
     def test_054(self):
         """ bag of words / freqDist """
-        document = Document("4page.pdf", "./")
+        document = Document("files/4page.pdf", "./")
         self.assertTrue(document.bagOfWords != None)
         self.assertTrue(document.freqDist != None)
         for i in range(1,5):
@@ -541,7 +542,7 @@ class MyTest(unittest.TestCase):
 
     def test_057(self):
         """ config is None """
-        document = Document("4page.pdf", "./", config=None)
+        document = Document("files/4page.pdf", "./", config=None)
         self.assertTrue(document.bagOfWords != None)
         for i in range(1,5):
             os.remove("4page" + str(i) + ".txt")
@@ -550,7 +551,7 @@ class MyTest(unittest.TestCase):
 
     def test_058(self):
         """ config is empty """
-        document = Document("4page.pdf", "./", config=[])
+        document = Document("files/4page.pdf", "./", config=[])
         self.assertTrue(document.bagOfWords != None)
         for i in range(1,5):
             os.remove("4page" + str(i) + ".txt")
@@ -559,7 +560,7 @@ class MyTest(unittest.TestCase):
 
     def test_059(self):
         """ config has multiple entries """
-        document = Document("4page.pdf", "./", config=['bare', 'pos', 'roman'])
+        document = Document("files/4page.pdf", "./", config=['bare', 'pos', 'roman'])
         self.assertTrue(document.bagOfWords != None)
         for i in range(1,5):
             os.remove("4page" + str(i) + ".txt")
@@ -588,11 +589,11 @@ class MyTest(unittest.TestCase):
 
     def test_064(self):
         """ config stem is valid """
-        document = Document("4page.pdf", "./", config=['stem=gap'])
-        document = Document("4page.pdf", "./", config=['stem=porter'])
-        document = Document("4page.pdf", "./", config=['stem=snowball'])
-        document = Document("4page.pdf", "./", config=['stem=lancaster'])
-        document = Document("4page.pdf", "./", config=['stem=lemma'])
+        document = Document("files/4page.pdf", "./", config=['stem=gap'])
+        document = Document("files/4page.pdf", "./", config=['stem=porter'])
+        document = Document("files/4page.pdf", "./", config=['stem=snowball'])
+        document = Document("files/4page.pdf", "./", config=['stem=lancaster'])
+        document = Document("files/4page.pdf", "./", config=['stem=lemma'])
         for i in range(1,5):
             os.remove("4page" + str(i) + ".txt")
             os.remove("4page" + str(i) + ".pdf")
@@ -600,7 +601,7 @@ class MyTest(unittest.TestCase):
 
     def test_065(self):
         """ config segment txt """
-        document = Document('segment_para.txt', './', config=['segment'])
+        document = Document('files/segment_para.txt', './', config=['segment'])
         self.assertEquals(document[0].size, 91)
         self.assertEquals(document[0].text, 'This is a first paragraph\nand continues to next line.\n\nThen this is the second\nparagraph.')
         self.assertEquals(len(document[0].words), 2)
@@ -609,7 +610,7 @@ class MyTest(unittest.TestCase):
 
     def test_066(self):
         """ config segment pdf """
-        document = Document('invoice.pdf', './', config=['segment'])
+        document = Document('files/invoice.pdf', './', config=['segment'])
         self.assertEquals(len(document[0].words), 15)
         os.remove('invoice1.pdf')
         os.remove('invoice1.txt')
@@ -617,7 +618,7 @@ class MyTest(unittest.TestCase):
 
     def test_067(self):
         """ config segment image """
-        document = Document('text.png', './', config=['segment'])
+        document = Document('files/text.png', './', config=['segment'])
         self.assertEquals(len(document[0].words), 7)
         os.remove('text1.png')
         os.remove('text1.txt')

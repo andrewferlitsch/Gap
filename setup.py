@@ -3,28 +3,44 @@
 from setuptools import setup, find_packages
 import os, sys
 
+with open('README.md') as f:
+  long_description = f.read()
+
 install_requires=[
-          'numpy',
-          'h5py',
-          'unidecode',
-          'nltk',
-          'opencv-python']
+  'numpy',
+  'h5py',
+  'unidecode',
+  'nltk',
+  'opencv-python']
 		  
 tests_require=[
-            'pytest',
-            'pytest-cov']
+  'pytest',
+  'pytest-cov']
 
-setup(name='Gap-ML',
-      version='0.9',
-      description='NLP and CV Data Engineering Framework',
-      author='Andrew Ferlitsch',
-      author_email='aferlitsch@gmail.com',
-      license='CC-BY',
-      url='https://github.com/andrewferlitsch/Gap',
-      packages=find_packages(),
-	install_requires=install_requires,
-      tests_require=tests_require
-     )
+scripts=[
+  'Gap-ML/address.py',
+  'Gap-ML/pdf_res.py',
+  'Gap-ML/perf.py',
+  'Gap-ML/segment.py',
+  'Gap-ML/splitter.py',
+  'Gap-ML/syntax.py',
+  'Gap-ML/vision.py',
+  'Gap-ML/vocabulary.py']
+
+setup(
+  name='Gap-ML',
+  version='0.9',
+  description='NLP and CV Data Engineering Framework',
+  author='Andrew Ferlitsch',
+  author_email='aferlitsch@gmail.com',
+  license='CC-BY',
+  url='https://github.com/andrewferlitsch/Gap',
+  long_description=long_description,
+  packages=find_packages(),
+  install_requires=install_requires,
+  tests_require=tests_require,
+  scripts=scripts
+)
 
 if sys.platform.startswith('win'):
     pass
