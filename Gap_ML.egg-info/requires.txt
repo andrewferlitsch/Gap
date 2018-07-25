@@ -1,5 +1,0 @@
-numpy
-h5py
-unidecode
-nltk
-opencv-python
