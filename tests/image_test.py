@@ -435,11 +435,19 @@ class MyTest(unittest.TestCase):
     def test_048(self):
         """ images constructor - collection not a string """
         with pytest.raises(TypeError):
+<<<<<<< HEAD
             images = Images(["files/0_100.jpg"], labels=[0], collection=0)
         
     def test_049(self):
         """ images properties dir, class """
         images = Images(["files/0_100.jpg"], labels=[2], name="foobar")
+=======
+            images = Images(["0_100.jpg"], labels=[0], name=0)
+        
+    def test_049(self):
+        """ images properties dir, class """
+        images = Images(["0_100.jpg"], labels=[2], name="foobar")
+>>>>>>> 8a3c9c5ab2daf1018a1440d6218f0e0ac1bf18e7
         self.assertEqual(images.name, 'foobar')
         self.assertTrue(os.path.isfile("foobar.h5"))
         os.remove("foobar.h5")
@@ -478,7 +486,11 @@ class MyTest(unittest.TestCase):
             
     def test_052(self):
         """ images load - collection name """
+<<<<<<< HEAD
         images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=[1,2], name='foobar')
+=======
+        images = Images(["0_100.jpg", "1_100.jpg"], labels=[1,2], name='foobar')
+>>>>>>> 8a3c9c5ab2daf1018a1440d6218f0e0ac1bf18e7
         self.assertEqual(images.name, 'foobar')
         images = Images()
         images.load("foobar")
@@ -491,7 +503,11 @@ class MyTest(unittest.TestCase):
     def test_053(self):
         """ images async """
         self.isdone = False
+<<<<<<< HEAD
         images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=[1,2], name='foobar', ehandler=self.done) 
+=======
+        images = Images(["0_100.jpg", "1_100.jpg"], labels=[1,2], name='foobar', ehandler=self.done) 
+>>>>>>> 8a3c9c5ab2daf1018a1440d6218f0e0ac1bf18e7
         time.sleep(3)
         self.assertTrue(self.isdone)
         self.assertEqual(images.name, 'foobar')
@@ -509,21 +525,33 @@ class MyTest(unittest.TestCase):
         
     def test_055(self):
         """ Images - create dir"""
+<<<<<<< HEAD
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg'], 2, name='foobar', dir='tmp2')
+=======
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg'], 2, name='foobar', dir='tmp2')
+>>>>>>> 8a3c9c5ab2daf1018a1440d6218f0e0ac1bf18e7
         self.assertTrue(os.path.isfile("tmp2/foobar.h5"))
         os.remove("tmp2/foobar.h5")
         os.rmdir('tmp2')
         
     def test_056(self):
         """ Images - split not an float """
+<<<<<<< HEAD
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4], name='foobar')
+=======
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4], name='foobar')
+>>>>>>> 8a3c9c5ab2daf1018a1440d6218f0e0ac1bf18e7
         with pytest.raises(TypeError):
             images.split = 'a'
         os.remove('foobar.h5')
         
     def test_057(self):
         """ Images - split not a valid range """
+<<<<<<< HEAD
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4], name='foobar')
+=======
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4], name='foobar')
+>>>>>>> 8a3c9c5ab2daf1018a1440d6218f0e0ac1bf18e7
         with pytest.raises(ValueError):
             images.split = 0.0
         with pytest.raises(ValueError):
@@ -532,7 +560,11 @@ class MyTest(unittest.TestCase):
         
     def test_058(self):
         """ Images - split by default """
+<<<<<<< HEAD
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
+=======
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+>>>>>>> 8a3c9c5ab2daf1018a1440d6218f0e0ac1bf18e7
         x1, x2, y1, y2 = images.split
         self.assertEquals(len(x1), 3)
         self.assertEquals(len(x2), 1)
@@ -542,7 +574,11 @@ class MyTest(unittest.TestCase):
         
     def test_059(self):
         """ Images - split, set percent """
+<<<<<<< HEAD
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
+=======
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+>>>>>>> 8a3c9c5ab2daf1018a1440d6218f0e0ac1bf18e7
         images.split = 0.5
         self.assertEqual(len(images._train), 2)
         self.assertEqual(len(images._test), 2)
@@ -550,7 +586,11 @@ class MyTest(unittest.TestCase):
         
     def test_060(self):
         """ Images - split, percent specified """
+<<<<<<< HEAD
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
+=======
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4])
+>>>>>>> 8a3c9c5ab2daf1018a1440d6218f0e0ac1bf18e7
         images.split = 0.25
         x1, x2, y1, y2 = images.split
         self.assertEquals(len(x1), 1)
@@ -571,7 +611,11 @@ class MyTest(unittest.TestCase):
             
     def test_062(self):
         """ Images - iterate 2nd pass """
+<<<<<<< HEAD
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg', 'files/3_100.jpg'], [1,2,3,4,5], name='foobar')
+=======
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg', '3_100.jpg'], [1,2,3,4,5], name='foobar')
+>>>>>>> 8a3c9c5ab2daf1018a1440d6218f0e0ac1bf18e7
         images.split = 0.5
         self.assertEqual(len(next(images)), 2)
         self.assertEqual(len(next(images)), 2)
@@ -580,6 +624,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(len(next(images)), 2)
         self.assertEqual(next(images), None)
         os.remove('foobar.h5')
+<<<<<<< HEAD
         
     def test_063(self):
         """ Images - minibatch not an integer """
@@ -615,6 +660,43 @@ class MyTest(unittest.TestCase):
         for _ in g: x += 1
         self.assertEquals(x, 0)
         
+=======
+        
+    def test_063(self):
+        """ Images - minibatch not an integer """
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4], name='foobar')
+        with pytest.raises(TypeError):
+            images.minibatch = 'a'
+        os.remove('foobar.h5')
+        
+    def test_064(self):
+        """ Images - minibatch invalid range """
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg'], [1,2,3,4], name='foobar')
+        with pytest.raises(ValueError):
+            images.minibatch = 0
+        with pytest.raises(ValueError):
+            images.minibatch = 4
+        os.remove('foobar.h5')
+        
+    def test_065(self):
+        """ minibatch - fetch """
+        images = Images(['0_100.jpg', '1_100.jpg', '2_100.jpg', '0_100g.jpg', '3_100.jpg', '1_100.jpg'], [1,2,3,4,5,6], name='foobar')
+        images.split = 0.5
+        images.minibatch = 2
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 2)
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 1)
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 0)
+		
+>>>>>>> 8a3c9c5ab2daf1018a1440d6218f0e0ac1bf18e7
     def done(self, image):
         self.isdone = True
         os.remove(image)
