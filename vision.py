@@ -191,8 +191,9 @@ class Image(object):
         
         # Get the shape of the array
         self._shape = image.shape
-            
-        self._imgdata = image
+        
+        # Convert to numpy array  
+        self._imgdata = np.asarray(image)
         
         if self._hd5:
             self._store() 
