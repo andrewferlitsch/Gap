@@ -2,7 +2,7 @@
 """
 Copyright, 2018(c), Andrew Ferlitsch
 """
-from syntax import Words
+from gapml.syntax import Words
 import unittest
 import pytest
 import os
@@ -863,64 +863,57 @@ class MyTest(unittest.TestCase):
         words = Words("15", number=True)
         self.assertEqual(words.words, [{'word': '15', 'tag': 1}])
         
-    def test_148(self):
+    def test_149(self):
         """ Words _stopwords numbers > 9, number = True """
         words = Words("10 11 22 33 445", number=True)
         self.assertEqual(towords(words.words), ['10', '11', '22', '33', '445'])
                
-    def test_149(self):
+    def test_150(self):
         """ Words _stopwords remove non-decimal periods, number = True """
         words = Words("one, two.", number=True)
         self.assertEqual(towords(words.words), ['1', '2'])
                        
-    def test_150(self): 
+    def test_151(self): 
         """ Words _stopwords, integer number tag """             
         words = Words("0 1 23", number=True)        
         self.assertEqual(words.words, [ { 'tag': 1, 'word': '0' }, { 'tag': 1, 'word': '1' }, { 'tag': 1, 'word': '23' } ])        
        
-    def test_151(self): 
+    def test_152(self): 
         """ Words _stopwords, unsigned integer number tag """                
         words = Words("1 23 16", number=True)           
         self.assertEqual(words.words, [ { 'tag': 1, 'word': '1' }, { 'tag': 1, 'word': '23' }, { 'tag': 1, 'word': '16' } ])          
       
-    def test_152(self):
+    def test_153(self):
         """ Words _stopwords keep negative numbers, number = True """
         words = Words("This is -3", number=True)
         self.assertEqual(towords(words.words), ['-3'])
         words = Words("1-3 -4", number=True)
         self.assertEqual(towords(words.words), ['1', '3', '-4'])
                
-    def test_153(self): 
+    def test_154(self): 
         """ Words _stopwords, signed integer number tag """              
         words = Words("-1 -23 +16", number=True)           
         self.assertEqual(words.words, [ { 'tag': 1, 'word': '-1' }, { 'tag': 1, 'word': '-23' }, { 'tag': 1, 'word': '16' } ])         
        
-    def test_154(self):
+    def test_155(self):
         """ Words _stopwords decimal and negative numbers, number = True """
         words = Words("1.2 .3 0.03", number=True)
         self.assertEqual(towords(words.words), ['1.2', '0.3', '0.03'])
         
-    def test_155(self):
+    def test_156(self):
         """ Words _stopwords remove comma """
         words = Words("1,000 8,012.6")
         self.assertEqual(towords(words.words), [])
         
-    def test_156(self):
+    def test_157(self):
         """ Words _stopwords thousands unit (default) """
         words = Words("1,000 8,012.6", number=True)
         self.assertEqual(towords(words.words), ['1000', '8012.6'])
         
-    def test_157(self):
+    def test_158(self):
         """ Words _stopwords thousands unit (standard) """
         Words.THOUSANDS = ','
         words = Words("1,000 8,012.6", number=True)
-        self.assertEqual(towords(words.words), ['1000', '8012.6'])
-        
-    def test_158(self):
-        """ Words _stopwords thousands unit (eu) """
-        Words.THOUSANDS = '.'
-        Words.DECIMAL   = ','
-        words = Words("1.000 8.012,6", number=True)
         self.assertEqual(towords(words.words), ['1000', '8012.6'])
         
     def test_159(self):
@@ -931,6 +924,13 @@ class MyTest(unittest.TestCase):
         self.assertEqual(towords(words.words), ['1000', '8012.6'])
         
     def test_160(self):
+        """ Words _stopwords thousands unit (eu) """
+        Words.THOUSANDS = '.'
+        Words.DECIMAL   = ','
+        words = Words("1.000 8.012,6", number=True)
+        self.assertEqual(towords(words.words), ['1000', '8012.6'])
+        
+    def test_161(self):
         """ Words _stopwords exponents """
         Words.THOUSANDS = ','
         Words.DECIMAL   = '.'
@@ -939,86 +939,86 @@ class MyTest(unittest.TestCase):
         words = Words("2e9 2.3e-7", number=True)
         self.assertEqual(towords(words.words), ['2e9', '2.3e-7'])
         
-    def test_161(self):
+    def test_162(self):
         """ Words _stopwords exponents - number = True"""
         words = Words("2e9 2.3e-7", number=True)
         self.assertEqual(towords(words.words), ['2e9', '2.3e-7'])
  
-    def test_162(self): 
+    def test_163(self): 
         """ Words _stopwords, floating point number tag """              
         words = Words(".1, 0.1 23.6", number=True)           
         self.assertEqual(words.words, [ { 'tag': 1, 'word': '0.1' }, { 'tag': 1, 'word': '0.1' }, { 'tag': 1, 'word': '23.6' } ])                          
            
-    def test_163(self): 
+    def test_164(self): 
         """ Words _stopwords, negative floating point number tag """              
         words = Words("-.1, -0.1 -23.6", number=True)           
         self.assertEqual(words.words, [ { 'tag': 1, 'word': '-0.1' }, { 'tag': 1, 'word': '-0.1' }, { 'tag': 1, 'word': '-23.6' } ])                          
         
-    def test_164(self): 
+    def test_165(self): 
         """ Words _stopwords, exponent number tag """              
         words = Words("1e1 2.3e4 6e-4", number=True)           
         self.assertEqual(words.words, [ { 'tag': 1, 'word': '1e1' }, { 'tag': 1, 'word': '2.3e4' }, { 'tag': 1, 'word': '6e-4' } ])                          
         
-    def test_164(self): 
+    def test_166(self): 
         """ Words _stopwords, hex number tag """              
         words = Words("0x00 0x02 0x10", number=True)             
         self.assertEqual(words.words, [ { 'tag': 1, 'word': '0' }, { 'tag': 1, 'word': '2' }, { 'tag': 1, 'word': '16' } ])                          
 
-    def test_165(self):
+    def test_167(self):
         """ Words  number and date are true """
         words = Words("0 1 1.2 .2 -6 -6.2 1,661 2e7 2e-6 2e.5 0x12 0xFF")
         self.assertEqual(towords(words.words), [])
         words = Words("0 1 1.2 .2 -6 -6.2 1,661 2e7 2e-6 2e.5 0x12 0xFF", date=True, number=True)
         self.assertEqual(towords(words.words), ["0", "1", "1.2", "0.2", "-6", "-6.2", "1661", "2e7", "2e-6", "2e.5", "18", "255"])
                 
-    def test_166(self):
+    def test_168(self):
         """ Words ordered numbers """
         words = Words("1st 2nd 3rd 4th")
         self.assertEqual(towords(words.words), [])
         words = Words("1st 2nd 3rd 4th", number=True)
         self.assertEqual(towords(words.words), ["1", "2", "3", "4"])
             
-    def test_167(self): 
+    def test_169(self): 
         """ Words _stopwords, hex number with caps """              
         words = Words("0X00 0XFF 0xff", number=True)             
         self.assertEqual(words.words, [ { 'tag': 1, 'word': '0' }, { 'tag': 1, 'word': '255' }, { 'tag': 1, 'word': '255' } ])                          
      
-    def test_168(self): 
+    def test_170(self): 
         """ Words _stopwords, single cap letters """              
         words = Words("A B C. D", article=True)   
         self.assertEqual(towords(words.words), ["a", "b", "c", "d"])
         
-    def test_169(self):
+    def test_171(self):
         """ Words numbers - fractions """
         words = Words("one 1/4 zoo 1/2", number=True)
         self.assertEqual(towords(words.words), ["1", "0.25", "zoo", "0.5"])
          
-    def test_170(self):
+    def test_172(self):
         """ Words _stopwords January day, year: date = False """
         words = Words("one January 6, 2016", date=False)
         self.assertEqual(towords(words.words), [] )  
     
-    def test_171(self):
+    def test_173(self):
         """ Words _stopwords January day, year: date = True """
         words = Words("one January 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-01-06'] )    
     
-    def test_172(self):
+    def test_174(self):
         """ Words _stopwords Jan. day, year: date = True """
         words = Words("one Jan. 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-01-06'] )    
     
-    def test_173(self):
+    def test_175(self):
         """ Words _stopwords Jan day, year: date = True """
         words = Words("one Jan 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-01-06'] )   
     
-    def test_174(self):
+    def test_176(self):
         """ Words _stopwords February day, year: date = True """
         words = Words("one February 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-02-06'] )       
     
-    def test_175(self):
+    def test_177(self):
         """ Words _stopwords February day, year: date = True """
         words = Words("March 4 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-03-04'] )   
@@ -1041,194 +1041,183 @@ class MyTest(unittest.TestCase):
         words = Words("December 4 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-12-04'] ) 
     
-    def test_176(self):
+    def test_178(self):
         """ Words _stopwords Feb. day, year: date = True """
         words = Words("one Feb. 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-02-06'] )    
     
-    def test_177(self):
+    def test_179(self):
         """ Words _stopwords Feb day, year: date = True """
         words = Words("one Feb 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-02-06'] )   
     
-    def test_178(self):
+    def test_180(self):
         """ Words _stopwords March day, year: date = True """
         words = Words("one March 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-03-06'] )    
     
-    def test_179(self):
+    def test_181(self):
         """ Words _stopwords Mar. day, year: date = True """
         words = Words("one Mar. 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-03-06'] )    
     
-    def test_180(self):
+    def test_182(self):
         """ Words _stopwords Mar day, year: date = True """
         words = Words("one Mar 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-03-06'] )  
     
-    def test_181(self):
+    def test_183(self):
         """ Words _stopwords April day, year: date = True """
         words = Words("one April 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-04-06'] )    
     
-    def test_182(self):
+    def test_184(self):
         """ Words _stopwords Apr. day, year: date = True """
         words = Words("one Apr. 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-04-06'] )    
     
-    def test_183(self):
+    def test_185(self):
         """ Words _stopwords Apr day, year: date = True """
         words = Words("one Apr 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-04-06'] )   
     
-    def test_184(self):
+    def test_186(self):
         """ Words _stopwords May day, year: date = True """
         words = Words("one May 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-05-06'] )   
     
-    def test_185(self):
+    def test_187(self):
         """ Words _stopwords June day, year: date = True """
         words = Words("one June 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-06-06'] )    
     
-    def test_186(self):
+    def test_188(self):
         """ Words _stopwords Jun. day, year: date = True """
         words = Words("one Jun. 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-06-06'] )    
     
-    def test_187(self):
+    def test_189(self):
         """ Words _stopwords Jun day, year: date = True """
         words = Words("one Jun 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-06-06'] )     
     
-    def test_188(self):
+    def test_190(self):
         """ Words _stopwords July day, year: date = True """
         words = Words("one July 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-07-06'] )    
     
-    def test_189(self):
+    def test_191(self):
         """ Words _stopwords Jul. day, year: date = True """
         words = Words("one Jul. 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-07-06'] )    
     
-    def test_190(self):
+    def test_192(self):
         """ Words _stopwords Jul day, year: date = True """
         words = Words("one Jul 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-07-06'] )     
     
-    def test_191(self):
+    def test_193(self):
         """ Words _stopwords August day, year: date = True """
         words = Words("one August 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-08-06'] )    
     
-    def test_192(self):
+    def test_194(self):
         """ Words _stopwords Aug. day, year: date = True """
         words = Words("one Aug. 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-08-06'] )    
     
-    def test_193(self):
+    def test_195(self):
         """ Words _stopwords Aug day, year: date = True """
         words = Words("one Aug 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-08-06'] )     
         
-    def test_194(self):
+    def test_196(self):
         """ Words _stopwords September day, year: date = True """
         words = Words("one September 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-09-06'] )    
     
-    def test_195(self):
+    def test_197(self):
         """ Words _stopwords Sep. day, year: date = True """
         words = Words("one Sep. 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-09-06'] )    
     
-    def test_196(self):
+    def test_198(self):
         """ Words _stopwords Sep day, year: date = True """
         words = Words("one Sep 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-09-06'] )       
     
-    def test_197(self):
+    def test_199(self):
         """ Words _stopwords October day, year: date = True """
         words = Words("one October 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['2016-10-06'] )    
     
-    def test_198(self):
+    def test_200(self):
         """ Words _stopwords Oct. day, year: date = True """
         words = Words("zoo Oct. 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['zoo', '2016-10-06'] )    
     
-    def test_199(self):
+    def test_201(self):
         """ Words _stopwords Oct day, year: date = True """
         words = Words("zoo Oct 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['zoo', '2016-10-06'] )         
     
-    def test_200(self):
+    def test_202(self):
         """ Words _stopwords November day, year: date = True """
         words = Words("zoo November 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['zoo', '2016-11-06'] )    
     
-    def test_201(self):
+    def test_203(self):
         """ Words _stopwords Nov. day, year: date = True """
         words = Words("zoo Nov. 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['zoo', '2016-11-06'] )    
     
-    def test_202(self):
+    def test_204(self):
         """ Words _stopwords Nov day, year: date = True """
         words = Words("zoo Nov 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['zoo', '2016-11-06'] )        
     
-    def test_203(self):
+    def test_205(self):
         """ Words _stopwords December day, year: date = True """
         words = Words("zoo December 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['zoo', '2016-12-06'] )    
     
-    def test_204(self):
+    def test_206(self):
         """ Words _stopwords Dec. day, year: date = True """
         words = Words("zoo Dec. 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['zoo', '2016-12-06'] )    
     
-    def test_205(self):
+    def test_207(self):
         """ Words _stopwords Dec day, year: date = True """
         words = Words("zoo Dec 6, 2016", date=True)
         self.assertEqual(towords(words.words), ['zoo', '2016-12-06'] )
 
-    def test_206(self):
+    def test_208(self):
         """ Words _stopwords mm-dd-yyyy, date = False """
         words = Words("one 01-02-2016")
         self.assertEqual(towords(words.words), [] )     
         
-    def test_207(self):
+    def test_209(self):
         """ Words _stopwords mm-dd-yyyy, date = True """
         words = Words("one 01-02-2016", date=True)
         self.assertEqual(towords(words.words), [ '2016-01-02'] )     
     
-    def test_208(self):
+    def test_210(self):
         """ Words _stopwords m-d-yyyy, date = True """
         words = Words("one 1-2-2016", date=True)
         self.assertEqual(towords(words.words), ['2016-01-02'] )     
     
-    def test_209(self):
+    def test_211(self):
         """ Words _stopwords mm-dd-yy, date = True """
         words = Words("one 01-02-16", date=True)
         self.assertEqual(towords(words.words), ['2016-01-02'] )       
     
-    def test_210(self):
+    def test_212(self):
         """ Words _stopwords ISO, date = True """
         words = Words("one 2016-02-01", date=True)
         self.assertEqual(towords(words.words), ['2016-02-01'] )     
         words = Words("one 1997-02-06", date=True)
         self.assertEqual(towords(words.words), ['1997-02-06'] )     
  
-    def test_211(self):
-        """ Words _stopwords mm/dd/yyyy, date = False """
-        words = Words("one 01/02/2016")
-        self.assertEqual(towords(words.words), [] )    
-    
-    def test_212(self):
-        """ Words _stopwords mm/dd/yyyy, date = True """
-        words = Words("one 01/02/2016", date=True)
-        self.assertEqual(towords(words.words), ['2016-01-02'] )   
- 
-    
     def test_213(self):
         """ Words _stopwords mm/dd/yyyy, date = False """
         words = Words("one 01/02/2016")
@@ -1237,19 +1226,30 @@ class MyTest(unittest.TestCase):
     def test_214(self):
         """ Words _stopwords mm/dd/yyyy, date = True """
         words = Words("one 01/02/2016", date=True)
-        self.assertEqual(towords(words.words), ['2016-01-02'] )    
+        self.assertEqual(towords(words.words), ['2016-01-02'] )   
+ 
     
     def test_215(self):
+        """ Words _stopwords mm/dd/yyyy, date = False """
+        words = Words("one 01/02/2016")
+        self.assertEqual(towords(words.words), [] )    
+    
+    def test_216(self):
+        """ Words _stopwords mm/dd/yyyy, date = True """
+        words = Words("one 01/02/2016", date=True)
+        self.assertEqual(towords(words.words), ['2016-01-02'] )    
+    
+    def test_217(self):
         """ Words _stopwords m/d/yyyy, date = True """
         words = Words("one 1/2/2016", date=True)
         self.assertEqual(towords(words.words), ['2016-01-02'] )     
     
-    def test_216(self):
+    def test_218(self):
         """ Words _stopwords m/d/yy, date = True """
         words = Words("one 1/2/16", date=True)
         self.assertEqual(towords(words.words), ['2016-01-02'] ) 
     
-    def test_217(self):
+    def test_219(self):
         """ Words _stopwords date mm-dd-yyyy not valid """
         words = Words("one 13-02-2016", date=True)
         self.assertEqual(towords(words.words), [] )
@@ -1264,47 +1264,47 @@ class MyTest(unittest.TestCase):
         words = Words("01/32/2016", date=True)
         self.assertEqual(words.words, [] )
     
-    def test_218(self):
+    def test_220(self):
         """ Words _stopwords mm-, date = True """
         words = Words("one 01-", date=True)
         self.assertEqual(towords(words.words), [] )
     
-    def test_219(self):
+    def test_221(self):
         """ Words _stopwords mm/, date = True """
         words = Words("one 01/", date=True)
         self.assertEqual(towords(words.words), [] )       
     
-    def test_220(self):
+    def test_222(self):
         """ Words _stopwords mm-, date = True """
         words = Words("one 01-AB", date=True)
         self.assertEqual(towords(words.words), ['ab'] )
     
-    def test_221(self):
+    def test_223(self):
         """ Words _stopwords mm/, date = True """
         words = Words("one 01/AB", date=True)
         self.assertEqual(towords(words.words), ['ab'] )    
     
-    def test_222(self):
+    def test_224(self):
         """ Words _stopwords mm-dd, date = True """
         words = Words("one 01-06", date=True)
         self.assertEqual(towords(words.words), [] )     
     
-    def test_223(self):
+    def test_225(self):
         """ Words _stopwords mm/dd, date = True """
         words = Words("one 01/06", date=True)
         self.assertEqual(towords(words.words), [] ) 
         
-    def test_224(self): 
+    def test_226(self): 
         """ Words _stopwords, numeric date, date tag """                
         words = Words("01/02/2018", date=True)
         self.assertEqual(words.words, [ { 'tag': 2, 'word': '2018-01-02' } ] )   
 
-    def test_225(self):
+    def test_227(self):
         """ Words constructor  = dob is not a bool """
         with pytest.raises(TypeError):
             words = Words("one", dob=12)   
         
-    def test_226(self):
+    def test_228(self):
         """ Words date of birth = False """
         words = Words("DOB: 01/02/2016 and date of birth is 01/02/2016")
         self.assertEqual(towords(words.words), ["dob", "date", "birth"])
@@ -1313,7 +1313,7 @@ class MyTest(unittest.TestCase):
         words = Words("DOB: 01/02/2016 and date of birth is 01/02/2016", dob=True)
         self.assertEqual(words.words, [{'word': '2016-01-02', 'tag': 20}, {'word': 'date', 'tag': 0}, {'word': '2016-01-02', 'tag': 20}])  
         
-    def test_227(self):
+    def test_229(self):
         """ Words SSN : SSN"""
         words = Words("SSN: 511-81-1270")
         self.assertEqual(towords(words.words), [])
@@ -1334,7 +1334,7 @@ class MyTest(unittest.TestCase):
         words = Words("SSN: 511 81 1270", ssn=True)
         self.assertEqual(words.words, [{'word': '511811270', 'tag': 9}]) 
         
-    def test_228(self):
+    def test_230(self):
         """ Words SSN = Social Security Nuumber"""
         words = Words("Social Security Number 249 45 6789")
         self.assertEqual(towords(words.words), [])
@@ -1355,7 +1355,7 @@ class MyTest(unittest.TestCase):
         words = Words("Soc. Sec. No. 249 45 6789", ssn=True)
         self.assertEqual(words.words, [{'word': '249456789', 'tag': 9}])
         
-    def test_229(self):
+    def test_231(self):
         """ Words SSN = Social Security Nuumber #"""
         words = Words("SSN# 249 45 6789")
         self.assertEqual(towords(words.words), [])
@@ -1370,7 +1370,7 @@ class MyTest(unittest.TestCase):
         words = Words("Social Security Number #: 249 45 6789", ssn=True)
         self.assertEqual(words.words, [{'word': '249456789', 'tag': 9}])  
 
-    def test_230(self):
+    def test_232(self):
         """ Words - Telephone NNNNNNNNNN """
         words = Words("Phone: 3601231234")
         self.assertEqual(towords(words.words), [])
@@ -1381,7 +1381,7 @@ class MyTest(unittest.TestCase):
         words = Words("Work# 3601231234", telephone=True)
         self.assertEqual(words.words, [{'word': '3601231234', 'tag': 40}])
 
-    def test_231(self):
+    def test_233(self):
         """ Words - Telephone NNN[-]NNNNNNN """
         words = Words("Office #: 360 1231234")
         self.assertEqual(towords(words.words), [])
@@ -1392,7 +1392,7 @@ class MyTest(unittest.TestCase):
         words = Words("Phone: 360-1231234", telephone=True)
         self.assertEqual(words.words, [{'word': '3601231234', 'tag': 10}])
 
-    def test_232(self):
+    def test_234(self):
         """ Words - Telephone NNN[-]NNNN[-]NNNN """
         words = Words("Office #: 360-123-1234")
         self.assertEqual(towords(words.words), [])
@@ -1407,7 +1407,7 @@ class MyTest(unittest.TestCase):
         words = Words("Mobile Number 360 123 1234", telephone=True, number=True)
         self.assertEqual(words.words, [{'word': '3601231234', 'tag': 41}])
 
-    def test_233(self):
+    def test_235(self):
         """ Words - Telephone (NNN) NNN[-]NNNN """
         words = Words("Mobile Number (360) 123 1234")
         self.assertEqual(towords(words.words), [])
@@ -1418,50 +1418,50 @@ class MyTest(unittest.TestCase):
         words = Words("Mobile Number (360) 123-1234", telephone=True)
         self.assertEqual(words.words, [{'word': '3601231234', 'tag': 41}])
         
-    def test_234(self):
+    def test_236(self):
         """ Words - Single Letter abbreviations """
         words = Words("S. N.")
         self.assertEqual(words.words, [{'word': 's', 'tag': 22}, {'word': 'n', 'tag': 22}])
         words = Words("s. n.")
         self.assertEqual(words.words, [{'word': 's', 'tag': 22}, {'word': 'n', 'tag': 22}]) 
         
-    def test_235(self):
+    def test_237(self):
         """ Words - Multi-Word abbreviations """
         words = Words("N.E.")
         self.assertEqual(words.words, [{'word': 'n', 'tag': 22}, {'word': 'e', 'tag': 22}])
         words = Words("n.e.")
         self.assertEqual(words.words, [{'word': 'n', 'tag': 22}, {'word': 'e', 'tag': 22}])   
         
-    def test_236(self):
+    def test_238(self):
         """ Words - Multi-Letter abbreviations """
         words = Words("NE.")
         self.assertEqual(words.words, [{'word': 'ne', 'tag': 14}])
         words = Words("ne.")
         self.assertEqual(words.words, [{'word': 'ne', 'tag': 0}])
                 
-    def test_237(self):
+    def test_239(self):
         """ Words - Spanish punctuation """
-        words = Words("¿¡", punct=True)
-        self.assertEqual(words.words, [{'word': '¿', 'tag': 23}, {'word': '¡', 'tag': 23}])
+        words = Words("Â¿Â¡", punct=True)
+        self.assertEqual(words.words, [{'word': 'Â¿', 'tag': 23}, {'word': 'Â¡', 'tag': 23}])
                 
-    def test_238(self):
+    def test_240(self):
         """ Words - More quantifiers """
         words = Words("middle last", quantifier=True)
         self.assertEqual(words.words, [{'word': '0.5', 'tag': 13}, {'word': 'last', 'tag': 13}])  
 
-    def test_239(self):
+    def test_241(self):
         """ Words constructor  = unit is not a bool """
         with pytest.raises(TypeError):
             words = Words("one", unit=12)    
             
-    def test_240(self):
+    def test_242(self):
         """ Words - US Standard Units """
         words = Words("ft ft. feet foot", unit=True)
         self.assertEqual(words.words, [{'word': 'foot', 'tag': 25}, {'word': 'foot', 'tag': 25}, {'word': 'foot', 'tag': 25}, {'word': 'foot', 'tag': 25}]) 
         words = Words("yd yd. yard yards yds", unit=True)
         self.assertEqual(words.words, [{'word': 'yard', 'tag': 25}, {'word': 'yard', 'tag': 25}, {'word': 'yard', 'tag': 25}, {'word': 'yard', 'tag': 25}, {'word': 'yard', 'tag': 25}])    
        
-    def test_241(self):
+    def test_243(self):
         """ Words unit as number multiplier """
         words = Words("the price is six hundred", number=True)
         self.assertEqual(words.words, [{'word': 'price', 'tag': 0}, {'word': '600', 'tag': 1}])
@@ -1474,7 +1474,7 @@ class MyTest(unittest.TestCase):
         words = Words("the 20 billion rats", number=True)
         self.assertEqual(words.words, [{'word': '20000000000', 'tag': 1}, {'word': 'rat', 'tag': 0}])
        
-    def test_242(self):
+    def test_244(self):
         """ Words units of measure """
         words = Words("10 in, 20 in.", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 1}, {'word': 'inch', 'tag': 25}, {'word': '20', 'tag': 1}, {'word': 'inch', 'tag': 25}])
@@ -1491,7 +1491,7 @@ class MyTest(unittest.TestCase):
         words = Words("ton tons", stopwords=True)
         self.assertEqual(words.words, [{'word': 'ton', 'tag': 25}, {'word': 'ton', 'tag': 25}])
      
-    def test_243(self):
+    def test_245(self):
         """ Words units of measure """
         words = Words("sec secs", stopwords=True)
         self.assertEqual(words.words, [{'word': 'second', 'tag': 25}, {'word': 'second', 'tag': 25}])
@@ -1504,14 +1504,14 @@ class MyTest(unittest.TestCase):
         words = Words("yr yrs years", stopwords=True)
         self.assertEqual(words.words, [{'word': 'year', 'tag': 25}, {'word': 'year', 'tag': 25}, {'word': 'year', 'tag': 25}])
              
-    def test_244(self):
+    def test_246(self):
         """ Words more units of measure """
         words = Words("10 seconds", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 1}, {'word': 'second', 'tag': 25}])
         words = Words("4 ins", stopwords=True)
         self.assertEqual(words.words, [{'word': '4', 'tag': 1}, {'word': 'inch', 'tag': 25}])
         
-    def test_245(self):   
+    def test_247(self):   
         """ Words - metric units of measure """
         words = Words("mm millimeter cm centimeter", stopwords=True)
         self.assertEqual(words.words, [{'word': 'millimeter', 'tag': 25}, {'word': 'millimeter', 'tag': 25}, {'word': 'centimeter', 'tag': 25}, {'word': 'centimeter', 'tag': 25}])
@@ -1528,7 +1528,7 @@ class MyTest(unittest.TestCase):
         words = Words("sqm ha hectera m2", stopwords=True)
         self.assertEqual(words.words, [{'word': 'square meter', 'tag': 25}, {'word': 'hectera', 'tag': 25}, {'word': 'hectera', 'tag': 25}, {'word': 'square meter', 'tag': 25}])
        
-    def test_246(self):   
+    def test_248(self):   
         """ Words - more US units of measure """
         words = Words("10 gals", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 1}, {'word': 'gallon', 'tag': 25}])
@@ -1545,31 +1545,31 @@ class MyTest(unittest.TestCase):
         words = Words("10 kilos", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 1}, {'word': 'kilogram', 'tag': 25}])
         
-    def test_247(self):   
+    def test_249(self):   
         """ Words - min(imum) vs min(ute) """
         words = Words("the min time", stopwords=True)
         self.assertEqual(words.words, [{'word': 'the', 'tag': 4}, {'word': 'minimum', 'tag': 22}, {'word': 'time', 'tag': 0}])
             
-    def test_248(self):   
+    def test_250(self):   
         """ Words - metre version of metric """
         words = Words("10 l liter litre", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 1}, {'word': 'liter', 'tag': 25}, {'word': 'liter', 'tag': 25},{'word': 'liter', 'tag': 25}])
         words = Words("metre millimetre centimetre kilometre", stopwords=True)
         self.assertEqual(words.words, [{'word': 'meter', 'tag': 25}, {'word': 'millimeter', 'tag': 25}, {'word': 'centimeter', 'tag': 25}, {'word': 'kilometer', 'tag': 25}])
                    
-    def test_249(self):  
+    def test_251(self):  
         """ Words - single letters when not abbreviated units of measuments """
         words = Words("g l", stopwords=True)
         self.assertEqual(words.words, [{'word': 'g', 'tag': 0}, {'word': 'l', 'tag': 0}])
                   
-    def test_250(self):  
+    def test_252(self):  
         """ Words Constructor - standard / metric is not a bool """
         with pytest.raises(TypeError):
             words = Words("standard", unit=12)    
         with pytest.raises(TypeError):
             words = Words("metric", unit=12)      
             
-    def test_251(self):  
+    def test_253(self):  
         """ Words - Metric to Standard Conversion """
         words = Words("10 mm", stopwords=True, standard=True)
         self.assertEqual(words.words, [{'word': '0.39370099999999997', 'tag': 1}, {'word': 'inch', 'tag': 25}])
@@ -1596,7 +1596,7 @@ class MyTest(unittest.TestCase):
         words = Words("10 ha", stopwords=True, standard=True)
         self.assertEqual(words.words, [{'word': '24.7105', 'tag': 1}, {'word': 'acre', 'tag': 25}])
 
-    def test_252(self):  
+    def test_254(self):  
         """ Words - Standard to Metric Conversion """
         words = Words("10 in", stopwords=True, metric=True)
         self.assertEqual(words.words, [{'word': '25.4', 'tag': 1}, {'word': 'centimeter', 'tag': 25}])
@@ -1623,7 +1623,7 @@ class MyTest(unittest.TestCase):
         words = Words("10 mph", stopwords=True, metric=True)
         self.assertEqual(words.words, [{'word': '16.0934', 'tag': 1}, {'word': 'kilometer per hour', 'tag': 25}])
         
-    def test_253(self):  
+    def test_255(self):  
         """ Words - more measurements """
         words = Words("10 tonnes", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 1}, {'word': 'tonne', 'tag': 25}])
@@ -1640,7 +1640,7 @@ class MyTest(unittest.TestCase):
         words = Words("10 kn", stopwords=True, metric=True)
         self.assertEqual(words.words, [{'word': '18.52', 'tag': 1}, {'word': 'kilometer per hour', 'tag': 25}])
              
-    def test_254(self):  
+    def test_256(self):  
         """ Words - address: num dir name """
         words = Words("12 East Main Ave", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'east', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -1661,7 +1661,7 @@ class MyTest(unittest.TestCase):
         words = Words("12 e. Main Ave", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'east', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
         
-    def test_255(self):  
+    def test_257(self):  
         """ Words - more address: num dir name """
         words = Words("12 Northwest Main Ave", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'northwest', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -1696,7 +1696,7 @@ class MyTest(unittest.TestCase):
         words = Words("12 S.E. Main Ave", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'southeast', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
                
-    def test_256(self):  
+    def test_258(self):  
         """ Words - more address: num dir name """
         words = Words("the 12 se Main Ave", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'southeast', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -1709,7 +1709,7 @@ class MyTest(unittest.TestCase):
         words = Words("the 12 se First Ave", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'southeast', 'tag': 28}, {'word': '1', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
                        
-    def test_257(self):  
+    def test_259(self):  
         """ Words - more address: num dir name type """
         words = Words("12 se Main Ave", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'southeast', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -1746,7 +1746,7 @@ class MyTest(unittest.TestCase):
         words = Words("12 se Main Dr", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'southeast', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'drive', 'tag': 30}])
                               
-    def test_258(self):  
+    def test_260(self):  
         """ Words - more address: multiple words for street name """
         words = Words("12 se foo goo ave", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'southeast', 'tag': 28}, {'word': 'foo goo', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -1755,7 +1755,7 @@ class MyTest(unittest.TestCase):
         words = Words("12 se foo the ave", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'southeast', 'tag': 28}, {'word': 'foo the', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
                                      
-    def test_259(self):
+    def test_261(self):
         """ Words - more units of measurement """
         words = Words("10 km/h", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 1}, {'word': 'kilometer per hour', 'tag': 25}])
@@ -1768,7 +1768,7 @@ class MyTest(unittest.TestCase):
         words = Words("10 mi2", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 1}, {'word': 'square mile', 'tag': 25}])
                                            
-    def test_260(self):
+    def test_262(self):
         """ Words - more conversions """
         words = Words("10 km2", stopwords=True, standard=True)
         self.assertEqual(words.words, [{'word': '3.86102', 'tag': 1}, {'word': 'square mile', 'tag': 25}])
@@ -1777,14 +1777,14 @@ class MyTest(unittest.TestCase):
         words = Words("10 m3", stopwords=True, standard=True)
         self.assertEqual(words.words, [{'word': '353.14700000000005', 'tag': 1}, {'word': 'cubic foot', 'tag': 25}])
                                                  
-    def test_261(self):
+    def test_263(self):
         """ Words - name preceded by a comma """
         words = Words(", James", name=True)
         self.assertEqual(words.words, [{'word': 'james', 'tag': 11}])
         words = Words(", James R. Johns", name=True)
         self.assertEqual(words.words, [{'word': 'james', 'tag': 11}, {'word': 'r', 'tag': 11}, {'word': 'johns', 'tag': 11}])
                                                  
-    def test_262(self):
+    def test_264(self):
         """ Words - gender reference """
         words = Words("sex: M", gender=True)
         self.assertEqual(words.words, [{'word': 'male', 'tag': 15}])
@@ -1811,19 +1811,19 @@ class MyTest(unittest.TestCase):
         words = Words("gender: Transgender", gender=True)
         self.assertEqual(words.words, [{'word': 'transgender', 'tag': 17}])
                                                         
-    def test_263(self):
+    def test_265(self):
         """ Words - address - direction follows street """
         words = Words("12 Main Ave. E.", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'east', 'tag': 28} ])
         words = Words("12 Main Ave. E. the", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'east', 'tag': 28} ])
                                                                
-    def test_264(self):
+    def test_266(self):
         """ Words - _stem() lemma """
         words = Words("transgenders", gender=True)
         self.assertEqual(words.words, [{'word': 'transgender', 'tag': 17}])    
         
-    def test_265(self):
+    def test_267(self):
         """ Words - more titles """
         words = Words("Sgt Sam", name=True)
         self.assertEqual(words.words, [{'word': 'sergeant', 'tag': 33}, {'word': 'sam', 'tag': 11}])    
@@ -1842,12 +1842,12 @@ class MyTest(unittest.TestCase):
         words = Words(", Dr. James Johns, MD.", name=True)
         self.assertEqual(words.words, [{'word': 'doctor', 'tag': 33}, {'word': 'james', 'tag': 11}, {'word': 'johns', 'tag': 11}, {'word': 'medical doctor', 'tag': 33}])
         
-    def test_266(self):
+    def test_268(self):
         """ Words - more contradictions """
         words = Words("they're won't ", stopwords=True)
         self.assertEqual(words.words, [{'word': 'they', 'tag': 8}, {'word': 'is', 'tag': 21}, {'word': 'will', 'tag': 21}, {'word': 'not', 'tag': 19}])
                 
-    def test_267(self):
+    def test_269(self):
         """ Words - Number and Unit of Measurement combined """
         words = Words("is 2cm long", number=True)
         self.assertEqual(words.words, [{'word': '2', 'tag': 1}, {'word': 'centimeter', 'tag': 25}])
@@ -1856,7 +1856,7 @@ class MyTest(unittest.TestCase):
         words = Words("is 2.6CM long", number=True)
         self.assertEqual(words.words, [{'word': '2.6', 'tag': 1}, {'word': 'centimeter', 'tag': 25}])
                         
-    def test_268(self):
+    def test_270(self):
         """ Words - more stem corrections """
         words = Words("boring", sentiment=True)
         self.assertEqual(words.words, [{'word': 'bore', 'tag': 19}])
@@ -1877,7 +1877,7 @@ class MyTest(unittest.TestCase):
         words = Words("lowest lower lowering", stopwords=True)
         self.assertEqual(towords(words.words), ["low", "low", "low"])
                            
-    def test_269(self):
+    def test_271(self):
         """ Words - more street numbers """
         words = Words("12A W Main Ave", stopwords=True)
         self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -1896,7 +1896,7 @@ class MyTest(unittest.TestCase):
         words = Words("N1100-E1300 Main Ave", stopwords=True)
         self.assertEqual(words.words, [{'word': 'n1100-e1300', 'tag': 27}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
                         
-    def test_270(self):
+    def test_272(self):
         """ Words - address - city/state """
         words = Words("12A W Main Ave.,", stopwords=True)
         self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -2137,7 +2137,7 @@ class MyTest(unittest.TestCase):
         words = Words("12A W Main Ave., New York, NY", address=True)
         self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'new york', 'tag': 31}, {'word': 'ISO3166-2:US-NY', 'tag': 32}])
                                
-    def test_271(self):
+    def test_273(self):
         """ Words - Post Office Box """
         words = Words("POB 10 12 W Main Ave.,", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -2146,7 +2146,7 @@ class MyTest(unittest.TestCase):
         words = Words("P.O.B. 10 12 W Main Ave.,", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
                           
-    def test_272(self):  
+    def test_274(self):  
         """ Words - more address: street types """
         words = Words("12 Main Av", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -2185,7 +2185,7 @@ class MyTest(unittest.TestCase):
         words = Words("12 99W Street", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': '99w', 'tag': 29}, {'word': 'street', 'tag': 30}])
                
-    def test_273(self):
+    def test_275(self):
         """ Words - multiple names for city """
         words = Words("12A W Main Ave., Lake Oswego, OR", address=True)
         self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'lake oswego', 'tag': 31}, {'word': 'ISO3166-2:US-OR', 'tag': 32}])
@@ -2194,7 +2194,7 @@ class MyTest(unittest.TestCase):
         words = Words("12A W Main Ave., Oregon City, OR", address=True)
         self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'oregon city', 'tag': 31}, {'word': 'ISO3166-2:US-OR', 'tag': 32}])
         
-    def test_274(self):
+    def test_276(self):
         """ Words - title suffixes """
         words = Words(", James Johns, Atty.", name=True)
         self.assertEqual(words.words, [{'word': 'james', 'tag': 11}, {'word': 'johns', 'tag': 11}, {'word': 'attorney', 'tag': 33}])
@@ -2205,7 +2205,7 @@ class MyTest(unittest.TestCase):
         words = Words(", James Johns, Sr.", name=True)
         self.assertEqual(words.words, [{'word': 'james', 'tag': 11}, {'word': 'johns', 'tag': 11}, {'word': 'senior', 'tag': 33}])
                 
-    def test_275(self):
+    def test_277(self):
         """ Words - more Post Office Box """
         words = Words("P.O. Box 10 12 W Main Ave.,", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -2232,7 +2232,7 @@ class MyTest(unittest.TestCase):
         words = Words("12 W Main Ave. POB 10 Seattle, WA", stopwords=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': '10', 'tag': 35}, {'word': 'seattle', 'tag': 31}, {'word': 'ISO3166-2:US-WA', 'tag': 32}])
                        
-    def test_276(self):
+    def test_278(self):
         """ Words - secondary address component """
         words = Words("12 W Main Ave., Apt. 3", stopwords=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'apartment 3', 'tag': 36}])
@@ -2265,19 +2265,19 @@ class MyTest(unittest.TestCase):
         words = Words("12 W Main Ave., Building D-13", stopwords=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'building d13', 'tag': 36}])
         
-    def test_277(self):
+    def test_279(self):
         """ Words - address words not in address """
         words = Words("suites lanes apartments rooms floors drives", stopwords=True)
         self.assertEqual(towords(words.words), ["suite", "lane", "apartment", "room", "floor", "drive"])
                               
-    def test_278(self):
+    def test_280(self):
         """ Words - secondary address component, City/State """
         words = Words("12 W Main Ave., Dept 3, Seattle, WA", stopwords=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'department 3', 'tag': 36}, {'word': 'seattle', 'tag': 31}, {'word': 'ISO3166-2:US-WA', 'tag': 32}])
         words = Words("12 W Main Ave., Dept 3 Seattle, WA", stopwords=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'department 3', 'tag': 36}, {'word': 'seattle', 'tag': 31}, {'word': 'ISO3166-2:US-WA', 'tag': 32}])
                                     
-    def test_279(self):
+    def test_281(self):
         """ Words - Postal Code """
         words = Words("12 W Main Ave., Dept 3, Seattle, WA 98607", stopwords=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'department 3', 'tag': 36}, {'word': 'seattle', 'tag': 31}, {'word': 'ISO3166-2:US-WA', 'tag': 32}, {'word': '98607', 'tag': 34}])
@@ -2286,14 +2286,14 @@ class MyTest(unittest.TestCase):
         words = Words("12 W Main Ave., Dept 3, Seattle, WA 98607-1234", stopwords=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'department 3', 'tag': 36}, {'word': 'seattle', 'tag': 31}, {'word': 'ISO3166-2:US-WA', 'tag': 32}, {'word': '98607-1234', 'tag': 34}])
                                             
-    def test_280(self):
+    def test_282(self):
         """ Words - ily word endings """
         words = Words("arbitrarily ordinarily culinarily")
         self.assertEqual(towords(words.words), ["arbitrary", "ordinary", "culinary"])
         words = Words("stepfamily")
         self.assertEqual(towords(words.words), ["stepfamily"])  
         
-    def test_281(self):
+    def test_283(self):
         """ Words - gender - step """
         words = Words("stepbrother stepfather stepsister stepmother", gender=True)
         self.assertEqual(words.words, [{'word': 'stepbrother', 'tag': 15}, {'word': 'stepfather', 'tag': 15}, {'word': 'stepsister', 'tag': 16}, {'word': 'stepmother', 'tag': 16}])
@@ -2302,14 +2302,14 @@ class MyTest(unittest.TestCase):
         words = Words("husband wife", gender=True)
         self.assertEqual(words.words, [{'word': 'husband', 'tag': 15}, {'word': 'wife', 'tag': 16}])
                 
-    def test_282(self):
+    def test_284(self):
         """ Words - word endings lled """
         words = Words("annulled canceled called")
         self.assertEqual(towords(words.words), ["annul", "cancel", "call"]) 
         words = Words("appalled bankrolled chilled", stopwords=True)  
         self.assertEqual(towords(words.words), ["appall", "bankroll", "chill"])    
         
-    def test_283(self):
+    def test_285(self):
         """ Words - more sentiment words """
         words = Words("horribly", sentiment=True)
         self.assertEqual(words.words, [{'word': 'horror', 'tag': 19}])
@@ -2322,7 +2322,7 @@ class MyTest(unittest.TestCase):
         words = Words("terribly", sentiment=True)
         self.assertEqual(words.words, [{'word': 'terrible', 'tag': 19}])  
         
-    def test_284(self):
+    def test_286(self):
         """ Words - more endings """
         words = Words("taxes lives elves hides haves halves grasses braves", stopwords=True)
         self.assertEqual(towords(words.words), ["tax", "live", "elf", "hide", "has", "0.5", "grass", "brave"]) 
@@ -2343,14 +2343,14 @@ class MyTest(unittest.TestCase):
         words = Words("crashed crashes", stopwords=True)
         self.assertEqual(towords(words.words), ["crash", "crash"])    
         
-    def test_285(self):
+    def test_287(self):
         """ Words - more addresses """
         words = Words("12 E. Main st., Seattle, WA", stopwords=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'east', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'street', 'tag': 30}, {'word': 'seattle', 'tag': 31}, {'word': 'ISO3166-2:US-WA', 'tag': 32}])
         words = Words("12 Main st. e., Seattle, WA", stopwords=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'main', 'tag': 29}, {'word': 'street', 'tag': 30}, {'word': 'east', 'tag': 28}, {'word': 'seattle', 'tag': 31}, {'word': 'ISO3166-2:US-WA', 'tag': 32}])
                  
-    def test_286(self):
+    def test_288(self):
         """ Words - more word endings """
         words = Words("received receives receiving")
         self.assertEqual(towords(words.words), ["receive", "receive", "receive"])      
@@ -2361,12 +2361,12 @@ class MyTest(unittest.TestCase):
         words = Words("continued continuing")
         self.assertEqual(towords(words.words), ["continue", "continue"])    
         
-    def test_287(self):
+    def test_289(self):
         """ Words - more names """
         words = Words(": Andy James", name=True)
         self.assertEqual(words.words, [{'word': 'andy', 'tag': 11}, {'word': 'james', 'tag': 11}])
            
-    def test_288(self):
+    def test_290(self):
         """ Words - other telephone """
         words = Words("202-123-4567", stopwords=True)
         self.assertEqual(words.words, [{'word': '2021234567', 'tag': 10}])
@@ -2375,7 +2375,7 @@ class MyTest(unittest.TestCase):
         words = Words("(202) 123-4567", stopwords=True)
         self.assertEqual(words.words, [{'word': '2021234567', 'tag': 10}])      
         
-    def test_289(self):
+    def test_291(self):
         """ Words - Derivation endings """
         words = Words("ongoing advertise normalise alphabetise sexualized franchise industrialise baptise chastise fantasized sized", stopwords=True)
         self.assertEqual(towords(words.words), ["ongoing", "advertise", "normal", "alphabet", "sexual", "franchise", "industrial", "baptise", "chastise", "fantasy", "size"])
@@ -2390,44 +2390,44 @@ class MyTest(unittest.TestCase):
         words = Words("calmness darkness kindness messiness", stopwords=True)
         self.assertEqual(towords(words.words), ["calm", "dark", "kind", "messy"])
               
-    def test_290(self):
+    def test_292(self):
         """ More stemming """
         words = Words("dinner transfer transferrer")
         self.assertEqual(towords(words.words), ["dine", "transfer", "transfer"])       
         
-    def test_291(self):
+    def test_293(self):
         """ More NER gender """
         words = Words("grandfather grandpa papa grandmother grandma momma son daughter", stopwords=True)
         self.assertEqual(words.words, [{'word': 'grandfather', 'tag': 15}, {'word': 'grandfather', 'tag': 15}, {'word': 'father', 'tag': 15}, {'word': 'grandmother', 'tag': 16}, {'word': 'grandmother', 'tag': 16}, {'word': 'mother', 'tag': 16}, {'word': 'son', 'tag': 15}, {'word': 'daughter', 'tag': 16}])    
         words = Words("sis bro", stopwords=True)
         self.assertEqual(words.words, [{'word': 'sister', 'tag': 16}, {'word': 'brother', 'tag': 15}])
         
-    def test_292(self):
+    def test_294(self):
         """ Porter Stemmer """
         words = Words("taxes lives elves hides haves halves grasses braves", stem='porter')
         self.assertEqual(towords(words.words), ["tax", "live", "elv", "hide", "halv", "grass", "brave"])      
         
-    def test_293(self):
+    def test_295(self):
         """ Snowball Stemmer """
         words = Words("taxes lives elves hides haves halves grasses braves", stem='snowball')
         self.assertEqual(towords(words.words), ["tax", "live", "elv", "hide", "halv", "grass", "brave"])      
         
-    def test_294(self):
+    def test_296(self):
         """ Lancaster Stemmer """
         words = Words("taxes lives elves hides haves halves grasses braves", stem='lancaster')
         self.assertEqual(towords(words.words), ["tax", "liv", "elv", "hid", "hav", "halv", "grass", "brav"])      
         
-    def test_295(self):
+    def test_297(self):
         """ Lemma """
         words = Words("taxes lives elves hides haves halves grasses braves", stem='lemma')
         self.assertEqual(towords(words.words), ["tax", "life", "elf", "hide", "grass", "brave"])      
         
-    def test_296(self):
+    def test_298(self):
         """ POS tags """
         words = Words("Jim Jones", pos=True, stopwords=True)
         self.assertEqual(words.words, [{'word': 'jim', 'tag':0, 'pos': 'NN'}, {'word': 'jones', 'tag':11, 'pos': 'NNS'}])     
         
-    def test_297(self):
+    def test_299(self):
         """ Words - more key value separators """
         words = Words("SSN is 544-12-1222", ssn=True)
         self.assertEqual(towords(words.words), ["544121222"])
@@ -2436,7 +2436,7 @@ class MyTest(unittest.TestCase):
         words = Words("Phone of (800) 123-1234", telephone=True)
         self.assertEqual(towords(words.words), ["8001231234"])   
         
-    def test_298(self):
+    def test_300(self):
         """ Words - Address PMB """
         words = Words("PMB 10 12 W Main Ave.,", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -2445,7 +2445,7 @@ class MyTest(unittest.TestCase):
         words = Words("P.M.B. 10 12 W Main Ave.,", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
 
-    def test_299(self):
+    def test_301(self):
         """ Words - Address Canada STN/RPO """
         words = Words("POB 10 STN A 12 W Main Ave.,", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': 'a', 'tag': 37}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
@@ -2454,7 +2454,7 @@ class MyTest(unittest.TestCase):
         words = Words("POB 10 Station A 12 W Main Ave.,", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': 'a', 'tag': 37}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}])
 
-    def test_300(self):
+    def test_302(self):
         """ Words - Canada Provinces """
         words = Words("12 W Main Ave., Calgary, Alberta", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'calgary', 'tag': 31}, {'word': 'ISO3166-2:CA-AB', 'tag': 32}])
@@ -2500,7 +2500,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-QC', 'tag': 32}])
         words = Words("12 W Main Ave., Hoops, QC", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-QC', 'tag': 32}])
-        words = Words("12 W Main Ave., Hoops, Québec", address=True)
+        words = Words("12 W Main Ave., Hoops, QuÃ©bec", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-QC', 'tag': 32}])
         words = Words("12 W Main Ave., Hoops, SK", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-SK', 'tag': 32}])
@@ -2511,12 +2511,12 @@ class MyTest(unittest.TestCase):
         words = Words("12 W Main Ave., Hoops, Yukon", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-YT', 'tag': 32}])
 
-    def test_301(self):
+    def test_303(self):
         """ Words - Canada Postal Codes """
         words = Words("12 W Main Ave., Calgary, Alberta V8X 3X4", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'calgary', 'tag': 31}, {'word': 'ISO3166-2:CA-AB', 'tag': 32}, {'word': 'v8x3x4', 'tag': 34}])
 
-    def test_302(self):
+    def test_304(self):
         """ Words - USA international code in telephone number """
         words = Words("1-800-360-1234", telephone=True)
         self.assertEqual(words.words, [{'word': '18003601234', 'tag': 10}])
@@ -2531,16 +2531,16 @@ class MyTest(unittest.TestCase):
         words = Words("800.360.1234", telephone=True)
         self.assertEqual(words.words, [{'word': '8003601234', 'tag': 10}])
         
-    def test_303(self):
+    def test_305(self):
         """ Words - Romanization """
         words = Words("Quebec", roman=True)
         self.assertEqual(words.words, [{'word': 'quebec', 'tag': 0}])
-        words = Words("Québec", roman=False)
-        self.assertEqual(words.words, [{'word': 'québec', 'tag': 0}])
-        words = Words("Québec")
-        self.assertEqual(words.words, [{'word': 'québec', 'tag': 0}])
+        words = Words("QuÃ©bec", roman=False)
+        self.assertEqual(words.words, [{'word': 'quÃ©bec', 'tag': 0}])
+        words = Words("QuÃ©bec")
+        self.assertEqual(words.words, [{'word': 'quÃ©bec', 'tag': 0}])
         
-    def test_304(self):
+    def test_306(self):
         """ Words - addresses that were broken """
         words = Words("PMB 10 12 W Main Ave. foo", stopwords=True)
         self.assertEqual(words.words, [{'word': '10', 'tag': 35}, {'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'foo', 'tag': 0}])
@@ -2559,7 +2559,7 @@ class MyTest(unittest.TestCase):
         words = Words("12A W Main Ave., Mt. View CA", address=True)
         self.assertEqual(words.words, [{'word': '12a', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'mountain view', 'tag': 31}, {'word': 'ISO3166-2:US-CA', 'tag': 32}])
    
-    def test_305(self):
+    def test_307(self):
         """ Words - more birthdates """     
         words = Words("birthdate: 01/02/2018", dob=True)     
         self.assertEqual(words.words, [{'word': '2018-01-02', 'tag': 20}])
@@ -2568,7 +2568,7 @@ class MyTest(unittest.TestCase):
         words = Words("birthday: 01/02/2018", dob=True)     
         self.assertEqual(words.words, [{'word': '2018-01-02', 'tag': 20}])
         
-    def test_306(self):
+    def test_308(self):
         """ Words - Units of Measurements """
         words = Words("Height: 71 inches", unit=True)
         self.assertEqual(words.words, [{'word': 'height', 'tag': 38}, {'word': '71', 'tag': 1}, {'word': 'inch', 'tag': 25}])
@@ -2609,26 +2609,26 @@ class MyTest(unittest.TestCase):
         words = Words("ht: 5' 6\"", unit=True)
         self.assertEqual(words.words, [{'word': 'height', 'tag': 38}, {'word': '5', 'tag': 1}, {'word': 'foot', 'tag': 25}, {'word': '6', 'tag': 1}, {'word': 'inch', 'tag': 25}]) 
         
-    def test_307(self):
+    def test_309(self):
         """ Words - more telephone """
         words = Words("Customer Support: (360) 123-1234", telephone=True)
         self.assertEqual(words.words, [{'word': 'customer', 'tag': 0}, {'word': '3601231234', 'tag': 10}]) 
         words = Words("Fax: (360) 123-1234", telephone=True)
         self.assertEqual(words.words, [{'word': '3601231234', 'tag': 42}])      
         
-    def test_308(self):
+    def test_310(self):
         """ Words - not a measurement """
         words = Words("he said, 'I am 26'", stopwords = True)
         self.assertEqual(words.words, [{'word': 'he', 'tag': 8}, {'word': 'said', 'tag': 21}, {'word': 'i', 'tag': 8}, {'word': 'am', 'tag': 21}, {'word': '26', 'tag': 1}]) 
        
-    def test_309(self):
+    def test_311(self):
         """ Words - fahrenheit / celsius """
-        words = Words("26 °F", stopwords=True)
+        words = Words("26 Â°F", stopwords=True)
         self.assertEqual(words.words, [{'word': '26', 'tag': 1}, {'word': 'fahrenheit', 'tag': 25}])
-        words = Words("26 °C", stopwords=True)
+        words = Words("26 Â°C", stopwords=True)
         self.assertEqual(words.words, [{'word': '26', 'tag': 1}, {'word': 'celsius', 'tag': 25}])
               
-    def test_310(self):
+    def test_312(self):
         """ Words - min/max/ave measurements """
         words = Words("maximum: 36", stopwords=True)
         self.assertEqual(words.words, [{'word': 'maximum', 'tag': 38}, {'word': '36', 'tag': 1}])
@@ -2643,12 +2643,12 @@ class MyTest(unittest.TestCase):
         words = Words("ave 36", stopwords=True)
         self.assertEqual(words.words, [{'word': 'average', 'tag': 38}, {'word': '36', 'tag': 1}])   
         
-    def test_311(self):
+    def test_313(self):
         """ Words constructor  = age is not a bool """
         with pytest.raises(TypeError):
             words = Words("one", age=12)
         
-    def test_312(self):
+    def test_314(self):
         """ Words: Age """
         words = Words("age: 36", age=True)
         self.assertEqual(words.words, [{'word': '36', 'tag': 43}])   
@@ -2659,18 +2659,18 @@ class MyTest(unittest.TestCase):
         words = Words("36 years old foo", age=True)
         self.assertEqual(words.words, [{'word': '36', 'tag': 43}, {'word': 'foo', 'tag': 0}])  
         
-    def test_313(self):
+    def test_315(self):
         """ Words bag of words """
         words = Words("three two one three three two", number=True)
         self.assertEqual(words.bagOfWords, { '2': 2, '1': 1, '3': 3 }) 
         self.assertEqual(words.freqDist, [ ('3', 3), ('2', 2), ('1', 1) ])  
         
-    def test_314(self):
+    def test_316(self):
         """ hwy / fwy """
         words = Words("hwy accidents fwy accidents")
         self.assertEqual(towords(words.words), ["highway", "accident", "freeway", "accident"])
         
-    def test_315(self):
+    def test_317(self):
         """ more word endings """
         words = Words("permitted provider provided based shared sharing")
         self.assertEqual(towords(words.words), ["permit", "provide", "provide", "base", "share", "share"])
@@ -2678,16 +2678,14 @@ class MyTest(unittest.TestCase):
         self.assertEqual(towords(words.words), ["include", "include", "include"])
         words = Words("treated treating treatment lazy", stopwords=True)
         self.assertEqual(towords(words.words), ["treat", "treat", "treat", "lazy"])
-  
-        
+          
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
         words = Words("10 m/s", stopwords=True)
         words = Words("10 ft/s", stopwords=True)
         words = Words("min 36", stopwords=True)
         # dad -> father, mom -> 
-        
-        
+           
 def towords(list):
     words = []
     for word in list:
