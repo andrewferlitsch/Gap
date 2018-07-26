@@ -168,6 +168,10 @@ class Image(object):
         else:
             image = cv2.imread(self._image, cv2.IMREAD_COLOR)
             
+        # if bad image, skip
+        if np.any(image == None):
+            return None
+            
         self._raw = image   
 
         # Store the thumbnail
@@ -192,8 +196,7 @@ class Image(object):
         # Get the shape of the array
         self._shape = image.shape
         
-        # Convert to numpy array  
-        self._imgdata = np.asarray(image)
+        self._imgdata = image
         
         if self._hd5:
             self._store() 
@@ -350,6 +353,7 @@ class Images(object):
         self._config   = config     # configuration settings
         self._time     = time       # time to process the images
         self._split    = 0.8        # percentage of split between train / test
+        self._seed     = 0          # seed for random shuffle of data
         self._train    = None       # indices for training set
         self._test     = None       # indices for test set
         self._trainsz  = 0          # size of training set
@@ -559,6 +563,15 @@ class Images(object):
     @split.setter
     def split(self, percent):
         """ Set the split for training/test and create a randomized index """
+        
+        if isinstance(percent, tuple):
+            if len(percent) != 2:
+                raise ValueError("Split setter must be percent, seed")
+            self._seed = percent[1]
+            if not isinstance(self._seed, int):
+                raise TypeError("Seed parameter must be an integer")
+            percent = percent[0]
+            
         if not isinstance(percent, float):
             raise TypeError("Float expected for percent")
         if percent <= 0 or percent >= 1:
@@ -566,6 +579,7 @@ class Images(object):
         self._split = percent
         
         # create a randomized index to the images
+        random.seed(self._seed)
         self._indices = random.sample([ index for index in range(len(self._data))], len(self._data))
         
         # split the indices into train and test

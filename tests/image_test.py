@@ -614,6 +614,31 @@ class MyTest(unittest.TestCase):
         x = 0
         for _ in g: x += 1
         self.assertEquals(x, 0)
+        os.remove('foobar.h5')
+        
+    def test_066(self):
+        """ split - invalid tuple size """
+        images = Images(['files/0_100.jpg'], [1], name='foobar')
+        with pytest.raises(ValueError):
+            images.split = (0.9, 2, 3)
+        os.remove('foobar.h5')
+        
+    def test_067(self):
+        """ split - tuple, percent not a float, seed not an int """
+        images = Images(['files/0_100.jpg'], [1], name='foobar')
+        with pytest.raises(TypeError):
+            images.split = ('a', 2)
+        with pytest.raises(TypeError):
+            images.split = (0.8, 'a')
+        os.remove('foobar.h5')
+        
+    def test_068(self):
+        """ split - tuple valid """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg'], [1, 2], name='foobar')
+        images.split = 0.5, 2
+        self.assertEqual(len(next(images)), 2)
+        os.remove('foobar.h5')
+        
         
     def done(self, image):
         self.isdone = True
