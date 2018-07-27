@@ -19,6 +19,7 @@ tests_require=[
 
 scripts=[
   'address.py',
+  'dataset.py',
   'pdf_res.py',
   'segment.py',
   'splitter.py',
