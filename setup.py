@@ -11,6 +11,7 @@ install_requires=[
   'h5py',
   'unidecode',
   'nltk',
+  'requests',
   'opencv-python']
 		  
 tests_require=[

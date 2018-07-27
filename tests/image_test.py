@@ -598,7 +598,7 @@ class MyTest(unittest.TestCase):
         os.remove('foobar.h5')
         
     def test_065(self):
-        """ minibatch - fetch """
+        """ Images - minibatch - fetch """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg', 'files/3_100.jpg', 'files/1_100.jpg'], [1,2,3,4,5,6], name='foobar')
         images.split = 0.5
         images.minibatch = 2
@@ -617,14 +617,14 @@ class MyTest(unittest.TestCase):
         os.remove('foobar.h5')
         
     def test_066(self):
-        """ split - invalid tuple size """
+        """ Images - split - invalid tuple size """
         images = Images(['files/0_100.jpg'], [1], name='foobar')
         with pytest.raises(ValueError):
             images.split = (0.9, 2, 3)
         os.remove('foobar.h5')
         
     def test_067(self):
-        """ split - tuple, percent not a float, seed not an int """
+        """ Images - split - tuple, percent not a float, seed not an int """
         images = Images(['files/0_100.jpg'], [1], name='foobar')
         with pytest.raises(TypeError):
             images.split = ('a', 2)
@@ -633,11 +633,22 @@ class MyTest(unittest.TestCase):
         os.remove('foobar.h5')
         
     def test_068(self):
-        """ split - tuple valid """
+        """ Image - split - tuple valid """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg'], [1, 2], name='foobar')
         images.split = 0.5, 2
         self.assertEqual(len(next(images)), 2)
         os.remove('foobar.h5')
+        
+    def test_069(self):
+        """ Image - remote image """
+        image = Image('https://cdn.cnn.com/cnnnext/dam/assets/180727161452-trump-speech-economy-072718-exlarge-tease.jpg', 2)
+        self.assertEqual(image.type, "jpg")
+        self.assertEqual(image.size, 38302)
+        self.assertEqual(image.shape, (438, 780, 3))
+        image = Image('https://cdn.cnn.com/cnnnext/dam/assets/180727161452-trump-speech-economy-072718-exlarge-tease.jpg', 2, config=['grayscale'])
+        self.assertEqual(image.type, "jpg")
+        self.assertEqual(image.size, 38302)
+        self.assertEqual(image.shape, (438, 780))
         
         
     def done(self, image):

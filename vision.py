@@ -8,6 +8,7 @@ import threading
 import time
 import copy
 import random
+import requests
 
 # Import numpy for the high performance in-memory matrix/array storage and operations.
 import numpy as np
@@ -132,9 +133,12 @@ class Image(object):
         """ Check if document exists """
         if isinstance(self._image, str) == False:
             raise TypeError("String expected for image path")
-    
+            
+        # File is at a remote (Internet) location
+        if self._image.startswith("http"):
+            pass
         # Check that image exists
-        if os.path.isfile(self._image) == False:
+        elif os.path.isfile(self._image) == False:
             raise FileNotFoundError(self._image)
         
         # Get the file name and file type of the image without the extension 
@@ -146,11 +150,12 @@ class Image(object):
             raise TypeError("Not an image file:", self._image)
         
         # Get the size of the image 
-        self._size = os.path.getsize(self._image)
+        if not self._image.startswith("http"):
+            self._size = os.path.getsize(self._image)
         
-        # Size sanity check
-        if self._size == 0:
-            raise IOError("The image is an empty file")
+            # Size sanity check
+            if self._size == 0:
+                raise IOError("The image is an empty file")
             
     def _collate(self, dir='./'):
         """ Process the image """   
@@ -160,13 +165,24 @@ class Image(object):
         # If directory does not exist, create it
         if dir != "./" and os.path.isdir(dir) == False:
             os.mkdir(dir)
-        
-        # Read in the image data
-        if self._grayscale:
-            image = cv2.imread(self._image, cv2.IMREAD_GRAYSCALE)
-        # Load RGB image (dropping any alpha channel)
+            
+        if self._image.startswith("http"):
+            response = requests.get(self._image, timeout=10)
+            # Read in the image data
+            data = np.fromstring(response.content, np.uint8)
+            self._size = len(data)
+            if self._grayscale:
+                image = cv2.imdecode(data, cv2.IMREAD_GRAYSCALE)
+            # Load RGB image (dropping any alpha channel)
+            else:
+                image = cv2.imdecode(data, cv2.IMREAD_COLOR)
         else:
-            image = cv2.imread(self._image, cv2.IMREAD_COLOR)
+            # Read in the image data
+            if self._grayscale:
+                image = cv2.imread(self._image, cv2.IMREAD_GRAYSCALE)
+            # Load RGB image (dropping any alpha channel)
+            else:
+                image = cv2.imread(self._image, cv2.IMREAD_COLOR)
             
         # if bad image, skip
         if np.any(image == None):
