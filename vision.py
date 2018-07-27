@@ -217,6 +217,7 @@ class Image(object):
             imgset.attrs['name']  = self._name
             imgset.attrs['type']  = self._type
             imgset.attrs['size']  = self._size
+            imgset.attrs['type']  = self._type
             hf.create_dataset("raw", data=[self._raw])
             try:
                 hf.create_dataset("thumb", data=[self._thumb])
@@ -250,7 +251,8 @@ class Image(object):
             try:
                 self._thumb =  hf['thumb'][0]
             except: pass
-        self._shape   = self._imgdata.shape       
+        self._shape = self._imgdata.shape   
+        # self._type  = hf.attrs["type"]    
         
         # Get the size of the image
         self._size = os.path.getsize(image)
