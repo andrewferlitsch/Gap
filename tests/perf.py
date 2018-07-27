@@ -11,7 +11,7 @@ import cv2
 
 from vision import Image, Images
 
-def test1():
+def test_001():
     global files, dir
     """ PIL Performance Tests """
     total = 0
@@ -32,7 +32,7 @@ def test1():
         os.remove("tmp.h5")
     print("PIL AVE", total / 10 )
 
-def test2():
+def test_002():
     """ openCV Performance Tests """
     global files, dir
     total = 0
@@ -54,7 +54,7 @@ def test2():
     print("CV2 AVE", total / 10 )
        
         
-def test3():
+def test_003():
     """ Vision/Image Performance Tests """
     global files, dir
     total = 0
@@ -75,7 +75,7 @@ def test3():
         os.remove("tmp.h5")
     print("VISION/IMAGE AVE", total / 10 )
     
-def test4():
+def test_004():
     """ Vision/Images Performance Tests """
     global files, dir
     images = []
@@ -96,12 +96,10 @@ if __name__ == "__main__":
     #dir = '../Training/AITraining/Intermediate/Machine Learning/sign-lang/gestures/1'
     files = os.listdir(dir)
     if sys.argv[2] == '1':
-        test1()
+        test_001()
     elif sys.argv[2] == '2':
-        test2()
+        test_002()
     elif sys.argv[2] == '3':
-        test3()
+        test_003()
     elif sys.argv[2] == '4':
-        test4()
-        
- 
+        test_004()
