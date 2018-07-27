@@ -7,6 +7,7 @@ import pytest
 import os
 import sys
 import time
+from shutil import copy
 
 class MyTest(unittest.TestCase):
         
@@ -649,6 +650,39 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.type, "jpg")
         self.assertEqual(image.size, 38302)
         self.assertEqual(image.shape, (438, 780))
+        os.remove('180727161452-trump-speech-economy-072718-exlarge-tease.h5')
+        
+    def test_070(self):
+        """ Image - nonexistent remote image """
+        image = Image('https://cdn.cnn.com/cnnnext/dam/assets/18ch-economy-072718-exlarge-tease.jpg', 2)
+        self.assertEqual(image.data, None)
+        
+    def test_071(self):
+        """ Image - bad image """
+        f = open("tmp.jpg", "w")
+        f.write("foobar")
+        f.close()
+        image = Image('tmp.jpg', 2)
+        self.assertEqual(image.data, None)
+        os.remove('tmp.jpg')
+        
+    def test_072(self):
+        """ Images - directory """
+        os.mkdir("tmp1")
+        copy('files/0_100.jpg', 'tmp1')
+        copy('files/1_100.jpg', 'tmp1')
+        os.mkdir("tmp2")
+        copy('files/2_100.jpg', 'tmp2')
+        copy('files/3_100.jpg', 'tmp2')
+        images = Images( ['tmp1', 'tmp2'], [1,2], name='foobar', config=['grayscale'])
+        self.assertEqual(len(images), 4)
+        os.remove('foobar.h5')
+        os.remove('tmp1/0_100.jpg')
+        os.remove('tmp1/1_100.jpg')
+        os.rmdir("tmp1")
+        os.remove('tmp2/2_100.jpg')
+        os.remove('tmp2/3_100.jpg')
+        os.rmdir("tmp2")
         
         
     def done(self, image):

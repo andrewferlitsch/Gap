@@ -167,7 +167,10 @@ class Image(object):
             os.mkdir(dir)
             
         if self._image.startswith("http"):
-            response = requests.get(self._image, timeout=10)
+            try:
+                response = requests.get(self._image, timeout=10)
+            except: return None
+            
             # Read in the image data
             data = np.fromstring(response.content, np.uint8)
             self._size = len(data)
@@ -443,7 +446,13 @@ class Images(object):
         # Process each image
         self._data = []
         for ix in range(len(self._images)):
-            self._data.append( Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config) )
+            # directory of files
+            if os.path.isdir(self._images[ix]):
+                for image in [ self._images[ix] + '/' + file for file in os.listdir(self._images[ix])]:
+                    self._data.append( Image(image, dir=self._dir, label=self._labels[ix], config=self._config) )
+            # single file
+            else:
+                self._data.append( Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config) )
             
         # Store the images as a collection in an HD5 filesystem
         imgdata = []
