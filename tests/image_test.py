@@ -553,16 +553,16 @@ class MyTest(unittest.TestCase):
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
         images.split = 0.25
         x1, x2, y1, y2 = images.split
-        self.assertEquals(len(x1), 1)
-        self.assertEquals(len(x2), 3)
-        self.assertEquals(len(y1), 1)
-        self.assertEquals(len(y2), 3)
+        self.assertEquals(len(x1), 3)
+        self.assertEquals(len(x2), 1)
+        self.assertEquals(len(y1), 3)
+        self.assertEquals(len(y2), 1)
         os.remove('collection.0_100.h5')
         
     def test_061(self):
         """ Images - iterate through collection """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
-        images.split = 0.75
+        images.split = 0.25
         self.assertEqual(len(next(images)), 2)
         self.assertEqual(len(next(images)), 2)
         self.assertEqual(len(next(images)), 2)

@@ -545,7 +545,7 @@ class Images(object):
         
         # Training set not already split, so split it
         if self._train == None:
-            self.split = self._split
+            self.split = (1 - self._split)
             
         # Construct the train and test lists
         X_train = []
@@ -578,14 +578,14 @@ class Images(object):
             raise TypeError("Float expected for percent")
         if percent <= 0 or percent >= 1:
             raise ValueError("Percent parameter must be between 0 and 1")
-        self._split = percent
+        self._split = (1 - percent)
         
         # create a randomized index to the images
         random.seed(self._seed)
         self._indices = random.sample([ index for index in range(len(self._data))], len(self._data))
         
         # split the indices into train and test
-        split = int(percent * len(self._data))
+        split = int((1 - percent) * len(self._data))
         self._train   = self._indices[:split]
         self._test    = self._indices[split:]
         self._trainsz = len(self._train)
