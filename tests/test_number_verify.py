@@ -4,12 +4,10 @@ Copyright, 2018(c), Andrew Ferlitsch
 """
 import glob
 
-test_files = [f for f in glob.glob("*.py")]
+test_files = [f for f in glob.glob("*_test.py")]
 
 for file in test_files:
-    if file=='test_number_verify.py' or file=='__init__.py':
-        pass
-    else:
+    if True:
         f = open(file, 'r')
         func_list = [line[8:16] for line in f if line[8:13]=='test_']
         func_unic = []
