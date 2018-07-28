@@ -684,10 +684,16 @@ class MyTest(unittest.TestCase):
         os.remove('tmp2/3_100.jpg')
         os.rmdir("tmp2")
         
-    # images - https
-    # skew rotate
-    # transform
-        
+    def test_073(self):
+        """ Image - rotate """
+        image = Image("files/0_100.jpg", 1, config=['resize=(64,64)', 'grayscale'])
+        rotated = image.rotate(90)
+        self.assertTrue(rotated.shape, (64, 64))
+        rotated = image.rotate(180)
+        self.assertTrue(rotated.shape, (64, 64))
+        rotated = image.rotate(270)
+        self.assertTrue(rotated.shape, (64, 64))
+        os.remove('0_100.h5')
         
     def done(self, image):
         self.isdone = True

@@ -9,6 +9,7 @@ import time
 import copy
 import random
 import requests
+import imutils
 
 # Import numpy for the high performance in-memory matrix/array storage and operations.
 import numpy as np
@@ -241,6 +242,22 @@ class Image(object):
             try:
                 hf.create_dataset("thumb", data=[self._thumb])
             except: pass
+            
+    def rotate(self, degree):
+        """ rotate the image """
+        if not isinstance(degree, int):
+            raise ValueError("Degree must be an integer")
+            
+        if degree <= 0 or degree >= 360:
+            raise ValueError("Degree must be between 0 and 360")
+            
+        # rotate the image
+        rotated = imutils.rotate_bound(self._imgdata, degree)
+        
+        # resize back to expected dimensions
+        if degree not in [ 90, 180, 270 ]:
+            rotated = cv2.resize(rotated, self._imgdata.shape,interpolation=cv2.INTER_AREA)
+        return rotated
             
     def load(self, image, dir='./'):
         """ Load an image from storage """
