@@ -258,6 +258,12 @@ class Image(object):
         if degree not in [ 90, 180, 270 ]:
             rotated = cv2.resize(rotated, self._imgdata.shape,interpolation=cv2.INTER_AREA)
         return rotated
+        
+    def edge(self):
+        """ """
+        gray = cv2.GaussianBlur(self._imgdata, (3, 3), 0)
+        edged = cv2.Canny(gray, 20, 100)
+        return edged
             
     def load(self, image, dir='./'):
         """ Load an image from storage """
