@@ -9,6 +9,7 @@ with open('README.md') as f:
 install_requires=[
   'numpy',
   'h5py',
+  'imutils',
   'unidecode',
   'nltk',
   'requests',
