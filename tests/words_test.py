@@ -2,7 +2,7 @@
 """
 Copyright, 2018(c), Andrew Ferlitsch
 """
-from syntax import Words
+from gapml.syntax import Words
 import unittest
 import pytest
 import os
@@ -1441,8 +1441,8 @@ class MyTest(unittest.TestCase):
                 
     def test_239(self):
         """ Words - Spanish punctuation """
-        words = Words("��", punct=True)
-        self.assertEqual(words.words, [{'word': '�', 'tag': 23}, {'word': '�', 'tag': 23}])
+        words = Words("¿¡", punct=True)
+        self.assertEqual(words.words, [{'word': '¿', 'tag': 23}, {'word': '¡', 'tag': 23}])
                 
     def test_240(self):
         """ Words - More quantifiers """
@@ -2500,7 +2500,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-QC', 'tag': 32}])
         words = Words("12 W Main Ave., Hoops, QC", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-QC', 'tag': 32}])
-        words = Words("12 W Main Ave., Hoops, Qu�bec", address=True)
+        words = Words("12 W Main Ave., Hoops, Québec", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-QC', 'tag': 32}])
         words = Words("12 W Main Ave., Hoops, SK", address=True)
         self.assertEqual(words.words, [{'word': '12', 'tag': 27}, {'word': 'west', 'tag': 28}, {'word': 'main', 'tag': 29}, {'word': 'avenue', 'tag': 30}, {'word': 'hoops', 'tag': 31}, {'word': 'ISO3166-2:CA-SK', 'tag': 32}])
@@ -2535,10 +2535,10 @@ class MyTest(unittest.TestCase):
         """ Words - Romanization """
         words = Words("Quebec", roman=True)
         self.assertEqual(words.words, [{'word': 'quebec', 'tag': 0}])
-        words = Words("Qu�bec", roman=False)
-        self.assertEqual(words.words, [{'word': 'qu�bec', 'tag': 0}])
-        words = Words("Qu�bec")
-        self.assertEqual(words.words, [{'word': 'qu�bec', 'tag': 0}])
+        words = Words("Québec", roman=False)
+        self.assertEqual(words.words, [{'word': 'québec', 'tag': 0}])
+        words = Words("Québec")
+        self.assertEqual(words.words, [{'word': 'québec', 'tag': 0}])
         
     def test_306(self):
         """ Words - addresses that were broken """
@@ -2623,9 +2623,9 @@ class MyTest(unittest.TestCase):
        
     def test_311(self):
         """ Words - fahrenheit / celsius """
-        words = Words("26 �F", stopwords=True)
+        words = Words("26 °F", stopwords=True)
         self.assertEqual(words.words, [{'word': '26', 'tag': 1}, {'word': 'fahrenheit', 'tag': 25}])
-        words = Words("26 �C", stopwords=True)
+        words = Words("26 °C", stopwords=True)
         self.assertEqual(words.words, [{'word': '26', 'tag': 1}, {'word': 'celsius', 'tag': 25}])
               
     def test_312(self):
@@ -2678,14 +2678,14 @@ class MyTest(unittest.TestCase):
         self.assertEqual(towords(words.words), ["include", "include", "include"])
         words = Words("treated treating treatment lazy", stopwords=True)
         self.assertEqual(towords(words.words), ["treat", "treat", "treat", "lazy"])
-        
+          
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
         words = Words("10 m/s", stopwords=True)
         words = Words("10 ft/s", stopwords=True)
         words = Words("min 36", stopwords=True)
         # dad -> father, mom -> 
-          
+           
 def towords(list):
     words = []
     for word in list:
