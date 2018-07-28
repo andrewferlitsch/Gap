@@ -684,6 +684,10 @@ class MyTest(unittest.TestCase):
         os.remove('tmp2/3_100.jpg')
         os.rmdir("tmp2")
         
+    # images - https
+    # skew rotate
+    # transform
+        
         
     def done(self, image):
         self.isdone = True
