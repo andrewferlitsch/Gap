@@ -5,11 +5,11 @@
 
 ### Framework
 
-The GAP NLP/CV data engineering framework provides an easy to get started into the world of machine learning for your unstructured data in PDF documents, scanned documents, TIFF facsimiles and camera captured documents, and your image data in image files and image repositories.
+The Gap NLP/CV data engineering framework provides an easy to get started into the world of machine learning for your unstructured data in PDF documents, scanned documents, TIFF facsimiles and camera captured documents, and your image data in image files and image repositories.
 
 *NLP*
 
-  - Automatic OCR of scanned and camera captured images.
+  - Automatic OCR of scanned PDF and camera captured images.
   - Automatic Text Extraction from documents.
   - Automatic Syntax Analysis.
   - Optional Romanization of Latin-1 diacritic characters.
@@ -30,8 +30,10 @@ The GAP NLP/CV data engineering framework provides an easy to get started into t
 
   - Automatic storage and retrieval with high performance HDF5 files.
   - Automatic handling of mixed channels (grayscale, RGB and RGBA) and pixel size.
-  - Programmtic control of resizing.
-  - Programmtic control of conversion into machine ready data format: decompression, normalize, flatten.
+  - Programmatic control of resizing.
+  - Programmatic control of conversion into machine learning ready data format: decompression, normalize, flatten.
+  - Programmatic control of minibatch generation.
+  - Programmatic control of image synethsis.
   - Asynchronous processing of images.
   - Automatic generation of CV machine learning ready data.
 
