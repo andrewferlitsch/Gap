@@ -58,7 +58,7 @@ The source code is made available under the Creative Commons license: [CC-BY](ht
 
 ## Prerequites
 
-The GAP framework extensively uses a number of open source applications/modules. The following applications and modules will need to be installed on your computer/laptop:
+The Gap framework extensively uses a number of open source applications/modules. The following applications and modules will need to be installed on your computer/laptop:
 
   1. Artifex's Ghostscript - extracting text from text PDF
   2. ImageMagic's Magick - extracting image from scanned PDF
