@@ -33,7 +33,7 @@ The Gap NLP/CV data engineering framework provides an easy to get started into t
   - Programmatic control of resizing.
   - Programmatic control of conversion into machine learning ready data format: decompression, normalize, flatten.
   - Programmatic control of minibatch generation.
-  - Programmatic control of image synethsis.
+  - Programmatic control of image augmentation.
   - Asynchronous processing of images.
   - Automatic generation of CV machine learning ready data.
 
