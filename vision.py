@@ -685,10 +685,14 @@ class Images(object):
 
     def __len__(self):
         """ Override the len() operator - return the number of images """
+        if self._data is None:
+            raise IndexError("Index out of range for Images")
         return len(self._data)
         
     def __getitem__(self, ix):
         """ Override the index operator - return the image at the corresponding index """
+        if not isinstance(ix, int):
+            raise TypeError("Index must be an integer")
         if ix > len(self):
             raise IndexError("Index out of range for Images")
         return self._data[ ix ]
