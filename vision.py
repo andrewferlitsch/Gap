@@ -616,7 +616,7 @@ class Images(object):
         
         if isinstance(percent, tuple):
             if len(percent) != 2:
-                raise ValueError("Split setter must be percent, seed")
+                raise AttributeError("Split setter must be percent, seed")
             self._seed = percent[1]
             if not isinstance(self._seed, int):
                 raise TypeError("Seed parameter must be an integer")

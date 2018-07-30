@@ -620,7 +620,7 @@ class MyTest(unittest.TestCase):
     def test_066(self):
         """ Images - split - invalid tuple size """
         images = Images(['files/0_100.jpg'], [1], name='foobar')
-        with pytest.raises(ValueError):
+        with pytest.raises(AttributeError):
             images.split = (0.9, 2, 3)
         os.remove('foobar.h5')
         
