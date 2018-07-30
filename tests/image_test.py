@@ -620,7 +620,7 @@ class MyTest(unittest.TestCase):
     def test_066(self):
         """ Images - split - invalid tuple size """
         images = Images(['files/0_100.jpg'], [1], name='foobar')
-        with pytest.raises(ValueError):
+        with pytest.raises(AttributeError):
             images.split = (0.9, 2, 3)
         os.remove('foobar.h5')
         
@@ -686,14 +686,27 @@ class MyTest(unittest.TestCase):
         
     def test_073(self):
         """ Image - rotate """
-        image = Image("files/0_100.jpg", 1, config=['resize=(64,64)', 'grayscale'])
+        image = Image("files/1_100.jpg", 1, config=['resize=(64,64)', 'grayscale'])
         rotated = image.rotate(90)
         self.assertTrue(rotated.shape, (64, 64))
         rotated = image.rotate(180)
         self.assertTrue(rotated.shape, (64, 64))
         rotated = image.rotate(270)
         self.assertTrue(rotated.shape, (64, 64))
-        os.remove('0_100.h5')
+        os.remove('1_100.h5')
+        
+    def test_074(self):
+        """ Images - [] not an int """
+        images = Images(["files/1_100.jpg"], 1)
+        with pytest.raises(TypeError):
+            image = images['abc']
+        os.remove('collection.1_100.h5')
+        
+    def test_075(self):
+        """ Images - len() invalid when no files loaded """
+        images = Images()
+        with pytest.raises(IndexError):
+            n = len(images)
         
     def done(self, image):
         self.isdone = True

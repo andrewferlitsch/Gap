@@ -557,7 +557,7 @@ class Images(object):
         """ Getter for the processing time """
         return self._time
         
-    def load(self, name):
+    def load(self, name, dir=None):
         """ Load a Collection of Images """
         if name is None:
             raise ValueError("Name parameter cannot be None")
@@ -565,6 +565,9 @@ class Images(object):
             raise TypeError("String expected for collection name")
         self._name = name
         
+        if dir is not None:
+            self.dir = dir
+            
         if self._dir is None:
             self._dir = "./"
         
@@ -616,7 +619,7 @@ class Images(object):
         
         if isinstance(percent, tuple):
             if len(percent) != 2:
-                raise ValueError("Split setter must be percent, seed")
+                raise AttributeError("Split setter must be percent, seed")
             self._seed = percent[1]
             if not isinstance(self._seed, int):
                 raise TypeError("Seed parameter must be an integer")
@@ -685,10 +688,14 @@ class Images(object):
 
     def __len__(self):
         """ Override the len() operator - return the number of images """
+        if self._data is None:
+            raise IndexError("Index out of range for Images")
         return len(self._data)
         
     def __getitem__(self, ix):
         """ Override the index operator - return the image at the corresponding index """
+        if not isinstance(ix, int):
+            raise TypeError("Index must be an integer")
         if ix > len(self):
             raise IndexError("Index out of range for Images")
         return self._data[ ix ]
