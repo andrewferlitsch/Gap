@@ -557,7 +557,7 @@ class Images(object):
         """ Getter for the processing time """
         return self._time
         
-    def load(self, name):
+    def load(self, name, dir=None):
         """ Load a Collection of Images """
         if name is None:
             raise ValueError("Name parameter cannot be None")
@@ -565,6 +565,9 @@ class Images(object):
             raise TypeError("String expected for collection name")
         self._name = name
         
+        if dir is not None:
+            self.dir = dir
+            
         if self._dir is None:
             self._dir = "./"
         
