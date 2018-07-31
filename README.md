@@ -54,7 +54,7 @@ This framework is ideal for any organization planning to do:
 
 ## License
 
-The source code is made available under the Creative Commons license: [CC-BY](https://creativecommons.org/licenses/by/4.0/)
+The source code is made available under the Creative Commons license: [CC-BY-SA](https://creativecommons.org/licenses/by-sa/4.0/)
 
 ## Prerequites
 
