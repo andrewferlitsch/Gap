@@ -1,7 +1,7 @@
 """ Address Module for Identifying/Reducing US/CA Street and Postal Addresses
 Copyright, 2018(c), Andrew Ferlitsch
 """
-from vocabulary import Vocabulary, vocab
+from .vocabulary import Vocabulary, vocab
 
 class Address(object):
     _debug = False
