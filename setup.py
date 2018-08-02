@@ -78,10 +78,10 @@ def main():
             'win32':{1:{'app_name':'Ghostscript',
                         'app_path':'C:\\Program Files (x86)\\gs\\gs9.23\\bin\\',
                         'url':'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w32.exe'},
-                    2:{'app_name':'Imagemagick',
+                     2:{'app_name':'Imagemagick',
                         'app_path':'C:\\Program Files (x86)\\ImageMagick-7.0.8-Q8',
                         'url':'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-8-Q8-x86-static.exe'},
-                    3:{'app_name':'Tesseract',
+                     3:{'app_name':'Tesseract',
                         'app_path':'C:\\Program Files (x86)\\Tesseract-OCR',
                         'url':'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w32-setup-v4.0.0-beta.1.20180608.exe'}
                     },
