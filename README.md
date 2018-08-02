@@ -1,4 +1,4 @@
-# Gap : NLP/CV Data Engineering Framework, v0.9 (Pre-launch)
+# Gap : NLP/CV Data Engineering Framework, v0.91 (Pre-launch: alpha)
 
 ## Natural Language Processing for PDF, TIFF, and Camera Captured Documents, and
 ## Computer Vision Processing for Images
@@ -69,94 +69,32 @@ The Gap framework extensively uses a number of open source applications/modules.
   7. HDF5 - high performance of on-disk data (tensors) access
   8. openCV - image manipulation and processing for computer vision
   
-## Installation: Windows
+## Installation: 
 
-#### Ghostscript
+The Gap framework is supported on Windows, MacOS, and Linux. It has been packaged for distribution via PyPi on launch. \
 
-1. Download link : https://www.ghostscript.com/download/gsdnld.html
+For pre-launch, after you have clone the source code, from the root of the source tree do the following to complete the install:
 
-    Use the Free Version<br/>
-
-    Example: Ghostscript 9.23 for Windows (64 bit).<br/>
-
-2. Check if path to the program is in your PATH variable.
-
-    A. Open a command shell.<br/>
-    B. Type gswin64c in the command line.<br/>
-    C. If not found, add it to your path variable. Ex: C:\Program Files\gs\gs9.23\bin<br/>
-
-#### Magick
-
-1. Download Link: https://www.imagemagick.org/script/download.php
-
-    Use the 8bits per pixel static version (dynamic is for DLL inclusion).<br/>
-
-    Ex. 64bit Windows laptop: ImageMagick-7.0.8-1-Q8-x64-static.exe<br/>
-
-2. Check if path to the program is in your PATH variable.
-
-    A. Open a command shell.<br/>
-    B. Type magick in the command line.<br/>
-    C. If not found, add it to your path variable. For me, it is: C:\Program Files\ImageMagic-7.0.8-Q8
-
-#### Tesseract
-
-1. Download Link: https://github.com/tesseract-ocr/tesseract/wiki/Downloads
-
-    A. Make sure to add the English Language training data to the tessdata subdirectory where tesseract is installed.
-
-2. Check if path to program is in your PATH variable:
-
-    A. Open a command shell.<br/>
-    B. Type tesseract in the command line.<br/>
-    C. If not found, add it your path variable. For me, it is C:\Program Files\tesseract-Win64\
-
-3. Install the English Training Data files as: C:\Program Files\tesseract-Win64\tessdata . You can get a copy from my [github account.](tools/tessdata)
+    pip install -e .
 
 #### PyPi Dependencies
 
-The remaining dependencies for python packages distributed at PyPi are automatically checked for and installed by the setup.py script. These include:
+The dependencies for python packages distributed at PyPi are automatically checked for and installed by the setup.py script. These include:
 
   - nltk : http://www.nltk.org/
   - numpy : http://www.numpy.org/
   - h5py : https://www.h5py.org/
   - unidecode : https://pypi.org/project/Unidecode/
   - openCV : https://www.opencv.org/
-
-After you have clone the source code, from the root of the source tree do the following to complete the install:
-
-  pip install -e .
   
-## Installation: macOS
-1. Install [homebrew](https://brew.sh/), then:
-```bash
-    brew update
-    brew install ghostscript imagemagick tesseract
-```
+ #### 3rd Party Dependencies
+ 
+ The dependencies for non-python packages are automatically checked for and installed by the setup.py script. These include:
+ 
+  - Ghostscript : https://www.ghostscript.com
+  - Tesseract : https://github.com/tesseract-ocr/tesseract/wiki
+  - Imagik :  https://www.imagemagick.org
 
-2. Install [Anaconda](https://www.continuum.io/downloads), then:
-```bash
-    conda install numpy pytest nltk unidecode h5py opencv
-```
-
-## Installation: Ubuntu
-Execute `sudo apt-get update`, then:
-
-1. Ghostscript:
-```bash
-    sudo apt-get install ghostscript
-```
-
-2. ImageMagick:
-```bash
-    sudo apt-get install imagemagick
-```
-
-3. Tesseract:
-```bash
-    sudo apt-get install tesseract-ocr
-    sudo apt-get install tesseract-ocr-eng
-```
 
 ## Modules
 
