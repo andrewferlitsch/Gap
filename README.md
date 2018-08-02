@@ -1,4 +1,4 @@
-# Gap : NLP/CV Data Engineering Framework, v0.9 (Pre-launch)
+# Gap : NLP/CV Data Engineering Framework, v0.91 (Pre-launch: alpha)
 
 ## Natural Language Processing for PDF, TIFF, and Camera Captured Documents, and
 ## Computer Vision Processing for Images
@@ -75,7 +75,7 @@ The Gap framework is supported on Windows, MacOS, and Linux. It has been package
 
 For pre-launch, after you have clone the source code, from the root of the source tree do the following to complete the install:
 
-  pip install -e .
+    pip install -e .
 
 #### PyPi Dependencies
 
