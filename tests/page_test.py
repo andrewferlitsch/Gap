@@ -269,6 +269,31 @@ class MyTest(unittest.TestCase):
             segment = Segment(f.read())
         page = Page('files/segment_para.txt', segment.segments)
         
+    def test_041(self):
+        """ store() - not a valid type """
+        page = Page()
+        with pytest.raises(TypeError):
+            page.store(12)
+        
+    def test_042(self):
+        """ store() - not a valid path """
+        page = Page()
+        with pytest.raises(FileNotFoundError):
+            page.store('foo/goo/hoo.json')
+        
+    def test_043(self):
+        """ load() - not a valid type """
+        page = Page()
+        with pytest.raises(TypeError):
+            page.load(12)
+        
+    def test_044(self):
+        """ load() - not a valid path """
+        page = Page()
+        with pytest.raises(FileNotFoundError):
+            page.load('foo/goo/hoo.json')
+        
+        
     def xtest_bugs(self):
         """ Page store/load - unicode - cryllic """
         page = Page(text="Й й")

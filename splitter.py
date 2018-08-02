@@ -623,18 +623,24 @@ class Page(object):
         words = self.words
         return self._words.termFreq
 
-    def store(self, file):
+    def store(self, path):
         """ Store the NLP tokenized string to storage """
-        with open(file, 'w') as f:
+        if not isinstance(path, str):
+            raise TypeError("Path must be a string")
+        with open(path, 'w') as f:
             json.dump( self.words, f)
 
-    def load(self, file):
+    def load(self, path):
         """ Load the NLP tokenized string from storage """
-        with open(file, 'r', encoding='utf-8') as f:
+        if not isinstance(path, str):
+            raise TypeError("Path must be a string")
+        if os.path.isfile(path) == False:
+                raise FileNotFoundError("Not a valid path")
+        with open(path, 'r', encoding='utf-8') as f:
             self._words = Words()
             self._words._words = json.load(f)
-        file = file.replace('.json', '.txt')
-        with open(file, 'r', encoding='utf-8') as f:
+        path = path.replace('.json', '.txt')
+        with open(path, 'r', encoding='utf-8') as f:
             self._text = f.read()
 
 
