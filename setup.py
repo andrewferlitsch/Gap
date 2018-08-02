@@ -1,7 +1,12 @@
-#!/usr/bin/env python
+""" setup Gap-ML
+Copyright, 2018(c), Andrew Ferlitsch
+David Molina @virtualdvid
+"""
 
 from setuptools import setup, find_packages
+from distutils.command.install import install
 import os, sys
+import requests
 
 with open('README.md') as f:
   long_description = f.read()
@@ -19,7 +24,7 @@ tests_require=[
   'pytest',
   'pytest-cov']
 
-package_data ={'gapml': ['./org-os/*', './plan/*', './specs/*', './tools/*', './train/*']}
+package_data ={'gapml': ['org-os/*', 'plan/*', 'specs/*', 'test/*', 'tools/*', 'train/*']}
 
 #https://pypi.org/pypi?%3Aaction=list_classifiers
 classifiers=[
@@ -40,115 +45,66 @@ classifiers=[
   'Programming Language :: Python :: 3.6',
   'Programming Language :: Python :: 3.7']
 
-setup(
-  name='Gap-ML',
-  version='0.9',
-  description='NLP and CV Data Engineering Framework',
-  author='Andrew Ferlitsch',
-  author_email='aferlitsch@gmail.com',
-  license='CC-BY-SA',
-  url='https://github.com/andrewferlitsch/Gap',
-  long_description=long_description,
-  packages=find_packages(exclude=['tests', 'tests*']),
-  install_requires=install_requires,
-  tests_require=tests_require,
-  package_data=package_data,
-  classifiers=classifiers
-)
-
-import requests
-
-def answere_verify(app, app_path):
-  if os.path.exists(app_path):
-    print('{} already installed'.format(app))
-    answere = 'installed'
-  else:
-    answere_ok = False
-    while answere_ok == False:
-      answere = input('Would you like to download and install {}? (Y/n): '.format(app))
-      answere = answere[0].lower()
-      if answere == 'y' or answere == 'n':
-        answere_ok = True
-  return answere
-
-def install_apps(url, app_path):
-  print('Download has started')
-  if sys.platform.startswith('win64'):
-    print('Please verify C:\\Program Files\\ is part of the path to install the app')
-  else:
-    print('Please verify C:\\Program Files (x86)\\ is part of the path to install the app')
+def install_apps(app_name, app_path, url):
   app = url.split('/')[-1]
-  r = requests.get(url, allow_redirects=True)
-  open(app, 'wb').write(r.content)
-  os.system(os.path.join(os.getcwd(),app))
-  os.remove(app)
-  if app_path not in sys.path:
-    sys.path.insert(0, app_path)
-  return print('{} has been installed successful'.format(app))
-
+  if os.path.exists(app_path):
+    print('{} already installed'.format(app_name))
+  else:
+    print('Download has started')
+    if sys.platform.startswith('win64'):
+      print('Please verify C:\\Program Files\\ is part of the path to install the app')
+    else:
+      print('Please verify C:\\Program Files (x86)\\ is part of the path to install the app')
+    r = requests.get(url, allow_redirects=True)
+    open(app, 'wb').write(r.content)
+    os.system(os.path.join(os.getcwd(),app))
+    os.remove(app)
+    if app_path not in sys.path:
+      sys.path.append(app_path)
+    print('{} has been installed successful'.format(app_name))
+  
 def main():
   if sys.platform.startswith('win'):
-    if sys.platform.startswith('win64'):
-      app_path = 'C:\\Program Files\\gs\\gs9.23\\bin\\'
-      answere = answere_verify('Ghostscript', app_path)
-      if answere == 'y':
-        url = 'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w64.exe'
-        install_apps(url, app_path)
-      elif answere == 'installed':
-        pass
-      else:
-        print('Download files on https://www.ghostscript.com/download/gsdnld.html')
+    windows={'win64':{1:{'app_name':'Ghostscript',
+                        'app_path':'C:\\Program Files\\gs\\gs9.23\\bin\\',
+                        'url':'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w64.exe'},
+                      2:{'app_name':'Imagemagick',
+                        'app_path':'C:\\Program Files\\ImageMagick-7.0.8-Q8',
+                        'url':'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-8-Q8-x64-static.exe'},
+                      3:{'app_name':'Tesseract',
+                        'app_path':'C:\\Program Files\\Tesseract-OCR',
+                        'url':'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v4.0.0-beta.1.20180608.exe'}
+                     },
+            'win32':{1:{'app_name':'Ghostscript',
+                        'app_path':'C:\\Program Files (x86)\\gs\\gs9.23\\bin\\',
+                        'url':'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w32.exe'},
+                    2:{'app_name':'Imagemagick',
+                        'app_path':'C:\\Program Files (x86)\\ImageMagick-7.0.8-Q8',
+                        'url':'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-8-Q8-x86-static.exe'},
+                    3:{'app_name':'Tesseract',
+                        'app_path':'C:\\Program Files (x86)\\Tesseract-OCR',
+                        'url':'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w32-setup-v4.0.0-beta.1.20180608.exe'}
+                    },
+            'common':{1:{'app_name':'Ghostscript',
+                        'url':'https://www.ghostscript.com/download/gsdnld.html'},
+                      2:{'app_name':'Imagemagick',
+                        'url':'https://www.imagemagick.org/script/download.php'},
+                      3:{'app_name':'Tesseract',
+                        'url':'https://github.com/UB-Mannheim/tesseract/wiki'}
+                     }
+            }
 
-      app_path = 'C:\\Program Files\\ImageMagick-7.0.8-Q8'
-      answere = answere_verify('Magick', app_path)
-      if answere == 'y':
-        url = 'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-8-Q8-x64-static.exe'
-        install_apps(url, app_path)
-      elif answere == 'installed':
-        pass
-      else:
-        print('Download files on https://www.imagemagick.org/script/download.php')
-
-      app_path = 'C:\\Program Files\\Tesseract-OCR'
-      answere = answere_verify('Tesseract', app_path)
-      if answere == 'y':
-        url = 'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v4.0.0-beta.1.20180608.exe'
-        install_apps(url, app_path)
-      elif answere == 'installed':
-        pass
-      else:
-        print('Download files on https://github.com/UB-Mannheim/tesseract/wiki')
-
-    else: #win32
-      app_path = 'C:\\Program Files (x86)\\gs\\gs9.23\\bin\\'
-      answere = answere_verify('Ghostscript', app_path)
-      if answere == 'y':
-        url = 'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w32.exe'
-        install_apps(url, app_path)
-      elif answere == 'installed':
-        pass
-      else:
-        print('Download files on https://www.ghostscript.com/download/gsdnld.html')
-
-      app_path = 'C:\\Program Files (x86)\\ImageMagick-7.0.8-Q8'
-      answere = answere_verify('Magick', app_path)
-      if answere == 'y':
-        url = 'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-8-Q8-x86-static.exe'
-        install_apps(url, app_path)
-      elif answere == 'installed':
-        pass
-      else:
-        print('Download files on https://www.imagemagick.org/script/download.php')
-
-      app_path = 'C:\\Program Files (x86)\\Tesseract-OCR'
-      answere = answere_verify('Tesseract', app_path)
-      if answere == 'y':
-        url = 'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w32-setup-v4.0.0-beta.1.20180608.exe'
-        install_apps(url, app_path)
-      elif answere == 'installed':
-        pass
-      else:
-        print('Download files on https://github.com/UB-Mannheim/tesseract/wiki')
+    OS=sys.platform
+    for i in range(1,4):
+        try:
+            app_name = windows[OS][i]['app_name']
+            app_path = windows[OS][i]['app_path']
+            url = windows[OS][i]['url']
+            install_apps(app_name, app_path, url)
+        except:
+            app_name = windows['common'][i]['app_name']
+            url = windows['common'][i]['url']
+            print('{} Download files on {}'.format(app_name, url))
 
   elif sys.platform.startswith('linux'):
     #install Ghostscript:
@@ -163,5 +119,24 @@ def main():
     os.system('brew update')
     os.system('brew install ghostscript imagemagick tesseract')
 
-if __name__=='__main__':
-  main()
+class CustomInstall(install):
+  def run(self):
+    install.run(self)
+    main()
+
+setup(
+  name='Gap-ML',
+  version='0.9.1',
+  description='NLP and CV Data Engineering Framework',
+  author='Andrew Ferlitsch',
+  author_email='aferlitsch@gmail.com',
+  license='CC-BY-SA',
+  url='https://github.com/andrewferlitsch/Gap',
+  long_description=long_description,
+  packages=find_packages(), #exclude=['tests', 'tests*']
+  install_requires=install_requires,
+  tests_require=tests_require,
+  package_data=package_data,
+  cmdclass={'install': CustomInstall},
+  classifiers=classifiers
+)
