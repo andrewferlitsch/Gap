@@ -8,6 +8,99 @@ from distutils.command.install import install
 import os, sys
 import requests
 
+##Install custom apps Ghostscript, Imagemagick, and Tesseract
+def install_apps(app_name, app_path, url):
+  #extract the app_name.exe from the url
+  app = url.split('/')[-1]
+
+  #verify if the software is already installed on windows
+  if os.path.exists(app_path):
+    print('{} already installed'.format(app_name))
+  else:
+    print('Download has started')
+
+    #warning message to specify the correct path where to install the app
+    if sys.platform.startswith('win64'):
+      print('Please verify C:\\Program Files\\ is part of the path to install the app')
+    else:
+      print('Please verify C:\\Program Files (x86)\\ is part of the path to install the app')
+    
+    #download, install, and delete the app_name.exe
+    r = requests.get(url, allow_redirects=True)
+    open(app, 'wb').write(r.content)
+    os.system(os.path.join(os.getcwd(),app))
+    os.remove(app)
+
+    #verify pythonpath to execute the apps from terminal
+    if app_path not in sys.path:
+      sys.path.append(app_path)
+    print('{} has been installed successful'.format(app_name))
+  
+def main():
+  #verify Operative System
+  if sys.platform.startswith('win'):
+    windows={'win64':{1:{'app_name':'Ghostscript',
+                        'app_path':'C:\\Program Files\\gs\\gs9.23\\bin\\',
+                        'url':'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w64.exe'},
+                      2:{'app_name':'Imagemagick',
+                        'app_path':'C:\\Program Files\\ImageMagick-7.0.8-Q8',
+                        'url':'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-8-Q8-x64-static.exe'},
+                      3:{'app_name':'Tesseract',
+                        'app_path':'C:\\Program Files\\Tesseract-OCR',
+                        'url':'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v4.0.0-beta.1.20180608.exe'}
+                     },
+             'win32':{1:{'app_name':'Ghostscript',
+                         'app_path':'C:\\Program Files (x86)\\gs\\gs9.23\\bin\\',
+                         'url':'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w32.exe'},
+                      2:{'app_name':'Imagemagick',
+                         'app_path':'C:\\Program Files (x86)\\ImageMagick-7.0.8-Q8',
+                         'url':'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-8-Q8-x86-static.exe'},
+                      3:{'app_name':'Tesseract',
+                         'app_path':'C:\\Program Files (x86)\\Tesseract-OCR',
+                         'url':'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w32-setup-v4.0.0-beta.1.20180608.exe'}
+                     },
+             'common':{1:{'app_name':'Ghostscript',
+                          'url':'https://www.ghostscript.com/download/gsdnld.html'},
+                       2:{'app_name':'Imagemagick',
+                          'url':'https://www.imagemagick.org/script/download.php'},
+                       3:{'app_name':'Tesseract',
+                          'url':'https://github.com/UB-Mannheim/tesseract/wiki'}
+                      }
+            }
+
+    OS=sys.platform
+    for i in range(1,4):
+        try:
+            app_name = windows[OS][i]['app_name']
+            app_path = windows[OS][i]['app_path']
+            url = windows[OS][i]['url']
+            install_apps(app_name, app_path, url)
+        except:
+            app_name = windows['common'][i]['app_name']
+            url = windows['common'][i]['url']
+            print('{} Download files on {}'.format(app_name, url))
+
+  elif sys.platform.startswith('linux'):
+    #install Ghostscript:
+    os.system('sudo apt-get update && sudo apt-get install ghostscript')
+    #install ImageMagick:
+    os.system('sudo apt-get install imagemagick')
+    #install Tesseract:
+    os.system('sudo apt-get install tesseract-ocr && sudo apt-get install tesseract-ocr-eng')
+
+  elif sys.platform.startswith('darwin'):
+    os.system('/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
+    os.system('brew update')
+    os.system('brew install ghostscript imagemagick tesseract')
+
+##Setup config
+#additional class to execute main() for custom install apps
+class CustomInstall(install):
+  def run(self):
+    install.run(self)
+    main()
+
+#setup components
 with open('README.md') as f:
   long_description = f.read()
 
@@ -44,85 +137,6 @@ classifiers=[
   'Programming Language :: Python :: 3.5',
   'Programming Language :: Python :: 3.6',
   'Programming Language :: Python :: 3.7']
-
-def install_apps(app_name, app_path, url):
-  app = url.split('/')[-1]
-  if os.path.exists(app_path):
-    print('{} already installed'.format(app_name))
-  else:
-    print('Download has started')
-    if sys.platform.startswith('win64'):
-      print('Please verify C:\\Program Files\\ is part of the path to install the app')
-    else:
-      print('Please verify C:\\Program Files (x86)\\ is part of the path to install the app')
-    r = requests.get(url, allow_redirects=True)
-    open(app, 'wb').write(r.content)
-    os.system(os.path.join(os.getcwd(),app))
-    os.remove(app)
-    if app_path not in sys.path:
-      sys.path.append(app_path)
-    print('{} has been installed successful'.format(app_name))
-  
-def main():
-  if sys.platform.startswith('win'):
-    windows={'win64':{1:{'app_name':'Ghostscript',
-                        'app_path':'C:\\Program Files\\gs\\gs9.23\\bin\\',
-                        'url':'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w64.exe'},
-                      2:{'app_name':'Imagemagick',
-                        'app_path':'C:\\Program Files\\ImageMagick-7.0.8-Q8',
-                        'url':'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-8-Q8-x64-static.exe'},
-                      3:{'app_name':'Tesseract',
-                        'app_path':'C:\\Program Files\\Tesseract-OCR',
-                        'url':'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v4.0.0-beta.1.20180608.exe'}
-                     },
-            'win32':{1:{'app_name':'Ghostscript',
-                        'app_path':'C:\\Program Files (x86)\\gs\\gs9.23\\bin\\',
-                        'url':'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w32.exe'},
-                     2:{'app_name':'Imagemagick',
-                        'app_path':'C:\\Program Files (x86)\\ImageMagick-7.0.8-Q8',
-                        'url':'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-8-Q8-x86-static.exe'},
-                     3:{'app_name':'Tesseract',
-                        'app_path':'C:\\Program Files (x86)\\Tesseract-OCR',
-                        'url':'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w32-setup-v4.0.0-beta.1.20180608.exe'}
-                    },
-            'common':{1:{'app_name':'Ghostscript',
-                        'url':'https://www.ghostscript.com/download/gsdnld.html'},
-                      2:{'app_name':'Imagemagick',
-                        'url':'https://www.imagemagick.org/script/download.php'},
-                      3:{'app_name':'Tesseract',
-                        'url':'https://github.com/UB-Mannheim/tesseract/wiki'}
-                     }
-            }
-
-    OS=sys.platform
-    for i in range(1,4):
-        try:
-            app_name = windows[OS][i]['app_name']
-            app_path = windows[OS][i]['app_path']
-            url = windows[OS][i]['url']
-            install_apps(app_name, app_path, url)
-        except:
-            app_name = windows['common'][i]['app_name']
-            url = windows['common'][i]['url']
-            print('{} Download files on {}'.format(app_name, url))
-
-  elif sys.platform.startswith('linux'):
-    #install Ghostscript:
-    os.system('sudo apt-get update && sudo apt-get install ghostscript')
-    #install ImageMagick:
-    os.system('sudo apt-get install imagemagick')
-    #install Tesseract:
-    os.system('sudo apt-get install tesseract-ocr && sudo apt-get install tesseract-ocr-eng')
-
-  elif sys.platform.startswith('darwin'):
-    os.system('/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
-    os.system('brew update')
-    os.system('brew install ghostscript imagemagick tesseract')
-
-class CustomInstall(install):
-  def run(self):
-    install.run(self)
-    main()
 
 setup(
   name='Gap-ML',
