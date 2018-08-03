@@ -502,7 +502,9 @@ class Words(object):
                     
             if l > 5:
                 # Superlative endings
-                if word.endswith("est"):
+                if word.endswith("iest"):
+                    self._words[i]['word'] = word[0:-4] + 'y'
+                elif word.endswith("est"):
                     self._words[i]['word'] = word[0:-3]
  
             word = self._words[i]['word']  
@@ -763,7 +765,8 @@ class Words(object):
                         if self._sentiment == True:
                             # check if previous word negates the sentiment
                             if len(words) > 0 and words[-1]['tag'] == Vocabulary.NEGATIVE:
-                                words[-1]['tag'] = Vocabulary.POSITIVE
+                                if self._words[i-1]['word'] != 'and':
+                                    words[-1]['tag'] = Vocabulary.POSITIVE
                             else:
                                 words.append({'word': word, 'tag': Vocabulary.NEGATIVE})
                     elif tag[0] == Vocabulary.UNIT:
