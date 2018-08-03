@@ -2,7 +2,7 @@
 """
 Copyright, 2018(c), Andrew Ferlitsch
 """
-from syntax import Words
+from gapml.syntax import Words
 import unittest
 import pytest
 import os
