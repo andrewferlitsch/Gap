@@ -13,7 +13,8 @@ install_requires=[
   'unidecode',
   'nltk',
   'requests',
-  'opencv-python']
+  'opencv-python',
+  'pyaspeller']
 		  
 tests_require=[
   'pytest',

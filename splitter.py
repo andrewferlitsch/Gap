@@ -39,6 +39,7 @@ class Document(object):
     """ Base (super) Class for Classifying a Document """
 
     RESOLUTION = 300    # Resolution for OCR
+    SCANCHECK  = 20     # Sample the first 20 words to determine scan quality
 
     def __init__(self, document=None, dir="./", ehandler=None, config=None):
         """ Constructor for document object
@@ -55,6 +56,7 @@ class Document(object):
         self._ehandler = ehandler   # event completion handler for async execution of splitting
         self._time     = 0          # elapse time to do processing
         self._scanned  = False      # flag indicating if scanned PDF, TIFF or image capture
+        self._quality  = 0          # quality (typically of scan) of the text extraction as a percentage estimate
         self._segment  = False      # Segment the text info regions
         self._bow      = None       # Bag of Words for the document
         self._freq     = None       # Frequency Distribution (word counts) for the document
@@ -308,21 +310,26 @@ class Document(object):
         # If scanned document, determine the quality of the scan
         if self._scanned:
             if len(self.pages) == 1 or len(self.pages[0]) > len(self.pages[1]):
-                self._scancheck(self.pages[0].words, 20)
+                self._scancheck(self.pages[0].words)
             else:
-                self._scancheck(self.pages[1].words, 20)
+                self._scancheck(self.pages[1].words)
 
         # Total time to do processing
         self._time = time.time() - start
         
-    def _scancheck(self, words, n):
+    def _scancheck(self, words):
         """ Use spell checker to determine the quality of the scan """
         correct = 0
         count   = 0
-        for _ in range(0, min(len(words), n)):
-            if len(words[_]['word']) == 1:
+        for _ in range(0, min(len(words), self.SCANCHECK)):
+            try:
+                if len(words[_]['word']) == 1:
+                    continue
+            # bad entry
+            except:
+                count += 1
                 continue
-            elif words[_]['word'].isdigit():
+            if words[_]['word'].isdigit():
                 continue
             elif words[_]['tag'] == Vocabulary.ACRONYM:
                 continue
@@ -332,9 +339,9 @@ class Document(object):
                 correct += 1
                       
         if count:
-            self._scanquality = correct / count
+            self._quality = correct / count
         else:
-            self._scanquality = 1
+            self._quality = 1
 
     def load(self, document, dir='./'):
         """ """
@@ -436,7 +443,7 @@ class Document(object):
     @property
     def scanned(self):
         """ Return whether document is a scanned (captured) image """
-        return self._scanned
+        return self._scanned, self._quality
 
     @property
     def bagOfWords(self):

@@ -366,7 +366,9 @@ class MyTest(unittest.TestCase):
         """ Document - Adobe Example """
         document = Document("files/adobepdf.pdf", "./")
         self.assertEqual(len(document), 4)
-        self.assertFalse(document.scanned)
+        scanned, quality = document.scanned
+        self.assertFalse(scanned)
+        self.assertEquals(quality, 0)
         for i in range(1,5):
             self.assertTrue(os.path.isfile("adobepdf" + str(i) + ".txt"))
             self.assertTrue(os.path.isfile("adobepdf" + str(i) + ".pdf"))
@@ -383,7 +385,9 @@ class MyTest(unittest.TestCase):
         document = Document("files/scan.pdf", "./")
         self.assertEqual(len(document), 1)
         self.assertTrue(os.path.isfile("scan1.png"))
-        self.assertTrue(document.scanned)
+        scanned, quality = document.scanned
+        self.assertTrue(scanned)
+        self.assertTrue(quality > 0)
         l = len(document.pages[0])
         self.assertTrue(l >= 83 and l <= 100)
         os.remove("scan1.txt")
@@ -395,7 +399,9 @@ class MyTest(unittest.TestCase):
         """ Document - scanned PDF - multi page, no text, but noise """
         document = Document("files/4scan.pdf", "./")
         self.assertEqual(len(document), 4)
-        self.assertTrue(document.scanned)
+        scanned, quality = document.scanned
+        self.assertTrue(scanned)
+        self.assertTrue(quality > 0)
         for i in range(1,5):
             self.assertTrue(os.path.isfile("4scan"  + str(i) + ".png"))
             self.assertTrue(os.path.isfile("4scan"  + str(i) + ".json"))
@@ -410,7 +416,9 @@ class MyTest(unittest.TestCase):
         Document.RESOLUTION = 100
         document = Document("files/scan.pdf", "./")
         self.assertEqual(len(document), 1)
-        self.assertTrue(document.scanned)
+        scanned, quality = document.scanned
+        self.assertTrue(scanned)
+        self.assertTrue(quality > 0)
         self.assertTrue(os.path.isfile("scan1.png"))
         l = len(document.pages[0])
         self.assertTrue(l >= 97 and l <= 110)
@@ -424,7 +432,9 @@ class MyTest(unittest.TestCase):
         Document.RESOLUTION = 200
         document = Document("files/scan_textback.pdf", "./")
         self.assertEqual(len(document), 1)
-        self.assertFalse(document.scanned)
+        scanned, quality = document.scanned
+        self.assertFalse(scanned)
+        self.assertEquals(quality, 0)
         self.assertTrue(os.path.isfile("scan_textback1.txt"))
         self.assertFalse(os.path.isfile("scan_textback1.png"))
         l = len(document.pages[0])
