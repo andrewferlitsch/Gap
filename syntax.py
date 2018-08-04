@@ -11,6 +11,7 @@ from nltk import pos_tag
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 from unidecode import unidecode
+import pyaspeller
 
 from vocabulary import Vocabulary, vocab
 from address import Address
@@ -22,7 +23,7 @@ class Words(object):
     DECIMAL		    = '.'	# Standard Unit for Decimal Point
     THOUSANDS 	    = ','	# Standard Unit for Thousandth Separator
     
-    def __init__(self, text=None, bare=False, stem='gap', pos=False, roman = False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, age = False, dob=False, unit=False, standard=False, metric=False ):
+    def __init__(self, text=None, bare=False, stem='gap', pos=False, roman = False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, age = False, dob=False, unit=False, standard=False, metric=False, spell=False ):
         """ Constructor 
         text - raw text as string to tokenize
         """
@@ -36,12 +37,15 @@ class Words(object):
         self._bare          = bare          # on/off bare tokenizing
         self._standard      = standard      # convert metric to standard units
         self._metric        = metric        # convert standard to metric units
+        self._spell         = False         # spell checking
         self._bow           = None          # bag of words
         self._freq          = None          # word count frequency
         self._tf            = None          # term frequency
         
         # More than just bare tokenizing
         if self._bare == False:
+            self._spell = spell                     # do (not) spell checking
+            
             # Keep Stopwords
             if stopwords is True:
                 self._quantifier    = True          # keep words indicating a size
@@ -392,6 +396,14 @@ class Words(object):
             # Don't stem words already categorized
             if self._words[i]['tag'] != Vocabulary.UNTAG:
                 continue
+                
+            # Do spell checking
+            if self._spell:
+                check = pyaspeller.Word(self._words[i]['word'])
+                if not check.correct:
+                    replace = check.spellsafe
+                    if replace:
+                        self._words[i]['word'] = replace
             
             # If in vocabulary, do not stem
             try:
