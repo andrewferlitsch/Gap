@@ -58,7 +58,7 @@ The source code is made available under the Creative Commons license: [CC-BY-SA]
 
 ## Prerequites
 
-The Gap framework extensively uses a number of open source applications/modules. The following applications and modules will need to be installed on your computer/laptop:
+The Gap framework extensively uses a number of open source applications/modules. The following applications and modules will be downloaded and installed on your computer/laptop, when the package is installed.
 
   1. Artifex's Ghostscript - extracting text from text PDF
   2. ImageMagic's Magick - extracting image from scanned PDF
@@ -68,6 +68,8 @@ The Gap framework extensively uses a number of open source applications/modules.
   6. numpy - high performance in-memory arrays (tensors)
   7. HDF5 - high performance of on-disk data (tensors) access
   8. openCV - image manipulation and processing for computer vision
+  9. imutils - image manipulation for computer vision
+  10. pyaspeller - spelling dictionary for text
   
 ## Installation: 
 
@@ -86,6 +88,8 @@ The dependencies for python packages distributed at PyPi are automatically check
   - h5py : https://www.h5py.org/
   - unidecode : https://pypi.org/project/Unidecode/
   - openCV : https://www.opencv.org/
+  - imultils : https://github.com/jrosebr1/imutils
+  - pyaspeller : https://pypi.org/project/pyaspeller/
   
  #### 3rd Party Dependencies
  
