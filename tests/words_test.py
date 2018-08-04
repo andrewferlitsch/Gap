@@ -2741,6 +2741,13 @@ class MyTest(unittest.TestCase):
         """ double sentiment """
         words = Words("dumb and dumber", sentiment=True)
         self.assertEqual(words.words, [{'word': 'dumb', 'tag': 19}])
+        
+    def test_321(self):
+        """ spell check """
+        words = Words("mispelled grat", stopwords=True, spell=True)
+        self.assertEqual(words.words, [{'word': 'misspell', 'tag': 0}, {'word': 'great', 'tag': 18}])
+        words = Words("foozoo", stopwords=True, spell=True)
+        self.assertEqual(words.words, [{'word': 'foozoo', 'tag': 0}])
           
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
