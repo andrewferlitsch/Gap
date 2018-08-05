@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 """ Splitter Module for Processing PDF Documents
 Copyright, 2018(c), Andrew Ferlitsch
 """
@@ -14,15 +14,19 @@ import glob
 import sys
 import json
 import shutil
+import pyaspeller
 
 from .segment import Segment
-from .syntax import Words
+from .syntax import Words, Vocabulary
 from .pdf_res import PDFResource
 
 
 if shutil.which('gswin64c'):
     # Ghostscript executable for Windows.
     GHOSTSCRIPT = 'gswin64c'
+elif shutil.which('gswin32c'):
+    # Ghostscript executable for Windows.
+    GHOSTSCRIPT = 'gswin32c'
 elif shutil.which('gs'):
     # Ghostscript executable for Mac.
     GHOSTSCRIPT = 'gs'
@@ -34,6 +38,7 @@ class Document(object):
     """ Base (super) Class for Classifying a Document """
 
     RESOLUTION = 300    # Resolution for OCR
+    SCANCHECK  = 20     # Sample the first 20 words to determine scan quality
 
     def __init__(self, document=None, dir="./", ehandler=None, config=None):
         """ Constructor for document object
@@ -50,6 +55,7 @@ class Document(object):
         self._ehandler = ehandler   # event completion handler for async execution of splitting
         self._time     = 0          # elapse time to do processing
         self._scanned  = False      # flag indicating if scanned PDF, TIFF or image capture
+        self._quality  = 0          # quality (typically of scan) of the text extraction as a percentage estimate
         self._segment  = False      # Segment the text info regions
         self._bow      = None       # Bag of Words for the document
         self._freq     = None       # Frequency Distribution (word counts) for the document
@@ -234,6 +240,7 @@ class Document(object):
                     
                     # Create Page Object and read in the text for the page
                     page = Page(pdf_file, text, n+1)
+
                     # Store the tokenized text
                     json_file = dir + self._name + str(n+1) + '.json'
                     page.store(json_file)
@@ -259,6 +266,7 @@ class Document(object):
                                 page.store(json_file)
                             # Assume all remaining pages are scanned images
                             self._scanned = True
+                            
         # Split the TIF document into pages
         elif self._type == 'tif' or self._type == 'tiff':
             # Use image magic to split the TIFF file
@@ -297,9 +305,42 @@ class Document(object):
                     self.__iadd__(page)
 
             self._scanned = True
+                            
+        # If scanned document, determine the quality of the scan
+        if self._scanned:
+            if len(self.pages) == 1 or len(self.pages[0]) > len(self.pages[1]):
+                self._scancheck(self.pages[0].words)
+            else:
+                self._scancheck(self.pages[1].words)
 
         # Total time to do processing
         self._time = time.time() - start
+        
+    def _scancheck(self, words):
+        """ Use spell checker to determine the quality of the scan """
+        correct = 0
+        count   = 0
+        for _ in range(0, min(len(words), self.SCANCHECK)):
+            try:
+                if len(words[_]['word']) == 1:
+                    continue
+            # bad entry
+            except:
+                count += 1
+                continue
+            if words[_]['word'].isdigit():
+                continue
+            elif words[_]['tag'] == Vocabulary.ACRONYM:
+                continue
+            count += 1
+            check = pyaspeller.Word(words[_]['word'])
+            if check.correct:
+                correct += 1
+                      
+        if count:
+            self._quality = correct / count
+        else:
+            self._quality = 1
 
     def load(self, document, dir='./'):
         """ """
@@ -401,7 +442,7 @@ class Document(object):
     @property
     def scanned(self):
         """ Return whether document is a scanned (captured) image """
-        return self._scanned
+        return self._scanned, self._quality
 
     @property
     def bagOfWords(self):

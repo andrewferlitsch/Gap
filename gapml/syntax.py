@@ -11,6 +11,7 @@ from nltk import pos_tag
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 from unidecode import unidecode
+import pyaspeller
 
 from .vocabulary import Vocabulary, vocab
 from .address import Address
@@ -22,7 +23,7 @@ class Words(object):
     DECIMAL		    = '.'	# Standard Unit for Decimal Point
     THOUSANDS 	    = ','	# Standard Unit for Thousandth Separator
     
-    def __init__(self, text=None, bare=False, stem='gap', pos=False, roman = False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, age = False, dob=False, unit=False, standard=False, metric=False ):
+    def __init__(self, text=None, bare=False, stem='gap', pos=False, roman = False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, age = False, dob=False, unit=False, standard=False, metric=False, spell=False ):
         """ Constructor 
         text - raw text as string to tokenize
         """
@@ -36,12 +37,15 @@ class Words(object):
         self._bare          = bare          # on/off bare tokenizing
         self._standard      = standard      # convert metric to standard units
         self._metric        = metric        # convert standard to metric units
+        self._spell         = False         # spell checking
         self._bow           = None          # bag of words
         self._freq          = None          # word count frequency
         self._tf            = None          # term frequency
         
         # More than just bare tokenizing
         if self._bare == False:
+            self._spell = spell                     # do (not) spell checking
+            
             # Keep Stopwords
             if stopwords is True:
                 self._quantifier    = True          # keep words indicating a size
@@ -392,6 +396,14 @@ class Words(object):
             # Don't stem words already categorized
             if self._words[i]['tag'] != Vocabulary.UNTAG:
                 continue
+                
+            # Do spell checking
+            if self._spell:
+                check = pyaspeller.Word(self._words[i]['word'])
+                if not check.correct:
+                    replace = check.spellsafe
+                    if replace:
+                        self._words[i]['word'] = replace
             
             # If in vocabulary, do not stem
             try:
@@ -445,11 +457,15 @@ class Words(object):
             if l > 5:
                 if word.endswith("nning") or word.endswith("tting"):
                     self._words[i]['word'] = word[0:-4]
-                elif word.endswith("ding") or word.endswith("king") or word.endswith("ving") or word.endswith("zing") or word.endswith("ting"):
+                elif word.endswith("tring"):
+                    self._words[i]['word'] = word[0:-3] + 'e'
+                elif word.endswith("ding") or word.endswith("king") or word.endswith("zing") or word.endswith("ting"):
                     if self._words[i]['word'][-5] in ['a', 'e', 'i', 'o', 'u', 'y']:
                         self._words[i]['word'] = word[0:-3] + 'e'
                     else:
                         self._words[i]['word'] = word[0:-3]
+                elif word.endswith("ving"):
+                    self._words[i]['word'] = word[0:-3] + 'e'
                 elif word.endswith("ing"):
                     self._words[i]['word'] = word[0:-3]
               
@@ -477,11 +493,13 @@ class Words(object):
                         self._words[i]['word'] = word[0:-3] 
                 elif l > 6 and word.endswith("lled"):
                     self._words[i]['word'] = word[0:-3]
+                elif word.endswith("tred"):
+                    self._words[i]['word'] = word[0:-1]
                 elif word.endswith("mmed"):
                     self._words[i]['word'] = word[0:-3]
                 elif word.endswith("ied"):
                     self._words[i]['word'] = word[0:-3] + 'y'
-                elif word.endswith("zed"):
+                elif word.endswith("zed") or word.endswith("ved"):
                     self._words[i]['word'] = word[0:-1]
                 elif word.endswith("eed"):
                     continue
@@ -502,7 +520,9 @@ class Words(object):
                     
             if l > 5:
                 # Superlative endings
-                if word.endswith("est"):
+                if word.endswith("iest"):
+                    self._words[i]['word'] = word[0:-4] + 'y'
+                elif word.endswith("est"):
                     self._words[i]['word'] = word[0:-3]
  
             word = self._words[i]['word']  
@@ -763,7 +783,8 @@ class Words(object):
                         if self._sentiment == True:
                             # check if previous word negates the sentiment
                             if len(words) > 0 and words[-1]['tag'] == Vocabulary.NEGATIVE:
-                                words[-1]['tag'] = Vocabulary.POSITIVE
+                                if self._words[i-1]['word'] != 'and':
+                                    words[-1]['tag'] = Vocabulary.POSITIVE
                             else:
                                 words.append({'word': word, 'tag': Vocabulary.NEGATIVE})
                     elif tag[0] == Vocabulary.UNIT:
@@ -1465,7 +1486,7 @@ class Words(object):
         return len(self._words)
         
     def __iadd__(self, words):
-        """ Overide the += operator """
+        """ Override the += operator """
         if words is None:
             return self
         if isinstance(words, str):
@@ -1478,3 +1499,57 @@ class Words(object):
         else:
             raise TypeError("String or List expected for words")
         return self
+        
+class Norvig(object):
+    """ 
+    https://norvig.com/spell-correct.html
+    """
+    word2int = None
+    
+    def __init__(self):
+        if not self.word2int:
+            self.word2int = {}
+            id = 0
+            for word in [ '<PAD>', '<OUT>', '<SOS>' '<EOS>', '<EMP>', '<POS>', '<NEG>' ]:
+                self.word2int[word] = id
+                id += 1
+            with open('word2int.txt', 'r', encoding='utf-8') as f:
+                while True:
+                    word = f.readline().strip()
+                    if not word:
+                        break
+                    self.word2int[word] = id
+                    id += 1
+                    
+    def known(self, words): 
+        "The subset of `words` that appear in the dictionary of WORDS."
+        return set(w for w in words if w in self.word2int)
+
+    def edits1(self, word):
+        "All edits that are one edit away from `word`."
+        letters    = 'abcdefghijklmnopqrstuvwxyz'
+        splits     = [(word[:i], word[i:])    for i in range(1, len(word) + 1)]
+        deletes    = [L + R[1:]               for L, R in splits if R]
+        transposes = [L + R[1] + R[0] + R[2:] for L, R in splits if len(R)>1]
+        replaces   = [L + c + R[1:]           for L, R in splits if R for c in letters]
+        inserts    = [L + c + R               for L, R in splits for c in letters]
+        return set(deletes + transposes + replaces + inserts)
+
+    def edits2(self, word): 
+        "All edits that are two edits away from `word`."
+        return (e2 for e1 in self.edits1(word) for e2 in self.edits1(e1))
+
+    def candidates(self, word): 
+        "Generate possible spelling corrections for word."
+        return (self.known([word]) or self.known(self.edits1(word)) or self.known(self.edits2(word)) or [word])
+        
+    @property
+    def correction(self, word):
+        k = self.candidates(word)
+        return k.pop()
+        
+    @property
+    def encode(self, word):
+        k = self.candidates(word)
+        word = k.pop()
+        return word, word2int[word]
