@@ -5,11 +5,17 @@ David Molina @virtualdvid
 
 from setuptools import setup, find_packages
 from distutils.command.install import install
-import os, sys
+import os, sys, platform
 import requests
 
 ##Install custom apps Ghostscript, Imagemagick, and Tesseract
 def install_apps(app_name, app_path, url):
+  """
+    Install custom apps
+    :param app_name: name of the app to install
+    :param app_path: path on windows where the app should be installed
+    :param url: url where the .exe file is located
+  """
   #extract the app_name.exe from the url
   app = url.split('/')[-1]
 
@@ -20,7 +26,7 @@ def install_apps(app_name, app_path, url):
     print('Download has started')
 
     #warning message to specify the correct path where to install the app
-    if sys.platform.startswith('win64'):
+    if platform.architecture()[0] == '64bit':
       print('Please verify C:\\Program Files\\ is part of the path to install the app')
     else:
       print('Please verify C:\\Program Files (x86)\\ is part of the path to install the app')
@@ -39,7 +45,7 @@ def install_apps(app_name, app_path, url):
 def main():
   #verify Operative System
   if sys.platform.startswith('win'):
-    windows={'win64':{1:{'app_name':'Ghostscript',
+    windows={'64bit':{1:{'app_name':'Ghostscript',
                         'app_path':'C:\\Program Files\\gs\\gs9.23\\bin\\',
                         'url':'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w64.exe'},
                       2:{'app_name':'Imagemagick',
@@ -49,7 +55,7 @@ def main():
                         'app_path':'C:\\Program Files\\Tesseract-OCR',
                         'url':'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v4.0.0-beta.1.20180608.exe'}
                      },
-             'win32':{1:{'app_name':'Ghostscript',
+             '32bit':{1:{'app_name':'Ghostscript',
                          'app_path':'C:\\Program Files (x86)\\gs\\gs9.23\\bin\\',
                          'url':'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w32.exe'},
                       2:{'app_name':'Imagemagick',
@@ -68,7 +74,7 @@ def main():
                       }
             }
 
-    OS=sys.platform
+    OS=platform.architecture()[0]
     for i in range(1,4):
         try:
             app_name = windows[OS][i]['app_name']
