@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from setuptools import setup, find_packages
-import os, sys
+import os, sys, platform
 
 with open('README.md') as f:
   long_description = f.read()
@@ -90,7 +90,7 @@ def install_apps(url, app_path):
 
 def main():
   if sys.platform.startswith('win'):
-    if sys.platform.startswith('win64') or True:
+    if platform.machine().endswith('64'):
       app_path = 'C:\\Program Files\\gs\\gs9.23\\bin\\'
       answere = answere_verify('Ghostscript', app_path)
       if answere == 'y':
