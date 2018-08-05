@@ -2748,6 +2748,23 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': 'misspell', 'tag': 0}, {'word': 'great', 'tag': 18}])
         words = Words("foozoo", stopwords=True, spell=True)
         self.assertEqual(words.words, [{'word': 'foozoo', 'tag': 0}])
+        
+    def test_322(self):
+        """ more stemming """
+        words = Words("changed changes changing", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'change', 'tag': 0}, {'word': 'change', 'tag': 0}, {'word': 'change', 'tag': 0}])
+        words = Words("downloaded downloading", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'download', 'tag': 0}, {'word': 'download', 'tag': 0}])
+        words = Words("involved involves involving", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'involve', 'tag': 0}, {'word': 'involve', 'tag': 0}, {'word': 'involve', 'tag': 0}])
+        words = Words("updated updates updating", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'update', 'tag': 0}, {'word': 'update', 'tag': 0}, {'word': 'update', 'tag': 0}])
+        words = Words("admired admirable admirably", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'admire', 'tag': 0}, {'word': 'admire', 'tag': 0}, {'word': 'admire', 'tag': 0}])
+        words = Words("eclipsed eclipsing", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'eclipse', 'tag': 0}, {'word': 'eclipse', 'tag': 0}])
+        words = Words("balanced balances balancing", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'balance', 'tag': 0}, {'word': 'balance', 'tag': 0}, {'word': 'balance', 'tag': 0}])
           
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
