@@ -1486,7 +1486,7 @@ class Words(object):
         return len(self._words)
         
     def __iadd__(self, words):
-        """ Overide the += operator """
+        """ Override the += operator """
         if words is None:
             return self
         if isinstance(words, str):
@@ -1499,3 +1499,57 @@ class Words(object):
         else:
             raise TypeError("String or List expected for words")
         return self
+        
+class Norvig(object):
+    """ 
+    https://norvig.com/spell-correct.html
+    """
+    word2int = None
+    
+    def __init__(self):
+        if not self.word2int:
+            self.word2int = {}
+            id = 0
+            for word in [ '<PAD>', '<OUT>', '<SOS>' '<EOS>', '<EMP>', '<POS>', '<NEG>' ]:
+                self.word2int[word] = id
+                id += 1
+            with open('word2int.txt', 'r', encoding='utf-8') as f:
+                while True:
+                    word = f.readline().strip()
+                    if not word:
+                        break
+                    self.word2int[word] = id
+                    id += 1
+                    
+    def known(self, words): 
+        "The subset of `words` that appear in the dictionary of WORDS."
+        return set(w for w in words if w in self.word2int)
+
+    def edits1(self, word):
+        "All edits that are one edit away from `word`."
+        letters    = 'abcdefghijklmnopqrstuvwxyz'
+        splits     = [(word[:i], word[i:])    for i in range(1, len(word) + 1)]
+        deletes    = [L + R[1:]               for L, R in splits if R]
+        transposes = [L + R[1] + R[0] + R[2:] for L, R in splits if len(R)>1]
+        replaces   = [L + c + R[1:]           for L, R in splits if R for c in letters]
+        inserts    = [L + c + R               for L, R in splits for c in letters]
+        return set(deletes + transposes + replaces + inserts)
+
+    def edits2(self, word): 
+        "All edits that are two edits away from `word`."
+        return (e2 for e1 in self.edits1(word) for e2 in self.edits1(e1))
+
+    def candidates(self, word): 
+        "Generate possible spelling corrections for word."
+        return (self.known([word]) or self.known(self.edits1(word)) or self.known(self.edits2(word)) or [word])
+        
+    @property
+    def correction(self, word):
+        k = self.candidates(word)
+        return k.pop()
+        
+    @property
+    def encode(self, word):
+        k = self.candidates(word)
+        word = k.pop()
+        return word, word2int[word]

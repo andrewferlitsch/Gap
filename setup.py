@@ -64,6 +64,7 @@ def answere_verify(app, app_path):
     print('{} already installed'.format(app))
     answere = 'installed'
   else:
+    return 'y'
     answere_ok = False
     while answere_ok == False:
       answere = input('Would you like to download and install {}? (Y/n): '.format(app))
@@ -89,7 +90,7 @@ def install_apps(url, app_path):
 
 def main():
   if sys.platform.startswith('win'):
-    if sys.platform.startswith('win64'):
+    if sys.platform.startswith('win64') or True:
       app_path = 'C:\\Program Files\\gs\\gs9.23\\bin\\'
       answere = answere_verify('Ghostscript', app_path)
       if answere == 'y':
