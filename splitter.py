@@ -91,6 +91,15 @@ class Document(object):
                             raise AttributeError("Setting stem set to an invalid value: " + vals[1])
                     else:
                         raise AttributeError("Setting stem not assigned to a value")
+                elif setting.startswith('spell'):
+                    vals = setting.split('=')
+                    if len(vals) == 2:
+                        if vals[1] in ['norvig', 'pya']:
+                            Page.SPELL = vals[1]
+                        else:
+                            raise AttributeError("Setting spell set to an invalid value: " + vals[1])
+                    else:
+                        raise AttributeError("Setting spell not assigned to a value")
                 else:
                     raise AttributeError("Setting is not recognized: " + setting)
 
@@ -511,9 +520,10 @@ class Page(object):
     """ Base (super) class for Page object """
 
     BARE    = False         # bare tokenization mode
-    STEM    = 'internal'    # NLP stemmer to use
+    STEM    = 'gap'         # NLP stemmer to use
     POS     = False         # Annotation of Parts of Speech
-    ROMAN   = False         # Romanize text to ASCII
+    ROMAN   = False         # Romanize text to 
+    SPELL   = None          # Speller
 
     def __init__(self, path=None, text=None, pageno=None):
         """ Constructor for page object
@@ -621,11 +631,11 @@ class Page(object):
         # If text has not been tokenized yet, then tokenize it
         if self._words is None:
             if isinstance(self._text, str):
-                self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN)
+                self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN, spell=self.SPELL)
             else:
                 words = []
                 for segment in self._text:
-                    words.append( { 'tag': segment['tag'], 'words': Words(segment['text'], bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN).words } )
+                    words.append( { 'tag': segment['tag'], 'words': Words(segment['text'], bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN, spell=self.SPELL).words } )
                 self._words = Words()
                 self._words._words = words
         return self._words.words
@@ -693,7 +703,7 @@ class Page(object):
 
         # If text has not been tokenized yet, then tokenize it
         if self._words is None:
-            self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN)
+            self._words = Words(self._text, bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN, spell=self.SPELL)
         return len(self._words.words)
 
     def __str__(self):
@@ -717,7 +727,7 @@ class Page(object):
             # Was already tokenized
             if self._words is not None:
                 # Tokenize new text
-                words = Words(text, bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN)
+                words = Words(text, bare=self.BARE, stem=self.STEM, pos=self.POS, roman=self.ROMAN, spell=self.SPELL)
                 # Add tokens to existing list
                 self._words += words.words
         return self

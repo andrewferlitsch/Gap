@@ -23,7 +23,7 @@ class Words(object):
     DECIMAL		    = '.'	# Standard Unit for Decimal Point
     THOUSANDS 	    = ','	# Standard Unit for Thousandth Separator
     
-    def __init__(self, text=None, bare=False, stem='gap', pos=False, roman = False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, age = False, dob=False, unit=False, standard=False, metric=False, spell=False ):
+    def __init__(self, text=None, bare=False, stem='gap', pos=False, roman = False, stopwords=False, punct=False, conjunction=False, article=False, demonstrative=False, preposition=False, question=False, pronoun=False, quantifier=False, date=False, number=False, ssn=False, telephone=False, name=False, address=False, sentiment=False, gender=False, age = False, dob=False, unit=False, standard=False, metric=False, spell=None ):
         """ Constructor 
         text - raw text as string to tokenize
         """
@@ -37,7 +37,7 @@ class Words(object):
         self._bare          = bare          # on/off bare tokenizing
         self._standard      = standard      # convert metric to standard units
         self._metric        = metric        # convert standard to metric units
-        self._spell         = False         # spell checking
+        self._spell         = None          # spell checking
         self._bow           = None          # bag of words
         self._freq          = None          # word count frequency
         self._tf            = None          # term frequency
@@ -398,12 +398,17 @@ class Words(object):
                 continue
                 
             # Do spell checking
-            if self._spell:
-                check = pyaspeller.Word(self._words[i]['word'])
-                if not check.correct:
-                    replace = check.spellsafe
-                    if replace:
-                        self._words[i]['word'] = replace
+            if self._spell is not None:
+                if self._spell == 'norvig':
+                    spell = Norvig()
+                    replace = spell.correction(self._words[i]['word'])
+                    self._words[i]['word'] = replace
+                else:
+                    check = pyaspeller.Word(self._words[i]['word'])
+                    if not check.correct:
+                        replace = check.spellsafe
+                        if replace:
+                            self._words[i]['word'] = replace
             
             # If in vocabulary, do not stem
             try:
@@ -1513,7 +1518,7 @@ class Norvig(object):
             for word in [ '<PAD>', '<OUT>', '<SOS>' '<EOS>', '<EMP>', '<POS>', '<NEG>' ]:
                 self.word2int[word] = id
                 id += 1
-            with open('word2int.txt', 'r', encoding='utf-8') as f:
+            with open('20k.txt', 'r', encoding='utf-8') as f:
                 while True:
                     word = f.readline().strip()
                     if not word:
@@ -1543,13 +1548,12 @@ class Norvig(object):
         "Generate possible spelling corrections for word."
         return (self.known([word]) or self.known(self.edits1(word)) or self.known(self.edits2(word)) or [word])
         
-    @property
     def correction(self, word):
         k = self.candidates(word)
         return k.pop()
         
-    @property
     def encode(self, word):
         k = self.candidates(word)
         word = k.pop()
-        return word, word2int[word]
+        return word, self.word2int[word]
+        
