@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 """ Splitter Module for Processing PDF Documents
 Copyright, 2018(c), Andrew Ferlitsch
 """
@@ -14,12 +14,11 @@ import glob
 import sys
 import json
 import shutil
-
 import pyaspeller
 
-from segment import Segment
-from syntax import Words, Vocabulary
-from pdf_res import PDFResource
+from .segment import Segment
+from .syntax import Words, Vocabulary
+from .pdf_res import PDFResource
 
 
 if shutil.which('gswin64c'):

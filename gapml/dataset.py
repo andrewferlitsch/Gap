@@ -4,7 +4,7 @@ Copyright, 2018(c), Andrew Ferlitsch
 
 import numpy as np
 
-from vision import Images
+from .vision import Images
 
 class Dataset(object):
     """ Manage Dataset for Training a Model """
