@@ -111,7 +111,7 @@ def main():
       else:
         print('Download files on https://www.imagemagick.org/script/download.php')
 
-      app_path = 'C:\\Program Files\\Tesseract-OCR'
+      app_path = 'C:\\Program Files (x86)\\Tesseract-OCR'
       answere = answere_verify('Tesseract', app_path)
       if answere == 'y':
         url = 'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v4.0.0-beta.1.20180608.exe'
