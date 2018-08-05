@@ -2765,7 +2765,30 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': 'eclipse', 'tag': 0}, {'word': 'eclipse', 'tag': 0}])
         words = Words("balanced balances balancing", stopwords=True)
         self.assertEqual(words.words, [{'word': 'balance', 'tag': 0}, {'word': 'balance', 'tag': 0}, {'word': 'balance', 'tag': 0}])
-          
+        words = Words("observed observes observing", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'observe', 'tag': 0}, {'word': 'observe', 'tag': 0}, {'word': 'observe', 'tag': 0}])
+        words = Words("arrives arrived arriving", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'arrive', 'tag': 0}, {'word': 'arrive', 'tag': 0}, {'word': 'arrive', 'tag': 0}])
+        words = Words("removes removed removing", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'remove', 'tag': 0}, {'word': 'remove', 'tag': 0}, {'word': 'remove', 'tag': 0}])
+        words = Words("drives driven driving", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'drive', 'tag': 0}, {'word': 'drive', 'tag': 0}, {'word': 'drive', 'tag': 0}])
+        words = Words("proves proven proving", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'prove', 'tag': 0}, {'word': 'prove', 'tag': 0}, {'word': 'prove', 'tag': 0}])
+        words = Words("letter letters lettered lettering", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'letter', 'tag': 0}, {'word': 'letter', 'tag': 0}, {'word': 'letter', 'tag': 0}, {'word': 'letter', 'tag': 0}])
+        
+    def test_323(self):
+        """ more stemming - UK words """
+        words = Words("centre centres centred centring", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'center', 'tag': 0}, {'word': 'center', 'tag': 0}, {'word': 'center', 'tag': 0}, {'word': 'center', 'tag': 0}])
+        words = Words("colour colours coloured colouring", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'color', 'tag': 0}, {'word': 'color', 'tag': 0}, {'word': 'color', 'tag': 0}, {'word': 'color', 'tag': 0}])
+        words = Words("Beyound", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'beyond', 'tag': 21}])
+        words = Words("favourite favourites", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'favorite', 'tag': 18}, {'word': 'favorite', 'tag': 18}])
+        
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
         words = Words("10 m/s", stopwords=True)

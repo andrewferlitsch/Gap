@@ -457,11 +457,15 @@ class Words(object):
             if l > 5:
                 if word.endswith("nning") or word.endswith("tting"):
                     self._words[i]['word'] = word[0:-4]
-                elif word.endswith("ding") or word.endswith("king") or word.endswith("ving") or word.endswith("zing") or word.endswith("ting"):
+                elif word.endswith("tring"):
+                    self._words[i]['word'] = word[0:-3] + 'e'
+                elif word.endswith("ding") or word.endswith("king") or word.endswith("zing") or word.endswith("ting"):
                     if self._words[i]['word'][-5] in ['a', 'e', 'i', 'o', 'u', 'y']:
                         self._words[i]['word'] = word[0:-3] + 'e'
                     else:
                         self._words[i]['word'] = word[0:-3]
+                elif word.endswith("ving"):
+                    self._words[i]['word'] = word[0:-3] + 'e'
                 elif word.endswith("ing"):
                     self._words[i]['word'] = word[0:-3]
               
@@ -489,11 +493,13 @@ class Words(object):
                         self._words[i]['word'] = word[0:-3] 
                 elif l > 6 and word.endswith("lled"):
                     self._words[i]['word'] = word[0:-3]
+                elif word.endswith("tred"):
+                    self._words[i]['word'] = word[0:-1]
                 elif word.endswith("mmed"):
                     self._words[i]['word'] = word[0:-3]
                 elif word.endswith("ied"):
                     self._words[i]['word'] = word[0:-3] + 'y'
-                elif word.endswith("zed"):
+                elif word.endswith("zed") or word.endswith("ved"):
                     self._words[i]['word'] = word[0:-1]
                 elif word.endswith("eed"):
                     continue
