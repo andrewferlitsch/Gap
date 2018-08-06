@@ -2818,8 +2818,12 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': 'labor', 'tag': 0}])
         words = Words("fibre", stopwords=True)
         self.assertEqual(words.words, [{'word': 'fiber', 'tag': 0}])
-        words = Words("surprize", stopwords=True)
-        self.assertEqual(words.words, [{'word': 'surprise', 'tag': 0}])
+        words = Words("neighbour", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'neighbor', 'tag': 0}])
+        words = Words("organise organised organising", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'organize', 'tag': 0}, {'word': 'organize', 'tag': 0}, {'word': 'organize', 'tag': 0}])
+        words = Words("flavoured humoured", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'flavor', 'tag': 0}, {'word': 'humor', 'tag': 0}])
         
     def test_324(self):
         """ more stemming """
@@ -2837,6 +2841,16 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': 'refine', 'tag': 0}, {'word': 'refine', 'tag': 0}, {'word': 'refine', 'tag': 0}, {'word': 'refine', 'tag': 0}])
         words = Words("inquired inquiring", stopwords=True)
         self.assertEqual(words.words, [{'word': 'inquire', 'tag': 0}, {'word': 'inquire', 'tag': 0}])
+        words = Words("surprise surprised surprising", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'surprise', 'tag': 0}, {'word': 'surprise', 'tag': 0}, {'word': 'surprise', 'tag': 0}])
+        words = Words("organize organized organizing", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'organize', 'tag': 0}, {'word': 'organize', 'tag': 0}, {'word': 'organize', 'tag': 0}])
+        words = Words("apologise apologised apologising", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'apologize', 'tag': 0}, {'word': 'apologize', 'tag': 0}, {'word': 'apologize', 'tag': 0}])
+        words = Words("recognise recognising recognised", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'recognize', 'tag': 0}, {'word': 'recognize', 'tag': 0}, {'word': 'recognize', 'tag': 0}])
+        words = Words("analyse analysed analysing", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'analyze', 'tag': 0}, {'word': 'analyze', 'tag': 0}, {'word': 'analyze', 'tag': 0}])
         
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
