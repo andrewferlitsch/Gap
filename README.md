@@ -13,6 +13,7 @@ The Gap NLP/CV data engineering framework provides an easy to get started into t
   - Automatic Text Extraction from documents.
   - Automatic Syntax Analysis.
   - Optional Romanization of Latin-1 diacritic characters.
+  - Optional Spell Correction.
   - Programmatic control for data extraction or redaction (de-identification).
 
     - Names, Addresses, Proper Places
@@ -163,7 +164,7 @@ The vision module handles:
 
 ## User's Guide
 
-The User's (Programming) Guide can be found [here](specs/users%20guide.docx)
+The User's (Programming) Quick Start Guide can be found [here](specs/quick%20start%20guide.docx)
 
 ## Releases
 
