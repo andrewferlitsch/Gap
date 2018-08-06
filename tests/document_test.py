@@ -633,6 +633,21 @@ class MyTest(unittest.TestCase):
         os.remove('text1.png')
         os.remove('text1.txt')
         os.remove('text1.json')
+
+    def test_068(self):
+        """ config - spell checker """
+        with pytest.raises(AttributeError):
+            document = Document(config=['spell'])
+
+    def test_069(self):
+        """ config - spell checker """
+        with pytest.raises(AttributeError):
+            document = Document(config=['spell='])
+
+    def test_070(self):
+        """ config - spell checker """
+        with pytest.raises(AttributeError):
+            document = Document(config=['spell=foo'])
 		
     def done(self, document):
         self.isdone = True
