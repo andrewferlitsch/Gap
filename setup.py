@@ -1,6 +1,6 @@
 """ setup Gap-ML
 Copyright, 2018(c), Andrew Ferlitsch
-David Molina @virtualdvid
+Autor: David Molina @virtualdvid
 """
 
 from setuptools import setup, find_packages
