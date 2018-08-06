@@ -635,19 +635,76 @@ class MyTest(unittest.TestCase):
         os.remove('text1.json')
 
     def test_068(self):
-        """ config - spell checker """
+        """ config - spell checker - invalid """
         with pytest.raises(AttributeError):
             document = Document(config=['spell'])
 
     def test_069(self):
-        """ config - spell checker """
+        """ config - spell checker - invalid """
         with pytest.raises(AttributeError):
             document = Document(config=['spell='])
 
     def test_070(self):
-        """ config - spell checker """
+        """ config - spell checker - invalid """
         with pytest.raises(AttributeError):
             document = Document(config=['spell=foo'])
+            
+    def test_071(self):
+        """ config - spell checker - pya """
+        with open("spell.txt", "w") as f:
+            f.write("mispell speling similiar")
+        Document.WORDDICT = 'pyaspeller'
+        document = Document('spell.txt')
+        page = document[0]
+        os.remove('spell.txt')
+        os.remove('spell1.txt')
+        os.remove('spell1.json')
+            
+    def test_072(self):
+        """ config - spell checker - norvig """
+        with open("spell.txt", "w") as f:
+            f.write("mispell speling similiar")
+        Document.WORDDICT = 'norvig'
+        document = Document('spell.txt')
+        page = document[0]
+        os.remove('spell.txt')
+        os.remove('spell1.txt')
+        os.remove('spell1.json')
+        
+    def test_073(self): 
+        """ Document - scanned PDF - scancheck with norvig """
+        Document.WORDDICT = 'norvig'
+        document = Document("files/scan.pdf", "./")
+        self.assertEqual(len(document), 1)
+        scanned, quality = document.scanned
+        self.assertTrue(scanned)
+        self.assertTrue(quality > 0)
+        self.assertTrue(os.path.isfile("scan1.png"))
+        os.remove("scan1.txt")
+        os.remove("scan1.pdf")
+        os.remove("scan1.png")
+        os.remove("scan1.json")
+        
+    def test_074(self): 
+        """ Document - scanned PDF - disable scan check """
+        Document.SCANCHECK = 0
+        document = Document("files/scan.pdf", "./")
+        self.assertEqual(len(document), 1)
+        scanned, quality = document.scanned
+        self.assertTrue(scanned)
+        self.assertEquals(quality, 1)
+        self.assertTrue(os.path.isfile("scan1.png"))
+        os.remove("scan1.txt")
+        os.remove("scan1.pdf")
+        os.remove("scan1.png")
+        os.remove("scan1.json")
 		
     def done(self, document):
         self.isdone = True
+        
+        
+def towords(list):
+    words = []
+    for word in list:
+        words.append(word['word'])
+    return words

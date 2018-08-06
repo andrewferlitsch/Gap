@@ -4,6 +4,7 @@ Copyright 2018(c), Andrew Ferlitsch
 
 import re
 import json
+import os
 
 from nltk.stem import *
 import nltk
@@ -502,6 +503,8 @@ class Words(object):
                     self._words[i]['word'] = word[0:-1]
                 elif word.endswith("mmed"):
                     self._words[i]['word'] = word[0:-3]
+                elif word.endswith("nced"):
+                    self._words[i]['word'] = word[0:-1]
                 elif word.endswith("ied"):
                     self._words[i]['word'] = word[0:-3] + 'y'
                 elif word.endswith("zed") or word.endswith("ved"):
@@ -516,6 +519,8 @@ class Words(object):
                     continue
                 elif word.endswith("mber"):
                     continue
+                elif word.endswith("ncer"):
+                    self._words[i]['word'] = word[0:-1]
                 elif word.endswith("ier"):
                     self._words[i]['word'] = word[0:-3] + 'y'
                 elif word.endswith("der"):
@@ -1518,7 +1523,11 @@ class Norvig(object):
             for word in [ '<PAD>', '<OUT>', '<SOS>' '<EOS>', '<EMP>', '<POS>', '<NEG>' ]:
                 self.word2int[word] = id
                 id += 1
-            with open('20k.txt', 'r', encoding='utf-8') as f:
+            if os.path.isfile('20k.txt'):
+                file = '20k.txt'
+            else:
+                file = '../20k.txt'
+            with open(file, 'r', encoding='utf-8') as f:
                 while True:
                     word = f.readline().strip()
                     if not word:

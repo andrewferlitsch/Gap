@@ -18,7 +18,7 @@ import shutil
 import pyaspeller
 
 from segment import Segment
-from syntax import Words, Vocabulary
+from syntax import Words, Vocabulary, Norvig
 from pdf_res import PDFResource
 
 
@@ -41,8 +41,9 @@ MAGICK      = "magick"
 class Document(object):
     """ Base (super) Class for Classifying a Document """
 
-    RESOLUTION = 300    # Resolution for OCR
-    SCANCHECK  = 20     # Sample the first 20 words to determine scan quality
+    RESOLUTION = 300            # Resolution for OCR
+    SCANCHECK  = 20             # Sample the first 20 words to determine scan quality
+    WORDDICT   = 'norvig'       # Word Dictionary to look up words for scan check
 
     def __init__(self, document=None, dir="./", ehandler=None, config=None):
         """ Constructor for document object
@@ -346,9 +347,14 @@ class Document(object):
             elif words[_]['tag'] == Vocabulary.ACRONYM:
                 continue
             count += 1
-            check = pyaspeller.Word(words[_]['word'])
-            if check.correct:
-                correct += 1
+            if self.WORDDICT == 'norvig':
+                norvig = Norvig()
+                if norvig.known(words[_]['word'].lower()):
+                    correct += 1
+            else:
+                check = pyaspeller.Word(words[_]['word'].lower())
+                if check.correct:
+                    correct += 1
                       
         if count:
             self._quality = correct / count

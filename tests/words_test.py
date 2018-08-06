@@ -2789,13 +2789,20 @@ class MyTest(unittest.TestCase):
         words = Words("favourite favourites", stopwords=True)
         self.assertEqual(words.words, [{'word': 'favorite', 'tag': 18}, {'word': 'favorite', 'tag': 18}])
         
+    def test_324(self):
+        """ more stemming """
+        words = Words("manufacturer manufactured", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'manufacture', 'tag': 0}, {'word': 'manufacture', 'tag': 0}])
+        words = Words("announced announces announcer", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'announce', 'tag': 0}, {'word': 'announce', 'tag': 0}, {'word': 'announce', 'tag': 0}])
+        
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")
         words = Words("10 m/s", stopwords=True)
         words = Words("10 ft/s", stopwords=True)
         words = Words("min 36", stopwords=True)
-        # dad -> father, mom -> 
-           
+        
+        
 def towords(list):
     words = []
     for word in list:
