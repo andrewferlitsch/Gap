@@ -31,6 +31,9 @@ elif shutil.which('gswin32c'):
 elif shutil.which('gs'):
     # Ghostscript executable for Mac.
     GHOSTSCRIPT = 'gs'
+else:
+    # Linux
+    GHOSTSCRIPT = 'gs'
 
 TESSERACT   = "tesseract"
 MAGICK      = "magick"
