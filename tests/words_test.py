@@ -2788,6 +2788,10 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': 'beyond', 'tag': 21}])
         words = Words("favourite favourites", stopwords=True)
         self.assertEqual(words.words, [{'word': 'favorite', 'tag': 18}, {'word': 'favorite', 'tag': 18}])
+        words = Words("organisation", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'organization', 'tag': 0}])
+        words = Words("surprize", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'surprise', 'tag': 0}])
         
     def test_324(self):
         """ more stemming """
@@ -2795,6 +2799,16 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': 'manufacture', 'tag': 0}, {'word': 'manufacture', 'tag': 0}])
         words = Words("announced announces announcer", stopwords=True)
         self.assertEqual(words.words, [{'word': 'announce', 'tag': 0}, {'word': 'announce', 'tag': 0}, {'word': 'announce', 'tag': 0}])
+        words = Words("relapse relapsing", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'relapse', 'tag': 0}, {'word': 'relapse', 'tag': 0}])
+        words = Words("headquarter", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'headquarter', 'tag': 0}])
+        words = Words("indicates indicated indicating", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'indicate', 'tag': 0}, {'word': 'indicate', 'tag': 0}, {'word': 'indicate', 'tag': 0}])
+        words = Words("refined refines refining refiner", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'refine', 'tag': 0}, {'word': 'refine', 'tag': 0}, {'word': 'refine', 'tag': 0}, {'word': 'refine', 'tag': 0}])
+        words = Words("inquired inquiring", stopwords=True)
+        self.assertEqual(words.words, [{'word': 'inquire', 'tag': 0}, {'word': 'inquire', 'tag': 0}])
         
     def xtest_bugs(self):
         words = Words("vis-a-vis semi-colon twenty-three")

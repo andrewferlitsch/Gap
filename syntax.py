@@ -499,12 +499,10 @@ class Words(object):
                         self._words[i]['word'] = word[0:-3] 
                 elif l > 6 and word.endswith("lled"):
                     self._words[i]['word'] = word[0:-3]
-                elif word.endswith("tred"):
+                elif word.endswith("tred") or word.endswith("nced") or word.endswith("psed"):
                     self._words[i]['word'] = word[0:-1]
                 elif word.endswith("mmed"):
                     self._words[i]['word'] = word[0:-3]
-                elif word.endswith("nced"):
-                    self._words[i]['word'] = word[0:-1]
                 elif word.endswith("ied"):
                     self._words[i]['word'] = word[0:-3] + 'y'
                 elif word.endswith("zed") or word.endswith("ved"):
