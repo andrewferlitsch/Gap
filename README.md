@@ -78,7 +78,7 @@ The Gap framework is supported on Windows, MacOS, and Linux. It has been package
 
 For pre-launch, after you have clone the source code, from the root of the source tree do the following to complete the install:
 
-    pip install -e .
+    python setup.py install
 
 #### PyPi Dependencies
 
