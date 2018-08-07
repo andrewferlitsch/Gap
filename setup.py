@@ -147,7 +147,7 @@ classifiers=[
 
 setup(
   name='Gap-ML',
-  version='0.7.0',
+  version='0.9.1',
   description='NLP and CV Data Engineering Framework',
   author='Andrew Ferlitsch',
   author_email='aferlitsch@gmail.com',
