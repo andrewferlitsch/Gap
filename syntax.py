@@ -570,6 +570,8 @@ class Words(object):
                     self._words[i]['word'] = word[0:-5] + 'y'
                 elif word.endswith("ness"):
                     self._words[i]['word'] = word[0:-4]    
+                elif word.endswith("able"):
+                    self._words[i]['word'] = word[0:-4]    
 
     def _nltkStemmer(self, name):
         """ NLTK Stemmer """
@@ -1513,6 +1515,10 @@ from word2int import word2int
 class Norvig(object):
     """ 
     https://norvig.com/spell-correct.html
+    
+    Enhanced version of the Norvig spell checker. Enhancements designed by Andrew Ferlitsch and coded by David Molina.
+    In the original Norvig spell checker, guess of what would be the next character replacement to try was in alphabetical order.
+    In this enhancement, the next character is based on the QWERTY keyboard layout and the likelihood that the hand shifted one key.
     """
     word2int = None
     
@@ -1560,11 +1566,11 @@ class Norvig(object):
         return set(deletes + transposes + replaces + inserts)
 
     def edits2(self, word): 
-        "All edits that are two edits away from `word`."
+        """All edits that are two edits away from `word`."""
         return (e2 for e1 in self.edits1(word) for e2 in self.edits1(e1))
 
     def candidates(self, word): 
-        "Generate possible spelling corrections for word."
+        """Generate possible spelling corrections for word."""
         return (self.known([word]) or self.known(self.edits1(word)) or self.known(self.edits2(word)) or [word])
         
     def correction(self, word):
