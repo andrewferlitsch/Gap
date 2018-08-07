@@ -131,7 +131,7 @@ classifiers=[
   'Development Status :: 3 - Alpha',
   'Intended Audience :: Healthcare Industry',
   'Topic :: Text Processing',
-  'License :: OSI Approved :: MIT License',
+  'License :: OSI Approved :: Apache Software License',
   'Operating System :: Microsoft :: Windows',
   'Operating System :: MacOS',
   'Operating System :: POSIX :: Linux',
@@ -151,7 +151,7 @@ setup(
   description='NLP and CV Data Engineering Framework',
   author='Andrew Ferlitsch',
   author_email='aferlitsch@gmail.com',
-  license='MIT',
+  license='Apache 2.0',
   url='https://github.com/andrewferlitsch/Gap',
   long_description=long_description,
   packages=find_packages(), #exclude=['tests', 'tests*']
