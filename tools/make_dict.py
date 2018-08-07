@@ -36,4 +36,4 @@ def word_to_dictionary(file_in, folder_out):
 file_in=args.file_in
 folder_out=args.folder_out
 
-words_dict=word_to_dictionary(file_in, folder_out)
+word_to_dictionary(file_in, folder_out)
