@@ -1508,6 +1508,8 @@ class Words(object):
             raise TypeError("String or List expected for words")
         return self
         
+from word2int import word2int 
+        
 class Norvig(object):
     """ 
     https://norvig.com/spell-correct.html
@@ -1515,27 +1517,12 @@ class Norvig(object):
     word2int = None
     
     def __init__(self):
-        if not self.word2int:
-            self.word2int = {}
-            id = 0
-            for word in [ '<PAD>', '<OUT>', '<SOS>' '<EOS>', '<EMP>', '<POS>', '<NEG>' ]:
-                self.word2int[word] = id
-                id += 1
-            if os.path.isfile('20k.txt'):
-                file = '20k.txt'
-            else:
-                file = '../20k.txt'
-            with open(file, 'r', encoding='utf-8') as f:
-                while True:
-                    word = f.readline().strip()
-                    if not word:
-                        break
-                    self.word2int[word] = id
-                    id += 1
+        pass
                     
     def known(self, words): 
+        global word2int
         "The subset of `words` that appear in the dictionary of WORDS."
-        return set(w for w in words if w in self.word2int)
+        return set(w for w in words if w in word2int)
 
     def edits1(self, word):
         "All edits that are one edit away from `word`."
@@ -1585,7 +1572,12 @@ class Norvig(object):
         return k.pop()
         
     def encode(self, word):
+        global word2int
         k = self.candidates(word)
         word = k.pop()
-        return word, self.word2int[word]
+        try:
+            intval = word2int[word]
+            return word, intval
+        except:
+            return '<OUT>', word2int['<OUT>']
         
