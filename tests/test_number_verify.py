@@ -1,6 +1,6 @@
-"""
+""" Test Number Verify
 Copyright, 2018(c), Andrew Ferlitsch
-@DavidMolina
+Autor: David Molina @virtualdvid
 """
 import glob
 

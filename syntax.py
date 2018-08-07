@@ -1539,12 +1539,37 @@ class Norvig(object):
 
     def edits1(self, word):
         "All edits that are one edit away from `word`."
-        letters    = 'abcdefghijklmnopqrstuvwxyz'
+        letters={'a': 'asqzbcdefghijklmnoprtuvwxy',
+                 'b': 'bnvghacdefijklmopqrstuwxyz',
+                 'c': 'cvxdfabeghijklmnopqrstuwyz',
+                 'd': 'dfsexcabghijklmnopqrtuvwyz',
+                 'e': 'erwsdabcfghijklmnopqtuvxyz',
+                 'f': 'fgdrcvabehijklmnopqstuwxyz',
+                 'g': 'ghftvbacdeijklmnopqrsuwxyz',
+                 'h': 'hjgybnacdefiklmopqrstuvwxz',
+                 'i': 'ioujkabcdefghlmnpqrstvwxyz',
+                 'j': 'jkhunmabcdefgilopqrstvwxyz',
+                 'k': 'kljimabcdefghnopqrstuvwxyz',
+                 'l': 'lkoabcdefghijmnpqrstuvwxyz',
+                 'm': 'mnjkabcdefghilopqrstuvwxyz',
+                 'n': 'nmbhjacdefgiklopqrstuvwxyz',
+                 'o': 'opiklabcdefghjmnqrstuvwxyz',
+                 'p': 'polabcdefghijkmnqrstuvwxyz',
+                 'q': 'qwabcdefghijklmnoprstuvxyz',
+                 'r': 'rtedfabcghijklmnopqsuvwxyz',
+                 's': 'sdawzxbcefghijklmnopqrtuvy',
+                 't': 'tyrfgabcdehijklmnopqsuvwxz',
+                 'u': 'uiyhjabcdefgklmnopqrstvwxz',
+                 'v': 'vbcfgadehijklmnopqrstuwxyz',
+                 'w': 'weqasbcdfghijklmnoprtuvxyz',
+                 'x': 'xczsdabefghijklmnopqrtuvwy',
+                 'y': 'yutghabcdefijklmnopqrsvwxz',
+                 'z': 'zxasbcdefghijklmnopqrtuvwy'}
         splits     = [(word[:i], word[i:])    for i in range(1, len(word) + 1)]
         deletes    = [L + R[1:]               for L, R in splits if R]
         transposes = [L + R[1] + R[0] + R[2:] for L, R in splits if len(R)>1]
-        replaces   = [L + c + R[1:]           for L, R in splits if R for c in letters]
-        inserts    = [L + c + R               for L, R in splits for c in letters]
+        replaces   = [L + c + R[1:]           for L, R in splits if R for c in letters[R[0]]]
+        inserts    = [L + c + R               for L, R in splits if R for c in letters[R[0]]]
         return set(deletes + transposes + replaces + inserts)
 
     def edits2(self, word): 
