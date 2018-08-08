@@ -8,7 +8,16 @@ import sys
 def word_to_dictionary(file_in, folder_out):
     #open file with the list of words
     with open(file_in,'r') as f:
-        words_dict = {word.rstrip('\n'):number for number, word in enumerate(f, 100)}
+        first_line = f.readline()
+        f.seek(0)
+        if len(first_line.split()) == 1:
+            words_dict = {word.rstrip('\n'):number for number, word in enumerate(f, 100)}
+        else:
+            words_dict = {}
+            for line in f:
+                item=line.split()
+                words_dict[item[0]]={item[1]:item[2]}
+
     words_dict['<PAD>'] = 0
     words_dict['<OUT>'] = 1
     words_dict['<SOS>'] = 2
@@ -17,8 +26,6 @@ def word_to_dictionary(file_in, folder_out):
     words_dict['<POS>'] = 5
     words_dict['<NEG>'] = 6
   
-    #verify if file was given
-    f_name=file_in.split('.')
     f_name='word2int.py'
 
     #verify if folder was given 
