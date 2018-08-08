@@ -36,9 +36,9 @@ def word_to_dictionary(file, output_dir):
         f.write(str(words_dict))
         print("file '{}' was saved in '{}'.".format(f_name,output_dir))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print("Usage: make_dict word_file [output_dir]")
+        print('Usage: make_dict word_file [output_dir]')
     if len(sys.argv) == 2:
         word_to_dictionary(sys.argv[1], None)
     else:

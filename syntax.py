@@ -1586,4 +1586,3 @@ class Norvig(object):
             return word, intval
         except:
             return '<OUT>', word2int['<OUT>']
-        
