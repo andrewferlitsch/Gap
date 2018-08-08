@@ -13,10 +13,12 @@ def word_to_dictionary(file_in, folder_out):
         if len(first_line.split()) == 1:
             words_dict = {word.rstrip('\n'):number for number, word in enumerate(f, 100)}
         else:
+            number = 100
             words_dict = {}
             for line in f:
                 item=line.split()
-                words_dict[item[0]]={item[1]:item[2]}
+                words_dict[item[1]]=number
+                number += 1
 
     words_dict['<PAD>'] = 0
     words_dict['<OUT>'] = 1
