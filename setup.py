@@ -50,7 +50,7 @@ def main():
                         'url':'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w64.exe'},
                       2:{'app_name':'Imagemagick',
                         'app_path':'C:\\Program Files\\ImageMagick-7.0.8-Q8',
-                        'url':'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-8-Q8-x64-static.exe'},
+                        'url':'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-9-Q8-x64-static.exe'},
                       3:{'app_name':'Tesseract',
                         'app_path':'C:\\Program Files\\Tesseract-OCR',
                         'url':'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v4.0.0-beta.1.20180608.exe'}
@@ -60,7 +60,7 @@ def main():
                          'url':'https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs923/gs923w32.exe'},
                       2:{'app_name':'Imagemagick',
                          'app_path':'C:\\Program Files (x86)\\ImageMagick-7.0.8-Q8',
-                         'url':'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-8-Q8-x86-static.exe'},
+                         'url':'https://www.imagemagick.org/download/binaries/ImageMagick-7.0.8-9-Q8-x86-static.exe'},
                       3:{'app_name':'Tesseract',
                          'app_path':'C:\\Program Files (x86)\\Tesseract-OCR',
                          'url':'https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w32-setup-v4.0.0-beta.1.20180608.exe'}
@@ -131,7 +131,7 @@ classifiers=[
   'Development Status :: 3 - Alpha',
   'Intended Audience :: Healthcare Industry',
   'Topic :: Text Processing',
-  'License :: CC-BY-SA',
+  'License :: OSI Approved :: Apache Software License',
   'Operating System :: Microsoft :: Windows',
   'Operating System :: MacOS',
   'Operating System :: POSIX :: Linux',
@@ -151,7 +151,7 @@ setup(
   description='NLP and CV Data Engineering Framework',
   author='Andrew Ferlitsch',
   author_email='aferlitsch@gmail.com',
-  license='CC-BY-SA',
+  license='Apache 2.0',
   url='https://github.com/andrewferlitsch/Gap',
   long_description=long_description,
   packages=find_packages(), #exclude=['tests', 'tests*']
