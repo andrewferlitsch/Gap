@@ -526,7 +526,7 @@ class MyTest(unittest.TestCase):
         """ Images - split not a valid range """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4], name='foobar')
         with pytest.raises(ValueError):
-            images.split = 0.0
+            images.split = -0.1
         with pytest.raises(ValueError):
             images.split = 1.0
         os.remove('foobar.h5')
