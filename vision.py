@@ -384,7 +384,6 @@ class Image(object):
         """ Override the str() operator - return the document classification """
         return str(self._label)
         
- 
 class Images(object):
     """ Base (super) for classifying a group of images """
     def __init__(self, images=None, labels=None, dir='./', name=None, ehandler=None, config=None):
@@ -409,7 +408,10 @@ class Images(object):
             return
         
         if isinstance(images, list) is False:
-            raise TypeError("List expected for image paths")
+            if isinstance(images, str) is False and not os.path.isdir(images):
+                raise TypeError("List or Directory expected for image paths")
+            # parameter is a directory, convert to list of images in the directory
+            self._images = [images + '/' + image for image in os.listdir(images)]
         else:
             for ele in images:
                 if not isinstance(ele, str):
@@ -417,7 +419,7 @@ class Images(object):
         
         # if labels is a single value, then all the images share the same label
         if isinstance(labels, int):
-            self._labels = [ labels for _ in range(len(images)) ]
+            self._labels = [ labels for _ in range(len(self._images)) ]
         elif not isinstance(labels, list):
             raise TypeError("List expected for image labels")
         else:
@@ -465,7 +467,7 @@ class Images(object):
         """ Process a collection of images """
        
         start = time.time()
-        
+ 
         # Process each image
         self._data = []
         for ix in range(len(self._images)):
@@ -627,7 +629,7 @@ class Images(object):
             
         if not isinstance(percent, float):
             raise TypeError("Float expected for percent")
-        if percent <= 0 or percent >= 1:
+        if percent < 0 or percent >= 1:
             raise ValueError("Percent parameter must be between 0 and 1")
         self._split = (1 - percent)
         
