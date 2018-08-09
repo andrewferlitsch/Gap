@@ -717,6 +717,31 @@ class MyTest(unittest.TestCase):
         self.assertEquals(image.size, 3643)
         os.remove('0_100.h5')
         
+    def test_077(self):
+        """ Images - directories as image arguments """
+        images = Images(["files/imtest1", "files/imtest2"], [1,2], name="foobar")
+        self.assertEquals(len(images), 4)
+        self.assertEquals(images[0].name, "0_100")
+        self.assertEquals(images[1].name, "0_100g")
+        self.assertEquals(images[2].name, "1_100")
+        self.assertEquals(images[3].name, "2_100")
+        self.assertEquals(images[0].label, "1")
+        self.assertEquals(images[1].label, "1")
+        self.assertEquals(images[2].label, "2")
+        self.assertEquals(images[3].label, "3")
+        os.remove("foobar.h5")
+        
+    def test_078(self):
+        """ Images - split = 0 """
+        images = Images(["files/imtest1", "files/imtest2"], [1,2], name="foobar")
+        images.split = 0.0
+        self.assertEquals(len(images._train), 4)
+        self.assertEquals(len(images._test), 0)
+        images.split = 0
+        self.assertEquals(len(images._train), 4)
+        self.assertEquals(len(images._test), 0)
+        os.remove("foobar.h5")
+        
     def done(self, image):
         self.isdone = True
         os.remove(image)

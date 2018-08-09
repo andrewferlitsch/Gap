@@ -626,7 +626,7 @@ class Images(object):
                 raise TypeError("Seed parameter must be an integer")
             percent = percent[0]
             
-        if not isinstance(percent, float):
+        if not isinstance(percent, float) and percent != 0:
             raise TypeError("Float expected for percent")
         if percent < 0 or percent >= 1:
             raise ValueError("Percent parameter must be between 0 and 1")
