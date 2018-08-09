@@ -725,10 +725,10 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[1].name, "0_100g")
         self.assertEquals(images[2].name, "1_100")
         self.assertEquals(images[3].name, "2_100")
-        self.assertEquals(images[0].label, "1")
-        self.assertEquals(images[1].label, "1")
-        self.assertEquals(images[2].label, "2")
-        self.assertEquals(images[3].label, "3")
+        self.assertEquals(images[0].label, 1)
+        self.assertEquals(images[1].label, 1)
+        self.assertEquals(images[2].label, 2)
+        self.assertEquals(images[3].label, 2)
         os.remove("foobar.h5")
         
     def test_078(self):
