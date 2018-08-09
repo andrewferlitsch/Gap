@@ -685,7 +685,7 @@ class MyTest(unittest.TestCase):
         os.rmdir("tmp2")
         
     def test_073(self):
-        """ Image - rotate """
+        """ Image - rotate - grayscale """
         image = Image("files/1_100.jpg", 1, config=['resize=(64,64)', 'grayscale'])
         rotated = image.rotate(90)
         self.assertTrue(rotated.shape, (64, 64))
@@ -754,6 +754,40 @@ class MyTest(unittest.TestCase):
         self.assertEquals(image.shape, (561, 748))
         os.remove("gray.h5")
         os.remove("rgb.h5")
+        
+    def test_80(self):
+        """ Image - rotate - grayscale, non-90 degree """
+        image = Image("files/1_100.jpg", 1, config=['resize=(64,64)', 'grayscale'])
+        rotated = image.rotate(30)
+        self.assertTrue(rotated.shape, (64, 64))
+        rotated = image.rotate(45)
+        self.assertTrue(rotated.shape, (64, 64))
+        rotated = image.rotate(60)
+        self.assertTrue(rotated.shape, (64, 64))
+        os.remove('1_100.h5')
+        
+    def test_081(self):
+        """ Image - rotate - rgb """
+        image = Image("files/1_100.jpg", 1, config=['resize=(64,64)'])
+        rotated = image.rotate(90)
+        self.assertTrue(rotated.shape, (64, 64))
+        rotated = image.rotate(180)
+        self.assertTrue(rotated.shape, (64, 64))
+        rotated = image.rotate(270)
+        self.assertTrue(rotated.shape, (64, 64))
+        os.remove('1_100.h5')
+        
+    def test_82(self):
+        """ Image - rotate - rgb, non-90 degree """
+        image = Image("files/1_100.jpg", 1, config=['resize=(64,64)'])
+        rotated = image.rotate(30)
+        self.assertTrue(rotated.shape, (64, 64))
+        rotated = image.rotate(45)
+        self.assertTrue(rotated.shape, (64, 64))
+        rotated = image.rotate(60)
+        self.assertTrue(rotated.shape, (64, 64))
+        os.remove('1_100.h5')
+        
         
     def done(self, image):
         self.isdone = True

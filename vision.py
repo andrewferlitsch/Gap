@@ -267,7 +267,9 @@ class Image(object):
         
         # resize back to expected dimensions
         if degree not in [ 90, 180, 270 ]:
-            rotated = cv2.resize(rotated, self._imgdata.shape,interpolation=cv2.INTER_AREA)
+            # resize takes only height x width
+            shape = (self._imgdata.shape[0], self._imgdata.shape[1])
+            rotated = cv2.resize(rotated, shape, interpolation=cv2.INTER_AREA)
         return rotated
         
     def edge(self):
@@ -413,6 +415,7 @@ class Images(object):
         self._testsz   = 0          # size of test set
         self._minisz   = 1          # mini batch size
         self._next     = 0          # next item in training set
+        self._augment  = False      # image augmentation
         
         if images is None:
             return
@@ -456,6 +459,14 @@ class Images(object):
         
         if self._config is None:
             self._config = []
+        else:
+            for ix in range(len(config)):
+                # augment is specific to Images class
+                if config[ix] == 'augment':
+                    # Remove when passed downstream to Image objects
+                    del config[ix]
+                    self._augment = True
+        # Tell downstream Image objects not to separately store the data
         self._config.append("nostore")
         
         # Process collection synchronously
@@ -487,7 +498,10 @@ class Images(object):
                     self._data.append( Image(image, dir=self._dir, label=self._labels[ix], config=self._config) )
             # single file
             else:
-                self._data.append( Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config) )
+                image = Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config)
+                self._data.append( image )
+                if self._augment:
+                    Image( image.rotate(30), label=self._labels[ix])
             
         # Store the images as a collection in an HD5 filesystem
         imgdata = []
