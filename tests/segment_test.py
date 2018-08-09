@@ -78,4 +78,3 @@ class MyTest(unittest.TestCase):
         """ page numbering - page - """
         segment = Segment("- 2 -\n")
         self.assertEquals(segment.segments, [{'tag': 1003, 'text': '- 2 -'}])
-        

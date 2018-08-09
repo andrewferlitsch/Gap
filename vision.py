@@ -700,5 +700,3 @@ class Images(object):
         if ix > len(self):
             raise IndexError("Index out of range for Images")
         return self._data[ ix ]
-            
-        
