@@ -847,5 +847,4 @@ sttype = {
          'bldg'         : { 'tag': [  Vocabulary.SAC ], 'lemma': ['building']},
          'building'     : { 'tag': [  Vocabulary.SAC ], 'lemma': ['building']},
          'unit'         : { 'tag': [  Vocabulary.SAC ], 'lemma': ['lane']},
-}
-        
+}       
