@@ -287,18 +287,17 @@ class Image(object):
             
         # Read the image from disk as HD5 file
         with h5py.File(self._dir + "/" + self._name + '.h5', 'r') as hf:
+            imgset = hf['images']
             self._imgdata =  hf['images'][0]
             self._label   =  hf['labels'][0]
             self._raw     =  hf['raw'][0]
             try:
                 self._thumb =  hf['thumb'][0]
-            except: pass
-        self._shape = self._imgdata.shape   
-        # self._type  = hf.attrs["type"]    
-        
-        # Get the size of the image
-        self._size = os.path.getsize(image)
-       
+            except: pass  
+            self._type  = imgset.attrs["type"]  
+            self._size  = imgset.attrs["size"]
+        self._shape = self._imgdata.shape  
+      
     @property
     def image(self):
         """ Getter for the image name (path) """
@@ -397,8 +396,8 @@ class Images(object):
         self._time     = time       # time to process the images
         self._split    = 0.8        # percentage of split between train / test
         self._seed     = 0          # seed for random shuffle of data
-        self._train    = None       # indices for training set
-        self._test     = None       # indices for test set
+        self._train    = None       # indexes for training set
+        self._test     = None       # indexes for test set
         self._trainsz  = 0          # size of training set
         self._testsz   = 0          # size of test set
         self._minisz   = 1          # mini batch size

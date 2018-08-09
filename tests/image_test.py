@@ -708,6 +708,15 @@ class MyTest(unittest.TestCase):
         with pytest.raises(IndexError):
             n = len(images)
         
+    def test_076(self):
+        """ Image - load() attr type and size """
+        image = Image("files/0_100.jpg", 1)
+        image = Image()
+        image.load('0_100.h5')
+        self.assertEquals(image.type, 'jpg')
+        self.assertEquals(image.size, 3643)
+        os.remove('0_100.h5')
+        
     def done(self, image):
         self.isdone = True
         os.remove(image)
