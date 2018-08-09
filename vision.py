@@ -416,7 +416,7 @@ class Images(object):
         self._minisz   = 1          # mini batch size
         self._next     = 0          # next item in training set
         self._augment  = False      # image augmentation
-        self._toggle   = False      # toggle for image augmentation
+        self._toggle   = True       # toggle for image augmentation
         
         if images is None:
             return
@@ -672,6 +672,9 @@ class Images(object):
             ix = self._train[_]
             self._next += 1 
             yield self._data[ix]._imgdata , self._data[ix]._label
+            if self._augment:
+                degree = random.randint(-90, 90)
+                yield self._data[ix].rotate(degree), self._data[ix]._label
         
     @minibatch.setter
     def minibatch(self, batch_size):
@@ -710,7 +713,7 @@ class Images(object):
             # Reshuffle the training data for the next round
             random.shuffle(self._train)
             self._next = 0 
-            return None
+            return None, None
  
         ix = self._train[self._next]
         if self._augment:

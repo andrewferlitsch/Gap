@@ -567,7 +567,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(len(next(images)), 2)
         self.assertEqual(len(next(images)), 2)
         self.assertEqual(len(next(images)), 2)
-        self.assertEqual(next(images), None)
+        self.assertEqual(next(images), (None, None))
         os.remove('collection.0_100.h5')
             
     def test_062(self):
@@ -576,10 +576,10 @@ class MyTest(unittest.TestCase):
         images.split = 0.5
         self.assertEqual(len(next(images)), 2)
         self.assertEqual(len(next(images)), 2)
-        self.assertEqual(next(images), None)
+        self.assertEqual(next(images), (None, None))
         self.assertEqual(len(next(images)), 2)
         self.assertEqual(len(next(images)), 2)
-        self.assertEqual(next(images), None)
+        self.assertEqual(next(images), (None, None))
         os.remove('foobar.h5')
         
     def test_063(self):
@@ -807,6 +807,57 @@ class MyTest(unittest.TestCase):
         with pytest.raises(ValueError):
             image.rotate(360)
         os.remove('1_100.h5')
+        
+    def test_085(self):
+        """ Images - iterate through collection multiple times """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [0,1,2,3])
+        images.split = 0.50
+        ref = images._train[:]
+        
+        for i in range(0,4):
+            data, label = next(images)
+            self.assertTrue(label in ref)
+            data, label = next(images)
+            self.assertTrue(label in ref)
+            data, label = next(images)
+        os.remove('collection.0_100.h5')
+        
+    def test_086(self):
+        """ Images - next() - augmentation """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [0,1,2,3])
+        images.split = 0.50
+        images.augment = True
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(next(images), (None, None))
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(next(images), (None, None))
+        os.remove('collection.0_100.h5')
+        
+    def test_087(self):
+        """ Images - minibatch - augmentation """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg', 'files/3_100.jpg', 'files/1_100.jpg'], [1,2,3,4,5,6], name='foobar')
+        images.split = 0.5
+        images.minibatch = 2
+        images.augment = True
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 4)
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 2)
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 0)
+        os.remove('foobar.h5')
         
         
     def done(self, image):
