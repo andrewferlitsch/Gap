@@ -259,14 +259,14 @@ class Image(object):
         if not isinstance(degree, int):
             raise ValueError("Degree must be an integer")
             
-        if degree <= 0 or degree >= 360:
-            raise ValueError("Degree must be between 0 and 360")
+        if degree <= -360 or degree >= 360:
+            raise ValueError("Degree must be between -360 and 360")
             
         # rotate the image
         rotated = imutils.rotate_bound(self._imgdata, degree)
         
         # resize back to expected dimensions
-        if degree not in [ 90, 180, 270 ]:
+        if degree not in [ 0, 90, 180, 270, -90, -180, -270 ]:
             # resize takes only height x width
             shape = (self._imgdata.shape[0], self._imgdata.shape[1])
             rotated = cv2.resize(rotated, shape, interpolation=cv2.INTER_AREA)
@@ -416,6 +416,7 @@ class Images(object):
         self._minisz   = 1          # mini batch size
         self._next     = 0          # next item in training set
         self._augment  = False      # image augmentation
+        self._toggle   = False      # toggle for image augmentation
         
         if images is None:
             return
@@ -459,13 +460,6 @@ class Images(object):
         
         if self._config is None:
             self._config = []
-        else:
-            for ix in range(len(config)):
-                # augment is specific to Images class
-                if config[ix] == 'augment':
-                    # Remove when passed downstream to Image objects
-                    del config[ix]
-                    self._augment = True
         # Tell downstream Image objects not to separately store the data
         self._config.append("nostore")
         
@@ -500,8 +494,6 @@ class Images(object):
             else:
                 image = Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config)
                 self._data.append( image )
-                if self._augment:
-                    Image( image.rotate(30), label=self._labels[ix])
             
         # Store the images as a collection in an HD5 filesystem
         imgdata = []
@@ -696,12 +688,22 @@ class Images(object):
             
         self._minisz = batch_size
         
+    @property
+    def augment(self):
+        """ Getter for image augmentation """
+        return self._augment
+        
+    @augment.setter
+    def augment(self, augment):
+        """ Setter for image augmentation """
+        self._augment = augment
+        
     def __next__(self):
         """ Iterate through the training set (single image at a time) """
 
         # training set was not pre-split, implicitly split it.
         if self._train == None:
-            self.split = self._split
+            self.split = (1 - self._split)
 
         # End of training set
         if self._next >= self._trainsz:
@@ -711,6 +713,12 @@ class Images(object):
             return None
  
         ix = self._train[self._next]
+        if self._augment:
+            self._toggle = not self._toggle
+            if not self._toggle:
+                degree = random.randint(-90, 90)
+                return self._data[ix].rotate(degree) , self._data[ix]._label
+            
         self._next += 1
         return self._data[ix]._imgdata , self._data[ix]._label
                 

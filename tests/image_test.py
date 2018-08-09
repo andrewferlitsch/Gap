@@ -755,7 +755,7 @@ class MyTest(unittest.TestCase):
         os.remove("gray.h5")
         os.remove("rgb.h5")
         
-    def test_80(self):
+    def test_080(self):
         """ Image - rotate - grayscale, non-90 degree """
         image = Image("files/1_100.jpg", 1, config=['resize=(64,64)', 'grayscale'])
         rotated = image.rotate(30)
@@ -777,7 +777,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(rotated.shape, (64, 64))
         os.remove('1_100.h5')
         
-    def test_82(self):
+    def test_082(self):
         """ Image - rotate - rgb, non-90 degree """
         image = Image("files/1_100.jpg", 1, config=['resize=(64,64)'])
         rotated = image.rotate(30)
