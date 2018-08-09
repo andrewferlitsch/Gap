@@ -742,6 +742,18 @@ class MyTest(unittest.TestCase):
         self.assertEquals(len(images._test), 0)
         os.remove("foobar.h5")
         
+    def test_079(self):
+        """ Image - gif file """
+        image = Image("files/gray.gif", 1)
+        self.assertEquals(image.shape, (415, 506, 3))
+        image = Image("files/gray.gif", 1, config=['grayscale'])
+        self.assertEquals(image.shape, (415, 506))
+        image = Image("files/rgb.gif", 1)
+        self.assertEquals(image.shape, (561, 748, 3))
+        image = Image("files/rgb.gif", 1, config=['grayscale'])
+        self.assertEquals(image.shape, (561, 748))
+        os.remove("gray.h5")
+        
     def done(self, image):
         self.isdone = True
         os.remove(image)

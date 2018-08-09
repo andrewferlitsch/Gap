@@ -23,6 +23,9 @@ import h5py
 # Import cv2 for Python image manipulation library. 
 import cv2
 
+# Import pillow for Python image manipulation for GIF
+from PIL import Image as PILImage
+
 class Image(object):
     """ Base (super) Class for Classifying an Image """
     
@@ -181,8 +184,16 @@ class Image(object):
             else:
                 image = cv2.imdecode(data, cv2.IMREAD_COLOR)
         else:
+            # GIF files
+            if self._image.endswith("gif"):
+                image = PILImage.open(self._image)
+                if self._grayscale:
+                    image = image.convert('L')
+                else:
+                    image = image.convert('RGB')
+                image = np.array(image)
             # Read in the image data
-            if self._grayscale:
+            elif self._grayscale:
                 image = cv2.imread(self._image, cv2.IMREAD_GRAYSCALE)
             # Load RGB image (dropping any alpha channel)
             else:
