@@ -708,7 +708,7 @@ class Images(object):
         # End of training set
         if self._next >= self._trainsz:
             # Reshuffle the training data for the next round
-            self._train = random.sample([ index for index in range(self._trainsz)], self._trainsz)
+            random.shuffle(self._train)
             self._next = 0 
             return None
  

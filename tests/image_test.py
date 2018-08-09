@@ -788,6 +788,26 @@ class MyTest(unittest.TestCase):
         self.assertTrue(rotated.shape, (64, 64))
         os.remove('1_100.h5')
         
+    def test_083(self):
+        """ Image - rotate - rgb,negative degree """
+        image = Image("files/1_100.jpg", 1, config=['resize=(64,64)'])
+        rotated = image.rotate(-30)
+        self.assertTrue(rotated.shape, (64, 64))
+        rotated = image.rotate(-45)
+        self.assertTrue(rotated.shape, (64, 64))
+        rotated = image.rotate(-60)
+        self.assertTrue(rotated.shape, (64, 64))
+        os.remove('1_100.h5')
+        
+    def test_084(self):
+        """ Image - rotate invalid """
+        image = Image("files/1_100.jpg", 1, config=['resize=(64,64)'])
+        with pytest.raises(ValueError):
+            image.rotate(-360)
+        with pytest.raises(ValueError):
+            image.rotate(360)
+        os.remove('1_100.h5')
+        
         
     def done(self, image):
         self.isdone = True
