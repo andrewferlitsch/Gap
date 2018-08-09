@@ -753,6 +753,7 @@ class MyTest(unittest.TestCase):
         image = Image("files/rgb.gif", 1, config=['grayscale'])
         self.assertEquals(image.shape, (561, 748))
         os.remove("gray.h5")
+        os.remove("rgb.h5")
         
     def done(self, image):
         self.isdone = True

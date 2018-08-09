@@ -514,6 +514,9 @@ class Images(object):
             
         # Write the images and labels to disk as HD5 file
         with h5py.File(self._dir + self._name + '.h5', 'w') as hf:
+            # needed to store raw data of varying lengths
+            #dt = h5py.special_dtype(vlen=np.dtype('uint8'))
+            
             hf.create_dataset("images",  data=imgdata)
             hf.create_dataset("labels",  data=clsdata)
             hf.create_dataset("raw",     data=rawdata)
