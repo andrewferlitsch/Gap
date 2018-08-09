@@ -164,7 +164,7 @@ The vision module handles:
 
 ## User's Guide
 
-The User's (Programming) Quick Start Guide can be found [here](specs/quick%20start%20guide.docx)
+The User's (Programming) Quick Start Guide can be found [here](specs/quick%20start%20guide.doc)
 
 ## Releases
 
