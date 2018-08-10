@@ -90,7 +90,7 @@ def main():
         #install Ghostscript:
         os.system('sudo apt-get update && sudo apt-get install ghostscript')
         #install ImageMagick:
-        os.system('sudo apt-get install imagemagick')
+        #os.system('sudo apt-get install imagemagick')
         #install Tesseract:
         os.system('sudo apt-get install tesseract-ocr && sudo apt-get install tesseract-ocr-eng')
 

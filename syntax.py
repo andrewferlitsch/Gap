@@ -14,8 +14,8 @@ nltk.download('averaged_perceptron_tagger')
 from unidecode import unidecode
 import pyaspeller
 
-from vocabulary import Vocabulary, vocab
-from address import Address
+from .vocabulary import Vocabulary, vocab
+from .address import Address
 
         
 class Words(object):
@@ -1510,7 +1510,7 @@ class Words(object):
             raise TypeError("String or List expected for words")
         return self
         
-from word2int import word2int 
+from .word2int import word2int 
         
 class Norvig(object):
     """ 
