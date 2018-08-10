@@ -2,6 +2,8 @@
 Copyright 2018(c), Andrew Ferlitsch
 """
 
+version = '0.9.2'
+
 import re
 import json
 import os

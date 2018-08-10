@@ -3,6 +3,8 @@ Image Data Processing
 Copyright 2018(c), Andrew Ferlitsch
 """
 
+version = '0.9.2'
+
 import os
 import threading
 import time
@@ -205,8 +207,8 @@ class Image(object):
             
         self._raw = image   
 
-        # Store the thumbnail
-        if self._hd5 and self._thumbnail:
+        # Create the thumbnail
+        if self._thumbnail:
             try:
                 self._thumb = cv2.resize(image, self._thumbnail,interpolation=cv2.INTER_AREA)
             except Exception as e: print(e)
@@ -509,11 +511,12 @@ class Images(object):
             clsdata.append( img.label )
             rawdata.append( img.raw )
             sizdata.append( img.size )
-            #thmdata.append( img.thumb )
+            if img.thumb is not None:
+                thmdata.append( img.thumb )
             names.append( bytes(img.name, 'utf-8') )
             types.append( bytes(img.type, 'utf-8') )
             paths.append( bytes(img.image, 'utf-8') )
-            
+
         # if no collection name specified, use root of first test file.
         if self._name is None:
             self._name = "collection." + self._data[0].name
@@ -521,12 +524,13 @@ class Images(object):
         # Write the images and labels to disk as HD5 file
         with h5py.File(self._dir + self._name + '.h5', 'w') as hf:
             # needed to store raw data of varying lengths
-            #dt = h5py.special_dtype(vlen=np.dtype('uint8'))
+            #dt = h5py.special_dtype(vlen=np.dtype('float64'))
             
             hf.create_dataset("images",  data=imgdata)
             hf.create_dataset("labels",  data=clsdata)
             hf.create_dataset("raw",     data=rawdata)
-            #hf.create_dataset("thumb",   data=thmdata)
+            if len(thmdata) > 0:
+                hf.create_dataset("thumb",   data=thmdata)
             hf.create_dataset("size",    data=sizdata)
             hf.attrs.create("names", names)
             hf.attrs.create("types", types)
@@ -602,7 +606,10 @@ class Images(object):
                 image._raw = hf["raw"][i]
                 image._size = hf["size"][i]
                 image._label = hf["labels"][i]
-                #image._thumb = hf["thumb"][i]
+                try:
+                    image._thumb = hf["thumb"][i]
+                except:
+                    pass
                 image._name  = hf.attrs["names"][i].decode()
                 image._type  = hf.attrs["types"][i].decode()
                 image._image = hf.attrs["paths"][i].decode()
