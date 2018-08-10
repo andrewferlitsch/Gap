@@ -859,6 +859,19 @@ class MyTest(unittest.TestCase):
         self.assertEquals(x, 0)
         os.remove('foobar.h5')
         
+    def test_088(self):
+        """ Images - thumbnail """
+        images = Images(["files/0_100.jpg"], 1, config=['thumb=16,16'], name='foobar')
+        self.assertEquals(images[0].thumb.shape, (16, 16, 3))
+        os.remove('foobar.h5')
+        
+    def test_089(self):
+        """ Images - thumbnail - load """
+        images = Images(["files/0_100.jpg"], 1, config=['thumb=16,16'], name='foobar')
+        images = Images()
+        images.load('foobar')
+        self.assertEquals(images[0].thumb.shape, (16, 16, 3))
+        os.remove('foobar.h5')
         
     def done(self, image):
         self.isdone = True

@@ -205,8 +205,8 @@ class Image(object):
             
         self._raw = image   
 
-        # Store the thumbnail
-        if self._hd5 and self._thumbnail:
+        # Create the thumbnail
+        if self._thumbnail:
             try:
                 self._thumb = cv2.resize(image, self._thumbnail,interpolation=cv2.INTER_AREA)
             except Exception as e: print(e)
@@ -509,7 +509,8 @@ class Images(object):
             clsdata.append( img.label )
             rawdata.append( img.raw )
             sizdata.append( img.size )
-            #thmdata.append( img.thumb )
+            if img.thumb is not None:
+                thmdata.append( img.thumb )
             names.append( bytes(img.name, 'utf-8') )
             types.append( bytes(img.type, 'utf-8') )
             paths.append( bytes(img.image, 'utf-8') )
@@ -526,7 +527,8 @@ class Images(object):
             hf.create_dataset("images",  data=imgdata)
             hf.create_dataset("labels",  data=clsdata)
             hf.create_dataset("raw",     data=rawdata)
-            #hf.create_dataset("thumb",   data=thmdata)
+            if len(thmdata) > 0:
+                hf.create_dataset("thumb",   data=thmdata)
             hf.create_dataset("size",    data=sizdata)
             hf.attrs.create("names", names)
             hf.attrs.create("types", types)
