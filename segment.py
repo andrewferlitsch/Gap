@@ -2,6 +2,8 @@
 Copyright 2018(c), Andrew Ferlitsch
 """
 
+version = '0.9.2'
+
 class Segment(object):
     """ Segment text into Regions """
     

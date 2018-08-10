@@ -3,6 +3,8 @@ Image Data Processing
 Copyright 2018(c), Andrew Ferlitsch
 """
 
+version = '0.9.2'
+
 import os
 import threading
 import time

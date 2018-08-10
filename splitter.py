@@ -4,6 +4,8 @@ Copyright, 2018(c), Andrew Ferlitsch
 """
 #chcp 65001
 
+version = '0.9.2'
+
 
 import os.path
 import re
