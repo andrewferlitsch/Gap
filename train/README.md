@@ -168,16 +168,22 @@ Here's the updated code:
         """ Preprocess an uploaded image w/label concurrently and then pass the preprocessed machine learning 
             ready data to another step in a data pipeline.
         """
-        image = Image(uploaded_image, label, ehandler=next_step, config=['nostore', 'thumb=(16,16)'])
+        image = Image(uploaded_image, label, ehandler=second_step, config=['nostore', 'thumb=(16,16)'])
         
       nimages = 0
       nsecs   = 0
       
-      def next_step(image):
-        """ """
+      def second_step(image):
+        """ Still Progress results in dashboard """
+        # Progress Accumulation
         nimages += 1
         nsecs += image.time
+        
+        # Construct message and pass thumbnail and msg to the dashboard
         msg = "Time %d, Number: %d, Accumulated: %f" % (time.time, nimages, nsecs)
         dashboard.display(img=image.thumb, text=msg)
 
+        # The next processing step ...
+        third_step(image)
+        
 Okay, there is still some problem with this example in that nimages and nsecs are global and would be trashed by concurrent processing of different users. But since this is not about good cloud programming methods, we will leave that to you to solve.
