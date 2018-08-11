@@ -1,4 +1,4 @@
-# Epipog Open Source Organization
+# Gap Open Source Organization
 
 ## Background
 
