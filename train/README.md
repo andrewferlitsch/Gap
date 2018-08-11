@@ -12,7 +12,7 @@ For the data analyst and statisticians whom feel they don't have the necessary s
 
 As far as our team and contributers, they keep a single phrase in mind when designing, coding and building tutorials. They like to say that Gap is:
 
-                                             *Machine Learning for Humans*
+                                            <i>Machine Learning for Humans</i>
 
 ## The First Steps in using Gap for Computer Vision (CV)
 
@@ -29,6 +29,8 @@ neural network, and the target application.
 Images can come from a variety of sources, such as by your cell phone, images found on the Internet, [facsimile image (FAX)](https://en.wikipedia.org/wiki/TIFF), [video frame from a video stream](https://en.wikipedia.org/wiki/Film_frame#Video_frames), [digitized medical/dental x-ray](https://en.wikipedia.org/wiki/Digital_radiography), [magnetic resonance imaging (MRI)](https://en.wikipedia.org/wiki/Magnetic_resonance_imaging), [electron microscopy (TEM)](https://en.wikipedia.org/wiki/Transmission_electron_microscopy), etc. 
 
 Images go from very basic like [1-bit BW single channel (color plane)](https://en.wikipedia.org/wiki/Binary_image), to [8-bit gray scale single channel](https://en.wikipedia.org/wiki/Grayscale), to [8-bit color three channel (RGB)](https://en.wikipedia.org/wiki/8-bit_color), to [8-bit color four channel (+alpha channel)](https://en.wikipedia.org/wiki/Alpha_compositing), to [16-bit high tone (CMYK)](https://en.wikipedia.org/wiki/CMYK_color_model), to [infrared](https://en.wikipedia.org/wiki/Infrared_photography), to [stereoscopic images (3D)](https://en.wikipedia.org/wiki/Stereoscopy), [sound navigation and ranging (SONAR)](https://en.wikipedia.org/wiki/Sonar), to [RADAR](https://en.wikipedia.org/wiki/Radar), and more.
+
+<img src="bw.png">
 
 ### Fundamentals in Preparing an Image for Machine Learning
 
