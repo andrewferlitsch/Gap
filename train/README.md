@@ -32,6 +32,8 @@ Images go from very basic like [1-bit BW single channel (color plane)](https://e
 
 <img src="pixels.png">
 
+<img src="color.png">
+
 ### Fundamentals in Preparing an Image for Machine Learning
 
 Neural networks take as input numbers, specifically numbers that are continous real numbers and have been [normalized](https://en.wikipedia.org/wiki/Normalization_(statistics)). For images, pixel values are proportionally squashed between 0 and 1. For ANN networks, the inputs need to be a 1D vector, in which case the input data needs to be flatten, while in a CNN, the input is a 2D vector. Neural networks for computer vision take input of fixed sizes, so there is a transformation step to transform the pixel data to the input size and shape of the neural network, and finally assigning a label to the image (e.g., it's a cat). Again, for labels, neural networks use integer numbers; for example a cat must be assigned to a unique integer value and a dog to a different unique integer value. 
@@ -57,4 +59,6 @@ The first step is to instantiate an Image class object and load the image into i
   
       image = Image("../tests/files/1_100.jpg", 1)
 
-While Python does not have OOP polymorphism builtin, the class objects in Gap have been constructed to emulate polymorphism in a variety of ways.
+While Python does not have OOP polymorphism builtin, the class objects in Gap have been constructed to emulate polymorphism in a variety of ways. The first positional parameter (image path) to the Image class can either be a local path or a remote path. In the latter case, a path starting with http or https is a remote path. In this case, a HTTP request to fetch the image from the remote location is made.
+
+      image = Image("https://en.wikipedia.org/wiki/File:Example.jpg", 1)
