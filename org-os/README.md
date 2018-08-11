@@ -57,9 +57,9 @@ The Contributers would be equivalent to Technical Staff in a Corporate or Non-Pr
 
     1. Make contributions to the source code under the direction of the Project Manager.
     
-# Epipog Source Code and Intellectual Property
+# Gap Source Code and Intellectual Property
 
 The source code and intellectual property will be assigned to (owned) by the formed entity.
 
-The entity will make the source code and intellectual property freely available to the public through the Creative Commons license CC-BY.
+The entity will make the source code and intellectual property freely available to the public through the Apache Foundation 2.0 License.
 
