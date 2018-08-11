@@ -56,7 +56,7 @@ class Image(object):
         if self._debug: print(config)
         
         # value must be a string
-        if image is not None and isinstance(image, str) == False:
+        if image is not None and not isinstance(image, str) and not isinstance(image, np.ndarray):
             raise TypeError("String expected for image path")
         
         if dir is not None:
@@ -121,22 +121,30 @@ class Image(object):
         
         if self._image is not None:
             self._exist()
-            # Process document synchronously
+            # Process image synchronously
             if ehandler is None:
                 self._collate(self._dir)
-            # Process document asynchronously
+            # Process image asynchronously
             else:
                 t = threading.Thread(target=self._async, args=(self._dir, ))
                 t.start()   
                 
     def _async(self, dir):
-        """ Asynchronous processing of the document """
+        """ Asynchronous processing of the image """
         self._collate(dir)
         # signal user defined event handler when processing is done
         self._ehandler(self)
                 
     def _exist(self):
-        """ Check if document exists """
+        """ Check if image exists """
+        
+        # Image data was directly inputted as an argument
+        if isinstance(self._image, np.ndarray):
+            self._name = 'untitled'
+            self._type = 'raw'
+            self._size = self._image.size
+            return
+            
         if isinstance(self._image, str) == False:
             raise TypeError("String expected for image path")
             
@@ -171,8 +179,17 @@ class Image(object):
         # If directory does not exist, create it
         if dir != "./" and os.path.isdir(dir) == False:
             os.mkdir(dir)
-            
-        if self._image.startswith("http"):
+    
+        # Image data was directly inputted
+        if isinstance(self._image, np.ndarray):
+            if self._grayscale:
+                image = cv2.cvtColor(self._image, cv2.COLOR_RGB2GRAY)
+            elif len(self._image.shape) == 2:
+                image = cv2.cvtColor(self._image, cv2.COLOR_GRAY2RGB)
+            else:
+                image = self._image
+        # remote image
+        elif self._image.startswith("http"):
             try:
                 response = requests.get(self._image, timeout=10)
             except: return None
