@@ -161,7 +161,9 @@ Let's expand on the real-word cloud example from earlier. In this case, let's as
     - a thumbnail appears on the dashboard
     - the amount of time to preprocess the image
     - progress count of number of images preprocessed and accumulated time
-  
+    
+Here's the updated code:
+
       def first_step(uploaded_image, label):
         """ Preprocess an uploaded image w/label concurrently and then pass the preprocessed machine learning 
             ready data to another step in a data pipeline.
@@ -178,3 +180,4 @@ Let's expand on the real-word cloud example from earlier. In this case, let's as
         msg = "Time %d, Number: %d, Accumulated: %f" % (time.time, nimages, nsecs)
         dashboard.display(img=image.thumb, text=msg)
 
+Okay, there is still some problem with this example in that nimages and nsecs are global and would be trashed by concurrent processing of different users. But since this is not about good cloud programming methods, we will leave that to you to solve.
