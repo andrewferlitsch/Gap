@@ -8,6 +8,7 @@ import os
 import sys
 import time
 from shutil import copy
+import cv2
 
 class MyTest(unittest.TestCase):
         
@@ -873,6 +874,37 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[0].thumb.shape, (16, 16, 3))
         os.remove('foobar.h5')
         
+    def test_090(self):
+        """ Image - raw pixel input """
+        pixels = cv2.imread('files/1_100.jpg')
+        image = Image(pixels, 1)
+        self.assertEquals(image.name, 'untitled')
+        self.assertEquals(image.type, 'raw')
+        self.assertEquals(image.size, 30000)
+        self.assertEquals(image.shape, (100, 100, 3))
+        image = Image(pixels, 1, config=['gray'])
+        self.assertEquals(image.name, 'untitled')
+        self.assertEquals(image.type, 'raw')
+        self.assertEquals(image.size, 30000)
+        self.assertEquals(image.shape, (100, 100))
+        os.remove('untitled.h5')
+        
+    def test_091(self):
+        """ Image - raw pixel input - gray to color """
+        pixels = cv2.imread('files/1_100.jpg', cv2.IMREAD_GRAYSCALE)
+        image = Image(pixels, 1)
+        self.assertEquals(image.name, 'untitled')
+        self.assertEquals(image.type, 'raw')
+        self.assertEquals(image.size, 10000)
+        self.assertEquals(image.shape, (100, 100, 3))
+        image = Image(pixels, 1, config=['gray'])
+        self.assertEquals(image.name, 'untitled')
+        self.assertEquals(image.type, 'raw')
+        self.assertEquals(image.size, 10000)
+        self.assertEquals(image.shape, (100, 100))
+        os.remove('untitled.h5')
+      
+     
     def done(self, image):
         self.isdone = True
         os.remove(image)

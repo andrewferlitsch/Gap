@@ -183,7 +183,10 @@ class Image(object):
         # Image data was directly inputted
         if isinstance(self._image, np.ndarray):
             if self._grayscale:
-                image = cv2.cvtColor(self._image, cv2.COLOR_RGB2GRAY)
+                if not len(self._image.shape) == 2:
+                    image = cv2.cvtColor(self._image, cv2.COLOR_RGB2GRAY)
+                else:
+                    image = self._image
             elif len(self._image.shape) == 2:
                 image = cv2.cvtColor(self._image, cv2.COLOR_GRAY2RGB)
             else:
