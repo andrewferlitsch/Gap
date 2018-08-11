@@ -30,4 +30,25 @@ Images can come from a variety of sources, such as by your cell phone, images fo
 
 Images go from very basic like [1-bit BW single channel (color plane)](https://en.wikipedia.org/wiki/Binary_image), to [8-bit gray scale single channel](https://en.wikipedia.org/wiki/Grayscale), to [8-bit color three channel (RGB)](https://en.wikipedia.org/wiki/8-bit_color), to [8-bit color four channel (+alpha channel)](https://en.wikipedia.org/wiki/Alpha_compositing), to [16-bit high tone (CMYK)](https://en.wikipedia.org/wiki/CMYK_color_model), to [infrared](https://en.wikipedia.org/wiki/Infrared_photography), to [stereoscopic images (3D)](https://en.wikipedia.org/wiki/Stereoscopy), [sound navigation and ranging (SONAR)](https://en.wikipedia.org/wiki/Sonar), to [RADAR](https://en.wikipedia.org/wiki/Radar), and more.
 
+### Fundamentals in Preparing an Image for Machine Learning
 
+Neural networks take as input numbers, specifically numbers that are continous real numbers and have been [normalized](https://en.wikipedia.org/wiki/Normalization_(statistics)). For images, pixel values are proportionally squashed between 0 and 1. For ANN networks, the inputs need to be a 1D vector, in which case the input data needs to be flatten, while in a CNN, the input is a 2D vector. Neural networks for computer vision take input of fixed sizes, so there is a transformation step to transform the pixel data to the input size and shape of the neural network, and finally assigning a label to the image (e.g., it's a cat). Again, for labels, neural networks use integer numbers; for example a cat must be assigned to a unique integer value and a dog to a different unique integer value. 
+
+These are the basic steps for all computer vision based neural networks:
+
+  - Transformation
+  - Normalization
+  - Shaping (e.g., flattening)
+  - Labeling
+  
+ ### Importing Vision module
+ 
+The <span style='color:saddlebrown'>Vision</span> module of the <span style='color: saddlebrown'>Gap</span> framework implements the classes and methods for computer vision. 
+
+      from vision import Image, Images
+ 
+ ### Preparing an image with Gap
+  
+Relative to the location of this tutorial are a number of test images used in verifying releases of Gap. For the purpose of then tutorials, the images that are part of the Gap release verification will be used for examples.
+  
+      image = Image("../files/1_100.jpg", 1)
