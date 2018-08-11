@@ -100,9 +100,41 @@ When processing of the image is completed, the raw pixel data, machine learning 
       
 The path location of the stored HDF5 can be specified with the keyword parameter *dir*.
 
-      image = Image("../tests/files/1_100.jpg", 1, dir="something")
+      image = Image("../tests/files/1_100.jpg", 1, dir="tmp")
+      
+In the above example, the HDF5 file will be stored under the subdirectory *tmp*. If the subdirectory path does not exist, the Image object will attempt to create the folder.
+
+The Image class optionally takes the keyword parameter *config*. This parameter takes a list of one or more settings, which alter how the image is preprocessed. For example, one can choose to use disable storing the HDF5 file using the keyword parameter *config* with the setting *nostore*.
     
-<config nostore>
-<example>
+      image = Image("../tests/files/1_100.jpg", 1, config=['nostore'])
+      
+### Example: Cloud-based Image Processing Pipeline
+
+For a real-world example, let's assume one is developing a cloud based system that takes images uploaded from users, with the following requirements.
+
+  - Handles multiple users uploading at the same time.
+  - Preprocessing of the images is concurrent.
+  - The machine learning ready data is passed to another step in a data (e.g., workflow) pipeline.
   
-<resize>
+  Below is a bare-bones implementation.
+  
+      def first_step(uploaded_image, label):
+        """ Preprocess an uploaded image w/label concurrently and then pass the preprocessed machine learning ready data
+            to another step in a data pipeline.
+        """
+        image = Image(uploaded_image, label, ehandler=next_step, config=['nostore'])
+        
+      def next_step(step):
+        """ Do something with the Image object as the next step in the data pipeline """
+        data = image.data
+        
+### Preprocessing Transformations: Resizing, Reshaping, Flattening
+
+The keyword parameter *config* has a number of settings for specifying how the raw pixel data is preprocessed. The Gap framework is designed to eliminate the use of large numbers of keyword parameters, and instead uses a modern convention of passing in a configuration parameter. Here are some of the configuration settings:
+
+        nostore                 # do not store in a HDF5 file
+        grayscale | gray        # convert to a grayscale image with a single channel (i.e., color plane)
+        flatten | flat          # flatten the machine learning ready data into a 1D vector
+        resize=(height, width)  # resize the raw pixel data
+        thumb=(height, width)   # create (and store) a thumbnail of the raw pixel data
+        
