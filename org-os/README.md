@@ -36,6 +36,8 @@ The Executive Committee would be equivalent to Executive Officers in a Corporate
     3. Onboard Project Managers.
     4. Develop Relationships in the Development Community.
     5. Develop Corporate Sponsorships.
+    
+Andrew Ferlitsch - Executive Director
 
 ## Project Managers
 
@@ -44,6 +46,10 @@ The Project Managers would be equivalent to Project Managers/Leads in a Corporat
     1. Take Ownership of a section of the code.
     2. Recruit contributers.
     3. Make contributions.
+    
+David Molina - QA Project Manager
+
+Rene Mesias - Admin Project Manager
 
 ## Contributers
 
