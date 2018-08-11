@@ -51,7 +51,7 @@ The <span style='color:saddlebrown'>Vision</span> module of the <span style='col
 
       from vision import Image, Images
  
- ### Preparing an image with Gap
+ ### Preprocessing (Preparing) an image with Gap
   
 Relative to the location of this tutorial are a number of test images used in verifying releases of Gap. For the purpose of these tutorials, the images that are part of the Gap release verification will be used for examples. The test file 1_100.jpg is a simple 100x100 96 dpi color image (RGB/8bit) from the Kaggle Fruit360 dataset. This dataset was part of a Kaggle contents to classify different types of fruits and their variety. It was a fairly simple dataset in that all the images were of the same size, type and number of channels. Further, each image contained only the object to classify (i.e., fruit) and was centered in the image.
 
@@ -62,3 +62,29 @@ The first step is to instantiate an Image class object and load the image into i
 While Python does not have OOP polymorphism builtin, the class objects in Gap have been constructed to emulate polymorphism in a variety of ways. The first positional parameter (image path) to the Image class can either be a local path or a remote path. In the latter case, a path starting with http or https is a remote path. In this case, a HTTP request to fetch the image from the remote location is made.
 
       image = Image("https://en.wikipedia.org/wiki/File:Example.jpg", 1)
+
+Preprocessing of the image in the above examples is synchronous. The initializer (i.e., constructor) returns an image object once the image file has been preprocessed. Alternately, preprocessing of an image can be done asynchronously, where the preprocessing is performed by a background thread. Asynchronous processing occurs if the keyword parameter *ehandler* is specified. The value of the parameter is set to a function or method, which is invoked with the image object as a parameter when preprocessing of the image is complete.
+  
+      image = Image("../tests/files/1_100.jpg", 1, ehandler=myfunc)
+      
+      def myfunc(image):
+        print("done")
+
+The Image class has a number of attributes which are accessed using OOP properties (i.e., getters and setters). The attributes below provide information on the source image:
+
+      print(image.name)   # the name of the image (e.g., 1_100)
+      print(image.type)   # the type of the image (e.g., jpg)
+      print(image.size)   # the size of the image in bytes (e.g., 3574)
+      
+The raw pixel data of the source image is accessed with the *raw* property, where property returns the uncompressed pixel data of the source image as a numpy array.
+
+      raw = image.raw
+      print(type(raw))    # outputs <class 'numpy.ndarry'>
+      print(raw.shape)    # outputs the shape of the source image (e.g., (100, 100, 3))
+
+The preprocessed machine learning ready data is accessed with the *data* property, where the property returns the data as a numpy array.
+
+      data = image.data
+      print(type(data))   # outputs <class 'numpy.ndarry'>
+      print(data.shape)   # outputs the shape of the machine learning data (e.g., (100, 100, 3))
+      
