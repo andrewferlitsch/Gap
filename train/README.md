@@ -119,8 +119,8 @@ For a real-world example, let's assume one is developing a cloud based system th
   Below is a bare-bones implementation.
   
       def first_step(uploaded_image, label):
-        """ Preprocess an uploaded image w/label concurrently and then pass the preprocessed machine learning ready data
-            to another step in a data pipeline.
+        """ Preprocess an uploaded image w/label concurrently and then pass the preprocessed machine learning 
+            ready data to another step in a data pipeline.
         """
         image = Image(uploaded_image, label, ehandler=next_step, config=['nostore'])
         
@@ -138,3 +138,43 @@ The keyword parameter *config* has a number of settings for specifying how the r
         resize=(height, width)  # resize the raw pixel data
         thumb=(height, width)   # create (and store) a thumbnail of the raw pixel data
         
+Let's look how you can use these settings for something like neural network's equivalent of the hello world example ~ [training the MNIST dataset](https://www.tensorflow.org/versions/r1.0/get_started/mnist/beginners). The MNIST dataset consists of 28x28 grayscale images. Do to its size, grayscale and simplicity, it can be trained with just a ANN (vs. CNN). Since ANN take as input a 1D vector, the machine learning ready data would need to be reshaped (i.e., flatten) into a 1D vector.
+
+        # An example of how one might use the Image object to preprocess an image from the MNIST dataset for a ANN
+        image = Image("mnist_example.jpg", digit, config=["gray", "flatten"])
+        
+        print(image.shape)  # would output (784,)
+        
+In the above, the preprocessed machine learning ready data will be in a vector of size 784 (i.e., 28x28) with data type float. 
+
+Let's look at another publicly accessible training set, the Fruits360 Kaggle competition. In this training set, the images are 100x100 RGB images (i.e., 3 channels). If one used a CNN for this training set, one would preserve the number of channels. But the input vector may be unneccessarily large for training purposes (30000 ~ 100x100x3). Let's reduce the size using the resize setting by 1/4.
+
+        image = Image("../tests/files/1_100.jpg", config=['resize=(50,50)'])
+
+        print(image.shape)  # would output (50, 50, 3)
+        
+### Example: Image Processing Dashboard
+
+Let's expand on the real-word cloud example from earlier. In this case, let's assume that one wants to have a dashboard for a devOps person to monitor the preprocessing of images from a user, with the requirements:
+
+  - Each time an image is preprocessed:
+    - a thumbnail appears on the dashboard
+    - the amount of time to preprocess the image
+    - progress count of number of images preprocessed and accumulated time
+  
+      def first_step(uploaded_image, label):
+        """ Preprocess an uploaded image w/label concurrently and then pass the preprocessed machine learning 
+            ready data to another step in a data pipeline.
+        """
+        image = Image(uploaded_image, label, ehandler=next_step, config=['nostore', 'thumb=(16,16)'])
+        
+      nimages = 0
+      nsecs   = 0
+      
+      def next_step(image):
+        """ """
+        nimages += 1
+        nsecs += image.time
+        msg = "Time %d, Number: %d, Accumulated: %f" % (time.time, nimages, nsecs)
+        dashboard.display(img=image.thumb, text=msg)
+
