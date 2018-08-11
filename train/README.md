@@ -75,6 +75,7 @@ The Image class has a number of attributes which are accessed using OOP properti
       print(image.name)   # the name of the image (e.g., 1_100)
       print(image.type)   # the type of the image (e.g., jpg)
       print(image.size)   # the size of the image in bytes (e.g., 3574)
+      print(image.label)  # the label assigned to the image (e.g., 1)
       
 The raw pixel data of the source image is accessed with the *raw* property, where property returns the uncompressed pixel data of the source image as a numpy array.
 
@@ -88,3 +89,20 @@ The preprocessed machine learning ready data is accessed with the *data* propert
       print(type(data))   # outputs <class 'numpy.ndarry'>
       print(data.shape)   # outputs the shape of the machine learning data (e.g., (100, 100, 3))
       
+By default, the shape and number of channels of the source image are maintained in the preprocessed machine learning ready data, and the pixel values are normalized to values between 0 and 1. 
+
+      print(raw[0][80])   # outputs pixel values (e.g., [250, 255, 255])
+      print(data[0][80])  # outputs machine learning ready data values (e.g., [0.98039216, 1.0, 1.0])
+
+When processing of the image is completed, the raw pixel data, machine learning ready data, and attributes are stored in a HDF5 (Hierarchical Data Format) formatted file. By default, the file is stored in the current local directory, where the rootname of the file is the rootname of the image. Storage provides the means to latter retrieval the machine learning ready data for feeding into a neural network, and/or retransforming the machine learning ready data. In the above example, the file would be stored as:
+
+      ./1_100.hd5
+      
+The path location of the stored HDF5 can be specified with the keyword parameter *dir*.
+
+      image = Image("../tests/files/1_100.jpg", 1, dir="something")
+    
+<config nostore>
+<example>
+  
+<resize>
