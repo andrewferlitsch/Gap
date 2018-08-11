@@ -157,10 +157,10 @@ Let's look at another publicly accessible training set, the Fruits360 Kaggle com
 
 Let's expand on the real-word cloud example from earlier. In this case, let's assume that one wants to have a dashboard for a devOps person to monitor the preprocessing of images from a user, with the requirements:
 
-  - Each time an image is preprocessed:
-    - a thumbnail appears on the dashboard
-    - the amount of time to preprocess the image
-    - progress count of number of images preprocessed and accumulated time
+  - Each time an image is preprocessed, the following is displayed on the dashboard:
+    - A thumbnail of the source image.
+    - The amount of time to preprocess the image.
+    - Progress count of number of images preprocessed and accumulated time.
     
 Here's the updated code:
 
@@ -174,7 +174,7 @@ Here's the updated code:
       nsecs   = 0
       
       def second_step(image):
-        """ Still Progress results in dashboard """
+        """ Display progress in dashboard """
         # Progress Accumulation
         nimages += 1
         nsecs += image.time
