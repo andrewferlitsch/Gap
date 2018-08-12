@@ -191,4 +191,23 @@ Here's the updated code:
         # The next processing step ...
         third_step(image)
         
-Okay, there is still some problem with this example in that nimages and nsecs are global and would be trashed by concurrent processing of different users. But since this is not about good cloud programming methods, we will leave that to you to solve.
+Okay, there is still some problem with this example in that nimages and nsecs are global and would be trashed by concurrent processing of different users. The *ehandler* parameter can be passed a tuple instead of a single value. In this case, the Image object emulates polymorphism. When specified as a tuple, the first item in the tuple is the event handler and the remaining items are additional arguments to the event handler. Let's now solve the above problem by adding a new object *user* which is passed to the first function first_step(). The *user* object will have fields for accumulating the number of times an image was processed for the user and the accumulated time. The *ehandler* parameter is then modified to pass the *user* object to the event handler second_step().
+
+      def first_step(uploaded_image, label, user):
+        """ Preprocess an uploaded image w/label concurrently and then pass the preprocessed machine learning 
+            ready data to another step in a data pipeline.
+        """
+        image = Image(uploaded_image, label, ehandler=(second_step, user), config=['nostore', 'thumb=(16,16)'])
+      
+      def second_step(image, user):
+        """ Display progress in dashboard """
+        # Progress Accumulation
+        user.nimages += 1
+        user.nsecs += image.time
+        
+        # Construct message and pass thumbnail and msg to the dashboard
+        msg = "Time %d, Number: %d, Accumulated: %f" % (time.time, nimages, nsecs)
+        dashboard.display(img=image.thumb, text=msg)
+
+        # The next processing step ...
+        third_step(image, user)
