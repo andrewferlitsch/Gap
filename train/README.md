@@ -16,8 +16,7 @@ As far as our team and contributers, they keep a single phrase in mind when desi
 
 ## The First Steps in using Gap for Computer Vision (CV)
 
-The first step in using Gap for machine learning (ML) of computer vision (CV) is learning to classify a single object in an image.
-Is it a dog, a cat, what digit is it, what sign language digit is it, etc...
+The first step in using Gap for machine learning (ML) of computer vision (CV) is learning to classify a single object in an image. Is it a dog, a cat, what digit is it, what sign language digit is it, etc...
 
 To do single object classification, depending on the images, one will use either a artificial neural network 
 ([ANN](https://github.com/andrewferlitsch/Training/blob/master/AITraining/Fundamentals/Machine%20Learning/ML%20Neural%20Networks.pptx)) 
@@ -55,7 +54,7 @@ The <span style='color:saddlebrown'>Vision</span> module of the <span style='col
   
 Relative to the location of this tutorial are a number of test images used in verifying releases of Gap. For the purpose of these tutorials, the images that are part of the Gap release verification will be used for examples. The test file 1_100.jpg is a simple 100x100 96 dpi color image (RGB/8bit) from the Kaggle Fruit360 dataset. This dataset was part of a Kaggle contents to classify different types of fruits and their variety. It was a fairly simple dataset in that all the images were of the same size, type and number of channels. Further, each image contained only the object to classify (i.e., fruit) and was centered in the image.
 
-The first step is to instantiate an Image class object and load the image into it, and its corresponding label. In the example below, an Image object is created where the first two positional parameters are the path to the image and the corresponding label (i.e., 1). 
+The first step is to instantiate an *Image* class object and load the image into it, and its corresponding label. In the example below, an Image object is created where the first two positional parameters are the path to the image and the corresponding label (i.e., 1). 
   
       image = Image("../tests/files/1_100.jpg", 1)
 
@@ -75,7 +74,7 @@ Preprocessing of the image in the above examples is synchronous. The initializer
       def myfunc(image):
         print("done")
 
-The Image class has a number of attributes which are accessed using OOP properties (i.e., getters and setters). The attributes below provide information on the source image:
+The *Image* class has a number of attributes which are accessed using OOP properties (i.e., getters and setters). The attributes below provide information on the source image:
 
       print(image.name)   # the name of the image (e.g., 1_100)
       print(image.type)   # the type of the image (e.g., jpg)
@@ -109,7 +108,7 @@ The path location of the stored HDF5 can be specified with the keyword parameter
       
 In the above example, the HDF5 file will be stored under the subdirectory *tmp*. If the subdirectory path does not exist, the Image object will attempt to create the folder.
 
-The Image class optionally takes the keyword parameter *config*. This parameter takes a list of one or more settings, which alter how the image is preprocessed. For example, one can choose to use disable storing the HDF5 file using the keyword parameter *config* with the setting *nostore*.
+The *Image* class optionally takes the keyword parameter *config*. This parameter takes a list of one or more settings, which alter how the image is preprocessed. For example, one can choose to use disable storing the HDF5 file using the keyword parameter *config* with the setting *nostore*.
     
       image = Image("../tests/files/1_100.jpg", 1, config=['nostore'])
       
@@ -214,11 +213,11 @@ Okay, there is still some problem with this example in that nimages and nsecs ar
         
 ### Image Retrieval
 
-By default, the Image class will store the generated HDF5 in the current working directory (i.e., ./). The keyword parameter *dir* tells the Image class where to store the generated HDF5 file.
+By default, the *Image* class will store the generated HDF5 in the current working directory (i.e., ./). The keyword parameter *dir* tells the Image class where to store the generated HDF5 file.
 
         image = Image("../tests/files/1_100.jpg", dir='tmp')  # stored as tmp/1_100.h5
 
-Once stored, the Image object subsequently can be retrieved (i.e., reused) from the HDF5 file. In the example below, an empty Image object is first instantiated, and then the method load() is invoked passing it the name (rootname) of the image and the directory where the HDF5 file is stored, if not in the current working directory.
+Once stored, the *Image* object subsequently can be retrieved (i.e., reused) from the HDF5 file. In the example below, an empty *Image* object is first instantiated, and then the method load() is invoked passing it the name (rootname) of the image and the directory where the HDF5 file is stored, if not in the current working directory.
         
         image = Image()
         image.load('1_100', dir='tmp')
@@ -232,7 +231,7 @@ For a complete reference on all methods and properties for the Image class, see 
 
 ### Image Collections
    
-The Images class provides preprocessing of a collections of images (vs. a single image). The parameters and emulated polymorphism are identical to the Image class, except the images and labels parameter refer to a plurality of images, which comprise the collection. The positional parameter *images* can be specified as:
+The *Images* class provides preprocessing of a collections of images (vs. a single image). The parameters and emulated polymorphism are identical to the Image class, except the images and labels parameter refer to a plurality of images, which comprise the collection. The positional parameter *images* can be specified as:
 
   - A list of local or remote images (e.g., [ '1_100.jpg', '2_100.jpg', '3_100.jpg'])
   - A single directory path of images  (e.g., 'apple')
@@ -243,11 +242,11 @@ The corresponding positional parameter *labels* must match the number of images 
   - A single value, applies to all the images (e.g., 1)
   - A list of values which are the same length as the list of images or directory paths (e.g., [1, 2, 3]).
   
-The example below creates an Images objects consisting of three images with corresponding labels 1, 2 and 3.
+The example below creates an *Images* objects consisting of three images with corresponding labels 1, 2 and 3.
 
         images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3])
         
-For each image specified, the Images class creates an Image object, which are maintained in the Images object as a list. The list of corresonding Image objects can be accessed from the property *images*. In the example below, a collection of three images is created, and then the *images* property is accessed as a list iterator in a for loop. On each loop, the next Image object is accessed and inside the loop the code prints the name and label of the corresponding Image object.
+For each image specified, the *Images* class creates an *Image* object, which are maintained in the *Images* object as a list. The list of corresonding Image objects can be accessed from the property *images*. In the example below, a collection of three images is created, and then the *images* property is accessed as a list iterator in a for loop. On each loop, the next *Image* object is accessed and inside the loop the code prints the name and label of the corresponding *Image* object.
 
         images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3])
         for image in images.images:
@@ -258,14 +257,14 @@ For each image specified, the Images class creates an Image object, which are ma
         # 2_100 2
         # 3_100 3
         
-The builtin operators len() and [] are overridden in the Images class. The len() operator will return the number of images, and the list (array) index operator [] will return the Image object at the corresponding index. Using the builtin operators, the above example can be alternately coded as:
+The builtin operators *len()* and *[]* are overridden in the *Images* class. The len() operator will return the number of images, and the list (array) index operator *[]* will return the *Image* object at the corresponding index. Using the builtin operators, the above example can be alternately coded as:
 
         for i in range(len(images)):
             print(images[i].name, images[i].label)
 
 ### Collection Storage & Retrieval
 
-The Images class, disables the Image objects from storing the machine learning ready data as individual HDF5 files per image, and insteads stores a single HDF5 for the entire collection. By default, the file name combines the prefix 'collection.' with the root name of the first image in the collection, and is stored in the current working directory. In the above example, the machine learning ready data for the entire collection would be stored as:
+The *Images* class, disables the Image objects from storing the machine learning ready data as individual HDF5 files per image, and insteads stores a single HDF5 for the entire collection. By default, the file name combines the prefix 'collection.' with the root name of the first image in the collection, and is stored in the current working directory. In the above example, the machine learning ready data for the entire collection would be stored as:
 
         ./collection.1_100.h5
         
@@ -277,7 +276,7 @@ In the above example, the machine learning ready data is stored as:
 
         ./tmp/apples.h5
         
-A stored collection can the be subsequently retrieved from storage by instantiating an empty Images object and invoking the load() method with the corresponding collection name. For the above example, the apples collection would be retrieved and Images and corresponding Image objects reconstructed in memory:
+A stored collection can the be subsequently retrieved from storage by instantiating an empty *Images* object and invoking the *load()* method with the corresponding collection name. For the above example, the apples collection would be retrieved and *Images* and corresponding *Image* objects reconstructed in memory:
 
         # Instantiate an empty Images object
         images = Images()
@@ -287,7 +286,7 @@ A stored collection can the be subsequently retrieved from storage by instantiat
         # Load the collection into memory
         images.load('apples')
         
-Alternately, the load() method can be passed the keyword parameter *dir* to specify the directory where the collection is stored. For the above, this can be specified as:
+Alternately, the *load()* method can be passed the keyword parameter *dir* to specify the directory where the collection is stored. For the above, this can be specified as:
 
         images.load('apples', dir='tmp')
         
@@ -346,7 +345,7 @@ In the above example, the machine learning ready data is stored as:
 
         ./fruits.h5
         
-Can we improve on the above? We got the benefit of a combined collection, but lost the benefit of concurrently preprocessing each collection. That's not overlooked. The += operator for the Images collection is overridden to combine collections. Let's update the earlier example to preprocess each collection asynchronously and combine them into a single collection.
+Can we improve on the above? We got the benefit of a combined collection, but lost the benefit of concurrently preprocessing each collection. That's not overlooked. The *+=* operator for the *Images* collection is overridden to combine collections. Let's update the earlier example to preprocess each collection asynchronously and combine them into a single collection.
 
           dataset = None
           accumulated = 0
@@ -369,13 +368,23 @@ Can we improve on the above? We got the benefit of a combined collection, but lo
                   dataset += images
               lock.release()
                   
-In the above example, we used the variable dataset for the combined collection. After the first collection is preprocessed, we set the variable dataset to the first images object, and afterwards we combine it with subsequent collections using the += operator.
+In the above example, we used the variable dataset for the combined collection. After the first collection is preprocessed, we set the variable dataset to the first *Images* object, and afterwards we combine it with subsequent collections using the *+=* operator.
 
 Because the processing and invoking the event handler happen concurrently, there are possible problems including a race condition (i.e., two threads access dataset at the same time), and trashing the internal data (i.e., two threads are combining data at the same time). We solve this by making this operation atomic using Python's thread lock mechanism.
 
 *Above feature anticipated for v0.9.5 (beta)
+ 
+### Forward Feeding a Neural Network
 
-### Batch Feeding
+The *Images* class provides methods for batch, stochastic and mini-batch feeding for training and evaluating a neural network. The feeders produce full batch samples, single samples and mini-batch samples as numpy matrixes, which are compatible for input with all Python machine learning networks that support numpy arrays, such as Tensorflow, Keras and Pytorch, for example. Batch feeding is also randomized, and the entire collection(s) can be continuously re-feed (i.e., epoch), where each time they are re-randomized.
+
+The first step to feeding a neural network is to split the collection into training and test data. We will cover some basic cases here. The *split*, *minibatch*, and overriden *next()* operator support the setup and forward feeding.
+
+            images.split = 0.2
+            
+            images.split = 0
+            
+            images.split = 0.2, 42
 
 ### Data Augmentation
 
