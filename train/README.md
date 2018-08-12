@@ -62,6 +62,11 @@ The first step is to instantiate an Image class object and load the image into i
 While Python does not have OOP polymorphism builtin, the class objects in Gap have been constructed to emulate polymorphism in a variety of ways. The first positional parameter (image path) to the Image class can either be a local path or a remote path. In the latter case, a path starting with http or https is a remote path. In this case, a HTTP request to fetch the image from the remote location is made.
 
       image = Image("https://en.wikipedia.org/wiki/File:Example.jpg", 1)
+      
+Alternately, raw pixel data can be specified as the first (image) positional parameter, as a numpy array.
+
+      raw = cv2.imread("../tests/files/1_100.jpg")
+      image = Image(raw, 1)
 
 Preprocessing of the image in the above examples is synchronous. The initializer (i.e., constructor) returns an image object once the image file has been preprocessed. Alternately, preprocessing of an image can be done asynchronously, where the preprocessing is performed by a background thread. Asynchronous processing occurs if the keyword parameter *ehandler* is specified. The value of the parameter is set to a function or method, which is invoked with the image object as a parameter when preprocessing of the image is complete.
   
