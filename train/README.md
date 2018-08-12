@@ -211,3 +211,29 @@ Okay, there is still some problem with this example in that nimages and nsecs ar
 
         # The next processing step ...
         third_step(image, user)
+        
+### Image Retrieval
+
+By default, the Image class will store the generated HDF5 in the current working directory (i.e., ./). The keyword parameter *dir* tells the Image class where to store the generated HDF5 file.
+
+        image = Image("../tests/files/1_100.jpg", dir='tmp')  # stored as tmp/1_100.h5
+
+Once stored, the Image object subsequently can be retrieved (i.e., reused) from the HDF5 file. In the example below, an empty Image object is first instantiated, and then the method load() is invoked passing it the name (rootname) of the image and the directory where the HDF5 file is stored, if not in the current working directory.
+        
+        image = Image()
+        image.load('1_100', dir='tmp')
+
+        # retrieve the machine learning ready data from the loaded Image object
+        data = image.data
+        
+### Image Reference
+
+For a complete reference on all methods and properties for the Image class, see [reference](/specs/vision_spec.docx).
+
+### Image Collections
+   
+The Images class provides preprocessing of a collections of images (vs. a single image). The parameters and emulated polymorphism are identical to the Image class, except the images and labels parameter refer to a plurality of images, which comprise the collection.
+
+
+
+    
