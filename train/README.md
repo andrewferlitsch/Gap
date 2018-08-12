@@ -345,5 +345,26 @@ In the above example, the machine learning ready data is stored as:
 
         ./fruits.h5
         
+Can we improve on the above? We got the benefit of a combined collection, but lost the benefit of concurrently preprocessing each collection. That's not overlooked. The += operator for the Images collection is overridden to combine collections. Let's update the earlier example to preprocess each collection asynchronously and combine them into a single collection.
+
+          label = 1
+          for fruit in ['apple', 'pear', 'banana']:
+              Images( fruit, label, name=fruit + 's', config=['resize=(50,50)'], ehandler=collectionHandler )
+              label += 1
+              
+          dataset = None
+          accumulated = 0
+          def collectionHandler(images):
+              accumulated += images.time
+              print("Number of Images:", len(images), "Time:", images.time)
+              if dataset is None:
+                  dataset = images
+              else:
+                  dataset += images
+                  
+In the above example, we used the variable dataset for the combined collection. After the first collection is preprocessed, we set the variable dataset to the first images object, and afterwards we combine it with subsequent collections using the += operator.
+
+*Above feature anticipated for v0.9.5 (beta)
+        
  *fix it: label should be labels*
     
