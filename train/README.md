@@ -232,8 +232,20 @@ For a complete reference on all methods and properties for the Image class, see 
 
 ### Image Collections
    
-The Images class provides preprocessing of a collections of images (vs. a single image). The parameters and emulated polymorphism are identical to the Image class, except the images and labels parameter refer to a plurality of images, which comprise the collection.
+The Images class provides preprocessing of a collections of images (vs. a single image). The parameters and emulated polymorphism are identical to the Image class, except the images and labels parameter refer to a plurality of images, which comprise the collection. The positional parameter *images* can be specified as:
 
+  - A list of images (e.g., [ '1_100.jpg', '2_100.jpg', '3_100.jpg'])
+  - A single directory path of images  (e.g., 'apple')
+  - A list of directory paths of images (e.g., ['apple', 'pear', 'banana'])
+  
+The corresponding positional parameter *labels* must match the number of images as follows:
+
+  - A single value, applies to all the images (e.g., 1)
+  - A list of values which are the same length as the list of images or directory paths (e.g., [1, 2, 3]).
+  
+The example below creates an Images objects consisting of three images with corresponding labels 1, 2 and 3.
+
+        images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3])
 
 
     
