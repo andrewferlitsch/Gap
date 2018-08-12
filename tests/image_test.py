@@ -272,6 +272,7 @@ class MyTest(unittest.TestCase):
         time.sleep(3)
         self.assertTrue(self.isdone)
         os.remove("0_100.h5")
+        self._isdone = False
         
     def test_028(self):
         """ png file """
@@ -501,6 +502,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[0].label, 1)
         self.assertEqual(images[1].label, 2)
         os.remove("foobar.h5")
+        self.is_done = False
         
     def test_054(self):
         """ Images - time """
@@ -903,8 +905,28 @@ class MyTest(unittest.TestCase):
         self.assertEquals(image.size, 10000)
         self.assertEquals(image.shape, (100, 100))
         os.remove('untitled.h5')
-      
-     
-    def done(self, image):
+ 
+    def test_092(self):
+        """ Image - ehandler not a function """
+        with pytest.raises(TypeError):
+            image = Image('files/1_100.jpg', 1, ehandler=2)
+ 
+    def test_093(self):
+        """ Image - ehandler not a function """
+        with pytest.raises(TypeError):
+            image = Image('files/1_100.jpg', 1, ehandler=(2,2))
+ 
+    def test_094(self):
+        """ Image - ehandler with arguments """
+        image = Image('files/1_100.jpg', 1, ehandler=(self.done2, 'foo'))
+        time.sleep(3)
+        self.assertTrue(self.isdone)
+        os.remove("1_100.h5")
+        self._isdone = False
+        
+    def done(self, image, dir):
         self.isdone = True
         os.remove(image)
+        
+    def done2(self, image, dir, args):
+        self.isdone = True
