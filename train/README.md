@@ -263,13 +263,87 @@ The builtin operators len() and [] are overridden in the Images class. The len()
         for i in range(len(images)):
             print(images[i].name, images[i].label)
 
-### Parameters and HDF5 storage
+### Collection Storage & Retrieval
 
-*in progress*
+The Images class, disables the Image objects from storing the machine learning ready data as individual HDF5 files per image, and insteads stores a single HDF5 for the entire collection. By default, the file name combines the prefix 'collection.' with the root name of the first image in the collection, and is stored in the current working directory. In the above example, the machine learning ready data for the entire collection would be stored as:
 
-The Images class instantiater (constructor) can optionally be passed the keyword parameter *name*
+        ./collection.1_100.h5
+        
+The directory where the HDF5 file is stored can be changed with the keyword paramater *dir*, and the root name of the file can be set with the keyword parameter *name*.
 
-The remaining parameters to the Images class instantiater are identical to the Image class:
+         images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3], dir='tmp', name='apples')
 
-    dir :
+In the above example, the machine learning ready data is stored as:
+
+        ./tmp/apples.h5
+        
+A stored collection can the be subsequently retrieved from storage by instantiating an empty Images object and invoking the load() method with the corresponding collection name. For the above example, the apples collection would be retrieved and Images and corresponding Image objects reconstructed in memory:
+
+        # Instantiate an empty Images object
+        images = Images()
+        
+        # Set the directory where the collection is
+        images.dir = 'tmp'
+        # Load the collection into memory
+        images.load('apples')
+        
+Alternately, the load() method can be passed the keyword parameter *dir* to specify the directory where the collection is stored. For the above, this can be specified as:
+
+        images.load('apples', dir='tmp')
+        
+ 
+### Example: Data Preparation for a Fruits Dataset: As Individual Collections
+ 
+In this example, a dataset of images of fruit are preprocessed into machine learning data, as follows:
+
+  1. The images for each type of fruit are in separate directories (i.e., apple, pear, banana).
+  2. The labels for the fruit will are sequentially numbered (i.e., 1, 2, 3).
+  3. The images will be preserved as color images, but resized to (50,50)
+  4. The shape of the preprocessed machine learning data will be (50, 50, 3) for input to a CNN.
+  
+In the example below, a separate collection is created for each type of fruit:
+
+        apples   = Images( 'apple',  1, name='apples',  config=['resize=(50,50)'] )
+        pears    = Images( 'pear' ,  2, name='pears',   config=['resize=(50,50)'] )
+        bananas  = Images( 'banana', 3, name='bananas', config=['resize=(50,50)'] )
+        
+In the above example, the machine learning ready data is stored as:
+
+        ./apples.h5
+        ./pears.h5
+        ./bananas.h5
+
+In the above example, the preprocessing of each type of fruit was sequentially. Since conventional CPUs today are multi-core, we can take advantage of concurrency and speed up the processing in many computers by using the keyword parameter *ehandler* to process each collection asynchronously in parallel.
+              
+          label = 1
+          for fruit in ['apple', 'pear', 'banana']:
+              Images( fruit, label, name=fruit + 's', config=['resize=(50,50)'], ehandler=collectionHandler )
+              label += 1
+              
+          accumulated = 0
+          def collectionHandler(images):
+              accumulated += images.time
+              print("Number of Images:", len(images), "Time:", images.time)
+
+Let's describe some of the aspects of the above example. For the directories, we created a list of the directory names and then iterated through it. For each iteration, we:
+
+  - Instantiate an Images object for the current fruit.
+  - Set the collection name to the plural of the fruit name (i.e., fruit + 's')
+  - Use an incrementer, starting at 1, for the label.
+  - Use the ehandler parameter to process the collection asynchronously.
+  
+When each collection is completed, the function collectionHandler is called. This function will print the number of images
+processed in the collection, the time (in seconds) to process the collection, and the accumulated processing time for all the collections.
+
+### Example: Data Preparation for a Fruits Dataset: As a Combined Collection
+
+Alternatively, we can process a group of collections as a single combined collection. The example below does the same as the aforementioned example, but produces a single (combined) dataset (vs. three individual datasets).
+        
+        fruits = Images( ['apples', 'pears', 'bananas'], [1, 2, 3], name='fruits', config=['resize=(50,50)'] )
+        
+In the above example, the machine learning ready data is stored as:
+
+        ./fruits.h5
+        
+ *fix it: label should be labels*
     
