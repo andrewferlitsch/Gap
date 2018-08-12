@@ -263,3 +263,13 @@ The builtin operators len() and [] are overridden in the Images class. The len()
         for i in range(len(images)):
             print(images[i].name, images[i].label)
 
+### Parameters and HDF5 storage
+
+*in progress*
+
+The Images class instantiater (constructor) can optionally be passed the keyword parameter *name*
+
+The remaining parameters to the Images class instantiater are identical to the Image class:
+
+    dir :
+    
