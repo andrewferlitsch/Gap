@@ -374,18 +374,36 @@ Because the processing and invoking the event handler happen concurrently, there
 
 *Above feature anticipated for v0.9.5 (beta)
  
+### Splitting the Collection into Training and Test Data
+
+The first step to training a neural network is to split the collection into training and test data. We will cover some basic cases here.
+
+One uses the property *split* as a setter to split the collection into training and test data. This property will randomized the order of the Image objects in the collection, create a partition between the train and test data and create a corresponding internal index. The *split* property is implemented using emulated polymorphism, whereby the property can be given a single value or a tuple. The first value (parameter) is the percentage of the collection that will be set aside as testing data, and must be between 0 and 1. Below is an example:
+
+            # 20% of the collection is test, and 80% is training
+            images.split = 0.2
+            
+In another case, one might have separate collections for train and test. In this case, for both collections set the split to 0, which means use the entire collection, but otherwises randomizes the order of the *Image* objects.
+            
+            train = Images( ['train/apple', 'train/pear', 'train/banana'], [1, 2, 3], config=['resize=(50,50)'])
+            test  = Images( ['test/apple',  'test/pear',  'test/banana'],  [1, 2, 3], config=['resize=(50,50)'])
+            train.split = 0
+            test.split  = 0
+            
+The random number generation by default will start at different seed each time. If you need (desire) consistency between training on the results for comparison or demo'ing, then one specifies a seed value for the random number generation. The seed value is an integer value and is specified as a second parameter (i.e., tuple) to the *split* property. In the example below, the split is set to 20% test, and the random seed to 42.
+
+            images.split = 0.2, 42
+
 ### Forward Feeding a Neural Network
 
 The *Images* class provides methods for batch, stochastic and mini-batch feeding for training and evaluating a neural network. The feeders produce full batch samples, single samples and mini-batch samples as numpy matrixes, which are compatible for input with all Python machine learning networks that support numpy arrays, such as Tensorflow, Keras and Pytorch, for example. Batch feeding is also randomized, and the entire collection(s) can be continuously re-feed (i.e., epoch), where each time they are re-randomized.
 
-The first step to feeding a neural network is to split the collection into training and test data. We will cover some basic cases here. The *split*, *minibatch*, and overriden *next()* operator support the setup and forward feeding.
-
-            images.split = 0.2
+The *split*, *minibatch*, and overriden *next()* operator support the forward feeding.
             
-            images.split = 0
+            X_train, Y_train, X_test, Y_test = images.split
             
-            images.split = 0.2, 42
-
+*in progress*
+            
 ### Data Augmentation
 
 ### Transformation
