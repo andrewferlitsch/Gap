@@ -315,12 +315,13 @@ In the above example, the machine learning ready data is stored as:
 
 In the above example, the preprocessing of each type of fruit was sequentially. Since conventional CPUs today are multi-core, we can take advantage of concurrency and speed up the processing in many computers by using the keyword parameter *ehandler* to process each collection asynchronously in parallel.
               
+          accumulated = 0
+          
           label = 1
           for fruit in ['apple', 'pear', 'banana']:
               Images( fruit, label, name=fruit + 's', config=['resize=(50,50)'], ehandler=collectionHandler )
               label += 1
-              
-          accumulated = 0
+          
           def collectionHandler(images):
               accumulated += images.time
               print("Number of Images:", len(images), "Time:", images.time)
@@ -347,24 +348,38 @@ In the above example, the machine learning ready data is stored as:
         
 Can we improve on the above? We got the benefit of a combined collection, but lost the benefit of concurrently preprocessing each collection. That's not overlooked. The += operator for the Images collection is overridden to combine collections. Let's update the earlier example to preprocess each collection asynchronously and combine them into a single collection.
 
+          dataset = None
+          accumulated = 0
+          lock = Lock()
+          
           label = 1
           for fruit in ['apple', 'pear', 'banana']:
               Images( fruit, label, name=fruit + 's', config=['resize=(50,50)'], ehandler=collectionHandler )
               label += 1
-              
-          dataset = None
-          accumulated = 0
+
           def collectionHandler(images):
               accumulated += images.time
               print("Number of Images:", len(images), "Time:", images.time)
+              
+              # these steps need to be atomic
+              lock.acquire()
               if dataset is None:
                   dataset = images
               else:
                   dataset += images
+              lock.release()
                   
 In the above example, we used the variable dataset for the combined collection. After the first collection is preprocessed, we set the variable dataset to the first images object, and afterwards we combine it with subsequent collections using the += operator.
 
+Because the processing and invoking the event handler happen concurrently, there are possible problems including a race condition (i.e., two threads access dataset at the same time), and trashing the internal data (i.e., two threads are combining data at the same time). We solve this by making this operation atomic using Python's thread lock mechanism.
+
 *Above feature anticipated for v0.9.5 (beta)
+
+### Batch Feeding
+
+### Data Augmentation
+
+### Transformation
         
  *fix it: label should be labels*
     
