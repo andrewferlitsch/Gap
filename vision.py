@@ -138,7 +138,6 @@ class Image(object):
                     t = threading.Thread(target=self._async, args=(self._dir, ))
                 else:
                     t = threading.Thread(target=self._async, args=(self._dir, ehandler[1:], ))
-                    pass
                 t.start()   
                 
     def _async(self, dir):
@@ -491,6 +490,13 @@ class Images(object):
         if name is not None:
             if isinstance(name, str) == False:
                 raise TypeError("String expected for collection name")
+            
+        if ehandler:
+            if isinstance(ehandler, tuple):
+                if not callable(ehandler[0]):
+                    raise TypeError("Function expected for ehandler")
+            elif not callable(ehandler):
+                raise TypeError("Function expected for ehandler")
   
         if config is not None and isinstance(config, list) == False:
             raise TypeError("List expected for config settings")
@@ -504,15 +510,21 @@ class Images(object):
         if ehandler is None:
             self._process()
         else:
-            # Process collection asynchronously
-            t = threading.Thread(target=self._async, args=(self._dir,))
-            t.start()
+            # no parameters
+            if not isinstance(self._async, tuple):
+                t = threading.Thread(target=self._async, args=(self._dir, ))
+            else:
+                t = threading.Thread(target=self._async, args=(self._dir, ehandler[1:], ))
+            t.start()   
  
     def _async(self, dir):
         """ Asynchronous processing of the collection """
         self._process()
         # signal user defined event handler when processing is done
-        self._ehandler(self, dir)
+        if isinstance(self._ehandler, tuple):
+            self._ehandler[0](self, dir, self._ehandler[1:])
+        else:
+            self._ehandler(self, dir)
             
             
     def _process(self):

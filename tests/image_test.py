@@ -923,6 +923,25 @@ class MyTest(unittest.TestCase):
         self.assertTrue(self.isdone)
         os.remove("1_100.h5")
         self._isdone = False
+ 
+    def test_095(self):
+        """ Images - ehandler not a function """
+        with pytest.raises(TypeError):
+            image = Images(['files/1_100.jpg'], 1, ehandler=2)
+ 
+    def test_096(self):
+        """ Images - ehandler not a function """
+        with pytest.raises(TypeError):
+            image = Images(['files/1_100.jpg'], 1, ehandler=(2,2))
+ 
+    def test_097(self):
+        """ Images - ehandler with arguments """
+        images = Images(['files/1_100.jpg'], 1, ehandler=(self.done2, 'foo'))
+        time.sleep(3)
+        self.assertTrue(self.isdone)
+        os.remove("collection.1_100.h5")
+        self._isdone = False
+ 
         
     def done(self, image, dir):
         self.isdone = True
