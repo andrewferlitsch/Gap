@@ -918,9 +918,10 @@ class MyTest(unittest.TestCase):
  
     def test_094(self):
         """ Image - ehandler with arguments """
-        image = Image('files/1_100.jpg', 1, ehandler=(self.done2, 'foo'))
+        image = Image('files/1_100.jpg', 1, ehandler=(self.done2, 6))
         time.sleep(3)
         self.assertTrue(self.isdone)
+        self.assertTrue(self.args, 6)
         os.remove("1_100.h5")
         self._isdone = False
  
@@ -936,16 +937,18 @@ class MyTest(unittest.TestCase):
  
     def test_097(self):
         """ Images - ehandler with arguments """
-        images = Images(['files/1_100.jpg'], 1, ehandler=(self.done2, 'foo'))
+        images = Images(['files/1_100.jpg'], 1, ehandler=(self.done2, 6))
         time.sleep(3)
         self.assertTrue(self.isdone)
+        self.assertTrue(self.args, 6)
         os.remove("collection.1_100.h5")
         self._isdone = False
  
         
-    def done(self, image, dir):
+    def done(self, image):
         self.isdone = True
         os.remove(image)
         
-    def done2(self, image, dir, args):
+    def done2(self, image, args):
         self.isdone = True
+        self.args = args

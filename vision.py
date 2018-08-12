@@ -135,9 +135,9 @@ class Image(object):
             else:
                 # no parameters
                 if not isinstance(self._async, tuple):
-                    t = threading.Thread(target=self._async, args=(self._dir, ))
+                    t = threading.Thread(target=self._async, args=(dir, ))
                 else:
-                    t = threading.Thread(target=self._async, args=(self._dir, ehandler[1:], ))
+                    t = threading.Thread(target=self._async, args=(dir, ehandler[1:], ))
                 t.start()   
                 
     def _async(self, dir):
@@ -145,9 +145,9 @@ class Image(object):
         self._collate(dir)
         # signal user defined event handler when processing is done
         if isinstance(self._ehandler, tuple):
-            self._ehandler[0](self, dir, self._ehandler[1:])
+            self._ehandler[0](self, self._ehandler[1:])
         else:
-            self._ehandler(self, dir)
+            self._ehandler(self)
                 
     def _exist(self):
         """ Check if image exists """
@@ -512,19 +512,19 @@ class Images(object):
         else:
             # no parameters
             if not isinstance(self._async, tuple):
-                t = threading.Thread(target=self._async, args=(self._dir, ))
+                t = threading.Thread(target=self._async, args=())
             else:
-                t = threading.Thread(target=self._async, args=(self._dir, ehandler[1:], ))
+                t = threading.Thread(target=self._async, args=(ehandler[1:], ))
             t.start()   
  
-    def _async(self, dir):
+    def _async(self):
         """ Asynchronous processing of the collection """
         self._process()
         # signal user defined event handler when processing is done
         if isinstance(self._ehandler, tuple):
-            self._ehandler[0](self, dir, self._ehandler[1:])
+            self._ehandler[0](self, self._ehandler[1:])
         else:
-            self._ehandler(self, dir)
+            self._ehandler(self)
             
             
     def _process(self):
