@@ -234,7 +234,7 @@ For a complete reference on all methods and properties for the Image class, see 
    
 The Images class provides preprocessing of a collections of images (vs. a single image). The parameters and emulated polymorphism are identical to the Image class, except the images and labels parameter refer to a plurality of images, which comprise the collection. The positional parameter *images* can be specified as:
 
-  - A list of images (e.g., [ '1_100.jpg', '2_100.jpg', '3_100.jpg'])
+  - A list of local or remote images (e.g., [ '1_100.jpg', '2_100.jpg', '3_100.jpg'])
   - A single directory path of images  (e.g., 'apple')
   - A list of directory paths of images (e.g., ['apple', 'pear', 'banana'])
   
@@ -246,6 +246,20 @@ The corresponding positional parameter *labels* must match the number of images 
 The example below creates an Images objects consisting of three images with corresponding labels 1, 2 and 3.
 
         images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3])
+        
+For each image specified, the Images class creates an Image object, which are maintained in the Images object as a list. The list of corresonding Image objects can be accessed from the property *images*. In the example below, a collection of three images is created, and then the *images* property is accessed as a list iterator in a for loop. On each loop, the next Image object is accessed and inside the loop the code prints the name and label of the corresponding Image object.
 
+        images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3])
+        for image in images.images:
+            print(image.name, image.label)
+            
+        # will output:
+        # 1_100 1
+        # 2_100 2
+        # 3_100 3
+        
+The builtin operators len() and [] are overridden in the Images class. The len() operator will return the number of images, and the list (array) index operator [] will return the Image object at the corresponding index. Using the builtin operators, the above example can be alternately coded as:
 
-    
+        for i in range(len(images)):
+            print(images[i].name, images[i].label)
+
