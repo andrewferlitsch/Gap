@@ -1,4 +1,4 @@
-# Epipog Open Source Organization
+# Gap Open Source Organization
 
 ## Background
 
@@ -36,6 +36,8 @@ The Executive Committee would be equivalent to Executive Officers in a Corporate
     3. Onboard Project Managers.
     4. Develop Relationships in the Development Community.
     5. Develop Corporate Sponsorships.
+    
+Andrew Ferlitsch - Executive Director
 
 ## Project Managers
 
@@ -44,6 +46,10 @@ The Project Managers would be equivalent to Project Managers/Leads in a Corporat
     1. Take Ownership of a section of the code.
     2. Recruit contributers.
     3. Make contributions.
+    
+David Molina - QA Project Manager
+
+Rene Mesias - Admin Project Manager
 
 ## Contributers
 
@@ -51,9 +57,9 @@ The Contributers would be equivalent to Technical Staff in a Corporate or Non-Pr
 
     1. Make contributions to the source code under the direction of the Project Manager.
     
-# Epipog Source Code and Intellectual Property
+# Gap Source Code and Intellectual Property
 
 The source code and intellectual property will be assigned to (owned) by the formed entity.
 
-The entity will make the source code and intellectual property freely available to the public through the Creative Commons license CC-BY.
+The entity will make the source code and intellectual property freely available to the public through the Apache Foundation 2.0 License.
 
