@@ -398,9 +398,38 @@ The random number generation by default will start at different seed each time. 
 
 The *Images* class provides methods for batch, stochastic and mini-batch feeding for training and evaluating a neural network. The feeders produce full batch samples, single samples and mini-batch samples as numpy matrixes, which are compatible for input with all Python machine learning networks that support numpy arrays, such as Tensorflow, Keras and Pytorch, for example. Batch feeding is also randomized, and the entire collection(s) can be continuously re-feed (i.e., epoch), where each time they are re-randomized.
 
-The *split*, *minibatch*, and overriden *next()* operator support the forward feeding.
+The *split*, *minibatch*, and overriden *next()* operator support forward feeding. 
+
+#### Batch Feeding
+
+If batch feeding a neural network (i.e., feed all samples before backward probagation), one uses the *split* property as a getter per pass (i.e., epoch). The steps are:
+
+  1. Do a first split of the training and test data, and set aside the test data.
+  2. Loop for each epoch (i.e., number of times to pass the entire training set).
+  3. 
+
+If one is batch feeding  
             
-            X_train, Y_train, X_test, Y_test = images.split
+            # Get the first randomized split of the dataset
+            X_train, X_test, Y_train, Y_test = images.split
+             
+            nepochs = 200   # the number of times to feed the entire training set while training the neural network
+            for _ in range(nepochs):
+                # feed the entire training set per epoch (i.e., X_train, Y_train)
+                pass
+                
+                # run the optimizer (backward probagation) to update the weights
+                pass
+                
+                # Re-randomize the training set
+                X_train, _, Y_train, _ = images.split
+                
+            # feed the entire text data and calculate accuracy (i.e., X_test, Y_test)
+            pass
+
+#### Stochastic Feeding
+
+
             
 *in progress*
             
