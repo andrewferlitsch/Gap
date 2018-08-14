@@ -25,8 +25,13 @@ def word_to_dictionary(file, output_dir):
     words_dict['<EMP>'] = 4
     words_dict['<POS>'] = 5
     words_dict['<NEG>'] = 6
-  
-    f_name='word2int.py'
+
+    #verify if word2int name 
+    sp_fr = file.split('.')[0]
+    if 'sp' in sp_fr or 'fr' in sp_fr:
+        f_name='word2int_{}.py'.format(sp_fr)
+    else:
+        f_name='word2int.py'
 
     #verify if folder was given 
     if not output_dir:
@@ -35,7 +40,8 @@ def word_to_dictionary(file, output_dir):
 
     #creates new py file with the dict as a content
     with open(file_out,'w') as f:
-        f.write('word2int =')
+        dict_var = f_name.split('.')[0]
+        f.write('{} ='.format(dict_var))
         f.write(str(words_dict))
         print("file '{}' was saved in '{}'.".format(f_name,output_dir))
 
