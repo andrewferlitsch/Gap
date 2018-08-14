@@ -10,6 +10,9 @@ def word_to_dictionary(file, output_dir):
     with open(file,'r') as f:
         first_line = f.readline()
         f.seek(0)
+        #verify if file has header
+        if first_line not in '.-0123456789':
+            next(f)
         if len(first_line.split()) == 1:
             words_dict = {word.rstrip('\n'):number for number, word in enumerate(f, 100)}
         else:
