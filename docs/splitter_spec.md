@@ -42,8 +42,8 @@ Document( document=None, dir=’./’, ehandler=None,  config=None)
 
 **document:**   If not None, a string that is either:
 
->     1.	local path to document
->     2.	remote path to document ((i.e., http[s]://….)
+>     1. local path to document
+>     2. remote path to document ((i.e., http[s]://….)
 >     The document must be one of the following types: PDF. JPG, PNG, BMP or TIF
 
 **dir:**    The directory where to store the machine learning ready data.
