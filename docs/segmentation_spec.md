@@ -42,7 +42,8 @@ Segment(text=None)
 
 When specified without parameters, an empty Segments object is created.
 
-Otherwise, the text sequence is analyzed for region detection based on whitespace surrounding the text. Regions include:
+Otherwise, the text sequence is analyzed for region detection based on whitespace surrounding the text.  
+Regions include:
 
 •	Headings
 •	Paragraphs
