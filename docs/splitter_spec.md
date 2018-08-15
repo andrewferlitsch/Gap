@@ -399,21 +399,21 @@ The `Document` class contains the following private methods:
    - Determines the number of pages in the document.
    - Splits the document into individual pages, where each page is individually stored in the same format as the document. The pages are named as follows:
 >     `<name><pageno>.<suffix>`
-Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.
-   - If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.
+   Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.
+    - If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.
 >     `<name><pageno>.png`
-   - If the page is a TIFF facsimile, the TIFF image is then OCR’d to convert to text.
+    - If the page is a TIFF facsimile, the TIFF image is then OCR’d to convert to text.
 >     `<name><pageno>.tif`
-   - If the page is an image capture (e.g. camera capture), the captured image (e.g., JPG) is then OCR’d to convert to text.
+    - If the page is an image capture (e.g. camera capture), the captured image (e.g., JPG) is then OCR’d to convert to text.
 >     <name><pageno>.jpg
-   - Extracts the raw text from the page , where each page is individually stored in a raw text format. The pages are named as follows:
+    - Extracts the raw text from the page , where each page is individually stored in a raw text format. The pages are named as follows:
  >     <name><pageno>.txt 
-Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran.
-   - Create a Page object for each page and adds them to the pages index property.
-   - If the document format is raw text, then:  
+   Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran.
+    - Create a Page object for each page and adds them to the pages index property.
+    - If the document format is raw text, then:  
         * Treats as a single page.  
         * Stores only a single page text file.  
-   - If the document format is PDF, then page splitting and extraction of the raw text per page is done with the open source version of Ghostscript. If the document is a scanned PDF, the image is extracted and converted to PNG using Ghostscript and then OCR’d using open source Tesseract.
+    - If the document format is PDF, then page splitting and extraction of the raw text per page is done with the open source version of Ghostscript. If the document is a scanned PDF, the image is extracted and converted to PNG using Ghostscript and then OCR’d using open source Tesseract.
    - If the document format is TIFF, then page splitting is done with the open source Magick and then OCR’d using open source Tesseract.
 
 + `_scancheck()` – This method is called after NLP preprocessing of the document has been completed, and the document was a scanned image. The method will sample upto `SCANCHECK` number of words for recognition in a English dictionary (i.e., pyaspeller). The method will check the words on either page 1 or page 2, depending on which page has a greater number of words. Punctuation, symbols, acronyms or single letter words are excluded. The method then sets the internal variable _quality to the percentage of the words that were recognized (between 0 and 1).
