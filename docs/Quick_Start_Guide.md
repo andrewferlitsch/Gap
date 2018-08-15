@@ -10,18 +10,18 @@ Users Guide, Gap v0.9.2
 The target audience for this users guide are your software developers whom will be integrating the core inner block into your product and/or service. It is not meant to be a complete reference guide or comprehensive tutorial, but a brief get started guide.
 To utilize this module, the Gap framework will automatically install:
 
->      1.	This Python module.
->      2.	Python 3.6 or latter
->      3.	Ghostscript ©(open source from Artifex).	[will auto-install with pip install on Linux/Mac].
->      4.	Tesseract ©(open source from Google).		[will auto-install with pip install on Linux/Mac].
->      5.	Magick ©(open source from Image Magic).		[will auto-install with pip install on Linux/Mac].
->      6.	NLTK Toolkit (open source) 			[will auto-install with pip install].
->      7.	Unidecode (open source) 			[will auto-install with pip install].
->      8.	HD5 (open source) 				[will auto-install with pip install].
->      9.	Numpy (open source) 				[will auto-install with pip install].
->      10.	OpenCV (open source) 				[will auto-install with pip install]. 
->      11.	Imutils (open source) 				[will auto-install with pip install].
->      12.	Pyaspeller (open source)			[will auto-install with pip install].
+>     1.	This Python module.
+>     2.	Python 3.6 or latter
+>     3.	Ghostscript ©(open source from Artifex).	[will auto-install with pip install on Linux/Mac].
+>     4.	Tesseract ©(open source from Google).		[will auto-install with pip install on Linux/Mac].
+>     5.	Magick ©(open source from Image Magic).		[will auto-install with pip install on Linux/Mac].
+>     6.	NLTK Toolkit (open source) 			[will auto-install with pip install].
+>     7.	Unidecode (open source) 			[will auto-install with pip install].
+>     8.	HD5 (open source) 				[will auto-install with pip install].
+>     9.	Numpy (open source) 				[will auto-install with pip install].
+>     10.	OpenCV (open source) 				[will auto-install with pip install]. 
+>     11.	Imutils (open source) 				[will auto-install with pip install].
+>     12.	Pyaspeller (open source)			[will auto-install with pip install].
 ---
 ### 2.  SPLITTER Module
 
@@ -38,28 +38,28 @@ document = Document("yourdocument.pdf", "storage_path")
 
 Upon instantiating a document object, the corresponding PDF document or TIFF facsimile is automatically split into the corresponding PDF or TIFF pages, utilizing Ghostscript (PDF) and Magick (TIFF). Each PDF/TIFF page will be stored separately in the storage path with the following naming convention:
 
->      <document basename><pageno>.<suffix> , where <suffix> is either pdf or tif
+>     <document basename><pageno>.<suffix> , where <suffix> is either pdf or tif
 
 The module automatically detects if a PDF document is a digital (text) or scanned PDF (image). For digital documents, the text is extracted directly from the PDF page using Ghostscript and stored separately in the storage path with the following naming convention:
 
->      <document basename><pageno>.txt
+>     <document basename><pageno>.txt
 
 #### 2.3  OCR
 
 If the document is a scanned PDF, each page image will be extracted using Ghostscript, then OCR using Tesseract to extract the text content from the page image. The page image and corresponding page text are stored separately in the storage path with the following naming convention:
 
->      <document basename><pageno>.png
->      <document basename><pageno>.txt
+>     <document basename><pageno>.png
+>     <document basename><pageno>.txt
 
 If the document is a TIFF facsimile, each page image will be extracted using Magick, then OCR using Tesseract to extract the text content from the page image. The page image and corresponding page text are stored separately in the storage path with the following naming convention:
 
->      <document basename><pageno>.tif
->      <document basename><pageno>.txt
+>     <document basename><pageno>.tif
+>     <document basename><pageno>.txt
 
 If the document is an image capture (e.g., JPG), the image is OCR using Tesseract to extract the text content from the page image. The page image and corresponding page text are stored separately in the storage path with the following naming convention:
 
->      <document basename><pageno>.<suffix> , where <suffix> is png or jpg
->      <document basename><pageno>.txt
+>     <document basename><pageno>.<suffix> , where <suffix> is png or jpg
+>     <document basename><pageno>.txt
 
 #### 2.4  Image Resolution for OCR
 
@@ -203,10 +203,10 @@ document = Document()
 document.load( "mydoc.pdf", "mystorage" )
 ```
 
->      This will reload pages whose filenames in the storage match the sequence:
->          mystorage/mydoc1.json
->          mystorage/mydoc2.json
->          ...
+>     This will reload pages whose filenames in the storage match the sequence:
+>         mystorage/mydoc1.json
+>         mystorage/mydoc2.json
+>         ...
 
 #### 2.13  Word Frequency Distributions
 
@@ -219,9 +219,9 @@ The bagOfWords property returns an unordered dictionary of each unique word in t
 bow = document.bagOfWords
 print(bow)
 ```
->      will output:
->      { '<word>': <no. of occurrences>, '<word>':  <no. of occurrences>, … }
->      e.g., { 'plan': 20, 'medical': 31, 'doctor': 2, … }
+>     will output:
+>     { '<word>': <no. of occurrences>, '<word>':  <no. of occurrences>, … }
+>     e.g., { 'plan': 20, 'medical': 31, 'doctor': 2, … }
 
 ```python
 # Get the bag of words for each page in the document
@@ -237,9 +237,9 @@ count = document.freqDist
 print(count)
 ```
 
->      will output:
->      [ ('<word>', <no. of occurrences>), ('<word>':  <no. of occurrences>), … ] 
->      e.g., [ ('medical', 31), ('plan', 20), …, ('doctor', 2), … ]
+>     will output:
+>     [ ('<word>', <no. of occurrences>), ('<word>':  <no. of occurrences>), … ] 
+>     e.g., [ ('medical', 31), ('plan', 20), …, ('doctor', 2), … ]
 
 
 ```python
@@ -256,9 +256,9 @@ tf = document.freqDist
 print(tf)
 ```
 
->      will output: 
->      [ ('<word>', <percent>), ('<word>':  <percent>), … ] 
->      e.g., [ ('medical', 0.02), ('plan', 0.015), … ]
+>     will output: 
+>     [ ('<word>', <percent>), ('<word>':  <percent>), … ] 
+>     e.g., [ ('medical', 0.02), ('plan', 0.015), … ]
 
 #### 2.14  Document and Page Classification
 
