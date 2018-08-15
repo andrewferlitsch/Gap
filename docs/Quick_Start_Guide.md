@@ -24,6 +24,7 @@ To utilize this module, the Gap framework will automatically install:
 11.	Imutils (open source) 				[will auto-install with pip install].
 12.	Pyaspeller (open source)			[will auto-install with pip install].
 ```
+---
  
 2. 	SPLITTER Module
 
