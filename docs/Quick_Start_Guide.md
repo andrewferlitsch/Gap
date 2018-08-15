@@ -30,8 +30,8 @@ To utilize this module, the Gap framework will automatically install:
 To load a PDF document, TIFF facsimile or image captured document you create a Document (class) object, passing as parameters the path to the PDF/TIFF/image document and a path for storing the split pages/text. Below is a code example.
 
 ```python
-    from splitter import Document, Page
-    document = Document("yourdocument.pdf", "storage_path")
+from splitter import Document, Page
+document = Document("yourdocument.pdf", "storage_path")
 ```
 
 #### 2.2  Page Splitting
@@ -66,11 +66,11 @@ If the document is an image capture (e.g., JPG), the image is OCR using Tesserac
 The resolution of the image rendered by Ghostscript from a scanned PDF page will affect the OCR quality and processing time. By default the resolution is set to 300. The resolution can be set for a (or all) documents with the static member RESOLUTION of the Document class. This property only affects the rendering of scanned PDF; it does not affect TIFF facsimile or image capture.
 
 ```python
-    # Set the Resolution of Image Extraction of all scanned PDF pages
-    Document.RESOLUTION = 150
+# Set the Resolution of Image Extraction of all scanned PDF pages
+Document.RESOLUTION = 150
     
-    # Image Extraction and OCR will be done at 150 dpi for all subsequent documents
-    document = Document("scanneddocument.pdf", "storage_path")
+# Image Extraction and OCR will be done at 150 dpi for all subsequent documents
+document = Document("scanneddocument.pdf", "storage_path")
 ```
 
 #### 2.5  Page Access
@@ -78,22 +78,22 @@ The resolution of the image rendered by Ghostscript from a scanned PDF page will
 Each page is represented by a Page (class) object. Access to the page object is obtained from the pages property member of the Document object. The number of pages in the document is returned by the len() builtin operator for the Document class.
 
 ```python
-    document = Document("yourdocument.pdf", "storage_path")
+document = Document("yourdocument.pdf", "storage_path")
 
-    # Get the number of pages in the PDF document
-    npages = len(document)
-    
-    # Get the page table
-    pages = document.pages
-    
-    # Get the first page
-    page1 = pages[0]
-    
-    # or alternately
-    page1 = document[0]
-    
-    # full path location of the PDF/TIFF or image capture page in storage
-    page1_path = page1.path
+# Get the number of pages in the PDF document
+npages = len(document)
+
+# Get the page table
+pages = document.pages
+
+# Get the first page
+page1 = pages[0]
+
+# or alternately
+page1 = document[0]
+
+# full path location of the PDF/TIFF or image capture page in storage
+page1_path = page1.path
 ```
 
 #### 2.6  Adding Pages
@@ -101,19 +101,19 @@ Each page is represented by a Page (class) object. Access to the page object is 
 Additional pages can be added to the end of an existing Document object using the += (overridden) operator, where the new page will be fully processed. 
 
 ```python
-    document = Document("1page.pdf")
+document = Document("1page.pdf")
 
-    # This will print 1 for 1 page
-    print(len(document))
-    
-    # Create a Page object for an existing PDF page
-    new_page = Page("page_to_add.pdf")
-    
-    # Add the page to the end of the document.
-    document += new_page
-    
-    # This will print 2 showing now that it is a 2 page document.
-    print(len(document))
+# This will print 1 for 1 page
+print(len(document))
+
+# Create a Page object for an existing PDF page
+new_page = Page("page_to_add.pdf")
+
+# Add the page to the end of the document.
+document += new_page
+
+# This will print 2 showing now that it is a 2 page document.
+print(len(document))
 ```
 
 #### 2.7  Text Extraction
@@ -121,24 +121,24 @@ Additional pages can be added to the end of an existing Document object using th
 The raw text for the page is obtained by the text property of the page class. The byte size of the raw text is obtained from the size() method of the page class.
 
 ```python
-    # Get the page table
-    pages = document.pages
-    
-    # Get the first page
-    page1 = pages[0]
+# Get the page table
+pages = document.pages
 
-    # Get the total byte size of the raw text
-    bytes = page1.size()
+# Get the first page
+page1 = pages[0]
 
-    # Get the raw text for the page
-    text = page1.text
+# Get the total byte size of the raw text
+bytes = page1.size()
+
+# Get the raw text for the page
+text = page1.text
 ```
 
 The property scanned is set to True if the text was extracted using OCR; otherwise it is false (i.e., origin was digital text). The property additionally returns a second value which is the estimated quality of the scan as a percentage (between 0 and 1).
 
 ```python
-    # Determine if text extraction was obtained by OCR
-    scanned, quality = document.scanned
+# Determine if text extraction was obtained by OCR
+scanned, quality = document.scanned
 ```
 
 #### 2.8  Asynchronous Processing
@@ -146,12 +146,12 @@ The property scanned is set to True if the text was extracted using OCR; otherwi
 To enhance concurrent execution between a main thread and worker activities, the Document class supports asynchronous processing of the document (i.e., Page Splitting, OCR and Text Extraction). Asynchronous processing will occur if the optional parameter ehandler is set when instantiating the Document object. Upon completion of the processing, the ehandler is called, where the Document object is passed as a parameter.
 
 ```python
-    def done(d):
-        """ Event Handler for when processing of document is completed """
-        print("DONE", d.document)
+def done(d):
+    """ Event Handler for when processing of document is completed """
+    print("DONE", d.document)
 
-    # Process the document asynchronously
-    document = Document("yourdocument.pdf", "storage_path", ehandler=done)
+# Process the document asynchronously
+document = Document("yourdocument.pdf", "storage_path", ehandler=done)
 ```
 
 #### 2.9  NLP Preprocessing of the Text
@@ -159,14 +159,14 @@ To enhance concurrent execution between a main thread and worker activities, the
 NLP preprocessing of the text requires the SYNTAX module. The processing of the raw text into NLP sequenced tokens (syntax) is deferred and is executed in a JIT (Just in Time) principle. If installed, the NLP sequenced tokens are access through the words property of the Page class. The first time the property is accessed for a page, the raw text is preprocessed, and then retained in memory for subsequent access.
 
 ```python
-    # Get the page table
-    pages = document.pages
+# Get the page table
+pages = document.pages
 
-    # Get the first page
-    page1 = pages[0]
+# Get the first page
+page1 = pages[0]
 
-    # Get the NLP preprocessed text
-    words = page1.words
+# Get the NLP preprocessed text
+words = page1.words
 ```
 
 The NLP preprocessed text is stored separately in the storage path with the following naming convention:
@@ -178,17 +178,17 @@ The NLP preprocessed text is stored separately in the storage path with the foll
 NLP Preprocessing of the text may be configured for several settings  when instantiating a Document object with the optional config parameter, which consists of a list of one or more predefined options.
 
 ```python
-    document = Document("yourdocument.pdf", "storage_path", config=[options])
-    # options:
-    bare			# do bare tokenization
+document = Document("yourdocument.pdf", "storage_path", config=[options])
+# options:
+bare			# do bare tokenization
     stem =  internal 	| 	# use builtin stemmer
- 	porter		|	# use NLTK Porter stemmer
- 	snowball	|	# use NLTK Snowball stemmer
- 	lancaster	|	# use NLTK Lancaster stemmer
- 	lemma		|	# use NLTK WordNet lemmatizer
- 	nostem			# no stemming
-    pos				# Tag each word with NLTK parts of speech
-    roman			# Romanize latin-1 character encodings into ASCII
+    porter		|	# use NLTK Porter stemmer
+    snowball		|	# use NLTK Snowball stemmer
+    lancaster		|	# use NLTK Lancaster stemmer
+    lemma		|	# use NLTK WordNet lemmatizer
+    nostem			# no stemming
+pos				# Tag each word with NLTK parts of speech
+roman			# Romanize latin-1 character encodings into ASCII
 ```
 
 #### 2.11  Document Reloading
@@ -196,11 +196,11 @@ NLP Preprocessing of the text may be configured for several settings  when insta
 Once a Document object has been stored, it can later be retrieved from storage, reconstructing the Page and corresponding Words objects. A document object is first instantiated, and then the load() method is called specifying the document name and corresponding storage path. The document name and storage path are used to identify and locate the corresponding stored pages.
 
 ```python
-    # Instantiate a Document object
-    document = Document()
-    
-    # Reload the document's pages from storage
-    document.load( "mydoc.pdf", "mystorage" )
+# Instantiate a Document object
+document = Document()
+
+# Reload the document's pages from storage
+document.load( "mydoc.pdf", "mystorage" )
 ```
 
 >      This will reload pages whose filenames in the storage match the sequence:
@@ -215,26 +215,26 @@ The distribution of word occurrences and percentage in a document and individual
 The bagOfWords property returns an unordered dictionary of each unique word in the document (or page) as a key, and the number of occurrences as the value.
 
 ```python
-    # Get the bag of words for the document
-    bow = document.bagOfWords
-    print(bow)
+# Get the bag of words for the document
+bow = document.bagOfWords
+print(bow)
 ```
 >      will output:
 >      { '<word>': <no. of occurrences>, '<word>':  <no. of occurrences>, … }
 >      e.g., { 'plan': 20, 'medical': 31, 'doctor': 2, … }
 
 ```python
-    # Get the bag of words for each page in the document
-    for page in document.pages:
-	bow = page.bagOfWords
+# Get the bag of words for each page in the document
+for page in document.pages:
+    bow = page.bagOfWords
 ```
 
 The freqDist property returns a sorted list of each unique word in the document (or page), as a tuple of the word and number of occurrences, sorted by the number of occurrences in descending order.
 
 ```python
-    # Get the word frequency (count) distribution for the document
-    count = document.freqDist
-    print(count)
+# Get the word frequency (count) distribution for the document
+count = document.freqDist
+print(count)
 ```
 
 >      will output:
@@ -243,17 +243,17 @@ The freqDist property returns a sorted list of each unique word in the document 
 
 
 ```python
-    # Get the word frequency distribution for each page in the document
-    for page in document.pages:
-        count = page.freqDist
+# Get the word frequency distribution for each page in the document
+for page in document.pages:
+    count = page.freqDist
 ```
 
 The termFreq property returns a sorted list of each unique word in the document (or page), as a tuple of the word and the percentage it occurs in the document, sorted by the percentage in descending order. 
 
 ```python
-    # Get the term frequency (TF) distribution for the document
-    tf = document.freqDist
-    print(tf)
+# Get the term frequency (TF) distribution for the document
+tf = document.freqDist
+print(tf)
 ```
 
 >      will output: 
@@ -265,11 +265,11 @@ The termFreq property returns a sorted list of each unique word in the document 
 Semantic Classification (e.g., category) of the document and individual pages requires the CLASSIFICATION module. The classification is deferred and is executed in a JIT (Just in Time) principle. If installed, the classification is access through the classification property of the document and page classes, respectively. The first time the property is accessed for a document or page, the NLP sequenced tokens for each page are processed for classification of the content of individual pages and the first page is further processed for the classification of the content of the entire document.
 
 ```python
-    # Get the classification for the document
-    document_classification = document.label
-    # Get the classification for each page
-    for page in document.pages:
-        classification = page.label
+# Get the classification for the document
+document_classification = document.label
+# Get the classification for each page
+for page in document.pages:
+    classification = page.label
 ```
 ---
 ### 3.  SYNTAX Module
@@ -279,19 +279,19 @@ Semantic Classification (e.g., category) of the document and individual pages re
 The Words (class) object does the NLP preprocessing of the extracted (raw) text. If the extracted text is from a Page object (see SPLITTER), the NLP preprocessing occurs the first time the words property of the Page object is accessed.
 
 ```python
-    from syntax import Words, Vocabulary
-    
-    # Get the first page in the document
-    page = document.pages[0]
-    
-    # Get the raw text from the page as a string
-    text = page.text
-    
-    # Get the NLP processed words (Words class) object from the page as a list.
-    words = page.words
-    
-    # Print the object type of words => <class 'Document.Words'>
-    type(words)
+from syntax import Words, Vocabulary
+
+# Get the first page in the document
+page = document.pages[0]
+
+# Get the raw text from the page as a string
+text = page.text
+
+# Get the NLP processed words (Words class) object from the page as a list.
+words = page.words
+
+# Print the object type of words => <class 'Document.Words'>
+type(words)
 ```
 
 #### 3.2  Words Properties
@@ -299,17 +299,17 @@ The Words (class) object does the NLP preprocessing of the extracted (raw) text.
 The Words (class) object has four public properties: text , words, bagOfWords and freqDist. The text property is used to access the raw text and the words property is used to access the NLP processed tokens from the raw text.	
 
 ```python
-    # Get the NLP processed words (Words class) object from the page as a list.
-    words = page.words
+# Get the NLP processed words (Words class) object from the page as a list.
+words = page.words
 
-    # Get the original (raw) text as a string
-    text = words.text
+# Get the original (raw) text as a string
+text = words.text
 
-    # Get the NLP processed words from the original text as a Python list.
-    words = words.words
+# Get the NLP processed words from the original text as a Python list.
+words = words.words
 
-    # Print the object type of words => <class 'list'>
-    type(words)
+# Print the object type of words => <class 'list'>
+type(words)
 ```
 
 The bagOfWords and freqDist properties are explained later in the guide.
@@ -319,10 +319,10 @@ The bagOfWords and freqDist properties are explained later in the guide.
 The words property returns a sequenced Python list of words as a dictionary from the Vocabulary class. Each word in the list is of the dictionary format:
 
 ```python
-    { 'word'  : word, # The stemmed version of the word
-      'lemma' : word, # The lemma version of the word
-      'tag'   : tag   # The word classification
-    }
+{ 'word'  : word, # The stemmed version of the word
+  'lemma' : word, # The lemma version of the word
+  'tag'   : tag   # The word classification
+}
 ```
 
 #### 3.4   Traversing the NLP Processed Words
@@ -330,14 +330,14 @@ The words property returns a sequenced Python list of words as a dictionary from
 The NLP processed words returned from the words property are sequenced in the same order as the original text. All punctuation is removed, and except for detected Acronyms, all remaining words are lowercased. The sequenced list of words may be a subset of the original words, depending on the stopwords properties and may be stemmed, lemma, or replaced.
 
 ```python
-    # Get the NLP processed words from the original text as a Python list.
-    words = words.words
+# Get the NLP processed words from the original text as a Python list.
+words = words.words
 
-    # Traverse the sequenced list of NLP processed words
-    for word in words:
-        text 	= word.word	# original or replaced version of the word
-        tag 	= word.tag	# syntactical classification of the word
-        lemma  = word.lemma	# The lemma version of the word
+# Traverse the sequenced list of NLP processed words
+for word in words:
+    text   = word.word	# original or replaced version of the word
+    tag    = word.tag	# syntactical classification of the word
+    lemma  = word.lemma	# The lemma version of the word
 ```
 
 3.5 	Stopwords
