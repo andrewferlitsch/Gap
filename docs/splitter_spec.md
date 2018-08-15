@@ -408,7 +408,7 @@ The `Document` class contains the following private methods:
 >     <name><pageno>.jpg
     - Extracts the raw text from the page , where each page is individually stored in a raw text format. The pages are named as follows:
  >     <name><pageno>.txt 
-   Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran.
+⋅⋅⋅Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran.⋅⋅⋅
     - Create a Page object for each page and adds them to the pages index property.
     - If the document format is raw text, then:  
         * Treats as a single page.  
