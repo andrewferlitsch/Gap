@@ -63,7 +63,7 @@ segments = segment.segments
 
 ###### Usage
 
-When used as a getter the property returns REWRITE IN PROGRESS
+When used as a getter the property returns `REWRITE IN PROGRESS`
 
  
 #### 1.4  Segment Overridden Operators
@@ -91,7 +91,8 @@ image = images[n]
 ###### Usage
 
 The `[]` `(__getitem__)` operator is overridden to return the segment at the specified index. 
-Exceptions
+
+###### Exceptions
 
 A IndexError is raised if the index is out of range.
 
@@ -106,7 +107,7 @@ The segment class contains the following private methods:
 The Segment class contains of following public methods:
 
 •  There are no public methods. 
- 
+---
 ### APPENDIX I: Updates
 
 Pre-Gap (Epipog) v1.4
