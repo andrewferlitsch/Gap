@@ -1,8 +1,7 @@
 # Natural Language Processing for PDF/TIFF/Image Documents - Computer Vision for Image Data
 
-Users Guide
-High Precision Natural Language Processing for PDF/TIFF/Image Documents and 
-Computer Vision for Images
+Users Guide  
+High Precision Natural Language Processing for PDF/TIFF/Image Documents and Computer Vision for Images  
 Users Guide, Gap v0.9.2
 
 ### 1.	Introduction
