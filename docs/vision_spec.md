@@ -180,7 +180,7 @@ images.split = percent [,seed]
 When used as a setter, a training and test set is generated. The percent parameter specifies the percent that is training data. The data is first randomized before the split. By default, the seed for the split is 0. A seed may be optional specified as a second value.  
 When repeated, the property will re-split the data and re-randomize it.  
 When used as a getter, the split training, test, and corresponding labels are returned as lists. This is typically used in conjunction with `next()` operator or minibatch property.  
-When the percent is 0, the data is not split. All the data will be returned in `x_train` and `y_train`, but will still be randomized; x_test and y_test will be None.
+When the percent is 0, the data is not split. All the data will be returned in `x_train` and `y_train`, but will still be randomized; `x_test` and `y_test` will be `None`.
 
 ###### Exceptions
 
@@ -263,7 +263,7 @@ The `[]` `(__getitem__)` operator is overridden to return the Image object at th
 
 A `IndexError` is raised if the index is out of range.
 
-#### 1.4.2  `next()`
+#### 1.4.2  next()
 
 ###### Synopsis
 
@@ -300,7 +300,7 @@ Once loaded, the Images object will have the same characteristics as when the Im
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `ValueError` is raised if the name parameter is None.
  
-## 2	Image
+## 2  Image
 ### 2.1  Image Overview
 
 The Image CV preprocessor contains the following primary classes, and their relationships:
@@ -547,7 +547,7 @@ When used as a getter the property returns the amount of time (in seconds) it to
 
 ### 2.4  Image Overridden Operators
 
-#### 2.4.1  `str()`
+#### 2.4.1  str()
 
 ###### Synopsis
 
@@ -561,7 +561,7 @@ The `str()` `(__str__)` operator is overridden to return the label of the image 
 
 ### 2.5  Image Public Methods
 
-####2.5.1  `load()`
+#### 2.5.1  load()
 
 ###### Synopsis
 
