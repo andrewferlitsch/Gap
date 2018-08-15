@@ -396,7 +396,7 @@ The `Document` class contains the following private methods:
 •	`_exists()` – This method checks if the document exists at the specified stored path. If not, a `FileNotFound` exception is thrown.
 
 •	`_collate()` – This method performs the collation task, which includes:
-   o	Determines the number of pages in the document.
+   o Determines the number of pages in the document.
    o Splits the document into individual pages, where each page is individually stored in the same format as the document. The pages are named as follows:
 >     `<name><pageno>.<suffix>`
   Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.
@@ -410,9 +410,9 @@ The `Document` class contains the following private methods:
  >     <name><pageno>.txt 
    Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran.
    o	Create a Page object for each page and adds them to the pages index property.
-   o	If the document format is raw text, then:
-       	Treats as a single page.
-       	Stores only a single page text file.
+   o	If the document format is raw text, then:  
+       	Treats as a single page.  
+       	Stores only a single page text file.  
    o	If the document format is PDF, then page splitting and extraction of the raw text per page is done with the open source version of Ghostscript. If the document is a scanned PDF, the image is extracted and converted to PNG using Ghostscript and then OCR’d using open source Tesseract.
    o	If the document format is TIFF, then page splitting is done with the open source Magick and then OCR’d using open source Tesseract.
 
