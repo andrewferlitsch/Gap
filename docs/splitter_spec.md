@@ -40,14 +40,14 @@ Document( document=None, dir=’./’, ehandler=None,  config=None)
 
 ###### Parameters
 
-**document:**	if not None, a string that is either:
+**document:**   if not None, a string that is either:
     1.	local path to document
     2.	remote path to document ((i.e., http[s]://….)
     The document must be one of the following types: PDF. JPG, PNG, BMP or TIF
 
-**dir:** The directory where to store the machine learning ready data.
+**dir:**    The directory where to store the machine learning ready data.
 
-**ehandler:** If not None, the processing of the images into machine learning ready data will be asynchronous, and the value of the parameter is the function (or method) that is the event handler when processing is complete. The event handler takes the form:
+**ehandler:**   If not None, the processing of the images into machine learning ready data will be asynchronous, and the value of the parameter is the function (or method) that is the event handler when processing is complete. The event handler takes the form:
 
 ```python
 def myHandler(images): 
@@ -55,11 +55,12 @@ def myHandler(images):
 ```
 
 **config:** If not None, a list of one or more configuration settings as strings:
-            bare  
-            pos  
-            roman  
-            segment  
-            stem=gap|porter|Lancaster|snowball|lemma
+
+>     bare
+>     pos
+>     roman
+>     segment
+>     stem=gap|porter|Lancaster|snowball|lemma
 
 ###### Usage
 
