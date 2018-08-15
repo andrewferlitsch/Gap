@@ -4,7 +4,7 @@ Users Guide
 High Precision Natural Language Processing for PDF/TIFF/Image Documents and Computer Vision for Images  
 Users Guide, Gap v0.9.2
 
-### 1.	Introduction
+### 1	Introduction
 
 The target audience for this users guide are your software developers whom will be integrating the core inner block into your product and/or service. It is not meant to be a complete reference guide or comprehensive tutorial, but a brief get started guide.
 To utilize this module, the Gap framework will automatically install:
@@ -22,7 +22,7 @@ To utilize this module, the Gap framework will automatically install:
 >     11.	Imutils (open source) 				[will auto-install with pip install].
 >     12.	Pyaspeller (open source)			[will auto-install with pip install].
 ---
-### 2.  SPLITTER Module
+### 2  SPLITTER Module
 
 #### 2.1  Document Loading
 
@@ -271,7 +271,7 @@ for page in document.pages:
     classification = page.label
 ```
 ---
-### 3.  SYNTAX Module
+### 3  SYNTAX Module
 
 #### 3.1  NLP Processing
 
@@ -620,7 +620,7 @@ print(words.freqDist)
 will output:
 >     [ ('jack', 2), ('jill', 2), ('and', 2), ('water', 1), ('the', 1), …. ]
 ---
-### 4.  VISION Module
+### 4  VISION Module
 
 #### 4.1  Image Processing
 
@@ -853,7 +853,7 @@ images = Images()
 images.load( "mycollection", "mystorage" )
 ```
 ---
-### 5.   SEGMENTATION Module
+### 5   SEGMENTATION Module
 
 The segmentation module is newly introduced in Gap v0.9 prelaunch. It is in the early stage, and should be considered experimental, and not for commercial-product-ready yet. The segmentation module analyzes the whitespace layout of the text to identify the 'human' perceived grouping/purpose of text, such as paragraphs, headings, columns, page numbering, letterhead, etc., and the associated context.
 In this mode, the text is separated into segments, corresponding to identified layout, where each segment is then NLP preprocessed. The resulting NLP output is then hierarchical, where at the top level is the segment identification, and it's child is the NLP preprocessed text.
