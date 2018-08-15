@@ -28,7 +28,7 @@ The constructors calls the `_exists()` and `_collate()` private methods for the 
 
 
 
-Fig. 1a High Level view of Document Class Object Relationships
+Fig. 1a High Level view of `Document` Class Object Relationships
 
 ### 1.2  Initializer (Constructor)
 
