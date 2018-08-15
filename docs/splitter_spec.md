@@ -615,10 +615,10 @@ When used as a getter the property returns the sorted tuples of a term frequency
 
 The Page class contains the following static variables:
 
->     `BARE`	: If True, then the bare configuration setting is passed to the Words object.
->     `STEM`	: If not None, then the stem configuration setting is passed to the Words object.
->     `ROMAN` : If True, then the roman configuration setting is passed to the Words object.
->     `POS`	  : If True, then the pos configuration setting is passed to the Words object.
+`BARE`	: If True, then the bare configuration setting is passed to the Words object.  
+`STEM`	: If not None, then the stem configuration setting is passed to the Words object.  
+`ROMAN` : If True, then the roman configuration setting is passed to the Words object.  
+`POS`	  : If True, then the pos configuration setting is passed to the Words object.
 
 ### 2.4  Page Overwritten Operators
 
