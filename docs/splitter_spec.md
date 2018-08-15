@@ -91,10 +91,10 @@ If the path to the document file is remote (i.e., starts with http), an HTTP req
 
 ###### Exceptions
 
-A `TypeError` is raised if the type of the parameter is not the expected type.
-A `AttributeError` is raised if an invalid configuration setting is specified.
-A `FileNotFoundError` is raised if the document file does not exist.
-A `IOError` is raised if an error occurs reading in the document file.
+A `TypeError` is raised if the type of the parameter is not the expected type.  
+A `AttributeError` is raised if an invalid configuration setting is specified.  
+A `FileNotFoundError` is raised if the document file does not exist.  
+A `IOError` is raised if an error occurs reading in the document file.  
 
 ### 1.3  Document Properties
 
@@ -117,9 +117,9 @@ When used as a setter the property specifies the path of the document file to pr
 
 ###### Exceptions
 
-A `TypeError` is raised if the type of the parameter is not the expected type.
-A `FileNotFoundError` is raised if the document file does not exist.
-A `IOError` is raised if an error occurs reading in the document file.
+A `TypeError` is raised if the type of the parameter is not the expected type.  
+A `FileNotFoundError` is raised if the document file does not exist.  
+A `IOError` is raised if an error occurs reading in the document file.  
 
 #### 1.3.2	name
 
