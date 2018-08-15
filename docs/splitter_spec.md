@@ -393,14 +393,14 @@ A `ValueError` is raised if the name parameter is `None`.
 
 The `Document` class contains the following private methods:
 
-•	`_exists()` – This method checks if the document exists at the specified stored path. If not, a `FileNotFound` exception is thrown.
++	`_exists()` – This method checks if the document exists at the specified stored path. If not, a `FileNotFound` exception is thrown.
 
-•	`_collate()` – This method performs the collation task, which includes:
-   o Determines the number of pages in the document.
-   o Splits the document into individual pages, where each page is individually stored in the same format as the document. The pages are named as follows:
++	`_collate()` – This method performs the collation task, which includes:
+- Determines the number of pages in the document.
+- Splits the document into individual pages, where each page is individually stored in the same format as the document. The pages are named as follows:
 >     `<name><pageno>.<suffix>`
   Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.
-   o	If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.
+-	If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.
 >     `<name><pageno>.png`
    o	If the page is a TIFF facsimile, the TIFF image is then OCR’d to convert to text.
 >     `<name><pageno>.tif`
