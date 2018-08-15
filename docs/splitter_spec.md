@@ -18,7 +18,7 @@ document = Document(“/somedir/mydocument.pdf”, “/mypages/mydocument”)
 
 The constructors calls the `_exists()` and `_collate()` private methods for the specified document.
 
-•	**Page** – This is a base class for the representation of an extracted page from the document. The document class contains a list (index) of the extracted pages as Page objects.
+•	**Page** – This is a base class for the representation of an extracted page from the document. The `Document` class contains a list (index) of the extracted pages as Page objects.
 
 
 
@@ -136,7 +136,7 @@ root = document.name
 
 ###### Usage
 
-When used as a getter the property returns the root name of the document file(e.g., /mydir/mydocument.pdf -> mydocument).
+When used as a getter the property returns the root name of the document file (e.g., /mydir/mydocument.pdf -> mydocument).
 
 #### 1.3.3  type
 
