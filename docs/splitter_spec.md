@@ -1,7 +1,7 @@
 # Natural Language Processing for PDF/TIFF/Image Documents 
 ## Computer Vision for Image Data
 
-SPLITTER Module
+## SPLITTER Module
 High Precision PDF Page Splitting/OCR/Text Extraction
 Technical Specification, Gap v0.91
 
@@ -10,7 +10,7 @@ Technical Specification, Gap v0.91
 
 The document classifier contains the following primary classes, and their relationships:
 
-•	Document – This is the base class for the representation of a stored document.  The constructor for the class object takes as parameters the stored path to the document, optionally a directory path for storing extracted pages and text, and optionally an event completion handler when processing the document asynchronously, and optionally a config parameter for configuring the NLP preprocessing.
+•	**Document** – This is the base class for the representation of a stored document.  The constructor for the class object takes as parameters the stored path to the document, optionally a directory path for storing extracted pages and text, and optionally an event completion handler when processing the document asynchronously, and optionally a config parameter for configuring the NLP preprocessing.
 
 ```python
 document = Document(“/somedir/mydocument.pdf”, “/mypages/mydocument”)
@@ -18,7 +18,7 @@ document = Document(“/somedir/mydocument.pdf”, “/mypages/mydocument”)
 
 The constructors calls the `_exists()` and `_collate()` private methods for the specified document.
 
-•	Page – This is a base class for the representation of an extracted page from the document. The document class contains a list (index) of the extracted pages as Page objects.
+•	**Page** – This is a base class for the representation of an extracted page from the document. The document class contains a list (index) of the extracted pages as Page objects.
 
 
 
@@ -41,9 +41,10 @@ Document( document=None, dir=’./’, ehandler=None,  config=None)
 ###### Parameters
 
 **document:**   If not None, a string that is either:
-                1.	local path to document
-                2.	remote path to document ((i.e., http[s]://….)
-                The document must be one of the following types: PDF. JPG, PNG, BMP or TIF
+
+>     1.	local path to document
+>     2.	remote path to document ((i.e., http[s]://….)
+>     The document must be one of the following types: PDF. JPG, PNG, BMP or TIF
 
 **dir:**    The directory where to store the machine learning ready data.
 
