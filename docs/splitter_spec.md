@@ -18,7 +18,7 @@ document = Document(“/somedir/mydocument.pdf”, “/mypages/mydocument”)
 
 The constructors calls the `_exists()` and `_collate()` private methods for the specified document.
 
-•	**Page** – This is a base class for the representation of an extracted page from the document. The `Document` class contains a list (index) of the extracted pages as Page objects.
+•	**Page** – This is a base class for the representation of an extracted page from the document. The `Document` class contains a list (index) of the extracted pages as `Page` objects.
 
 
 
