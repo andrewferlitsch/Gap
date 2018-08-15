@@ -43,80 +43,80 @@ Words( text, flags … )
 
 ###### Parameters
 
-**text          :** A Unicode string of text.
+**text:** A Unicode string of text.
 
-**flags         :**	Zero or more keyword parameters
+**flags:**	Zero or more keyword parameters
 
-**bare		      :** Tokenize only ``True`` - do not preprocess.
+**bare:** Tokenize only `True` - do not preprocess.
 
-**punct		      :** Keep/classify ``True`` or remove ``False`` punctuation.
+**punct:** Keep/classify `True` or remove ``False`` punctuation.
 
-**stopwords	    :** Keep ``True`` all stop words or remove ``False``. If True, it supersedes all other flags. If False, other flags may be used to include specific categories. The stop words are a superset of the Porter list.
+**stopwords:** Keep `True` all stop words or remove `False`. If True, it supersedes all other flags. If False, other flags may be used to include specific categories. The stop words are a superset of the Porter list.
 
-**stem		     :** Value indicating which stemmer to use:
+**stem:** Value indicating which stemmer to use:
              - 	builtin: gap
              - 	NLTK: porter, snowball, lancaster or the WordLemmatizer:  
                 lemma
 
-**pos		       :** Annotate``True`` or not annotate ``False`` NLP preprocessed tokens with
+**pos:** Annotate `True` or not annotate `False` NLP preprocessed tokens with
                parts of speech using NLTK `pos_tag()`.
 
-**spell		     :** Spell check and replace misspelled words using pyaspeller.
+**spell:** Spell check and replace misspelled words using pyaspeller.
 
-**roman		     :** Romanize ``True`` or not Romanize ``False`` latin-1 encodings of NLP 
+**roman:** Romanize `True` or not Romanize `False` latin-1 encodings of NLP 
                preprocessed tokens into ASCII encoding.
 
-**number	     :** Keep/classify ``True`` or remove ``False`` numerical numbers. Ex.
+**number:** Keep/classify `True` or remove `False` numerical numbers. Ex.
                - 	1 / 4.5 / 1,000 / three
 
-**unit		     :** Keep/classify ``True`` or remove ``False`` units of measurement. Ex
+**unit:** Keep/classify `True` or remove `False` units of measurement. Ex
        -	inches  / ft / cm
        -	height / width / weight / ht / wt
        -	temperature / °F / °C
 
-**quantifier	 :**  Keep/classify ``True`` size specifying words or to remove ``False``. Ex.
+**quantifier:**  Keep/classify `True` size specifying words or to remove `False`. Ex.
  		       - 	all / any / more
 
-**preposition	 :** Keep/classify ``True`` preposition words or to remove ``False``. Ex.
+**preposition:** Keep/classify `True` preposition words or to remove `False`. Ex.
 	      	      - 	to / from / above
 
-**conjunction	 :** Keep/classify ``True`` conjunction words or to remove ``False``. Ex.
+**conjunction:** Keep/classify `True` conjunction words or to remove `False`. Ex.
        -	and / or / but
  
-**article		   :** keep/classify ``True`` article words or to remove ``False``. Ex.
+**article:** keep/classify `True` article words or to remove `False`. Ex.
  	     		     -  	a / an / the
 
-**demonstrative:**	 Keep/classify ``True`` article words or to remove ``False``. Ex.
+**demonstrative:**	 Keep/classify `True` article words or to remove `False`. Ex.
 		     -  	this / that / these 
 
-**question	   :** Keep/classify ``True``question words or to remove ``False``. Ex.
+**question:** Keep/classify `True` question words or to remove `False`. Ex.
 			     - 	who / want / how
 
-**pronoun	     :** Keep/classify ``True`` pronoun words or to remove ``False``. Ex.
+**pronoun:** Keep/classify `True` pronoun words or to remove `False`. Ex.
 		     - 	he / she / them
 
-**date		     :** Keep/classify/reduce ``True`` dates or to remove ``False``. Ex
+**date:** Keep/classify/reduce `True` dates or to remove `False`. Ex
 		     - 	Jan. 1, 2000 / 01/01/2000 / 2000-01-01
 
-**dob      		 :** Keep/classify/reduce ``True`` date of births or to remove ``False``. Ex.
+**dob:** Keep/classify/reduce `True` date of births or to remove `False`. Ex.
 		     - 	DOB: Jan 1, 2000 / date of birth is 01-02-2012
 
-**ssn		       :** Keep/classify ``True`` social security numbers or to remove ``False``. Ex.
+**ssn:** Keep/classify `True` social security numbers or to remove `False`. Ex.
 		     - 	123-84-1234 / 123 84 1234
 
-**telephone	   :** Keep/classify ``True`` telephone numbers or to remove ``False``. Ex.
+**telephone:** Keep/classify `True` telephone numbers or to remove `False`. Ex.
 		     - 	(360) 123-1234 / +13601231234
 
-**name		     :** Keep/classify ``True`` telephone numbers or to remove ``False``. Ex.
+**name:** Keep/classify `True` telephone numbers or to remove `False`. Ex.
 -	Albert Einstein / Donald J. Trump
 
-**address		   :** Keep/classify/reduce street address or to remove ``False``. Ex
+**address:** Keep/classify/reduce street address or to remove `False`. Ex
 -	124 NE 34th Cir, Home Town, AZ, 99123
 
-**gender		   :** Keep/classify ``True`` gender specifying words or remove ``False``. Ex.
+**gender:** Keep/classify `True` gender specifying words or remove `False`. Ex.
 -	male / man / gal / mom
 
-**sentiment	   :** Keep/classify/reduce `True` sentiment word sequences or remove   
+**sentiment:** Keep/classify/reduce `True` sentiment word sequences or remove   
  		  `False`.
      		      - not bad / disgusting
 
@@ -242,7 +242,7 @@ The Words class contains the following static variables:
 ###### Synopsis
 
 ```python
-	nwords = len(words)
+nwords = len(words)
 ```
 
 ###### Usage
@@ -254,7 +254,7 @@ The `len()` `(__len__)` operator is overridden to return  the number of NLP toke
 ###### Synopsis
 
 ```python
-	words += text
+words += text
 ```
 
 ###### Usage
@@ -265,20 +265,20 @@ The `+=` `(__iadd__)` method is overridden to add words to the sequenced word li
 
 The Words class contains the following private methods, which are called by the initializer:
 
-+	`_split()` – This method performs the first phase of NLP preprocessing of the raw text into a sequenced list of words (bare processing mode).
++ `_split()` – This method performs the first phase of NLP preprocessing of the raw text into a sequenced list of words (bare processing mode).
     -	Contractions are expanded (e.g., can't => can not). 
     -	Newlines, carriage returns and tabs removed.
     -	Duplicated whitespace is removed. 
     -	Text is split into words and punctuation.
     -	Punctuation is removed (except in numerical and date representations when property number and/or date and/or dob is True).
  
-+	`_preprocess()`  - This method performs the second of NLP preprocessing of the 'bare' tokenized words.
++ `_preprocess()`  - This method performs the second of NLP preprocessing of the 'bare' tokenized words.
     -	Identify acronyms.
     -	Identify proper names.
     -	Words are lowercased.
     -	Optionally words are Romanized, if roman attribute is set to True.
 
-+	`_stem()` – This method performs the third phase of NLP preprocessing of the tokenized words by removing word endings and reducing word to its root stem (e.g., rider -> ride). 
++ `_stem()` – This method performs the third phase of NLP preprocessing of the tokenized words by removing word endings and reducing word to its root stem (e.g., rider -> ride). 
     -	Remove plural endings (e.g., flies -> fly).
     -	Remove past tense endings (e.g., baked -> bake).
     -	Remove present participle endings (e.g., eating -> eat).
@@ -288,20 +288,20 @@ The Words class contains the following private methods, which are called by the 
     -	Remove superlative endings (e.g., greatest -> great).
     -	Spell check/replacement, if enabled, occurs prior to stemming.
 
-+	`_nltkStem()` – This method uses the open source NLTK stemmer methods to perform the third phase of NLP preprocessing of the tokenized words, as an alternative to the internal stemmer (i.e. stem)). The Porter, Snowball, Lancaster and WordNetLemmatizer are selectable.
++ `_nltkStem()` – This method uses the open source NLTK stemmer methods to perform the third phase of NLP preprocessing of the tokenized words, as an alternative to the internal stemmer (i.e. stem)). The Porter, Snowball, Lancaster and WordNetLemmatizer are selectable.
 
-+	`_stopwords()` – This method performs the fourth phase of NLP preprocessing of the tokenized words by removing/keeping stop words.
++ `_stopwords()` – This method performs the fourth phase of NLP preprocessing of the tokenized words by removing/keeping stop words.
     -	Remove word (including infinity) and numeric representations of numbers, unless property number is True, then all numbers are retained.
-        *	If retained, EU decimal and thousandths unit separators converted to US standard.
-        *	+/- signs preserved.
-        *	Thousandths unit separator removed.
-        *	Hex numbers (starting with 0x prefix) are converted to integer value.
-        *	Text represented numbers (e.g., ten) are converted to integer value.
-        *	Text represented numeric ordering (e.g., 1st) are converted to integer value.
-        *	Fractions are converted to floating point value.
+        * If retained, EU decimal and thousandths unit separators converted to US standard.
+        * +/- signs preserved.
+        * Thousandths unit separator removed.
+        * Hex numbers (starting with 0x prefix) are converted to integer value.
+        * Text represented numbers (e.g., ten) are converted to integer value.
+        * Text represented numeric ordering (e.g., 1st) are converted to integer value.
+        * Fractions are converted to floating point value.
     -	Remove units of measurement, unless property unit is True.
-        *	US Standard and Metric, including abbreviations, are recognized.
-        *	US and EU spelling of metric units are recognized.
+        * US Standard and Metric, including abbreviations, are recognized.
+        * US and EU spelling of metric units are recognized.
     -	Remove dates, unless property date is True.
     -	Remove date of birth, unless property dob is True.
     -	Remove USA social security numbers, unless property ssn is True, where the SSN number is converted to a 9 digit value.
@@ -318,10 +318,10 @@ The Words class contains the following private methods, which are called by the 
     -	Remove question words (e.g., what, why), unless property question is True.
     -	Remove common high frequency words i.e., Porter List).
     -	Remove sentiment sequence (e.g., good, bad), unless sentiment property is True.
-        *	Sequence (e.g., not bad) replaced with "positive" or "negative".
+        * Sequence (e.g., not bad) replaced with "positive" or "negative".
     -	Remove punctuation and symbols, unless punct property is True.
 
-+	`_isdate()` – This method is a support method for _stopwords(). It will recognize date strings and convert them to ISO 8601 format. The following formats are recognized:
++ `_isdate()` – This method is a support method for _stopwords(). It will recognize date strings and convert them to ISO 8601 format. The following formats are recognized:
     -	MM/DD/YY and MM/DD/YYYY
     -	MM-DD-YY and MM-DD-YYYY
     -	YYYY-MM-DD (ISO 8601)
@@ -330,52 +330,53 @@ The Words class contains the following private methods, which are called by the 
 
 If the preceding word is birth or DOB, then the date will be tagged as a date of birth (vs. date).
 
-+	`_isnumber()` - This method is a support method for _stopwords(). It will recognize numerical sequences and convert them to decimal base 10 format. The following formats are recognized
++ `_isnumber()` - This method is a support method for _stopwords(). It will recognize numerical sequences and convert them to decimal base 10 format. The following formats are recognized
     -	Base 10 integer, floating point, exponent, fraction
     -	Base 16 hex integers
 
-+	`_isSSN()` - This method is a support method for _stopwords(). It will recognize USA Social Security numbers. The following formats are recognized:
++ `_isSSN()` - This method is a support method for _stopwords(). It will recognize USA Social Security numbers. The following formats are recognized:
     -	Prefixed with SSN or Soc. Sec. No. or Social Security Number
     -	Number Format: 
-        *	12-123-1234 / 12 123 1234 / 121231234
+        * 12-123-1234 / 12 123 1234 / 121231234
 
-+	`_isTele()` - This method is a support method for _stopwords(). It will recognize USA/CA Telephone numbers. The following formats are recognized:
++ `_isTele()` - This method is a support method for _stopwords(). It will recognize USA/CA Telephone numbers. The following formats are recognized:
     -	Prefixed with Tele, Phone, Mobile, Office, etc, optionally followed by Number, Num, No, #
     -	Number Format: 
-        *	1231231234 / 123 123 1234 / 123-123-123 / (360) 123-1234 / …
+        * 1231231234 / 123 123 1234 / 123-123-123 / (360) 123-1234 / …
 
-+	`_isAddr()` – This method is a support method for _stopwords(). It will recognize USA/CA postal addresses. The following formats are recognized:
++ `_isAddr()` – This method is a support method for `_stopwords()`. It will recognize USA/CA postal addresses. The following formats are recognized:
     -	[POB[,]] Street-Number  [Street-Direction] Street-Name [Street-Type] [Street-Direction] [,] [POB[,]] [Secondary-Address[,]][City[,]State]
     -	POB[,] City State
 
-+	`_streetnum()` – This method supports the _isAddr() method in recognizing street numbers. The following formats are recognized:
++ `_streetnum()` – This method supports the `_isAddr()` method in recognizing street numbers. The following formats are recognized:
     -	[(N|S|W|E)]digits[letter][-][digits|letter
     -	Ex. N1300 / 123-33 / 33A / 33
 
-+	`_streetdir()` – This method supports the _isAddr() method in recognizing directional phrases. The following formats are recognized:
++ `_streetdir()` – This method supports the `_isAddr()` method in recognizing directional phrases. The following formats are recognized:
     -	North|South[sp][West|East]
     -	N|S[.][w|e][.]
 
-+	`_citystate()` – This method supports the _isAddr() method in recognizing city/state references in a postal address. The following formats are recognized:
++ `_citystate()` – This method supports the `_isAddr()` method in recognizing city/state references in a postal address. The following formats are recognized:
     -	City[,](Full-State|Abbr-State)
        USA and Canadian state names are replaced with their ISO 3166-2 codes (e.g., Alabama => ISO3166-2:US-AL).
-+	`_pob()` – This method supports the _isAddr() method in recognizing USA and Canadian Post Office Boxes and Private Mail Boxes in street addresses. The following formats are recognized:
+       
++ `_pob()` – This method supports the `_isAddr()` method in recognizing USA and Canadian Post Office Boxes and Private Mail Boxes in street addresses. The following formats are recognized:
     -	( P.O.B | POB | P.O. Box | P.O. | PO ) digits [ (STN | RPO) words ]
     -	( P.M.B | PMB | P.M. Box ) digits
 
-+	`_streetaddr2()` – This method supports the _isAddr() method in recognizing secondary address components in street addresses. The following formats are recognized:
++ `_streetaddr2()` – This method supports the `_isAddr()` method in recognizing secondary address components in street addresses. The following formats are recognized:
     -	(Apt|Ste|Rm|Fl|Bldg|Dept)[#](word[-][word)
 
-+	`_postalcode()` – This method supports the _isAddr method() in recognizing USA and Canadian postal codes. The following formats are recognized:
++ `_postalcode()` – This method supports the `_isAddr` method() in recognizing USA and Canadian postal codes. The following formats are recognized:
     -	5digits[-4digits]			# USA
     -	[3letters][sp][3letters]		# Canada
 
-+	`_isGender()` – This method supports gender recognition in stopwords. It recognizes phrases:
++ `_isGender()` – This method supports gender recognition in stopwords. It recognizes phrases:
     -	(Sex|Gender)[:] (M|F|Male|Female)
 
-+	`_conversion()` – This method performs the fifth phase of NLP preprocessing of the tokenized words of converting Standard to Metric (standard=True) and vice-versa (metric=True).
++ `_conversion()` – This method performs the fifth phase of NLP preprocessing of the tokenized words of converting Standard to Metric (standard=True) and vice-versa (metric=True).
 
-+	`_partsofspeech()` – This method performs the sixth phase of NLP preprocessing of the tokenized words of tagging words with their parts of speech tag (using NLTK).
++ `_partsofspeech()` – This method performs the sixth phase of NLP preprocessing of the tokenized words of tagging words with their parts of speech tag (using NLTK).
 
 1.5	Words Public Methods
 
