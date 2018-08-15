@@ -58,14 +58,13 @@ Words( text, flags … )
              - 	NLTK: porter, snowball, lancaster or the WordLemmatizer:   
                 lemma
 
-**pos		       :** Annotate(True) or not annotate (False) NLP preprocessed tokens with 
+**pos		       :** Annotate(True) or not annotate (False) NLP preprocessed tokens with
                parts of speech using NLTK `pos_tag()`.
 **spell		     :** Spell check and replace misspelled words using pyaspeller.
 **roman		     :** Romanize (True) or not Romanize (False) latin-1 encodings of NLP 
                preprocessed tokens into ASCII encoding.
 **number	     :** Keep/classify (True) or remove (False) numerical numbers. Ex.
                - 	1 / 4.5 / 1,000 / three
-
 **unit		     :** Keep/classify (True) or remove (False) units of measurement. Ex
        -	inches  / ft / cm
        -	height / width / weight / ht / wt
