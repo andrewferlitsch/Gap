@@ -254,8 +254,6 @@ When used as a getter the property returns a list, one entry per page, of the ex
 # Getter
 pages = document.pages
 ```
-
-###### Usage
  
 #### 1.3.11  bagOfWords
 
