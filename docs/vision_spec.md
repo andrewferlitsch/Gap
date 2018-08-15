@@ -235,7 +235,7 @@ A `TypeError` is raised if the type of the parameter is not the expected type.
 
 ### 1.4  Images Overridden Operators
 
-#### 1.4.1  `len()`
+#### 1.4.1  len()
 
 ###### Synopsis
 
