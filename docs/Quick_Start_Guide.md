@@ -204,9 +204,9 @@ document.load( "mydoc.pdf", "mystorage" )
 ```
 
 This will reload pages whose filenames in the storage match the sequence:
->         mystorage/mydoc1.json
->         mystorage/mydoc2.json
->         ...
+>     mystorage/mydoc1.json
+>     mystorage/mydoc2.json
+>     ...
 
 #### 2.13  Word Frequency Distributions
 
