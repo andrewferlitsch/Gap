@@ -474,7 +474,7 @@ will output:
 
 When the keyword parameter telephone is True, USA/CA telephone numbers are preserved; otherwise they are removed. Telephone numbers are detected from the prefix presence of text sequences indicating a telephone number will follow, such Phone:, Mobile Number, etc. Telephone numbers are converted to their single 10 digit value, inclusive of area code, and the tag value is set to one of:
 ```python
-Vocabulary.TELEPHONE, 
+Vocabulary.TELEPHONE
 Vocabulary.TELEPHONE_HOME
 Vocabulary.TELEPHONE_WORK
 Vocabulary.TELEPHONE_OFFICE
@@ -496,15 +496,15 @@ will output:
 
 When the keyword parameter address is True, USA/CA street and postal addresses are preserved; otherwise they are removed. Each component in the address is tagged according to the above street/postal address component type, as follows:
 
->     •	Postal Box	  (Vocabulary.POB)
->     •	Street Number 	  (Vocabuary.STREET_NUM)
->     •	Street Direction  (Vocabuary.STREET_DIR)
->     •	Street Name 	  (Vocabuary.STREET_NAME)
->     •	Street Type 	  (Vocabuary.STREET_TYPE)
->     •	Secondary Address (Vocabuary.STREET_ADDR2)
->     •	City		  (Vocabulary.CITY)
->     •	State		  (Vocabulary.STATE)
->     •	Postal		  (Vocabulary.POSTAL)
+>     •  Postal Box        (Vocabulary.POB)
+>     •  Street Number     (Vocabuary.STREET_NUM)
+>     •  Street Direction  (Vocabuary.STREET_DIR)
+>     •  Street Name       (Vocabuary.STREET_NAME)
+>     •  Street Type       (Vocabuary.STREET_TYPE)
+>     •  Secondary Address (Vocabuary.STREET_ADDR2)
+>     •  City              (Vocabulary.CITY)
+>     •  State             (Vocabulary.STATE)
+>     •  Postal            (Vocabulary.POSTAL)
 
 ```python
 # keep/replace street addresses
