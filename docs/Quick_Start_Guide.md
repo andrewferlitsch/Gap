@@ -101,7 +101,7 @@ Each page is represented by a Page (class) object. Access to the page object is 
 Additional pages can be added to the end of an existing Document object using the += (overridden) operator, where the new page will be fully processed. 
 
 ```python
-    document = Document(“1page.pdf”)
+    document = Document("1page.pdf")
 
     # This will print 1 for 1 page
     print(len(document))
