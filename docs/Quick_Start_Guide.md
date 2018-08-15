@@ -180,7 +180,7 @@ NLP Preprocessing of the text may be configured for several settings  when insta
 document = Document("yourdocument.pdf", "storage_path", config=[options])
 # options:
 bare                     # do bare tokenization
-stem = internal 	| 	 # use builtin stemmer
+stem = internal     |    # use builtin stemmer
        porter       |    # use NLTK Porter stemmer
        snowball     |    # use NLTK Snowball stemmer
        lancaster    |    # use NLTK Lancaster stemmer
