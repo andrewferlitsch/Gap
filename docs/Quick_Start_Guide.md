@@ -1,19 +1,18 @@
 # Natural Language Processing for PDF/TIFF/Image Documents
 ## Computer Vision for Image Data
 
-Users Guide
-
-High Precision Natural Language Processing for PDF/TIFF/Image Documents and 
-Computer Vision for Images
-Users Guide, Gap v0.91
+## Users Guide
+## High Precision Natural Language Processing for PDF/TIFF/Image Documents and 
+## Computer Vision for Images
+## Users Guide, Gap v0.9.2
 
 ### 1.	Introduction
 
 The target audience for this users guide are your software developers whom will be integrating the core inner block into your product and/or service. It is not meant to be a complete reference guide or comprehensive tutorial, but a brief get started guide.
 To utilize this module, the Gap framework will automatically install:
 
-    >> 1.	This Python module.
-    > 2.	Python 3.6 or latter
+>      1.	This Python module.
+>      2.	Python 3.6 or latter
     3.	Ghostscript ©(open source from Artifex).	[will auto-install with pip install on Linux/Mac].
     4.	Tesseract ©(open source from Google).		[will auto-install with pip install on Linux/Mac].
     5.	Magick ©(open source from Image Magic).	[will auto-install with pip install on Linux/Mac].
