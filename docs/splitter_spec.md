@@ -401,9 +401,9 @@ The `Document` class contains the following private methods:
    
    - Splits the document into individual pages, where each page is individually stored in the same format as the document. The pages are named as follows:
    
-   `<name><pageno>.<suffix>`
+       `<name><pageno>.<suffix>`
    
-   Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.
+       Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.
     - If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.
     
    `<name><pageno>.png`
