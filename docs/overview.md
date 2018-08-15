@@ -1,5 +1,5 @@
-#Gap  
-#Natural Language Processing for PDF/TIFF/Image Documents and Computer Vision for Images
+# Gap  
+# Natural Language Processing for PDF/TIFF/Image Documents and Computer Vision for Images
 
 ## Framework
 The Gap NLP/CV open source framework provides an easy to get started into the world of machine learning for your unstructured data in PDF documents, scanned documents, TIFF facsimiles,  camera captured documents, and computer vision for your image data.
