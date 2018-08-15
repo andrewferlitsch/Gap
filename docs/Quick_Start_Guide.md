@@ -203,7 +203,7 @@ document = Document()
 document.load( "mydoc.pdf", "mystorage" )
 ```
 
->     This will reload pages whose filenames in the storage match the sequence:
+This will reload pages whose filenames in the storage match the sequence:
 >         mystorage/mydoc1.json
 >         mystorage/mydoc2.json
 >         ...
@@ -219,7 +219,7 @@ The bagOfWords property returns an unordered dictionary of each unique word in t
 bow = document.bagOfWords
 print(bow)
 ```
->     will output:
+will output:
 >     { '<word>': <no. of occurrences>, '<word>':  <no. of occurrences>, … }
 >     e.g., { 'plan': 20, 'medical': 31, 'doctor': 2, … }
 
@@ -237,7 +237,7 @@ count = document.freqDist
 print(count)
 ```
 
->     will output:
+will output:
 >     [ ('<word>', <no. of occurrences>), ('<word>':  <no. of occurrences>), … ] 
 >     e.g., [ ('medical', 31), ('plan', 20), …, ('doctor', 2), … ]
 
@@ -256,7 +256,7 @@ tf = document.freqDist
 print(tf)
 ```
 
->     will output: 
+will output: 
 >     [ ('<word>', <percent>), ('<word>':  <percent>), … ] 
 >     e.g., [ ('medical', 0.02), ('plan', 0.015), … ]
 
