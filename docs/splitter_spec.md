@@ -94,7 +94,7 @@ If the path to the document file is remote (i.e., starts with http), an HTTP req
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `AttributeError` is raised if an invalid configuration setting is specified.  
 A `FileNotFoundError` is raised if the document file does not exist.  
-A `IOError` is raised if an error occurs reading in the document file.  
+A `IOError` is raised if an error occurs reading in the document file.
 
 ### 1.3  Document Properties
 
@@ -119,7 +119,7 @@ When used as a setter the property specifies the path of the document file to pr
 
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `FileNotFoundError` is raised if the document file does not exist.  
-A `IOError` is raised if an error occurs reading in the document file.  
+A `IOError` is raised if an error occurs reading in the document file.
 
 #### 1.3.2	name
 
@@ -180,7 +180,7 @@ When used as a setter, it is only applicable when used in conjunction with the `
 
 ######Exceptions
 
-A `TypeError` is raised if the type of the parameter is not the expected type.
+A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `FileNotFoundError` is raised if the directory does not exist.
 
 #### 1.3.6  label
@@ -300,8 +300,8 @@ When used as a getter the property returns the sorted tuples of a term frequency
 
 The Document class contains the following static variables:
 
-•	**RESOLUTION** – The image resolution when converting `PDF` to `PNG` for `OCR` (default `300`).
-•	**SCANCHECK**  – The number of `OCR` words to check to estimate the quality of the scan.
+•	**RESOLUTION** – The image resolution when converting `PDF` to `PNG` for `OCR` (default `300`).  
+•	**SCANCHECK**  – The number of `OCR` words to check to estimate the quality of the scan.  
 •	**WORDDICT**   - The word dictionary to use for scan spell check (default to `pyaspeller`).
 
 ### 1.4  Document Overridden Operators
@@ -376,12 +376,12 @@ document.load(name, dir=None)
 
 ###### Usage
 
-This method will load into memory a preprocessed machine learning ready data from the corresponding JSON files specified by the document (root) name. The method will load the JSON files by the filename <name><pageno>.json. If dir is None, then it will look for the files where the current value for dir is defined (either locally or reset by the dir property). Otherwise, it will look for the files under the directory specified by the dir parameter.
+This method will load into memory a preprocessed machine learning ready data from the corresponding JSON files specified by the document (root) name. The method will load the JSON files by the filename <name><pageno>.json. If dir is None, then it will look for the files where the current value for dir is defined (either locally or reset by the dir property). Otherwise, it will look for the files under the directory specified by the dir parameter.  
 Once loaded, the `Document` object will have the same characteristics as when the `Document` object was created.
 
 ###### Exceptions
 
-A `TypeError` is raised if the type of the parameter is not the expected type.
+A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `ValueError` is raised if the name parameter is `None`.
 
 ### 1.6  Document Private Methods
@@ -458,7 +458,7 @@ If the text parameter is not None, a `Words` object is created and instantiated 
 
 ###### Exceptions
 
-A `TypeError` is raised if the type of the parameter is not the expected type.
+A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `FileNotFoundError` is raised if the file specified by page parameter does not exist.
 
 ### 2.3  Page Properties
@@ -482,7 +482,7 @@ When used as a setter the property sets the path of the corresponding split page
 
 ###### Exceptions
 
-A `TypeError` is raised if the type of the parameter is not the expected type.
+A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `FileNotFoundError` is raised if the file specified by path does not exist.
 
 #### 2.3.2  pageno
@@ -661,7 +661,7 @@ The `store()` method writes the NLP tokenized sequence as a JSON object to the s
 
 Exceptions
 
-A `TypeError` is raised if the type of the parameter is not the expected type.
+A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `FileNotFoundError` is raised if the file path is invalid.
 
 #### 2.6.2  load()
@@ -681,8 +681,9 @@ The `load()` method writes the NLP tokenized sequence as a JSON object from the 
 
 ###### Exceptions
 
-A `TypeError` is raised if the type of the parameter is not the expected type.
+A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `FileNotFoundError` is raised if the file path is invalid.
+
 ---
 ## APPENDIX I: Updates
 
@@ -711,8 +712,8 @@ A `FileNotFoundError` is raised if the file path is invalid.
 ## APPENDIX II: Anticipated Engineering
 
 The following has been identified as enhancement/issues to be addressed in subsequent update:
-1.	What does it mean to add text to a document.
-2.	Break raw text into pages for > 50 lines
+1.	What does it mean to add text to a document.  
+2.	Break raw text into pages for > 50 lines  
 3.	Refactor page counting for faster performance
 4.	Add page split endpoint for streaming interface and URL
 5.	Add more pdf test files
