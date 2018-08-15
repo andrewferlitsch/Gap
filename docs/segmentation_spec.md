@@ -33,7 +33,7 @@ Fig. 1a High Level view of Segment Class Object Relationships
 ###### Synopsis
 
 ```python
-	Segment( text=None)
+Segment( text=None)
 ```
 ###### Parameters
 >     text : A Unicode text string
