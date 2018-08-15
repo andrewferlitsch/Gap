@@ -164,7 +164,6 @@ size = document.size
 
 When used as a getter the property returns the file size of the document file in bytes.
 
- 
 #### 1.3.5  dir
 
 ###### Synopsis
