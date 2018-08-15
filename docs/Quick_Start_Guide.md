@@ -31,7 +31,7 @@ To load a PDF document, TIFF facsimile or image captured document you create a D
 
 ```python
     from splitter import Document, Page
-    document = Document(“yourdocument.pdf”, “storage_path”)
+    document = Document("yourdocument.pdf", "storage_path")
 ```
 
 #### 2.2  Page Splitting
@@ -70,7 +70,7 @@ The resolution of the image rendered by Ghostscript from a scanned PDF page will
     Document.RESOLUTION = 150
     
     # Image Extraction and OCR will be done at 150 dpi for all subsequent documents
-    document = Document(“scanneddocument.pdf”, “storage_path”)
+    document = Document("scanneddocument.pdf", "storage_path")
 ```
 
 #### 2.5  Page Access
@@ -78,7 +78,7 @@ The resolution of the image rendered by Ghostscript from a scanned PDF page will
 Each page is represented by a Page (class) object. Access to the page object is obtained from the pages property member of the Document object. The number of pages in the document is returned by the len() builtin operator for the Document class.
 
 ```python
-    document = Document(“yourdocument.pdf”, “storage_path”)
+    document = Document("yourdocument.pdf", "storage_path")
 
     # Get the number of pages in the PDF document
     npages = len(document)
@@ -107,7 +107,7 @@ Additional pages can be added to the end of an existing Document object using th
     print(len(document))
     
     # Create a Page object for an existing PDF page
-    new_page = Page(“page_to_add.pdf”)
+    new_page = Page("page_to_add.pdf")
     
     # Add the page to the end of the document.
     document += new_page
@@ -147,11 +147,11 @@ To enhance concurrent execution between a main thread and worker activities, the
 
 ```python
     def done(d):
-        “”” Event Handler for when processing of document is completed “””
-        print(“DONE”, d.document)
+        """ Event Handler for when processing of document is completed """
+        print("DONE", d.document)
 
     # Process the document asynchronously
-    document = Document(“yourdocument.pdf”, “storage_path”, ehandler=done)
+    document = Document("yourdocument.pdf", "storage_path", ehandler=done)
 ```
 
 #### 2.9  NLP Preprocessing of the Text
@@ -178,7 +178,7 @@ The NLP preprocessed text is stored separately in the storage path with the foll
 NLP Preprocessing of the text may be configured for several settings  when instantiating a Document object with the optional config parameter, which consists of a list of one or more predefined options.
 
 ```python
-    document = Document(“yourdocument.pdf”, “storage_path”, config=[options])
+    document = Document("yourdocument.pdf", "storage_path", config=[options])
     # options:
     bare			# do bare tokenization
     stem =  internal 	| 	# use builtin stemmer
@@ -199,8 +199,8 @@ Once a Document object has been stored, it can later be retrieved from storage, 
     # Instantiate a Document object
     document = Document()
     
-    # Reload the document’s pages from storage
-    document.load( “mydoc.pdf”, “mystorage” )
+    # Reload the document's pages from storage
+    document.load( "mydoc.pdf", "mystorage" )
 ```
 
 >      This will reload pages whose filenames in the storage match the sequence:
@@ -220,8 +220,8 @@ The bagOfWords property returns an unordered dictionary of each unique word in t
     print(bow)
 ```
 >      will output:
->      { ‘<word>’: <no. of occurrences>, ‘<word>’:  <no. of occurrences>, … }
->      e.g., { ‘plan’: 20, ‘medical’: 31, ‘doctor’: 2, … }
+>      { '<word>': <no. of occurrences>, '<word>':  <no. of occurrences>, … }
+>      e.g., { 'plan': 20, 'medical': 31, 'doctor': 2, … }
 
 ```python
     # Get the bag of words for each page in the document
@@ -238,8 +238,8 @@ The freqDist property returns a sorted list of each unique word in the document 
 ```
 
 >      will output:
->      [ (‘<word>’, <no. of occurrences>), (‘<word>’:  <no. of occurrences>), … ] 
->      e.g., [ (‘medical’, 31), (‘plan’, 20), …, (‘doctor’, 2), … ]
+>      [ ('<word>', <no. of occurrences>), ('<word>':  <no. of occurrences>), … ] 
+>      e.g., [ ('medical', 31), ('plan', 20), …, ('doctor', 2), … ]
 
 
 ```python
@@ -257,8 +257,8 @@ The termFreq property returns a sorted list of each unique word in the document 
 ```
 
 >      will output: 
->      [ (‘<word>’, <percent>), (‘<word>’:  <percent>), … ] 
->      e.g., [ (‘medical’, 0.02), (‘plan’, 0.015), … ]
+>      [ ('<word>', <percent>), ('<word>':  <percent>), … ] 
+>      e.g., [ ('medical', 0.02), ('plan', 0.015), … ]
 
 #### 2.14  Document and Page Classification
 
@@ -290,7 +290,7 @@ The Words (class) object does the NLP preprocessing of the extracted (raw) text.
     # Get the NLP processed words (Words class) object from the page as a list.
     words = page.words
     
-    # Print the object type of words => <class ‘Document.Words’>
+    # Print the object type of words => <class 'Document.Words'>
     type(words)
 ```
 
@@ -308,7 +308,7 @@ The Words (class) object has four public properties: text , words, bagOfWords an
     # Get the NLP processed words from the original text as a Python list.
     words = words.words
 
-    # Print the object type of words => <class ‘list’>
+    # Print the object type of words => <class 'list'>
     type(words)
 ```
 
@@ -319,9 +319,9 @@ The bagOfWords and freqDist properties are explained later in the guide.
 The words property returns a sequenced Python list of words as a dictionary from the Vocabulary class. Each word in the list is of the dictionary format:
 
 ```python
-    { ‘word’  : word, # The stemmed version of the word
-      ‘lemma’ : word, # The lemma version of the word
-      ‘tag’   : tag   # The word classification
+    { 'word'  : word, # The stemmed version of the word
+      'lemma' : word, # The lemma version of the word
+      'tag'   : tag   # The word classification
     }
 ```
 
@@ -345,38 +345,38 @@ The NLP processed words returned from the words property are sequenced in the sa
 The properties which determine which words are removed, stemmed, lemmatized, or replaced are set as keyword parameters in the constructor for the Words class. If no keyword parameters are specified, then all stopwords are removed after being stemmed/lemmatized. The list of stopwords is a superset of the Porter list and additionally includes removing additionally syntactical constructs such as numbers, dates, etc. For a complete list, see the reference manual.
 If the keyword parameter stopwords is set to False, then all word removal is disabled, while stemming/lemmatization/reducing are still enabled, along with the removal of punctuation. Note in the example below, while stopwords is disabled, the word jumping is replaced with its stem jump.
 # No stopword removal
-words = Words(“The lazy brown fox jumped over the fence.”, stopwords=False)
-# words => “the”, “lazy”, “brown”, “fox”, “jump”, “over”, “the”, “fence”
+words = Words("The lazy brown fox jumped over the fence.", stopwords=False)
+# words => "the", "lazy", "brown", "fox", "jump", "over", "the", "fence"
 # All stopword removal
-words = Words(“The lazy brown fox jumped over the fence.”, stopwords=True)
-# words => “lazy”, “brown”, “fox”, “jump”, “fence”
+words = Words("The lazy brown fox jumped over the fence.", stopwords=True)
+# words => "lazy", "brown", "fox", "jump", "fence"
 
 3.6 	Bare
 
 When the keyword parameter bare is True, all stopword removal, stemming/lemmatization/reducing ad punctuation removal are disabled. 
 # Bare Mode
-words = Words(“The lazy brown fox jumped over the fence.”, bare=False)
-# words => “the”, “lazy”, “brown”, “fox”, “jumped”, “over”, “the”, “fence”, “.”
+words = Words("The lazy brown fox jumped over the fence.", bare=False)
+# words => "the", "lazy", "brown", "fox", "jumped", "over", "the", "fence", "."
 
 3.7	Numbers
 
 When the keyword parameter number is True, text and numeric version of numbers are preserved; otherwise they are removed. Numbers which are text based (e.g., one) are converted to their numeric representation (e.g., one => 1).  The tag value for numbers is set to Vocabulary.NUMBER.
 # keep/replace numbers
-words = Words(“one twenty-one 33.7 1/4”, number=True)
+words = Words("one twenty-one 33.7 1/4", number=True)
 print(words.words)
 # will output:
 # [
-# { ‘word’: ‘1’,  tag: Vocabulary.NUMBER },
-# {  ‘word’: ‘21’, tag: Vocabulary.NUMBER },
-# {  ‘word’: ’33.7’, tag: tag: Vocabulary.NUMBER },
-# {  ‘word’: ‘0.25’, tag: tag: Vocabulary.NUMBER },
+# { 'word': '1',  tag: Vocabulary.NUMBER },
+# {  'word': '21', tag: Vocabulary.NUMBER },
+# {  'word': '33.7', tag: tag: Vocabulary.NUMBER },
+# {  'word': '0.25', tag: tag: Vocabulary.NUMBER },
 # ]
 If a number is followed by a text representation of a multiplier unit (i.e., million), the number and multiplier unit are replaced by the multiplied value.
-		words = Words(“two million”, number=True)
+		words = Words("two million", number=True)
 print(words.words)
 # will output:
 # [
-# { ‘word’: ‘2000000’,  tag: Vocabulary.NUMBER}, 
+# { 'word': '2000000',  tag: Vocabulary.NUMBER}, 
 # ]
 
 
@@ -384,12 +384,12 @@ print(words.words)
 
 When the keyword parameter unit is True, US Standard and Metric units of measurement are preserved; otherwise they are removed. Both US and EU spelling of metric units are recognized (e.g., meter/metre, liter/litre). The tag value for units of measurement is set to Vocabulary.UNIT.
 # keep/replace unit
-words = Words(“10 liters”, number=True, unit=True) 
+words = Words("10 liters", number=True, unit=True) 
 print(words.words) 
 # will output:
 # [
-# { ‘word’: ‘10’,  tag: Vocabulary.NUMBER }, 
-# { ‘word’: ‘liter’,  tag: Vocabulary.UNIT },
+# { 'word': '10',  tag: Vocabulary.NUMBER }, 
+# { 'word': 'liter',  tag: Vocabulary.UNIT },
 # ]
 
 3.9 	Standard vs. Metric
@@ -397,12 +397,12 @@ print(words.words)
 When the keyword parameter standard is True, Metric units of measurement are converted to US Standard. When the keyword parameter metric is True, Standard units of measurement are converted to Metric Standard.
 
 # keep/replace unit
-words = Words(“10 liters”, number=True, unit=True standard=True) 
+words = Words("10 liters", number=True, unit=True standard=True) 
 print(words.words) 
 # will output:
 # [
-# { ‘word’: ‘2.64172’,  tag: Vocabulary.NUMBER }, 
-# { ‘word’: ‘gallon’,  tag: Vocabulary.UNIT },
+# { 'word': '2.64172',  tag: Vocabulary.NUMBER }, 
+# { 'word': 'gallon',  tag: Vocabulary.UNIT },
 # ]
 
  
@@ -410,24 +410,24 @@ print(words.words)
 
 When the keyword parameter date is True, USA and ISO standard date representation and text representation of dates are preserved; otherwise they are removed. Dates are converted to the ISO standard and the tag value is set to Vocabulary.DATE.
 # keep/replace dates
-words = Words(“Jan 2, 2017 and 01/02/2017”, date=True)
+words = Words("Jan 2, 2017 and 01/02/2017", date=True)
 print(words.words) 
 # will output:
 # [
-# { ‘word’: ‘2017-01-02’,  tag: Vocabulary.DATE }, 
-# { ‘word’: ‘2017-01-02’,  tag: Vocabulary.DATE },
+# { 'word': '2017-01-02',  tag: Vocabulary.DATE }, 
+# { 'word': '2017-01-02',  tag: Vocabulary.DATE },
 # ]
 
 3.11 	Date of Birth
 
 When the keyword parameter dob is True, date of births are preserved; otherwise they are removed. Date of births are converted to the ISO standard and the tag value is set to Vocabulary.DOB.
 # keep/replace dates
-words = Words(“Date of Birth:  Jan. 2 2017   DOB:  01-02-2017”, dob=True)
+words = Words("Date of Birth:  Jan. 2 2017   DOB:  01-02-2017", dob=True)
 print(words.words) 
 # will output:
 # [
-# { ‘word’: ‘2017-01-02’,  tag: Vocabulary.DOB }, 
-# { ‘word’: ‘2017-01-02’,  tag: Vocabulary.DOB },
+# { 'word': '2017-01-02',  tag: Vocabulary.DOB }, 
+# { 'word': '2017-01-02',  tag: Vocabulary.DOB },
 # ]
 If date is set to True without date of birth set to True, date of births will be removed while other dates will be preserved.
 
@@ -437,12 +437,12 @@ If date is set to True without date of birth set to True, date of births will be
 
 When the keyword parameter ssn is True, USA Social Security numbers are preserved; otherwise they are removed. Social Security numbers are detected from the prefix presence of text sequences indicating a Social Security number will follow, such as SSN, Soc. Sec., Social Security, etc. Social Security numbers are converted to their single 9 digit value and the tag value is set to Vocabulary.SSN.
 # keep/replace dates
-words = Words(“SSN:  12-123-1234 Social Security 12 123 1234”, ssn=True)
+words = Words("SSN:  12-123-1234 Social Security 12 123 1234", ssn=True)
 print(words.words) 
 # will output:
 # [
-# { ‘word’: ‘121231234’,  tag: Vocabulary.SSN }, 
-# { ‘word’: ‘121231234’,  tag: Vocabulary.SSN },
+# { 'word': '121231234',  tag: Vocabulary.SSN }, 
+# { 'word': '121231234',  tag: Vocabulary.SSN },
 # ]
 
 3.13	Telephone Number
@@ -454,12 +454,12 @@ Vocabulary.TELEPHONE_WORK
 Vocabulary.TELEPHONE_OFFICE
 Vocabulary.TELEPHONE_FAX
 # keep/replace dates
-words = Words(“Phone: (360) 123-1234, Office Number: 360-123-1234”, telephone=True)
+words = Words("Phone: (360) 123-1234, Office Number: 360-123-1234", telephone=True)
 print(words.words) 
 # will output:
 # [
-# { ‘word’: ‘3601231234’,  tag: Vocabulary.TELEPHONE }, 
-# { ‘word’: ‘3601231234’,  tag: Vocabulary.TELEPHONE_WORK},
+# { 'word': '3601231234',  tag: Vocabulary.TELEPHONE }, 
+# { 'word': '3601231234',  tag: Vocabulary.TELEPHONE_WORK},
 # ]
 
  
@@ -477,16 +477,16 @@ When the keyword parameter address is True, USA/CA street and postal addresses a
 •	Postal		(Vocabulary.POSTAL)
 
 # keep/replace street addresses
-words = Words(“12 S.E. Main Ave, Seattle, WA”, gender=True) 
+words = Words("12 S.E. Main Ave, Seattle, WA", gender=True) 
 print(words.words) 
 # will output:
 # [
-# { ‘word’: ‘12’,  tag: Vocabulary.STREET_NUM }, 
-# { ‘word’: ‘southeast’,  tag: Vocabulary.STREET_DIR }, 
-# { ‘word’: ‘main’,  tag: Vocabulary.STREET_NAME }, 
-# { ‘word’: ‘avenue’,  tag: Vocabulary.STREET_TYPE }, 
-# { ‘word’: ‘seattle’,  tag: Vocabulary.CITY }, 
-# { ‘word’: ‘ISO316-2:US-WA’,  tag: Vocabulary.STATE }, 
+# { 'word': '12',  tag: Vocabulary.STREET_NUM }, 
+# { 'word': 'southeast',  tag: Vocabulary.STREET_DIR }, 
+# { 'word': 'main',  tag: Vocabulary.STREET_NAME }, 
+# { 'word': 'avenue',  tag: Vocabulary.STREET_TYPE }, 
+# { 'word': 'seattle',  tag: Vocabulary.CITY }, 
+# { 'word': 'ISO316-2:US-WA',  tag: Vocabulary.STATE }, 
 # ]
 
  
@@ -495,79 +495,79 @@ print(words.words)
 When the keyword parameter gender is True, words indicating gender are preserved; otherwise they are removed. Transgender is inclusive in the recognition. The tag value is set to one of Vocabulary.MALE, Vocabulary.FEMALE or Vocabulary.TRANSGENDER .
 
 # keep/replace gender indicating words
-words = Words(“man uncle mother women tg”, gender=True)
+words = Words("man uncle mother women tg", gender=True)
 print(words.words) 
 # will output:
 # [
-# { ‘word’: ‘man’,  tag: Vocabulary.MALE }, 
-# { ‘word’: ‘uncle’,  tag: Vocabulary.MALE }, 
-# { ‘word’: ‘mother’,  tag: Vocabulary.FEMALE }, 
-# { ‘word’: ‘women’,  tag: Vocabulary.FEMALE }, 
-# { ‘word’: ‘transgender’,  tag: Vocabulary.TRANSGENDER },
+# { 'word': 'man',  tag: Vocabulary.MALE }, 
+# { 'word': 'uncle',  tag: Vocabulary.MALE }, 
+# { 'word': 'mother',  tag: Vocabulary.FEMALE }, 
+# { 'word': 'women',  tag: Vocabulary.FEMALE }, 
+# { 'word': 'transgender',  tag: Vocabulary.TRANSGENDER },
 # ]
 
 3.16 	Sentiment
 
 When the keyword parameter sentiment is True, word and word phrases indicating sentiment are preserved; otherwise they are removed. Sentiment phrases are reduced to the single primary word indicating the sentiment and the tag value is set to either Vocabulary.POSITIVE or Vocabulary.NEGATIVE.
 # keep/replace sentiment indicating phrases
-words = Words(“the food was not good”, sentiment=True)
+words = Words("the food was not good", sentiment=True)
 print(words.words) 
 # will output: 
 # [
-# { ‘word’: ‘food’,  tag: Vocabulary.UNTAG },
-# { ‘word’: ‘not’,  tag: Vocabulary.NEGATIVE},
+# { 'word': 'food',  tag: Vocabulary.UNTAG },
+# { 'word': 'not',  tag: Vocabulary.NEGATIVE},
 # ]
 
  
 317	Spell Checking
 
-When the keyword parameter spell is True, each tokenized word is looked up in the pyaspeller word dictionary. If the word is not found (presumed misspelled) and the pyaspeller recommends a safe replacement, the word is replaced with the pyaspeller’s safe replacement. The spell check/replacement occurs prior to stemming, lemmatizing, and stopword removal.
+When the keyword parameter spell is True, each tokenized word is looked up in the pyaspeller word dictionary. If the word is not found (presumed misspelled) and the pyaspeller recommends a safe replacement, the word is replaced with the pyaspeller's safe replacement. The spell check/replacement occurs prior to stemming, lemmatizing, and stopword removal.
 # add parts of speech tagging
-words = Words(“mispelled”, spell=True) 
+words = Words("mispelled", spell=True) 
 print(words.words) 
 # will output: 
 # [
-# { ‘word’: ‘misspell’,  ‘tag’: Vocabulary.UNTAG},
+# { 'word': 'misspell',  'tag': Vocabulary.UNTAG},
 # ]
 
 3.18	Parts of Speech
 
-When the keyword parameter pos is True, each tokenized word is further annotated with it’s corresponding NLTK parts of speech tag.
+When the keyword parameter pos is True, each tokenized word is further annotated with it's corresponding NLTK parts of speech tag.
 # add parts of speech tagging
-words = Words(“Jim Smith”, pos=True) 
+words = Words("Jim Smith", pos=True) 
 print(words.words) 
 # will output: 
 # [
-# { ‘word’: ‘food’,  ‘tag’: Vocabulary.UNTAG, ‘pos’: NN },
-# { ‘word’: ‘not’,  ‘tag’: Vocabulary.NEGATIVE, ‘pos’: NN },
+# { 'word': 'food',  'tag': Vocabulary.UNTAG, 'pos': NN },
+# { 'word': 'not',  'tag': Vocabulary.NEGATIVE, 'pos': NN },
 # ]
 3.19	Romanization
 
 When the keyword parameter roman is True, the latin-1 character encoding of each tokenized is converted to ASCII.
 # Romanization of latin-1 character encodings
-words = Words(“Québec”, roman=True) 
+words = Words("Québec", roman=True) 
 print(words.words) 
 # will output: 
 # [
-# { ‘word’: ‘quebec’,  ‘tag’: Vocabulary.UNTAG, 
+# { 'word': 'quebec',  'tag': Vocabulary.UNTAG, 
 # ]
 3.20	Bag of Words and Word Frequency Distribution
 
 The property bagsOfWords returns an unordered dictionary of each occurrence of a unique word in the tokenized sequence, where the word is the dictionary key, and the number of occurrences is the corresponding value.
 # Get the Bag of Words representation
-words = Words(“Jack and Jill went up the hill to fetch a pail of water. Jack fell down and         broke his crown and Jill came tumbling after.”, stopwords=True)
+words = Words("Jack and Jill went up the hill to fetch a pail of water. Jack fell down and         broke his crown and Jill came tumbling after.", stopwords=True)
 
 print(words.bagOfWords)
 # will output:
-# { ‘pail’: 1, ‘the’: 1, ‘a’: 1, ‘water’: 1, ‘fetch’: 1, ‘went’: 1, ‘and’: 2, ‘jack’: 2, ‘jill’: 2,
-# ‘down’: 1, ‘come’: 1, ‘fell’: 1, ‘up’: 1, ‘of’: 1, ‘tumble’: 1, ‘to’: 1, ‘hill’: 1, ‘after’: 1 }
+# { 'pail': 1, 'the': 1, 'a': 1, 'water': 1, 'fetch': 1, 'went': 1, 'and': 2, 'jack': 2, 'jill': 2,
+# 'down': 1, 'come': 1, 'fell': 1, 'up': 1, 'of': 1, 'tumble': 1, 'to': 1, 'hill': 1, 'after': 1 }
 The property freqDist returns a sorted list of tuples, in descending order, of word frequencies (i.e., the number of occurrences of the word in the tokenized sequence.
 # Get the Word Frequency Distribution
-words = Words(“Jack and Jill went up the hill to fetch a pail of water. Jack fell down and         broke his crown and Jill came tumbling after.”, stopwords=True)
+words = Words("Jack and Jill went up the hill to fetch a pail of water. Jack fell down and         broke his crown and Jill came tumbling after.", stopwords=True)
 
 print(words.freqDist)
 # will output:
-# [ (‘jack’, 2), (‘jill’, 2), (‘and’, 2), (‘water’, 1), (‘the’, 1), …. ]
+# [ ('jack', 2), ('jill', 2), ('and', 2), ('water', 1), ('the', 1), …. ]
 
  
 4. 	VISION Module
@@ -577,22 +577,22 @@ print(words.freqDist)
 To preprocess an image for computer vision machine learning, you create an Image (class) object, passing as parameters the path to the image, the corresponding label and a path for storing the preprocessed image data, the original image and optionally a thumbnail. The label must be specified as an integer value. Below is a code example.
 
  	from vision import Image
- 	image = Image(“yourimage.jpg”, 101, “storage_path”)
+ 	image = Image("yourimage.jpg", 101, "storage_path")
 The above will generate the following output files:
 
 	storage_path/yourimage.h5	# preprocessed image and raw data and optional thumbnail
 Alternately, the image path may be an URL; in which case, an HTTP request is made to obtain the image data from the remote location. 
 
- 	image = Image(“http://yourimage.jpg”, 101, “storage_path”)
+ 	image = Image("http://yourimage.jpg", 101, "storage_path")
 The Image class supports processing of JPEG, PNG, TIF,  BMP and GIF images. Images maybe of any pixel size, and number of channels (i.e. Grayscale, RGB and RGBA).
 Alternately, the input may be raw pixel data as a numpy array.
 raw = [...], [...], […] ]
-image = Image(raw, 101, “storage_path”)
+image = Image(raw, 101, "storage_path")
 
 4.2	Image Processing Settings (Config)
 
 CV Preprocessing of the image may be configured for several settings  when instantiating an Image object with the optional config parameter, which consists of a list of one or more predefined options.
-image = Image(“yourimage.jpg”, 101, “storage_path”, config=[options])
+image = Image("yourimage.jpg", 101, "storage_path", config=[options])
 # options:
 gray | grayscale			# convert to grayscale (single channel)
 normal | normalize		# normalize the pixel data for values between 0 .. 1
@@ -602,7 +602,7 @@ thumb=(height,width)		# generate a thumbnail
 nostore				# do not store the preprocessed image, raw and 
  				   thumbnail data
 # Example
-image = Image(“image.jpg”, 101, “path”, config=[‘flatten’, ‘thumb=(16,16)’])
+image = Image("image.jpg", 101, "path", config=['flatten', 'thumb=(16,16)'])
 # will preprocess the image.jpg into machine learning ready data as a 1D vector, and
 # store the raw (unprocessed) decompressed data, preprocessed data and 16 x 16 
 	
@@ -616,7 +616,7 @@ After an image has been preprocessed, several properties of the preprocessed ima
  	raw	- The unprocessed decompressed image data as a numpy array.
 	size	- The byte size of the original image.
  	thumb – The thumbnail image data as a numpy array.
-image = Image(“yourimage.jpg”, “storage_path”, 101)
+image = Image("yourimage.jpg", "storage_path", 101)
 	print(image.shape)
 	# Will output something like:
 	# (100,100,3)
@@ -624,44 +624,44 @@ image = Image(“yourimage.jpg”, “storage_path”, 101)
 
 To enhance concurrent execution between a main thread and worker activities, the Image class supports asynchronous processing of the image. Asynchronous processing will occur if the optional parameter ehandler is set when instantiating the Image object. Upon completion of the processing, the ehandler is called, where the Image object is passed as a parameter.
 	def done(i):
-		“”” Event Handler for when processing of image is completed “””
-		print(“DONE”, i.image)
+		""" Event Handler for when processing of image is completed """
+		print("DONE", i.image)
 # Process the image asynchronously
-image = Image(“yourimage.png”, “storage_path”, 101, ehandler=done)
+image = Image("yourimage.png", "storage_path", 101, ehandler=done)
 4.6	Image Reloading
 Once an Image object has been stored, it can later be retrieved from storage, reconstructing the Image object. An Image object is first instantiated, and then the load() method is called specifying the image name and corresponding storage path. The image name and storage path are used to identify and locate the corresponding stored image data.
 
 # Instantiate an Image object
 image = Image()
-# Reload the image’s data from storage
-image.load( “myimage.png”, “mystorage” )
+# Reload the image's data from storage
+image.load( "myimage.png", "mystorage" )
 
 4.7	Image Collection Processing
 
 To preprocess a collection of images for computer vision machine learning, you create an Images (class) object, passing as parameters a list of the paths to the images, a list of the corresponding label and a path for storing the collection of preprocessed image data, the original images and optionally thumbnails. Each label must be specified as an integer value. Below is a code example.
 
  	from images import Images
- 	images = Images([“image1.jpg”, “image2.jpg”], labels=[101, 102], name=’ c1’)
+ 	images = Images(["image1.jpg", "image2.jpg"], labels=[101, 102], name=' c1')
 The above will generate the following output files: 
 
 	train/c1.h5			# preprocessed image data
 
-The Images object will implicitly add the ‘nostore’ setting to the configuration parameter of each Image object created. This will direct each of the Image objects to not store the corresponding image data in an HD5 file. 
+The Images object will implicitly add the 'nostore' setting to the configuration parameter of each Image object created. This will direct each of the Image objects to not store the corresponding image data in an HD5 file. 
 
 Instead, upon completion of the preprocessing of the collection of image data, the entire collection of preprocessed data is stored in a single HD5 file.
 Alternately, the list of image paths parameter may be a list of directories containing images. 
 
- 	images = Images([“subfolder1”, “subfolder2”], labels=[101, 102], name=’ c1’)
+ 	images = Images(["subfolder1", "subfolder2"], labels=[101, 102], name=' c1')
 
 Alternately, the list of labels parameter may be a single value; in which case the label value applies to all the images. 
 
- 	images = Images([“image1.jpg”, “image2.jpg”], labels=101, name=’ c1’) 
+ 	images = Images(["image1.jpg", "image2.jpg"], labels=101, name=' c1') 
 4.8	Image Collection Processing Settings (Config)
 
 Configuration settings supported by the Image class may be specified as an optional parameter to the Images object, which are then passed down to each Image object generated for the collection. 
 
  	# Preprocess each image by normalizing the pixel data and then flatten into a 1D vector
- 	images = Images([“image1.jpg”, “image2.jpg”], “train”, labels=[101, 102], config=[‘normal’, ‘flatten’])
+ 	images = Images(["image1.jpg", "image2.jpg"], "train", labels=[101, 102], config=['normal', 'flatten'])
 
 4.9	Get Properties of a Collection
 
@@ -720,10 +720,10 @@ while ( data, label = next(images) ) is not None:
 
 To enhance concurrent execution between a main thread and worker activities, the Images class supports asynchronous processing of the collection of images. Asynchronous processing will occur if the optional parameter ehandler is set when instantiating the Images object. Upon completion of the processing, the ehandler is called, where the Images object is passed as a parameter.
 	def done(i):
-		“”” Event Handler for when processing of collection of images is completed “””
-		print(“DONE”, i.images)
+		""" Event Handler for when processing of collection of images is completed """
+		print("DONE", i.images)
 # Process the collection of images asynchronously
-images = Images([“img1.png”, “img2.png”], “train”, labels=[0,1], ehandler=done)
+images = Images(["img1.png", "img2.png"], "train", labels=[0,1], ehandler=done)
 
 4.13	Collection Reloading
 
@@ -732,22 +732,22 @@ Once an Images object has been stored, it can later be retrieved from storage, r
 # Instantiate an Images object
 images = Images()
 # Reload the collection of image data from storage
-images.load( “mycollection”, “mystorage” )
+images.load( "mycollection", "mystorage" )
  
 5. 	SEGMENTATION Module
 
-The segmentation module is newly introduced in Gap v0.9 prelaunch. It is in the early stage, and should be considered experimental, and not for commercial-product-ready yet. The segmentation module analyzes the whitespace layout of the text to identify the ‘human’ perceived grouping/purpose of text, such as paragraphs, headings, columns, page numbering, letterhead, etc., and the associated context.
-In this mode, the text is separated into segments, corresponding to identified layout, where each segment is then NLP preprocessed. The resulting NLP output is then hierarchical, where at the top level is the segment identification, and it’s child is the NLP preprocessed text.
+The segmentation module is newly introduced in Gap v0.9 prelaunch. It is in the early stage, and should be considered experimental, and not for commercial-product-ready yet. The segmentation module analyzes the whitespace layout of the text to identify the 'human' perceived grouping/purpose of text, such as paragraphs, headings, columns, page numbering, letterhead, etc., and the associated context.
+In this mode, the text is separated into segments, corresponding to identified layout, where each segment is then NLP preprocessed. The resulting NLP output is then hierarchical, where at the top level is the segment identification, and it's child is the NLP preprocessed text.
 5.1	Text Segmentation
 
-When the config option ‘segment’ is specified on a Document object, the corresponding text per page is segmented. 
+When the config option 'segment' is specified on a Document object, the corresponding text per page is segmented. 
 # import the segmentation module
 from segment import Segment
-segment = Segment(“para 1\n\npara 2”)
+segment = Segment("para 1\n\npara 2")
 print(segment.segments)
 # will output:
-# [ { ‘tag’: 1002, words: [ { ‘word’: ‘para’, ‘tag’: 0}, {‘word’: 1, ‘tag’: 1}]},
-#   { ‘tag’: 1002, words: [ { ‘word’: ‘para’, ‘tag’: 0}, {‘word’: 2, ‘tag’: 1}]}
+# [ { 'tag': 1002, words: [ { 'word': 'para', 'tag': 0}, {'word': 1, 'tag': 1}]},
+#   { 'tag': 1002, words: [ { 'word': 'para', 'tag': 0}, {'word': 2, 'tag': 1}]}
 # ]
 
 
