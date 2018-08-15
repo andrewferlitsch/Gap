@@ -397,17 +397,17 @@ The `Document` class contains the following private methods:
 
 + `_collate()` – This method performs the collation task, which includes:
    - Determines the number of pages in the document.
-   - Splits the document into individual pages, where each page is individually stored in the same format as the document. The pages are named as follows:
-   `<name><pageno>.<suffix>`
+   - Splits the document into individual pages, where each page is individually stored in the same format as the document. The pages are named as follows:  
+   `<name><pageno>.<suffix>`  
    Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.
-    - If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.
-   `<name><pageno>.png`
-    - If the page is a TIFF facsimile, the TIFF image is then OCR’d to convert to text.
-   `<name><pageno>.tif`
-    - If the page is an image capture (e.g. camera capture), the captured image (e.g., JPG) is then OCR’d to convert to text.
-   `<name><pageno>.jpg`
-    - Extracts the raw text from the page , where each page is individually stored in a raw text format. The pages are named as follows:
-   `<name><pageno>.txt` 
+    - If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.  
+   `<name><pageno>.png`  
+    - If the page is a TIFF facsimile, the TIFF image is then OCR’d to convert to text.  
+   `<name><pageno>.tif`  
+    - If the page is an image capture (e.g. camera capture), the captured image (e.g., JPG) is then OCR’d to convert to text.  
+   `<name><pageno>.jpg`  
+    - Extracts the raw text from the page , where each page is individually stored in a raw text format. The pages are named as follows:  
+   `<name><pageno>.txt`  
    Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran.
     - Create a Page object for each page and adds them to the pages index property.
     - If the document format is raw text, then:  
