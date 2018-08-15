@@ -182,7 +182,7 @@ document.dir = subfolder
 When used as a getter the property returns the directory path where the corresponding files of the associated page objects are stored.
 When used as a setter, it is only applicable when used in conjunction with the `load()` method, indicating where the path where the files associated with the page objects are stored. Otherwise, it is ignored.
 
-######Exceptions
+###### Exceptions
 
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `FileNotFoundError` is raised if the directory does not exist.
@@ -379,7 +379,7 @@ document.load(name, dir=None)
 
 ###### Parameters
 
->     name: The name of the document. 
+**name:** The name of the document. 
 
 ###### Usage
 
@@ -452,18 +452,18 @@ Page( page=None, text=None,  pageno=None)
 
 ###### Parameters
 
->     page:   If not None, the local path to the page.
->     text:   If not None, the text corresponding to the page.
->     pageno: If not None, the page number in the corresponding Document object.
+**page:**   If not None, the local path to the page.
+**text:**   If not None, the text corresponding to the page.
+**pageno:** If not None, the page number in the corresponding Document object.
 
 ###### Usage
 
 If the text parameter is not None, a `Words` object is created and instantiated with the corresponding text. The text is then NLP preprocessed according to the configuration settings stored as static members in the Page class (i.e., set by the parent Document object):
 
->    `BARE`	: If True, then the bare configuration setting is passed to the Words object.
->    `STEM`	: If not None, then the stem configuration setting is passed to the Words object.
->    `ROMAN`: If True, then the roman configuration setting is passed to the Words object.
->    `POS`	: If True, then the pos configuration setting is passed to the Words object.
+`BARE`	: If True, then the bare configuration setting is passed to the Words object.  
+`STEM`	: If not None, then the stem configuration setting is passed to the Words object.  
+`ROMAN`: If True, then the roman configuration setting is passed to the Words object.  
+`POS`	: If True, then the pos configuration setting is passed to the Words object.
 
 ###### Exceptions
 
@@ -571,6 +571,7 @@ When used as a getter the property returns the page’s word sequences as a Bag 
 #### 2.3.7  freqDist
 
 ###### Synopsis
+
 ```python
 # Getter
 freq = page.freqDist	
@@ -623,6 +624,7 @@ The `len()` `(__len__)` operator is overridden to return  the number of NLP toke
 #### 2.4.2	`+=`
 
 ###### Synopsis
+
 ```python
 page += text
 ```
@@ -662,7 +664,8 @@ image.store(path)
 ```
 
 ###### Parameters
->     path: the file path to write to.
+
+**path:** the file path to write to.
 
 ###### Usage
 
@@ -682,7 +685,8 @@ image.load(path)
 ```
 
 ###### Parameters
->     path: the file path to read from.
+
+**path:** the file path to read from.
 
 ###### Usage
 
