@@ -44,74 +44,81 @@ Words( text, flags … )
 ###### Parameters
 
 **text          :** A Unicode string of text.
+
 **flags         :**	Zero or more keyword parameters
-**bare		      :** Tokenize only (True) - do not preprocess.
 
-**punct		      :** Keep/classify (True) or remove (False) punctuation.
+**bare		      :** Tokenize only ``True`` - do not preprocess.
 
-**stopwords	    :** Keep (True) all stop words or remove (False). If True, it supersedes all    
-       other flags. If False, other flags may be used to include specific  
-       categories. The stop words are a superset of the Porter list.
+**punct		      :** Keep/classify ``True`` or remove ``False`` punctuation.
+
+**stopwords	    :** Keep ``True`` all stop words or remove ``False``. If True, it supersedes all other flags. If False, other flags may be used to include specific categories. The stop words are a superset of the Porter list.
 
 **stem		     :** Value indicating which stemmer to use:
              - 	builtin: gap
-             - 	NLTK: porter, snowball, lancaster or the WordLemmatizer:   
+             - 	NLTK: porter, snowball, lancaster or the WordLemmatizer:  
                 lemma
 
-**pos		       :** Annotate(True) or not annotate (False) NLP preprocessed tokens with
+**pos		       :** Annotate``True`` or not annotate ``False`` NLP preprocessed tokens with
                parts of speech using NLTK `pos_tag()`.
+
 **spell		     :** Spell check and replace misspelled words using pyaspeller.
-**roman		     :** Romanize (True) or not Romanize (False) latin-1 encodings of NLP 
+
+**roman		     :** Romanize ``True`` or not Romanize ``False`` latin-1 encodings of NLP 
                preprocessed tokens into ASCII encoding.
-**number	     :** Keep/classify (True) or remove (False) numerical numbers. Ex.
+
+**number	     :** Keep/classify ``True`` or remove ``False`` numerical numbers. Ex.
                - 	1 / 4.5 / 1,000 / three
-**unit		     :** Keep/classify (True) or remove (False) units of measurement. Ex
+
+**unit		     :** Keep/classify ``True`` or remove ``False`` units of measurement. Ex
        -	inches  / ft / cm
        -	height / width / weight / ht / wt
        -	temperature / °F / °C
-**quantifier	 :**  Keep/classify (True) size specifying words or to remove (False). Ex.
+
+**quantifier	 :**  Keep/classify ``True`` size specifying words or to remove ``False``. Ex.
  		       - 	all / any / more
-**preposition	 :** Keep/classify (True) preposition words or to remove (False). Ex.
+
+**preposition	 :** Keep/classify ``True`` preposition words or to remove ``False``. Ex.
 	      	      - 	to / from / above
 
-**conjunction	 :** Keep/classify (True) conjunction words or to remove (False). Ex.
+**conjunction	 :** Keep/classify ``True`` conjunction words or to remove ``False``. Ex.
        -	and / or / but
  
-**article		   :** keep/classify (True) article words or to remove (False). Ex.
+**article		   :** keep/classify ``True`` article words or to remove ``False``. Ex.
  	     		     -  	a / an / the
-**demonstrative:**	 Keep/classify (True) article words or to remove (False). Ex.
+
+**demonstrative:**	 Keep/classify ``True`` article words or to remove ``False``. Ex.
 		     -  	this / that / these 
 
-**question	   :** Keep/classify (True)question words or to remove (False). Ex.
+**question	   :** Keep/classify ``True``question words or to remove ``False``. Ex.
 			     - 	who / want / how
 
-**pronoun	     :** Keep/classify (True) pronoun words or to remove (False). Ex.
+**pronoun	     :** Keep/classify ``True`` pronoun words or to remove ``False``. Ex.
 		     - 	he / she / them
 
-**date		     :** Keep/classify/reduce (True) dates or to remove (False). Ex
+**date		     :** Keep/classify/reduce ``True`` dates or to remove ``False``. Ex
 		     - 	Jan. 1, 2000 / 01/01/2000 / 2000-01-01
 
-**dob      		 :** Keep/classify/reduce (True) date of births or to remove (False). Ex.
+**dob      		 :** Keep/classify/reduce ``True`` date of births or to remove ``False``. Ex.
 		     - 	DOB: Jan 1, 2000 / date of birth is 01-02-2012
 
-**ssn		       :** Keep/classify (True) social security numbers or to remove (False). Ex.
+**ssn		       :** Keep/classify ``True`` social security numbers or to remove ``False``. Ex.
 		     - 	123-84-1234 / 123 84 1234
 
-**telephone	   :** Keep/classify (True) telephone numbers or to remove (False). Ex.
+**telephone	   :** Keep/classify ``True`` telephone numbers or to remove ``False``. Ex.
 		     - 	(360) 123-1234 / +13601231234
 
-**name		     :** Keep/classify (True) telephone numbers or to remove (False). Ex.
+**name		     :** Keep/classify ``True`` telephone numbers or to remove ``False``. Ex.
 -	Albert Einstein / Donald J. Trump
 
-**address		   :** Keep/classify/reduce street address or to remove (False). Ex
+**address		   :** Keep/classify/reduce street address or to remove ``False``. Ex
 -	124 NE 34th Cir, Home Town, AZ, 99123
 
-**gender		   :** Keep/classify (True) gender specifying words or remove (False). Ex.
+**gender		   :** Keep/classify ``True`` gender specifying words or remove ``False``. Ex.
 -	male / man / gal / mom
 
-**sentiment	   :** Keep/classify/reduce (True) sentiment word sequences or remove   
- 		  (False).
-     		      - 	not bad / disgusting
+**sentiment	   :** Keep/classify/reduce `True` sentiment word sequences or remove   
+ 		  `False`.
+     		      - not bad / disgusting
 
 ###### Exceptions
 
