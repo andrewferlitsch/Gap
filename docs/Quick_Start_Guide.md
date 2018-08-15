@@ -23,7 +23,6 @@ To utilize this module, the Gap framework will automatically install:
 >      11.	Imutils (open source) 				[will auto-install with pip install].
 >      12.	Pyaspeller (open source)			[will auto-install with pip install].
 ---
- 
 ### 2.  SPLITTER Module
 
 #### 2.1  Document Loading
@@ -44,7 +43,6 @@ Upon instantiating a document object, the corresponding PDF document or TIFF fac
 The module automatically detects if a PDF document is a digital (text) or scanned PDF (image). For digital documents, the text is extracted directly from the PDF page using Ghostscript and stored separately in the storage path with the following naming convention:
 
 >      <document basename><pageno>.txt
-
 
 #### 2.3  OCR
 
@@ -273,7 +271,7 @@ Semantic Classification (e.g., category) of the document and individual pages re
     for page in document.pages:
         classification = page.label
 ```
-
+---
 ### 3.  SYNTAX Module
 
 #### 3.1  NLP Processing
@@ -331,13 +329,16 @@ The words property returns a sequenced Python list of words as a dictionary from
 
 The NLP processed words returned from the words property are sequenced in the same order as the original text. All punctuation is removed, and except for detected Acronyms, all remaining words are lowercased. The sequenced list of words may be a subset of the original words, depending on the stopwords properties and may be stemmed, lemma, or replaced.
 
-# Get the NLP processed words from the original text as a Python list.
-words = words.words
-# Traverse the sequenced list of NLP processed words
-for word in words:
-	text 	= word.word	# original or replaced version of the word
-	tag 	= word.tag	# syntactical classification of the word
-	lemma  = word.lemma	# The lemma version of the word
+```python
+    # Get the NLP processed words from the original text as a Python list.
+    words = words.words
+
+    # Traverse the sequenced list of NLP processed words
+    for word in words:
+        text 	= word.word	# original or replaced version of the word
+        tag 	= word.tag	# syntactical classification of the word
+        lemma  = word.lemma	# The lemma version of the word
+```
 
 3.5 	Stopwords
 
