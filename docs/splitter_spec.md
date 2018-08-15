@@ -67,14 +67,16 @@ def myHandler(images):
 
 When specified with no parameters, an empty `Document` object is created. The `Document` object may then be used to subsequent load (retrieve) previously stored preprocessed machine learning ready data (see `load()`).
 
-Otherwise, the document parameter must be specified.  
-The document specified by the document parameter will be preprocessed according to the optional parameters and configuration settings.  
+Otherwise, the document parameter must be specified.
+
+The document specified by the document parameter will be preprocessed according to the optional parameters and configuration settings.
+
 By default, the document will be preprocessed as follows:
 
 1.	The document will be split into individual pages.
-2.	A Page object will be created for each page.
+2.	A `Page` object will be created for each page.
 3.	If the document (or page) is an image (e.g., scanned PDF), it will be OCR’d.
-4.	The digital text will be extracted from each page and stored in the Page object.
+4.	The digital text will be extracted from each page and stored in the `Page` object.
 5.	The text will be optionally segmented into regions if the configuration setting segment is specified.
 6.	The text from each page object will be preprocessed into machine learning ready data (see syntax module specification), according to the optional parameters and configuration settings.
 7.	If the document was a scanned or image document, the quality of the scan will be estimated, unless `Document.SCANCHECK` is set to zero.
@@ -85,9 +87,9 @@ The machine learning ready data will be stored on a per page basis in the direct
 >     <document><pageno>.txt
 >     <document>.<pageno>.json
 
-The `<document>` is the root name of the document, and `<pageno>` is the corresponding page number starting at page 1. The file ending in the original file suffix `<suffix>` is the split page. The file ending in the file suffix .txt is the extracted text. The file ending in the file suffix .json is the NLP preprocessed machine learning data stored in a JSON format.
+The `<document>` is the root name of the document, and `<pageno>` is the corresponding page number starting at page 1. The file ending in the original file suffix `<suffix>` is the split page. The file ending in the file suffix `.txt` is the extracted text. The file ending in the file suffix `.json` is the NLP preprocessed machine learning data stored in a JSON format.
 
-If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the Document object passed as a parameter.
+If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the `Document` object passed as a parameter.
 
 If the path to the document file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
 
@@ -203,6 +205,7 @@ When used as a getter the property returns the `integer` label specified for the
 When used as a setter the property sets the label of the document to the specified integer value.
 
 ###### Exceptions
+
 A `TypeError` is raised if the type of the parameter is not the expected type.
 
 #### 1.3.7  scanned
@@ -234,6 +237,7 @@ When used as a getter the property returns the amount of time (in seconds) it to
 #### 1.3.9  text
 
 ###### Synopsis
+
 ```python
 # Getter
 text = document.text
@@ -246,6 +250,7 @@ When used as a getter the property returns a list, one entry per page, of the ex
 #### 1.3.10  pages
 
 ###### Synopsis
+
 ```python
 # Getter
 pages = document.pages
@@ -348,7 +353,7 @@ The `__setitem__()` method is overridden to replace the Page object at the speci
 
 ###### Exceptions
 
-A IndexError is raised if the index is out of range.
+A `IndexError` is raised if the index is out of range.
 
 #### 1.4.4  `str()`
 
@@ -378,7 +383,8 @@ document.load(name, dir=None)
 
 ###### Usage
 
-This method will load into memory a preprocessed machine learning ready data from the corresponding JSON files specified by the document (root) name. The method will load the JSON files by the filename <name><pageno>.json. If dir is None, then it will look for the files where the current value for dir is defined (either locally or reset by the dir property). Otherwise, it will look for the files under the directory specified by the dir parameter.  
+This method will load into memory a preprocessed machine learning ready data from the corresponding JSON files specified by the document (root) name. The method will load the JSON files by the filename `<name><pageno>.json`. If `dir` is `None`, then it will look for the files where the current value for dir is defined (either locally or reset by the dir property). Otherwise, it will look for the files under the directory specified by the dir parameter.
+
 Once loaded, the `Document` object will have the same characteristics as when the `Document` object was created.
 
 ###### Exceptions
@@ -388,7 +394,7 @@ A `ValueError` is raised if the name parameter is `None`.
 
 ### 1.6  Document Private Methods
 
-The Document class contains the following private methods:
+The `Document` class contains the following private methods:
 
 •	`_exists()` – This method checks if the document exists at the specified stored path. If not, a `FileNotFound` exception is thrown.
 
@@ -415,7 +421,8 @@ The Document class contains the following private methods:
 
 •	`_scancheck()` – This method is called after NLP preprocessing of the document has been completed, and the document was a scanned image. The method will sample upto `SCANCHECK` number of words for recognition in a English dictionary (i.e., pyaspeller). The method will check the words on either page 1 or page 2, depending on which page has a greater number of words. Punctuation, symbols, acronyms or single letter words are excluded. The method then sets the internal variable _quality to the percentage of the words that were recognized (between 0 and 1).
 
-•	`_async()` – This method performs asynchronous processing of the _collate() function, when the optional ehandler parameter to the constructor is not `None`. When processing is completed, the ehandler parameter value is called as a function to signal completion of the processing, and the document object is passed as a parameter.
+•	`_async()` – This method performs asynchronous processing of the `_collate()` function, when the optional ehandler parameter to the constructor is not `None`. When processing is completed, the ehandler parameter value is called as a function to signal completion of the processing, and the document object is passed as a parameter.
+
 ---
 ## 2.  Page
 
