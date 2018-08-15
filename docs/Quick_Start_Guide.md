@@ -31,8 +31,10 @@ To utilize this module, the Gap framework will automatically install:
 
 To load a PDF document, TIFF facsimile or image captured document you create a Document (class) object, passing as parameters the path to the PDF/TIFF/image document and a path for storing the split pages/text. Below is a code example.
 
+```python
     from splitter import Document, Page
     document = Document(“yourdocument.pdf”, “storage_path”)
+```
 
 #### 2.2  Page Splitting
 
