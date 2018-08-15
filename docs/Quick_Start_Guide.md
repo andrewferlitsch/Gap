@@ -179,15 +179,15 @@ NLP Preprocessing of the text may be configured for several settings  when insta
 ```python
 document = Document("yourdocument.pdf", "storage_path", config=[options])
 # options:
-bare			# do bare tokenization
-    stem =  internal 	| 	# use builtin stemmer
-    porter		|	# use NLTK Porter stemmer
-    snowball		|	# use NLTK Snowball stemmer
-    lancaster		|	# use NLTK Lancaster stemmer
-    lemma		|	# use NLTK WordNet lemmatizer
-    nostem			# no stemming
-pos				# Tag each word with NLTK parts of speech
-roman			# Romanize latin-1 character encodings into ASCII
+bare                     # do bare tokenization
+stem = internal 	| 	 # use builtin stemmer
+       porter       |    # use NLTK Porter stemmer
+       snowball     |    # use NLTK Snowball stemmer
+       lancaster    |    # use NLTK Lancaster stemmer
+       lemma        |    # use NLTK WordNet lemmatizer
+       nostem            # no stemming
+pos             # Tag each word with NLTK parts of speech
+roman           # Romanize latin-1 character encodings into ASCII
 ```
 
 #### 2.11  Document Reloading
