@@ -263,7 +263,6 @@ pages = document.pages
 # Getter
 bag = document.bagOfWords	
 ```
-
 ###### Usage
 
 When used as a getter the property returns the document’s word sequences as a Bag of Words, represented as an unordered dictionary, where the key is the word and the value is the number of occurrences:
@@ -278,7 +277,6 @@ When used as a getter the property returns the document’s word sequences as a 
 # Getter
 freq = document.freqDist	
 ```
-
 ###### Usage
 
 When used as a getter the property returns the sorted tuples of a frequency distribution of words (from bag of words), in descending order (i.e., highest first)
@@ -293,7 +291,6 @@ When used as a getter the property returns the sorted tuples of a frequency dist
 # Getter
 tf = document.termFreq
 ```
-
 ###### Usage
 
 When used as a getter the property returns the sorted tuples of a term frequency distribution (percent that term occurs), in descending order (i.e., highest first)
@@ -317,7 +314,6 @@ The Document class contains the following static variables:
 ```python
 npages = len(document)
 ```
-
 ###### Usage
 
 The `len()` `(__len__)` operator is overridden to return the number of pages in the document.
@@ -329,7 +325,6 @@ The `len()` `(__len__)` operator is overridden to return the number of pages in 
 ```python
 document += page
 ```
-
 ###### Usage
 
 The `+=` `(__iadd__)` method is overridden to append a Page object to the document.
@@ -342,7 +337,6 @@ The `+=` `(__iadd__)` method is overridden to append a Page object to the docume
 page= documents[n] 
 document[n] = page
 ```
-
 ###### Usage
 
 The `[]` `(__getitem__)` operator is overridden to return the Page object at the specified index.  
@@ -359,7 +353,6 @@ A `IndexError` is raised if the index is out of range.
 ```python
 label = str(image)
 ```
-
 ###### Usage
 
 The `str()` `(__str__)` operator is overridden to return the label of the document as a string.
