@@ -49,12 +49,13 @@ Document( document=None, dir=’./’, ehandler=None,  config=None)
 
 **dir:**      The directory where to store the machine learning ready data.
 
-**ehandler:** If not None, the processing of the images into machine learning ready data will be asynchronous, and the value of the parameter is the function (or method) that is the event handler when processing is complete. The event handler takes the form:
-
-              ```python
-              def myHandler(images): 
- 	 	              # where images is the Images object that was preprocessed.
-              ```
+**ehandler:** If not None, the processing of the images into machine learning ready data will be asynchronous, and the value of the  
+              parameter is the function (or method) that is the event handler when processing is complete. The event handler takes the  
+              form:
+```python
+def myHandler(images): 
+    # where images is the Images object that was preprocessed.
+```
               
 **config:**   If not None, a list of one or more configuration settings as strings:
               bare
