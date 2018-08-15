@@ -1,10 +1,9 @@
-# Natural Language Processing for PDF/TIFF/Image Documents
-## Computer Vision for Image Data
+# Natural Language Processing for PDF/TIFF/Image Documents - Computer Vision for Image Data
 
-## Users Guide
-## High Precision Natural Language Processing for PDF/TIFF/Image Documents and 
-## Computer Vision for Images
-## Users Guide, Gap v0.9.2
+Users Guide
+High Precision Natural Language Processing for PDF/TIFF/Image Documents and 
+Computer Vision for Images
+Users Guide, Gap v0.9.2
 
 ### 1.	Introduction
 
@@ -211,8 +210,6 @@ Once a Document object has been stored, it can later be retrieved from storage, 
 >          mystorage/mydoc2.json
 >          ...
 
-
-
 #### 2.13  Word Frequency Distributions
 
 The distribution of word occurrences and percentage in a document and individual pages are obtained using the properties: bagOfWords, freqDist and termFreq.
@@ -264,7 +261,6 @@ The termFreq property returns a sorted list of each unique word in the document 
 >      will output: 
 >      [ (‘<word>’, <percent>), (‘<word>’:  <percent>), … ] 
 >      e.g., [ (‘medical’, 0.02), (‘plan’, 0.015), … ]
-
 
 #### 2.14  Document and Page Classification
 
