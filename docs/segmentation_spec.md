@@ -1,12 +1,12 @@
-# Natural Language Processing for PDF/TIFF/Image Documents 
-# Computer Vision for Image Data
+# Natural Language Processing for PDF/TIFF/Image Documents  
+# Computer Vision for Image Data  
 
-## SEGMENTATION MODULE
+## SEGMENTATION MODULE  
 
-### High Precision Document Segmentation
-### Technical Specification, Gap v0.9.2
+### High Precision Document Segmentation  
+### Technical Specification, Gap v0.9.2  
 
-### 1  Segment
+### 1.  Segment
 ####  1.1  Segment Overview
 
 The segment NLP preprocessor contains the following primary classes, and their relationships:
