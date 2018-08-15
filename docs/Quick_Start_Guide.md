@@ -13,16 +13,16 @@ To utilize this module, the Gap framework will automatically install:
 
 >      1.	This Python module.
 >      2.	Python 3.6 or latter
-    3.	Ghostscript ©(open source from Artifex).	[will auto-install with pip install on Linux/Mac].
-    4.	Tesseract ©(open source from Google).		[will auto-install with pip install on Linux/Mac].
-    5.	Magick ©(open source from Image Magic).	[will auto-install with pip install on Linux/Mac].
-    6.	NLTK Toolkit (open source) 			[will auto-install with pip install].
-    7.	Unidecode (open source) 			[will auto-install with pip install].
-    8.	HD5 (open source) 				[will auto-install with pip install].
-    9.	Numpy (open source) 				[will auto-install with pip install].
-    10.	OpenCV (open source) 				[will auto-install with pip install]. 
-    11.	Imutils (open source) 				[will auto-install with pip install].
-    12.	Pyaspeller (open source)			[will auto-install with pip install].
+>      3.	Ghostscript ©(open source from Artifex).	[will auto-install with pip install on Linux/Mac].
+>      4.	Tesseract ©(open source from Google).		[will auto-install with pip install on Linux/Mac].
+>      5.	Magick ©(open source from Image Magic).		[will auto-install with pip install on Linux/Mac].
+>      6.	NLTK Toolkit (open source) 			[will auto-install with pip install].
+>      7.	Unidecode (open source) 			[will auto-install with pip install].
+>      8.	HD5 (open source) 				[will auto-install with pip install].
+>      9.	Numpy (open source) 				[will auto-install with pip install].
+>      10.	OpenCV (open source) 				[will auto-install with pip install]. 
+>      11.	Imutils (open source) 				[will auto-install with pip install].
+>      12.	Pyaspeller (open source)			[will auto-install with pip install].
 ---
  
 ### 2.  SPLITTER Module
@@ -38,29 +38,29 @@ To load a PDF document, TIFF facsimile or image captured document you create a D
 
 Upon instantiating a document object, the corresponding PDF document or TIFF facsimile is automatically split into the corresponding PDF or TIFF pages, utilizing Ghostscript (PDF) and Magick (TIFF). Each PDF/TIFF page will be stored separately in the storage path with the following naming convention:
 
-    <document basename><pageno>.<suffix> , where <suffix> is either pdf or tif
+>      <document basename><pageno>.<suffix> , where <suffix> is either pdf or tif
 
 The module automatically detects if a PDF document is a digital (text) or scanned PDF (image). For digital documents, the text is extracted directly from the PDF page using Ghostscript and stored separately in the storage path with the following naming convention:
 
-    <document basename><pageno>.txt
+>      <document basename><pageno>.txt
 
 
 #### 2.3  OCR
 
 If the document is a scanned PDF, each page image will be extracted using Ghostscript, then OCR using Tesseract to extract the text content from the page image. The page image and corresponding page text are stored separately in the storage path with the following naming convention:
 
-    <document basename><pageno>.png
-    <document basename><pageno>.txt
+>      <document basename><pageno>.png
+>      <document basename><pageno>.txt
 
 If the document is a TIFF facsimile, each page image will be extracted using Magick, then OCR using Tesseract to extract the text content from the page image. The page image and corresponding page text are stored separately in the storage path with the following naming convention:
 
-    <document basename><pageno>.tif
-    <document basename><pageno>.txt
+>      <document basename><pageno>.tif
+>      <document basename><pageno>.txt
 
 If the document is an image capture (e.g., JPG), the image is OCR using Tesseract to extract the text content from the page image. The page image and corresponding page text are stored separately in the storage path with the following naming convention:
 
-    <document basename><pageno>.<suffix> , where <suffix> is png or jpg
-    <document basename><pageno>.txt
+>      <document basename><pageno>.<suffix> , where <suffix> is png or jpg
+>      <document basename><pageno>.txt
 
 #### 2.4  Image Resolution for OCR
 
@@ -166,7 +166,7 @@ NLP Preprocessing of the text may be configured for several settings  when insta
 
     document = Document(“yourdocument.pdf”, “storage_path”, config=[options])
     # options:
-    bare				# do bare tokenization
+    bare			# do bare tokenization
     stem =  internal 	| 	# use builtin stemmer
  	porter		|	# use NLTK Porter stemmer
  	snowball	|	# use NLTK Snowball stemmer
@@ -174,19 +174,22 @@ NLP Preprocessing of the text may be configured for several settings  when insta
  	lemma		|	# use NLTK WordNet lemmatizer
  	nostem			# no stemming
     pos				# Tag each word with NLTK parts of speech
-    roman				# Romanize latin-1 character encodings into ASCII
+    roman			# Romanize latin-1 character encodings into ASCII
 
-2.11	Document Reloading
+#### 2.11  Document Reloading
+
 Once a Document object has been stored, it can later be retrieved from storage, reconstructing the Page and corresponding Words objects. A document object is first instantiated, and then the load() method is called specifying the document name and corresponding storage path. The document name and storage path are used to identify and locate the corresponding stored pages.
 
-# Instantiate a Document object
-document = Document()
-# Reload the document’s pages from storage
-document.load( “mydoc.pdf”, “mystorage” )
-# This will reload pages whose filenames in the storage match the sequence:
-# 	mystorage/mydoc1.json
-# 	mystorage/mydoc2.json
-#	….
+    # Instantiate a Document object
+    document = Document()
+    
+    # Reload the document’s pages from storage
+    document.load( “mydoc.pdf”, “mystorage” )
+
+>      # This will reload pages whose filenames in the storage match the sequence:
+>      # 	mystorage/mydoc1.json
+>      # 	mystorage/mydoc2.json
+>      #	...
 
 
 
