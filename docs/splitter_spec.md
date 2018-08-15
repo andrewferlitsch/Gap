@@ -65,7 +65,7 @@ def myHandler(images):
 
 ###### Usage
 
-When specified with no parameters, an empty Document object is created. The Document object may then be used to subsequent load (retrieve) previously stored preprocessed machine learning ready data (see load()).
+When specified with no parameters, an empty `Document` object is created. The `Document` object may then be used to subsequent load (retrieve) previously stored preprocessed machine learning ready data (see `load()`).
 
 Otherwise, the document parameter must be specified.  
 The document specified by the document parameter will be preprocessed according to the optional parameters and configuration settings.  
@@ -85,8 +85,10 @@ The machine learning ready data will be stored on a per page basis in the direct
 >     <document><pageno>.txt
 >     <document>.<pageno>.json
 
-The `<document>` is the root name of the document, and `<pageno>` is the corresponding page number starting at page 1. The file ending in the original file suffix (<suffix>) is the split page. The file ending in the file suffix .txt is the extracted text. The file ending in the file suffix .json is the NLP preprocessed machine learning data stored in a JSON format.
+The `<document>` is the root name of the document, and `<pageno>` is the corresponding page number starting at page 1. The file ending in the original file suffix `<suffix>` is the split page. The file ending in the file suffix .txt is the extracted text. The file ending in the file suffix .json is the NLP preprocessed machine learning data stored in a JSON format.
+
 If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the Document object passed as a parameter.
+
 If the path to the document file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
 
 ###### Exceptions
@@ -197,7 +199,7 @@ document.label = label
 
 ###### Usage
 
-When used as a getter the property returns the (integer) label specified for the document.
+When used as a getter the property returns the `integer` label specified for the document.
 When used as a setter the property sets the label of the document to the specified integer value.
 
 ###### Exceptions
@@ -393,16 +395,16 @@ The Document class contains the following private methods:
 •	`_collate()` – This method performs the collation task, which includes:
     o	Determines the number of pages in the document.
     o	Splits the document into individual pages, where each page is individually stored in the same format as the document. The pages are named as follows:
-    >     `<name><pageno>.<suffix>`
+>     `<name><pageno>.<suffix>`
       Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.
     o	If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.
-    >     `<name><pageno>.png`
+>     `<name><pageno>.png`
     o	If the page is a TIFF facsimile, the TIFF image is then OCR’d to convert to text.
-    >     `<name><pageno>.tif`
+>     `<name><pageno>.tif`
     o	If the page is an image capture (e.g. camera capture), the captured image (e.g., JPG) is then OCR’d to convert to text.
-    >     <name><pageno>.jpg
+>     <name><pageno>.jpg
     o	Extracts the raw text from the page , where each page is individually stored in a raw text format. The pages are named as follows:
-    >     <name><pageno>.txt 
+ >     <name><pageno>.txt 
       Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran.
     o	Create a Page object for each page and adds them to the pages index property.
     o	If the document format is raw text, then:
