@@ -2,7 +2,8 @@ site_name: Gap-ML
 theme: readthedocs
 repo_url: https://github.com/virtualdvid/Gap
 pages:
-- Home: overview.md
+- Home: home.md
+- About: about.md
 - quick start guide: quick-start-guide.md
 - Modules:
     - Segmentation: modules/segmentation_spec.md

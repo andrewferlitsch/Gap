@@ -263,7 +263,7 @@ data = image.data
 
 ### Image Reference
 
-For a complete reference on all methods and properties for the Image class, see [reference](/specs/vision_spec.docx).
+For a complete reference on all methods and properties for the Image class, see [reference](https://virtualdvid.github.io/Gap/modules/vision_spec/).
 
 ### Image Collections
    
