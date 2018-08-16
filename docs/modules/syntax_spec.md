@@ -10,17 +10,17 @@ Technical Specification, Gap v0.91
 
 The words NLP preprocessor contains the following primary classes, and their relationships:
 
-+	Words - This is the base class for the representation of a Natural Language Processing (NLP) preprocessed list of words. The constructor optionally takes as parameters the raw text to tokenize and flags for NLP preprocessing the text.
++ Words - This is the base class for the representation of a Natural Language Processing (NLP) preprocessed list of words. The constructor optionally takes as parameters the raw text to tokenize and flags for NLP preprocessing the text.
 
 ```python
 words = Words("some text", flags …)
 ```
 
-The constructor calls the private methods ``_split()``, `_stem()`, and `_stopwords()`.
+The constructor calls the private methods `_split()`, `_stem()`, and `_stopwords()`.
 
-+	Word – A single NLP preprocessed word (token).
++ Word – A single NLP preprocessed word (token).
 
-+	Vocabulary – A performance optimized python dictionary for word classification and lemmatizing.
++ Vocabulary – A performance optimized python dictionary for word classification and lemmatizing.
 
 
 
@@ -237,7 +237,7 @@ The Words class contains the following static variables:
 
 ### 1.4  Words Overridden Operators
 
-#### 1.4.1  `len()`
+#### 1.4.1  len()
 
 ###### Synopsis
 
@@ -249,7 +249,7 @@ nwords = len(words)
 
 The `len()` `(__len__)` operator is overridden to return  the number of NLP tokenized words.
 
-#### 1.4.2  `+=`
+#### 1.4.2  +=
 
 ###### Synopsis
 

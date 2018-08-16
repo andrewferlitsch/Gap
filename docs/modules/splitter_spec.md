@@ -10,7 +10,7 @@ Technical Specification, Gap v0.91
 
 The document classifier contains the following primary classes, and their relationships:
 
-•	**Document** – This is the base class for the representation of a stored document.  The constructor for the class object takes as parameters the stored path to the document, optionally a directory path for storing extracted pages and text, and optionally an event completion handler when processing the document asynchronously, and optionally a config parameter for configuring the NLP preprocessing.
++ **Document** – This is the base class for the representation of a stored document.  The constructor for the class object takes as parameters the stored path to the document, optionally a directory path for storing extracted pages and text, and optionally an event completion handler when processing the document asynchronously, and optionally a config parameter for configuring the NLP preprocessing.
 
 ```python
 document = Document(“/somedir/mydocument.pdf”, “/mypages/mydocument”)
@@ -18,7 +18,7 @@ document = Document(“/somedir/mydocument.pdf”, “/mypages/mydocument”)
 
 The constructors calls the `_exists()` and `_collate()` private methods for the specified document.
 
-•	**Page** – This is a base class for the representation of an extracted page from the document. The `Document` class contains a list (index) of the extracted pages as `Page` objects.
++ **Page** – This is a base class for the representation of an extracted page from the document. The `Document` class contains a list (index) of the extracted pages as `Page` objects.
 
 
 
@@ -304,13 +304,13 @@ When used as a getter the property returns the sorted tuples of a term frequency
 
 The Document class contains the following static variables:
 
-•	**RESOLUTION** – The image resolution when converting `PDF` to `PNG` for `OCR` (default `300`).  
-•	**SCANCHECK**  – The number of `OCR` words to check to estimate the quality of the scan.  
-•	**WORDDICT**   - The word dictionary to use for scan spell check (default to `pyaspeller`).
++	**RESOLUTION** – The image resolution when converting `PDF` to `PNG` for `OCR` (default `300`).  
++	**SCANCHECK**  – The number of `OCR` words to check to estimate the quality of the scan.  
++	**WORDDICT**   - The word dictionary to use for scan spell check (default to `pyaspeller`).
 
 ### 1.4  Document Overridden Operators
 
-#### 1.4.1  `len()`
+#### 1.4.1  len()
 
 ###### Synopsis
 
@@ -322,7 +322,7 @@ npages = len(document)
 
 The `len()` `(__len__)` operator is overridden to return the number of pages in the document.
 
-#### 1.4.2	`+=`
+#### 1.4.2	+=
 
 ###### Synopsis
 
@@ -334,7 +334,7 @@ document += page
 
 The `+=` `(__iadd__)` method is overridden to append a Page object to the document.
 
-#### 1.4.3	`[]`
+#### 1.4.3  []
 
 ###### Synopsis
 
@@ -352,7 +352,7 @@ The `__setitem__()` method is overridden to replace the Page object at the speci
 
 A `IndexError` is raised if the index is out of range.
 
-#### 1.4.4  `str()`
+#### 1.4.4  str()
 
 ###### Synopsis
 
@@ -366,7 +366,7 @@ The `str()` `(__str__)` operator is overridden to return the label of the docume
 
 ### 1.5  Document Public Methods
 
-#### 1.5.1  `load()`
+#### 1.5.1  load()
 
 ###### Synopsis
 
@@ -443,12 +443,12 @@ The `Document` class contains the following private methods:
 
 The page classifier contains the following primary classes, and their relationships:
 
-•	`Page` – This is a base class for the representation of an extracted page from a document.  The constructor for the class object takes optionally as parameters the stored path to the page, and the extracted raw text. 
++ `Page` – This is a base class for the representation of an extracted page from a document.  The constructor for the class object takes optionally as parameters the stored path to the page, and the extracted raw text. 
 
 ```python
 page = Page( ‘/mypages/page1.pdf’, ‘some text’)
 ```
-•	`Words` – This is a base class for representation of the text as NLP preprocessed list of words.
++ `Words` – This is a base class for representation of the text as NLP preprocessed list of words.
 
 
 
@@ -622,7 +622,7 @@ The Page class contains the following static variables:
 
 ### 2.4  Page Overwritten Operators
 
-#### 2.4.1  `len()`
+#### 2.4.1  len()
 
 ###### Synopsis
 
@@ -634,7 +634,7 @@ nwords = len(pages)
 
 The `len()` `(__len__)` operator is overridden to return  the number of NLP tokenized words in the page.
 
-#### 2.4.2	`+=`
+#### 2.4.2	+=
 
 ###### Synopsis
 
@@ -650,7 +650,7 @@ The `+=` `(__iadd__)` method is overridden to append text to the page, which is 
 
 A TypeError is raised if the type of the parameter is not the expected type.
 
-#### 2.4.3  `str()`
+#### 2.4.3  str()
 
 ###### Synopsis
 
