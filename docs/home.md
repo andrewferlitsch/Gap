@@ -223,4 +223,3 @@ Testing with code coverage is executed as follows:
     pytest --cov=vision image_test.py
 
         Statements=456, Missed=60, Percent Covered: 89%
-```
