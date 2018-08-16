@@ -11,16 +11,16 @@ To utilize this module, the Gap framework will automatically install:
 
 >     1.	This Python module.
 >     2.	Python 3.6 or latter
->     3.	Ghostscript ©(open source from Artifex).	[will auto-install with pip install on Linux/Mac].
->     4.	Tesseract ©(open source from Google).		[will auto-install with pip install on Linux/Mac].
->     5.	Magick ©(open source from Image Magic).		[will auto-install with pip install on Linux/Mac].
->     6.	NLTK Toolkit (open source) 			[will auto-install with pip install].
->     7.	Unidecode (open source) 			[will auto-install with pip install].
->     8.	HD5 (open source) 				[will auto-install with pip install].
->     9.	Numpy (open source) 				[will auto-install with pip install].
->     10.	OpenCV (open source) 				[will auto-install with pip install]. 
->     11.	Imutils (open source) 				[will auto-install with pip install].
->     12.	Pyaspeller (open source)			[will auto-install with pip install].
+>     3.	Ghostscript ©(open source from Artifex).    [will auto-install with pip install on Linux/Mac].
+>     4.	Tesseract ©(open source from Google).       [will auto-install with pip install on Linux/Mac].
+>     5.	Magick ©(open source from Image Magic).     [will auto-install with pip install on Linux/Mac].
+>     6.	NLTK Toolkit (open source)                  [will auto-install with pip install].
+>     7.	Unidecode (open source)                     [will auto-install with pip install].
+>     8.	HD5 (open source)                           [will auto-install with pip install].
+>     9.	Numpy (open source)                         [will auto-install with pip install].
+>     10.	OpenCV (open source)                        [will auto-install with pip install]. 
+>     11.	Imutils (open source)                       [will auto-install with pip install].
+>     12.	Pyaspeller (open source)                    [will auto-install with pip install].
 ---
 ### 2  SPLITTER Module
 
