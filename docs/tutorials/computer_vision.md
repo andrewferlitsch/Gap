@@ -48,24 +48,32 @@ These are the basic steps for all computer vision based neural networks:
  
 The <span style='color:saddlebrown'>Vision</span> module of the <span style='color: saddlebrown'>Gap</span> framework implements the classes and methods for computer vision. Within the [Vision](https://github.com/andrewferlitsch/Gap/blob/master/vision.py) module are two primary class objects for data management of images. The Image class manages individual images, while the Images class manages collections of images. As a first step, in your Python script or program you want to import from the Vision module the Image and Images class objects.
 
-      from vision import Image, Images
+```python
+from vision import Image, Images
+```
  
  ### Preprocessing (Preparing) an image with Gap
   
 Relative to the location of this tutorial are a number of test images used in verifying releases of Gap. For the purpose of these tutorials, the images that are part of the Gap release verification will be used for examples. The test file 1_100.jpg is a simple 100x100 96 dpi color image (RGB/8bit) from the Kaggle Fruit360 dataset. This dataset was part of a Kaggle contents to classify different types of fruits and their variety. It was a fairly simple dataset in that all the images were of the same size, type and number of channels. Further, each image contained only the object to classify (i.e., fruit) and was centered in the image.
 
-The first step is to instantiate an *Image* class object and load the image into it, and its corresponding label. In the example below, an Image object is created where the first two positional parameters are the path to the image and the corresponding label (i.e., 1). 
-  
-      image = Image("../tests/files/1_100.jpg", 1)
+The first step is to instantiate an `Image` class object and load the image into it, and its corresponding label. In the example below, an Image object is created where the first two positional parameters are the path to the image and the corresponding label (i.e., 1). 
+
+```python
+image = Image("../tests/files/1_100.jpg", 1)
+```
 
 While Python does not have OOP polymorphism builtin, the class objects in Gap have been constructed to emulate polymorphism in a variety of ways. The first positional parameter (image path) to the Image class can either be a local path or a remote path. In the latter case, a path starting with http or https is a remote path. In this case, a HTTP request to fetch the image from the remote location is made.
 
-      image = Image("https://en.wikipedia.org/wiki/File:Example.jpg", 1)
-      
+```python
+image = Image("https://en.wikipedia.org/wiki/File:Example.jpg", 1)
+```
+
 Alternately, raw pixel data can be specified as the first (image) positional parameter, as a numpy array.
 
-      raw = cv2.imread("../tests/files/1_100.jpg")
-      image = Image(raw, 1)
+```python
+raw = cv2.imread("../tests/files/1_100.jpg")
+image = Image(raw, 1)
+```
 
 Preprocessing of the image in the above examples is synchronous. The initializer (i.e., constructor) returns an image object once the image file has been preprocessed. Alternately, preprocessing of an image can be done asynchronously, where the preprocessing is performed by a background thread. Asynchronous processing occurs if the keyword parameter *ehandler* is specified. The value of the parameter is set to a function or method, which is invoked with the image object as a parameter when preprocessing of the image is complete.
   
