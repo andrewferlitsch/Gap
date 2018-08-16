@@ -52,7 +52,7 @@ The **Vision** module of the **Gap** framework implements the classes and method
 from vision import Image, Images
 ```
  
- ### Preprocessing (Preparing) an image with Gap
+### Preprocessing (Preparing) an image with Gap
   
 Relative to the location of this tutorial are a number of test images used in verifying releases of Gap. For the purpose of these tutorials, the images that are part of the Gap release verification will be used for examples. The test file `1_100.jpg` is a simple 100x100 96 dpi color image (RGB/8bit) from the Kaggle Fruit360 dataset. This dataset was part of a Kaggle contents to classify different types of fruits and their variety. It was a fairly simple dataset in that all the images were of the same size, type and number of channels. Further, each image contained only the object to classify (i.e., fruit) and was centered in the image.
 
