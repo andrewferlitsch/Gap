@@ -1,0 +1,15 @@
+site_name: Gap-ML
+theme: readthedocs
+repo_url: https://github.com/virtualdvid/Gap
+google_analytics: ['UA-124105572-1', 'https://virtualdvid.github.io/Gap/home/']
+pages:
+- Home: home.md
+- About: about.md
+- quick start guide: quick-start-guide.md
+- Modules:
+    - Segmentation: modules/segmentation_spec.md
+    - Splitter: modules/splitter_spec.md
+    - Syntax: modules/syntax_spec.md
+    - Vision: modules/vision_spec.md
+- Tutorials:
+    - Computer Vision: tutorials/computer_vision.md
