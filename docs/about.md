@@ -4,25 +4,25 @@
 ## Framework
 The Gap NLP/CV open source framework provides an easy to get started into the world of machine learning for your unstructured data in PDF documents, scanned documents, TIFF facsimiles,  camera captured documents, and computer vision for your image data.
 
-•	Automatic OCR of scanned and camera captured images.  
-•	Automatic Text Extraction from documents.  
-•	Automatic Syntax Analysis.  
-•	Programmatic control for data extraction or redaction (de-identification)  
-    o	Names, Addresses, Proper Places  
-    o	Social Security Numbers, Data of Birth, Gender  
-    o	Telephone Numbers  
-    o	Numerical Information (e.g., medical, financial, …) and units of measurement.  
-    o	Unit conversion from US Standard to Metric, and vice-versa  
-    o	Unicode character recognition  
-•	Machine Training of Document and Page Classification.  
-•	Automatic image preparation (resizing, sampling) and storage (HD5) for convolutional neural networks.
++	Automatic OCR of scanned and camera captured images.  
++	Automatic Text Extraction from documents.  
++	Automatic Syntax Analysis.  
++	Programmatic control for data extraction or redaction (de-identification)  
+    -	Names, Addresses, Proper Places  
+    -	Social Security Numbers, Data of Birth, Gender  
+    -	Telephone Numbers  
+    -	Numerical Information (e.g., medical, financial, …) and units of measurement.  
+    -	Unit conversion from US Standard to Metric, and vice-versa  
+    -	Unicode character recognition  
++	Machine Training of Document and Page Classification.  
++	Automatic image preparation (resizing, sampling) and storage (HD5) for convolutional neural networks.
 
 The framework consists of a sequence of Python modules which can be retrofitted into a variety of configurations. The framework is designed to fit seamlessly and scale with an accompanying infrastructure. To achieve this, the design incorporates:
 
-•	Problem and Modular Decomposition utilizing Object Oriented Programming Principles.  
-•	Isolation of Operations and Parallel Execution utilizing Functional Programming Principles.  
-•	High Performance utilizing Performance Optimized Python Structures and Libraries.  
-•	High Reliability and Accuracy using Test Driven Development Methodology.
++	Problem and Modular Decomposition utilizing Object Oriented Programming Principles.  
++	Isolation of Operations and Parallel Execution utilizing Functional Programming Principles.  
++	High Performance utilizing Performance Optimized Python Structures and Libraries.  
++	High Reliability and Accuracy using Test Driven Development Methodology.
 
 The framework provides the following pipeline of modules to support your data and knowledge extraction from both digital and scanned PDF documents, TIFF facsimiles and image captured documents, and for preparing and storing image data for computer vision.
 
@@ -44,18 +44,18 @@ The document and corresponding pages may be classified (i.e., category of the co
 The syntax module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support. 
 The word classifier recognizes:
 
-•	Syntax Units: Articles, Demonstratives, Prepositions, Pronouns, Conjunctions, Quantifiers, Questions  
-•	Abbreviations  
-•	Acronyms  
-•	Gender (inclusive of Transgender)  
-•	Date of Birth  
-•	USA and Canadian Addresses  
-•	USA and Canadian Telephone Numbers  
-•	USA Social Security numbers  
-•	USA and ISO Standard for Dates  
-•	USA and ISO Standard for Numbers and units of measure.  
-•	Geographic Locations  
-•	Sentiment
++	Syntax Units: Articles, Demonstratives, Prepositions, Pronouns, Conjunctions, Quantifiers, Questions  
++	Abbreviations  
++	Acronyms  
++	Gender (inclusive of Transgender)  
++	Date of Birth  
++	USA and Canadian Addresses  
++	USA and Canadian Telephone Numbers  
++	USA Social Security numbers  
++	USA and ISO Standard for Dates  
++	USA and ISO Standard for Numbers and units of measure.  
++	Geographic Locations  
++	Sentiment
 
 Dates, numbers and units of measure can be converted to either USA Standard or ISO Standard.  USA and Canadian postal addresses are converted to the USPO standard for address matching.
 
