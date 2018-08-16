@@ -3,7 +3,7 @@ theme: readthedocs
 repo_url: https://github.com/virtualdvid/Gap
 google_analytics: ['UA-124105572-1', 'https://virtualdvid.github.io/Gap/home/']
 pages:
-- Home: home.md
+- Home: index.md
 - About: about.md
 - quick start guide: quick-start-guide.md
 - Modules:
