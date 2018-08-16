@@ -1,0 +1,11 @@
+site_name: Gap-ML
+theme: readthedocs
+pages:
+- Home: index.md
+- About: about.md
+- quick start guide: quick-start-guide.md
+- Modules:
+    - Segmentation: segmentation_spec.md
+    - Splitter: splitter_spec.md
+    - Syntax: syntax_spec.md
+    - Vision: vision_spec.md
