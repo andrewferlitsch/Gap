@@ -1,11 +1,13 @@
 site_name: Gap-ML
 theme: readthedocs
+repo_url: https://github.com/virtualdvid/Gap
 pages:
-- Home: index.md
-- About: about.md
+- Home: overview.md
 - quick start guide: quick-start-guide.md
 - Modules:
-    - Segmentation: segmentation_spec.md
-    - Splitter: splitter_spec.md
-    - Syntax: syntax_spec.md
-    - Vision: vision_spec.md
+    - Segmentation: modules/segmentation_spec.md
+    - Splitter: modules/splitter_spec.md
+    - Syntax: modules/syntax_spec.md
+    - Vision: modules/vision_spec.md
+- Tutorials:
+    - Computer Vision: tutorials/computer_vision.md
