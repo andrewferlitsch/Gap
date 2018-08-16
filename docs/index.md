@@ -92,7 +92,7 @@ The dependencies for python packages distributed at PyPi are automatically check
   - imultils : https://github.com/jrosebr1/imutils
   - pyaspeller : https://pypi.org/project/pyaspeller/
   
- #### 3rd Party Dependencies
+#### 3rd Party Dependencies
  
  The dependencies for non-python packages are automatically checked for and installed by the setup.py script. These include:
  
