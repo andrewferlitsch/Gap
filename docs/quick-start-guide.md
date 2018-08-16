@@ -776,11 +776,17 @@ The split() property when called as a getter will return the training data, trai
 ```python
 # Set 30% of the images in the collection to be test data
 images.split = 0.3
+
 # Get the entire training and test data and corresponding labels as lists.
 X_train, X_test, Y_train, Y_test = images.split
-Alternately, the next() operator will iterate through the image data, and corresponding label, in the training set. 
+```
+
+Alternately, the `next()` operator will iterate through the image data, and corresponding label, in the training set. 
+
+```python
 # Set 30% of the images in the collection to be test data
 images.split = 0.3
+
 # Iterate through the training data
 while ( data, label = next(images) ) is not None:
     pass
