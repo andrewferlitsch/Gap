@@ -111,6 +111,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 install_requires=[
+    'bs4',
     'numpy',
     'h5py',
     'imutils',
