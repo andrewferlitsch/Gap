@@ -1,4 +1,4 @@
-# Tutorials (Computer Vision)
+# Computer Vision
 
 ## Introduction
 
