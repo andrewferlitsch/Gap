@@ -2,7 +2,7 @@ site_name: Gap-ML
 theme: readthedocs
 repo_url: https://github.com/andrewferlitsch/Gap
 google_analytics: ['UA-124105572-1', 'https://andrewferlitsch.github.io/Gap/']
-pages:
+nav:
 - Home: index.md
 - About: about.md
 - quick start guide: quick-start-guide.md
