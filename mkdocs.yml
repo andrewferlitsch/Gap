@@ -2,6 +2,7 @@ site_name: Gap-ML
 theme: readthedocs
 repo_url: https://github.com/virtualdvid/Gap
 google_analytics: ['UA-124105572-1', 'https://virtualdvid.github.io/Gap/']
+extra_css: [extra.css]
 pages:
 - Home: index.md
 - About: about.md
