@@ -27,9 +27,9 @@ def word_to_dictionary(file, output_dir):
     words_dict['<NEG>'] = 6
 
     #verify if word2int name 
-    sp_fr = file.split('.')[0]
-    if 'sp' in sp_fr or 'fr' in sp_fr:
-        f_name='word2int_{}.py'.format(sp_fr)
+    lang = file.split('.')[0].split('-')[0]
+    if lang != 'en':
+        f_name='word2int_{}.py'.format(lang)
     else:
         f_name='word2int.py'
 
