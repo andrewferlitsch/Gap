@@ -11,16 +11,16 @@ To utilize this module, the Gap framework will automatically install:
 
 >     1.	This Python module.
 >     2.	Python 3.6 or latter
->     3.	Ghostscript ©(open source from Artifex).	[will auto-install with pip install on Linux/Mac].
->     4.	Tesseract ©(open source from Google).		[will auto-install with pip install on Linux/Mac].
->     5.	Magick ©(open source from Image Magic).		[will auto-install with pip install on Linux/Mac].
->     6.	NLTK Toolkit (open source) 			[will auto-install with pip install].
->     7.	Unidecode (open source) 			[will auto-install with pip install].
->     8.	HD5 (open source) 				[will auto-install with pip install].
->     9.	Numpy (open source) 				[will auto-install with pip install].
->     10.	OpenCV (open source) 				[will auto-install with pip install]. 
->     11.	Imutils (open source) 				[will auto-install with pip install].
->     12.	Pyaspeller (open source)			[will auto-install with pip install].
+>     3.	Ghostscript ©(open source from Artifex).    [will auto-install with pip install on Linux/Mac].
+>     4.	Tesseract ©(open source from Google).       [will auto-install with pip install on Linux/Mac].
+>     5.	Magick ©(open source from Image Magic).     [will auto-install with pip install on Linux/Mac].
+>     6.	NLTK Toolkit (open source)                  [will auto-install with pip install].
+>     7.	Unidecode (open source)                     [will auto-install with pip install].
+>     8.	HD5 (open source)                           [will auto-install with pip install].
+>     9.	Numpy (open source)                         [will auto-install with pip install].
+>     10.	OpenCV (open source)                        [will auto-install with pip install]. 
+>     11.	Imutils (open source)                       [will auto-install with pip install].
+>     12.	Pyaspeller (open source)                    [will auto-install with pip install].
 ---
 ### 2  SPLITTER Module
 
@@ -74,7 +74,7 @@ document = Document("scanneddocument.pdf", "storage_path")
 
 #### 2.5  Page Access
 
-Each page is represented by a Page (class) object. Access to the page object is obtained from the pages property member of the Document object. The number of pages in the document is returned by the len() builtin operator for the Document class.
+Each page is represented by a Page (class) object. Access to the page object is obtained from the pages property member of the Document object. The number of pages in the document is returned by the `len()` builtin operator for the Document class.
 
 ```python
 document = Document("yourdocument.pdf", "storage_path")
@@ -97,7 +97,7 @@ page1_path = page1.path
 
 #### 2.6  Adding Pages
 
-Additional pages can be added to the end of an existing Document object using the += (overridden) operator, where the new page will be fully processed. 
+Additional pages can be added to the end of an existing Document object using the `+=` (overridden) operator, where the new page will be fully processed. 
 
 ```python
 document = Document("1page.pdf")
@@ -117,7 +117,7 @@ print(len(document))
 
 #### 2.7  Text Extraction
 
-The raw text for the page is obtained by the text property of the page class. The byte size of the raw text is obtained from the size() method of the page class.
+The raw text for the page is obtained by the text property of the page class. The byte size of the raw text is obtained from the `size()` method of the page class.
 
 ```python
 # Get the page table
@@ -192,7 +192,7 @@ roman           # Romanize latin-1 character encodings into ASCII
 
 #### 2.11  Document Reloading
 
-Once a Document object has been stored, it can later be retrieved from storage, reconstructing the Page and corresponding Words objects. A document object is first instantiated, and then the load() method is called specifying the document name and corresponding storage path. The document name and storage path are used to identify and locate the corresponding stored pages.
+Once a Document object has been stored, it can later be retrieved from storage, reconstructing the Page and corresponding Words objects. A document object is first instantiated, and then the `load()` method is called specifying the document name and corresponding storage path. The document name and storage path are used to identify and locate the corresponding stored pages.
 
 ```python
 # Instantiate a Document object
@@ -209,7 +209,7 @@ This will reload pages whose filenames in the storage match the sequence:
 
 #### 2.13  Word Frequency Distributions
 
-The distribution of word occurrences and percentage in a document and individual pages are obtained using the properties: bagOfWords, freqDist and termFreq.
+The distribution of word occurrences and percentage in a document and individual pages are obtained using the properties: `bagOfWords`, `freqDist`, and `termFreq`.
 
 The bagOfWords property returns an unordered dictionary of each unique word in the document (or page) as a key, and the number of occurrences as the value.
 
@@ -295,7 +295,7 @@ type(words)
 
 #### 3.2  Words Properties
 
-The Words (class) object has four public properties: text , words, bagOfWords and freqDist. The text property is used to access the raw text and the words property is used to access the NLP processed tokens from the raw text.	
+The Words (class) object has four public properties: `text`, `words`, `bagOfWords`, and `freqDist`. The text property is used to access the raw text and the words property is used to access the NLP processed tokens from the raw text.	
 
 ```python
 # Get the NLP processed words (Words class) object from the page as a list.
@@ -473,6 +473,7 @@ will output:
 #### 3.13  Telephone Number
 
 When the keyword parameter telephone is True, USA/CA telephone numbers are preserved; otherwise they are removed. Telephone numbers are detected from the prefix presence of text sequences indicating a telephone number will follow, such Phone:, Mobile Number, etc. Telephone numbers are converted to their single 10 digit value, inclusive of area code, and the tag value is set to one of:
+
 ```python
 Vocabulary.TELEPHONE
 Vocabulary.TELEPHONE_HOME
@@ -599,7 +600,7 @@ will output:
 
 #### 3.20  Bag of Words and Word Frequency Distribution
 
-The property bagsOfWords returns an unordered dictionary of each occurrence of a unique word in the tokenized sequence, where the word is the dictionary key, and the number of occurrences is the corresponding value.
+The property `bagsOfWords` returns an unordered dictionary of each occurrence of a unique word in the tokenized sequence, where the word is the dictionary key, and the number of occurrences is the corresponding value.
 
 ```python
 # Get the Bag of Words representation
@@ -610,7 +611,7 @@ will output:
 >     { 'pail': 1, 'the': 1, 'a': 1, 'water': 1, 'fetch': 1, 'went': 1, 'and': 2, 'jack': 2, 'jill': 2,
 >     'down': 1, 'come': 1, 'fell': 1, 'up': 1, 'of': 1, 'tumble': 1, 'to': 1, 'hill': 1, 'after': 1 }
 
-The property freqDist returns a sorted list of tuples, in descending order, of word frequencies (i.e., the number of occurrences of the word in the tokenized sequence.
+The property `freqDist` returns a sorted list of tuples, in descending order, of word frequencies (i.e., the number of occurrences of the word in the tokenized sequence.
 
 ```python
 # Get the Word Frequency Distribution
@@ -649,7 +650,7 @@ Alternately, the input may be raw pixel data as a numpy array.
 
 #### 4.2  Image Processing Settings (Config)
 
-CV Preprocessing of the image may be configured for several settings  when instantiating an Image object with the optional config parameter, which consists of a list of one or more predefined options.
+CV Preprocessing of the image may be configured for several settings when instantiating an Image object with the optional config parameter, which consists of a list of one or more predefined options.
 
 ```python
 image = Image("yourimage.jpg", 101, "storage_path", config=[options])
@@ -704,7 +705,7 @@ image = Image("yourimage.png", "storage_path", 101, ehandler=done)
 
 #### 4.6  Image Reloading
 
-Once an Image object has been stored, it can later be retrieved from storage, reconstructing the Image object. An Image object is first instantiated, and then the load() method is called specifying the image name and corresponding storage path. The image name and storage path are used to identify and locate the corresponding stored image data.
+Once an Image object has been stored, it can later be retrieved from storage, reconstructing the Image object. An Image object is first instantiated, and then the `load()` method is called specifying the image name and corresponding storage path. The image name and storage path are used to identify and locate the corresponding stored image data.
 
 ```python
 # Instantiate an Image object
@@ -771,16 +772,22 @@ for ix in range(len(images)):
 
 Batch, mini-batch and stochastic feed modes are supported. The percentage of data that is test (vs. training) is set by the split property, where the default is 0.2. Optionally, a mini-batch size is set by the minibatch property. Prior to the split, the data is randomized.
 
-The split() property when called as a getter will return the training data, training labels, test data, and test labels.
+The `split()` property when called as a getter will return the training data, training labels, test data, and test labels.
 
 ```python
 # Set 30% of the images in the collection to be test data
 images.split = 0.3
+
 # Get the entire training and test data and corresponding labels as lists.
 X_train, X_test, Y_train, Y_test = images.split
-Alternately, the next() operator will iterate through the image data, and corresponding label, in the training set. 
+```
+
+Alternately, the `next()` operator will iterate through the image data, and corresponding label, in the training set. 
+
+```python
 # Set 30% of the images in the collection to be test data
 images.split = 0.3
+
 # Iterate through the training data
 while ( data, label = next(images) ) is not None:
     pass
@@ -806,7 +813,7 @@ for data, label in g:
     pass
 ```
 
-The split property when used as a setter may optionally take a seed for initializing the randomized shuffling of the training set.
+The `split` property when used as a setter may optionally take a seed for initializing the randomized shuffling of the training set.
 
 ```python
 # Set the seed for the random shuffle to 42
@@ -843,7 +850,7 @@ images = Images(["img1.png", "img2.png"], "train", labels=[0,1], ehandler=done)
 
 #### 4.13  Collection Reloading
 
-Once an Images object has been stored, it can later be retrieved from storage, reconstructing the Images object, and corresponding list of Image objects. An Images object is first instantiated, and then the load() method is called specifying the collection name and corresponding storage path. The collection name and storage path are used to identify and locate the corresponding stored image data.
+Once an Images object has been stored, it can later be retrieved from storage, reconstructing the Images object, and corresponding list of Image objects. An Images object is first instantiated, and then the `load()` method is called specifying the collection name and corresponding storage path. The collection name and storage path are used to identify and locate the corresponding stored image data.
 
 ```python
 # Instantiate an Images object

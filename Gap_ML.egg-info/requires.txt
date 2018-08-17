@@ -1,9 +1,0 @@
-numpy
-h5py
-imutils
-unidecode
-nltk
-requests
-opencv-python
-pillow
-pyaspeller
