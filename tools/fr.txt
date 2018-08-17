@@ -117,7 +117,6 @@ commande	1_graph	8_frantfreqparm
 116	toutes	567.68
 117	trop	559.68
 118	notre	558.39
-119	déjà	554.42
 120	yeux	551.52
 121	cela	550.87
 122	ni	544.19

@@ -1513,6 +1513,8 @@ class Words(object):
         return self
         
 from word2int import word2int 
+from word2int_fr import word2int_fr
+from word2int_sp import word2int_sp
         
 class Norvig(object):
     """ 
@@ -1522,15 +1524,19 @@ class Norvig(object):
     In the original Norvig spell checker, guess of what would be the next character replacement to try was in alphabetical order.
     In this enhancement, the next character is based on the QWERTY keyboard layout and the likelihood that the hand shifted one key.
     """
-    word2int = None
     
-    def __init__(self):
-        pass
+    def __init__(self, lang='en'):
+        global word2int, word2int_fr, word2int_sp
+        if lang == 'en':
+            self.word2int = word2int
+        elif lang == 'sp':
+            self.word2int = word2int_sp
+        elif lang == 'fr':
+            self.word2int = word2int_fr
                     
     def known(self, words): 
-        global word2int
         "The subset of `words` that appear in the dictionary of WORDS."
-        return set(w for w in words if w in word2int)
+        return set(w for w in words if w in self.word2int)
 
     def edits1(self, word):
         "All edits that are one edit away from `word`."
@@ -1584,7 +1590,7 @@ class Norvig(object):
         k = self.candidates(word)
         word = k.pop()
         try:
-            intval = word2int[word]
+            intval = self.word2int[word]
             return word, intval
         except:
-            return '<OUT>', word2int['<OUT>']
+            return '<OUT>', self.word2int['<OUT>']
