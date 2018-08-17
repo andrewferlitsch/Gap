@@ -75,28 +75,7 @@ Further disclosure requires an Non-Disclosure Agreement.
  
 ## MODULES
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
+  ![modules](img/modules.png)
 
 Proprietary and Confidential Information
 Copyright ©2018, Epipog, All Rights Reserved

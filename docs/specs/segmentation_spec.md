@@ -17,13 +17,7 @@ The segment NLP preprocessor contains the following primary classes, and their r
 segments = Segment(text)
 ```
 
-
-
-
-
-
-
-
+  ![segment_relationships](../img/specs/segment_relationships.png)
 
 Fig. 1a High Level view of Segment Class Object Relationships
 
@@ -101,13 +95,14 @@ A `IndexError` is raised if the index is out of range.
 
 The segment class contains the following private methods:
 
-+  `_segmentation()` – This method is called by the constructor. It parses the text to identify text layouts, such as headings, paragraphs, columns, page numbering, etc, and separates the text into segments according to the identified layout.
++ `_segmentation()` – This method is called by the constructor. It parses the text to identify text layouts, such as headings, paragraphs, columns, page numbering, etc, and separates the text into segments according to the identified layout.
 
 #### 1.6  Segment Public Methods
 
 The Segment class contains of following public methods:
 
-+  There are no public methods. 
++ There are no public methods. 
+
 ---
 ### APPENDIX I: Updates
 
