@@ -20,7 +20,7 @@ The constructors calls the `_exists()` and `_collate()` private methods for the 
 
 + **Page** – This is a base class for the representation of an extracted page from the document. The `Document` class contains a list (index) of the extracted pages as `Page` objects.
 
-  ![document_relationships](../img/document_relationships.png)
+  ![document_relationships](../img/specs/document_relationships.png)
 
 Fig. 1a High Level view of `Document` Class Object Relationships
 
@@ -444,7 +444,7 @@ page = Page( ‘/mypages/page1.pdf’, ‘some text’)
 ```
 + `Words` – This is a base class for representation of the text as NLP preprocessed list of words.
 
-  ![page_relationships](../img/page_relationships.png)
+  ![page_relationships](../img/specs/page_relationships.png)
 
 Fig. 2a High Level view of Page Class Object Relationships
 

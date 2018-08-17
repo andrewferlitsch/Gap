@@ -22,7 +22,7 @@ The constructor calls the private methods `_split()`, `_stem()`, and `_stopwords
 
 + Vocabulary – A performance optimized python dictionary for word classification and lemmatizing.
 
-  ![words_relationships](../img/words_relationships.png)
+  ![words_relationships](../img/specs/words_relationships.png)
 
 Fig. 1a High Level view of Words Class Object Relationships
 

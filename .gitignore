@@ -3,3 +3,4 @@ Gap_ML.egg-info
 __pycache__
 tests/__pycache__
 site/
+templates/

@@ -20,7 +20,7 @@ images = Images([<list of images>], [<list_of_labels>], flags …)
 
 + Image – This is the base class for the representation of a single Computer Vision (CV). The constructor optionally takes as parameters an image (path), corresponding label, and flags for CV preprocessing the image.
 
-  ![images_relationships](../img/images_relationships.png)
+  ![images_relationships](../img/specs/images_relationships.png)
 
 Fig. 1a High Level view of Images Class Object Relationships
 

@@ -17,7 +17,7 @@ The segment NLP preprocessor contains the following primary classes, and their r
 segments = Segment(text)
 ```
 
-  ![segment_relationships](../img/segment_relationships.png)
+  ![segment_relationships](../img/specs/segment_relationships.png)
 
 Fig. 1a High Level view of Segment Class Object Relationships
 
