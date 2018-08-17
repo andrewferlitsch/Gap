@@ -121,7 +121,7 @@ The document and corresponding pages may be classified (i.e., category of the co
 
 #### <span style='color: saddlebrown'>SYNTAX</span>
 
-The syntax module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.
+The [syntax][2] module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.
 
 The word classifier recognizes:
 
@@ -142,25 +142,24 @@ Dates, numbers and units of measure can be converted to either USA Standard or I
 
 Along with the builtin stemmer and lemmatizer, the module can optionally be configured to use the NLTK (open source) stemmers, lemmatizer and parts of speech annotations.
 
-[Specification](https://virtualdvid.github.io/Gap/modules/syntax_spec/)
-
+  [2]: https://virtualdvid.github.io/Gap/modules/syntax_spec/
 
 #### <span style='color: saddlebrown'>SEGMENTATION</span>
 
-The segmentation module was introduced as part of the pre-launch of Gap v0.9. It currently is in the demonstration stage, and not ready for commericial-product code ready. The segmentation module examines the whitespace layout of the text to identify 'human' layout of text and corresponding context, such as paragraphs, headings, columns, page numbering, letterhead, etc. The text is then separated into segments based on recognized layout and within the segments the text is NLP preprocessed. In this mode, the NLP preprocessed text is hierarchical. At the top level are the segments, with corresponding segment tag, and the child is the NLP preprocessed text within the segment.
+The [segmentation][3] module was introduced as part of the pre-launch of Gap v0.9. It currently is in the demonstration stage, and not ready for commericial-product code ready. The segmentation module examines the whitespace layout of the text to identify 'human' layout of text and corresponding context, such as paragraphs, headings, columns, page numbering, letterhead, etc. The text is then separated into segments based on recognized layout and within the segments the text is NLP preprocessed. In this mode, the NLP preprocessed text is hierarchical. At the top level are the segments, with corresponding segment tag, and the child is the NLP preprocessed text within the segment.
 
-[Specification](https://virtualdvid.github.io/Gap/modules/segmentation_spec/)
+  [3]: https://virtualdvid.github.io/Gap/modules/segmentation_spec/
 
 #### <span style='color: saddlebrown'>VISION</span>
 
-The splitter module is the CV entry point into the pipeline. It consists of a Images and Image class. The Images class handles the storage and (random access) batch retrieval of CV machine learning ready data, using open source openCV image processing, numpy high performance arrays (tensors) and HDF5 high performance disk (tensor) access. The Image class handles preprocessing of individual images into CV machine learning ready data. The batch and image preprocessing can be done synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing of an image or batch has been completed and the machine learning ready data is accessible.
+The [splitter][4] module is the CV entry point into the pipeline. It consists of a Images and Image class. The Images class handles the storage and (random access) batch retrieval of CV machine learning ready data, using open source openCV image processing, numpy high performance arrays (tensors) and HDF5 high performance disk (tensor) access. The Image class handles preprocessing of individual images into CV machine learning ready data. The batch and image preprocessing can be done synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing of an image or batch has been completed and the machine learning ready data is accessible.
 
 The vision module handles:
 
   - Mixed image size, format, resolution, number of channels
   - Decompression, Resizing, Normalizing, Flattening
 
-[Specification](https://virtualdvid.github.io/Gap/modules/vision_spec/)
+  [4]: https://virtualdvid.github.io/Gap/modules/vision_spec/
 
 ## User's Guide
 
