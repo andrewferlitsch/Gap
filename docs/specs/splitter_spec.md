@@ -20,13 +20,7 @@ The constructors calls the `_exists()` and `_collate()` private methods for the 
 
 + **Page** – This is a base class for the representation of an extracted page from the document. The `Document` class contains a list (index) of the extracted pages as `Page` objects.
 
-
-
-
-
-
-
-
+  ![document_relationships](../img/document_relationships.png)
 
 Fig. 1a High Level view of `Document` Class Object Relationships
 
@@ -450,8 +444,7 @@ page = Page( ‘/mypages/page1.pdf’, ‘some text’)
 ```
 + `Words` – This is a base class for representation of the text as NLP preprocessed list of words.
 
-
-
+  ![page_relationships](../img/page_relationships.png)
 
 Fig. 2a High Level view of Page Class Object Relationships
 
@@ -465,8 +458,8 @@ Page( page=None, text=None,  pageno=None)
 
 ###### Parameters
 
-**page:**   If not None, the local path to the page.
-**text:**   If not None, the text corresponding to the page.
+**page:**   If not None, the local path to the page.  
+**text:**   If not None, the text corresponding to the page.  
 **pageno:** If not None, the page number in the corresponding Document object.
 
 ###### Usage
@@ -499,7 +492,8 @@ page.path= path
 
 ###### Usage
 
-When used as a getter the property returns the path of the corresponding page (i.e., split by Document object) in its native format.  
+When used as a getter the property returns the path of the corresponding page (i.e., split by Document object) in its native format.
+
 When used as a setter the property sets the path of the corresponding split page.
 
 ###### Exceptions
@@ -547,7 +541,8 @@ page.label = label
 
 ###### Usage
 
-When used as a getter the property returns the `integer` label that has been assigned to the page.  
+When used as a getter the property returns the `integer` label that has been assigned to the page.
+
 When used as a setter the property assigns `sets` a label to the page.
 
 ###### Exceptions
@@ -648,7 +643,7 @@ The `+=` `(__iadd__)` method is overridden to append text to the page, which is 
 
 ###### Exceptions
 
-A TypeError is raised if the type of the parameter is not the expected type.
+A `TypeError` is raised if the type of the parameter is not the expected type.
 
 #### 2.4.3  str()
 

@@ -20,13 +20,7 @@ images = Images([<list of images>], [<list_of_labels>], flags …)
 
 + Image – This is the base class for the representation of a single Computer Vision (CV). The constructor optionally takes as parameters an image (path), corresponding label, and flags for CV preprocessing the image.
 
-
-
-
-
-
-
-
+  ![images_relationships](../img/images_relationships.png)
 
 Fig. 1a High Level view of Images Class Object Relationships
 
@@ -249,7 +243,7 @@ n_images = len(images)
 
 The `len()` `(__len__)` operator is overridden to return the number of `Image` objects in the collection.
 
-1.4.1	[]
+#### 1.4.2	[]
 
 ###### Synopsis
 
@@ -265,7 +259,7 @@ The `[]` `(__getitem__)` operator is overridden to return the Image object at th
 
 A `IndexError` is raised if the index is out of range.
 
-#### 1.4.2  next()
+#### 1.4.3  next()
 
 ###### Synopsis
 
@@ -304,6 +298,7 @@ A `TypeError` is raised if the type of the parameter is not the expected type.
 A `ValueError` is raised if the name parameter is None.
  
 ## 2  Image
+
 ### 2.1  Image Overview
 
 The Image CV preprocessor contains the following primary classes, and their relationships:
@@ -361,12 +356,18 @@ By default, the image will be preprocessed as follows:
 4.	Upon completion, the raw pixel data and the preprocessed machine learning data for the image is stored as a single HDF5 file in the current working directory. The root name of the file will be the root name of the image.
 5.	Attributes of the raw and preprocessed image are stored in the HDF5 file.
 
-If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.  
-If the parameter dir is specified, then the generated HDF5 file is stored in the specified directory. If the directory does not exist, it is created.  
-If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the Image object passed as a parameter. The ehandler parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.  
-If the configuration setting grayscale (may be shortened to gray) is specified, then the image is converted to a single channel grayscale image, if not already.  
-If the configuration setting resize is specified, then the image is resized to the specified height and width.  
-If the configuration setting flatten (may be shortened to flat) is specified, the image is flattened into a single 1D vector (i.e., for input to a ANN).  
+If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
+
+If the parameter dir is specified, then the generated HDF5 file is stored in the specified directory. If the directory does not exist, it is created.
+
+If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the Image object passed as a parameter. The ehandler parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.
+
+If the configuration setting grayscale (may be shortened to gray) is specified, then the image is converted to a single channel grayscale image, if not already.
+
+If the configuration setting resize is specified, then the image is resized to the specified height and width.
+
+If the configuration setting flatten (may be shortened to flat) is specified, the image is flattened into a single 1D vector (i.e., for input to a ANN).
+
 If the configuration setting thumb is specified, then a thumbnail of the raw pixel data is generated to the specified height and width and stored in the HDF5 file. 
 
 ###### Exceptions
@@ -458,13 +459,13 @@ When used as a getter the property returns the raw pixel data of the uncompresse
 ###### Synopsis
 
 ```python
-
 # Getter
 pixels = image.thumb
 
 ###### Usage
 
 When used as a getter the property returns the pixel data for the thumbnail image.
+```
 
 #### 2.3.7  label
 
@@ -487,7 +488,7 @@ When used as a setter the property sets the label of the image to the specified 
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
 
-#### 2.3.8  dir
+#### 2.3.7  dir
 
 ###### Synopsis
 
@@ -509,7 +510,7 @@ When used as a setter, it is only applicable when used in conjunction with the `
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `FileNotFoundError` is raised if the directory does not exist.
 
-#### 2.3.9  data
+#### 2.3.8  data
 
 ###### Synopsis
 
@@ -522,7 +523,7 @@ data = image.data
 
 When used as a getter the property returns the preprocessed machine learning ready data.
 
-#### 2.3.10  shape
+#### 2.3.9  shape
 
 ###### Synopsis
 
@@ -535,7 +536,7 @@ shape = image.shape
 
 When used as a getter the property returns the shape of the preprocessed machine learning ready data (e.g., (50, 50, 3)).
  
-#### 2.3.11  time
+#### 2.3.10  time
 
 ###### Synopsis
 

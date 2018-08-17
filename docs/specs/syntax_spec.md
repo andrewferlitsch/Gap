@@ -22,14 +22,7 @@ The constructor calls the private methods `_split()`, `_stem()`, and `_stopwords
 
 + Vocabulary – A performance optimized python dictionary for word classification and lemmatizing.
 
-
-
-
-
-
-
-
-
+  ![words_relationships](../img/words_relationships.png)
 
 Fig. 1a High Level view of Words Class Object Relationships
 
@@ -124,9 +117,9 @@ Words( text, flags … )
 
 A `TypeError` is raised if the parameter is not the expected type.
 
-1.3	Words Properties
+### 1.3	Words Properties
 
-1.3.1	text
+#### 1.3.1 text
 
 ###### Synopsis
 
@@ -147,7 +140,7 @@ When used as a setter  the property re-preprocesses the text into machine learni
 
 A `TypeError` is raised if the parameter is not the expected type.
 
-1.3.2	bare
+#### 1.3.2 bare
 
 ###### Synopsis
 
@@ -164,7 +157,7 @@ When used as a getter the property returns the NLP tokenized list unprocessed. A
 
 Except for numbers and acronyms, the tag values are set to untagged (0).
 
-1.3.3	Words
+#### 1.3.3 Words
 
 ###### Synopsis
 
@@ -183,7 +176,7 @@ Otherwise, when the pos parameter is set to True:
 
 >     [ { 'word': word1, 'tag': tag, 'pos': POS }, {'word': word2, 'tag': tag, 'pos': POS } .. ]
 
-1.3.4	bagOfWords
+#### 1.3.4 bagOfWords
 
 ###### Synopsis
 
@@ -198,7 +191,7 @@ When used as a getter the property returns the word sequence as a Bag of Words, 
 
 >     { '<word'> : <no. of occurrences>, … }
 
-1.3.5	freqDist
+#### 1.3.5 freqDist
 
 ###### Synopsis
 
@@ -213,7 +206,7 @@ When used as a getter the property returns the sorted tuples of a frequency dist
 
 >     [ ( '<word'>: <no.  of occurrences> ), …. ]
 
-1.3.5	termFreq
+#### 1.3.5 termFreq
 
 ###### Synopsis
 
@@ -228,7 +221,7 @@ When used as a getter the property returns the sorted tuples of a term frequency
 
 >     [ ( '<word'>: <percentage  of occurrences> ), …. ]
  
-1.3.6	Static Variables
+#### 1.3.6 Static Variables
 
 The Words class contains the following static variables:
 
@@ -261,7 +254,7 @@ words += text
 
 The `+=` `(__iadd__)` method is overridden to add words to the sequenced word list (append).
 
-###1.5  Words Private Methods
+### 1.5 Words Private Methods
 
 The Words class contains the following private methods, which are called by the initializer:
 
@@ -378,9 +371,10 @@ If the preceding word is birth or DOB, then the date will be tagged as a date of
 
 + `_partsofspeech()` – This method performs the sixth phase of NLP preprocessing of the tokenized words of tagging words with their parts of speech tag (using NLTK).
 
-1.5	Words Public Methods
+### 1.5 Words Public Methods
 
 ---
+
 The Words class contains no public methods.
 
 ## APPENDIX I: Updates

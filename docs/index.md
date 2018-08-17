@@ -100,14 +100,13 @@ The dependencies for python packages distributed at PyPi are automatically check
   - Tesseract : https://github.com/tesseract-ocr/tesseract/wiki
   - Imagik :  https://www.imagemagick.org
 
-
 ## Modules
 
 The framework provides the following pipeline of modules to support your data and knowledge extraction from both digital and scanned PDF documents, TIFF facsimiles and image captured documents.
 
 #### <span style='color: saddlebrown'>SPLITTER</span>
 
-The [splitter][1] module is the NLP entry point into the pipeline. It consists of a Document and Page class. The Document class handles the splitting of PDF documents into PDF pages, TIFF facsimiles into TIFF pages, OCR and raw text extraction. PDF splitting and image extraction is handled by the open source Artifex’s Ghostscript ©, and TIFF splitting by open source Image Magic’s Magick ©. OCR is handled by the open source Google’s Tesseract ©. The Document object stores the individual PDF/TIFF/image pages and corresponding raw text and optionally page images (when scanned PDF, TIFF or images) in the specified storage path. The splitting process can be done synchronously or asynchronously, where in the latter case an event handler signals when the splitting/OCR has been completed and the page table is accessible.
+The [**splitter**](specs/splitter_spec.md) module is the NLP entry point into the pipeline. It consists of a Document and Page class. The Document class handles the splitting of PDF documents into PDF pages, TIFF facsimiles into TIFF pages, OCR and raw text extraction. PDF splitting and image extraction is handled by the open source Artifex’s Ghostscript ©, and TIFF splitting by open source Image Magic’s Magick ©. OCR is handled by the open source Google’s Tesseract ©. The Document object stores the individual PDF/TIFF/image pages and corresponding raw text and optionally page images (when scanned PDF, TIFF or images) in the specified storage path. The splitting process can be done synchronously or asynchronously, where in the latter case an event handler signals when the splitting/OCR has been completed and the page table is accessible.
 
 For OCR, the resolution of the image extraction is settable, which will affect the quality of the OCR, and corresponding processing time. If the resolution of the original scanned page is lower than the setting, it will be up-sampled, and conversely if it is higher it will be down-sampled.
 
@@ -117,11 +116,9 @@ NLP processing of the raw text is deferred until first access (JIT), and then pr
 
 The document and corresponding pages may be classified (i.e., category of the content) when the CLASSIFICATION module is installed.
 
-  [1]: https://virtualdvid.github.io/Gap/modules/splitter_spec/
-
 #### <span style='color: saddlebrown'>SYNTAX</span>
 
-The [syntax][2] module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.
+The [**syntax**](specs/spyntax_spec.md) module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.
 
 The word classifier recognizes:
 
@@ -142,28 +139,22 @@ Dates, numbers and units of measure can be converted to either USA Standard or I
 
 Along with the builtin stemmer and lemmatizer, the module can optionally be configured to use the NLTK (open source) stemmers, lemmatizer and parts of speech annotations.
 
-  [2]: https://virtualdvid.github.io/Gap/modules/syntax_spec/
-
 #### <span style='color: saddlebrown'>SEGMENTATION</span>
 
-The [segmentation][3] module was introduced as part of the pre-launch of Gap v0.9. It currently is in the demonstration stage, and not ready for commericial-product code ready. The segmentation module examines the whitespace layout of the text to identify 'human' layout of text and corresponding context, such as paragraphs, headings, columns, page numbering, letterhead, etc. The text is then separated into segments based on recognized layout and within the segments the text is NLP preprocessed. In this mode, the NLP preprocessed text is hierarchical. At the top level are the segments, with corresponding segment tag, and the child is the NLP preprocessed text within the segment.
-
-  [3]: https://virtualdvid.github.io/Gap/modules/segmentation_spec/
+The [**segmentation**](specs/segmentation_spec.md) module was introduced as part of the pre-launch of Gap v0.9. It currently is in the demonstration stage, and not ready for commericial-product code ready. The segmentation module examines the whitespace layout of the text to identify 'human' layout of text and corresponding context, such as paragraphs, headings, columns, page numbering, letterhead, etc. The text is then separated into segments based on recognized layout and within the segments the text is NLP preprocessed. In this mode, the NLP preprocessed text is hierarchical. At the top level are the segments, with corresponding segment tag, and the child is the NLP preprocessed text within the segment.
 
 #### <span style='color: saddlebrown'>VISION</span>
 
-The [splitter][4] module is the CV entry point into the pipeline. It consists of a Images and Image class. The Images class handles the storage and (random access) batch retrieval of CV machine learning ready data, using open source openCV image processing, numpy high performance arrays (tensors) and HDF5 high performance disk (tensor) access. The Image class handles preprocessing of individual images into CV machine learning ready data. The batch and image preprocessing can be done synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing of an image or batch has been completed and the machine learning ready data is accessible.
+The [**splitter**](specs/vision_spec.md) module is the CV entry point into the pipeline. It consists of a Images and Image class. The Images class handles the storage and (random access) batch retrieval of CV machine learning ready data, using open source openCV image processing, numpy high performance arrays (tensors) and HDF5 high performance disk (tensor) access. The Image class handles preprocessing of individual images into CV machine learning ready data. The batch and image preprocessing can be done synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing of an image or batch has been completed and the machine learning ready data is accessible.
 
 The vision module handles:
 
   - Mixed image size, format, resolution, number of channels
   - Decompression, Resizing, Normalizing, Flattening
 
-  [4]: https://virtualdvid.github.io/Gap/modules/vision_spec/
-
 ## User's Guide
 
-The User's (Programming) Quick Start Guide can be found [here](https://virtualdvid.github.io/Gap/quick-start-guide/)
+The User's (Programming) Quick Start Guide can be found [here](quick-start-guide.md)
 
 ## Releases
 
