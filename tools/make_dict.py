@@ -7,7 +7,7 @@ import sys
 
 def word_to_dictionary(file, output_dir):
     #open file with the list of words
-    with open(file,'r') as f:
+    with open(file,'r', encoding='utf-8') as f:
         first_line = f.readline()
         f.seek(0)
         if len(first_line.split()) == 1:
@@ -27,9 +27,9 @@ def word_to_dictionary(file, output_dir):
     words_dict['<NEG>'] = 6
 
     #verify if word2int name 
-    sp_fr = file.split('.')[0]
-    if 'sp' in sp_fr or 'fr' in sp_fr:
-        f_name='word2int_{}.py'.format(sp_fr)
+    lang = file.split('.')[0].split('-')[0]
+    if lang != 'en':
+        f_name='word2int_{}.py'.format(lang)
     else:
         f_name='word2int.py'
 
@@ -39,11 +39,16 @@ def word_to_dictionary(file, output_dir):
     file_out=os.path.join(output_dir,f_name)
 
     #creates new py file with the dict as a content
-    with open(file_out,'w') as f:
+    with open(file_out,'w', encoding='utf-8') as f:
         dict_var = f_name.split('.')[0]
-        f.write('{} ='.format(dict_var))
-        f.write(str(words_dict))
+        f.write('{} = '.format(dict_var))
+        f.write('{\n')
+        #f.write(str(words_dict))
+        for k,v in words_dict.items():
+            f.write( '"' + k + '":' + str(v) + ',\n')
+        f.write('}')
         print("file '{}' was saved in '{}'.".format(f_name,output_dir))
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:

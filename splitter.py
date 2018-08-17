@@ -19,9 +19,9 @@ import shutil
 
 import pyaspeller
 
-from .segment import Segment
-from .syntax import Words, Vocabulary, Norvig
-from .pdf_res import PDFResource
+from segment import Segment
+from syntax import Words, Vocabulary, Norvig
+from pdf_res import PDFResource
 
 
 if shutil.which('gswin64c'):
