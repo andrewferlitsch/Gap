@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Syntax - Gap-ML</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Syntax";
+    var mkdocs_page_input_path = "modules\\syntax_spec.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-124105572-1', 'https://virtualdvid.github.io/Gap/');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Gap-ML</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../about/">About</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../quick-start-guide/">quick start guide</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Modules</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../segmentation_spec/">Segmentation</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../splitter_spec/">Splitter</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Syntax</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#natural-language-processing-for-pdftiffimage-documents">Natural Language Processing for PDF/TIFF/Image Documents</a></li>
+    
+
+    <li class="toctree-l3"><a href="#computer-vision-for-image-data">Computer Vision for Image Data</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#syntax-module">SYNTAX MODULE</a></li>
+        
+            <li><a class="toctree-l4" href="#1-words">1  Words</a></li>
+        
+            <li><a class="toctree-l4" href="#appendix-i-updates">APPENDIX I: Updates</a></li>
+        
+            <li><a class="toctree-l4" href="#appendix-ii-anticipated-engineering">APPENDIX II: Anticipated Engineering</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../vision_spec/">Vision</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Tutorials</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../tutorials/computer_vision/">Computer Vision</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Gap-ML</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Modules &raquo;</li>
+        
+      
+    
+    <li>Syntax</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/virtualdvid/Gap/edit/master/docs/modules/syntax_spec.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="natural-language-processing-for-pdftiffimage-documents">Natural Language Processing for PDF/TIFF/Image Documents</h1>
+<h1 id="computer-vision-for-image-data">Computer Vision for Image Data</h1>
+<h2 id="syntax-module">SYNTAX MODULE</h2>
+<p>High Precision Natural Language Processing<br />
+Technical Specification, Gap v0.91</p>
+<h2 id="1-words">1  Words</h2>
+<h3 id="11-words-overview">1.1  Words Overview</h3>
+<p>The words NLP preprocessor contains the following primary classes, and their relationships:</p>
+<ul>
+<li>Words - This is the base class for the representation of a Natural Language Processing (NLP) preprocessed list of words. The constructor optionally takes as parameters the raw text to tokenize and flags for NLP preprocessing the text.</li>
+</ul>
+<pre><code class="python">words = Words(&quot;some text&quot;, flags …)
+</code></pre>
+
+<p>The constructor calls the private methods <code>_split()</code>, <code>_stem()</code>, and <code>_stopwords()</code>.</p>
+<ul>
+<li>
+<p>Word – A single NLP preprocessed word (token).</p>
+</li>
+<li>
+<p>Vocabulary – A performance optimized python dictionary for word classification and lemmatizing.</p>
+</li>
+</ul>
+<p>Fig. 1a High Level view of Words Class Object Relationships</p>
+<h3 id="12-words-initializer-constructor">1.2 Words Initializer (Constructor)</h3>
+<h6 id="synopsis">Synopsis</h6>
+<pre><code class="python">Words( text, flags … )
+</code></pre>
+
+<h6 id="parameters">Parameters</h6>
+<p><strong>text:</strong> A Unicode string of text.</p>
+<p><strong>flags:</strong>  Zero or more keyword parameters</p>
+<p><strong>bare:</strong> Tokenize only <code>True</code> - do not preprocess.</p>
+<p><strong>punct:</strong> Keep/classify <code>True</code> or remove <code>False</code> punctuation.</p>
+<p><strong>stopwords:</strong> Keep <code>True</code> all stop words or remove <code>False</code>. If True, it supersedes all other flags. If False, other flags may be used to include specific categories. The stop words are a superset of the Porter list.</p>
+<p><strong>stem:</strong> Value indicating which stemmer to use:
+             -  builtin: gap
+             -  NLTK: porter, snowball, lancaster or the WordLemmatizer:<br />
+                lemma</p>
+<p><strong>pos:</strong> Annotate <code>True</code> or not annotate <code>False</code> NLP preprocessed tokens with
+               parts of speech using NLTK <code>pos_tag()</code>.</p>
+<p><strong>spell:</strong> Spell check and replace misspelled words using pyaspeller.</p>
+<p><strong>roman:</strong> Romanize <code>True</code> or not Romanize <code>False</code> latin-1 encodings of NLP 
+               preprocessed tokens into ASCII encoding.</p>
+<p><strong>number:</strong> Keep/classify <code>True</code> or remove <code>False</code> numerical numbers. Ex.
+               -    1 / 4.5 / 1,000 / three</p>
+<p><strong>unit:</strong> Keep/classify <code>True</code> or remove <code>False</code> units of measurement. Ex
+       -    inches  / ft / cm
+       -    height / width / weight / ht / wt
+       -    temperature / °F / °C</p>
+<p><strong>quantifier:</strong>  Keep/classify <code>True</code> size specifying words or to remove <code>False</code>. Ex.
+               -    all / any / more</p>
+<p><strong>preposition:</strong> Keep/classify <code>True</code> preposition words or to remove <code>False</code>. Ex.
+                  -     to / from / above</p>
+<p><strong>conjunction:</strong> Keep/classify <code>True</code> conjunction words or to remove <code>False</code>. Ex.
+       -    and / or / but</p>
+<p><strong>article:</strong> keep/classify <code>True</code> article words or to remove <code>False</code>. Ex.
+                     -      a / an / the</p>
+<p><strong>demonstrative:</strong>   Keep/classify <code>True</code> article words or to remove <code>False</code>. Ex.
+             -      this / that / these </p>
+<p><strong>question:</strong> Keep/classify <code>True</code> question words or to remove <code>False</code>. Ex.
+                 -  who / want / how</p>
+<p><strong>pronoun:</strong> Keep/classify <code>True</code> pronoun words or to remove <code>False</code>. Ex.
+             -  he / she / them</p>
+<p><strong>date:</strong> Keep/classify/reduce <code>True</code> dates or to remove <code>False</code>. Ex
+             -  Jan. 1, 2000 / 01/01/2000 / 2000-01-01</p>
+<p><strong>dob:</strong> Keep/classify/reduce <code>True</code> date of births or to remove <code>False</code>. Ex.
+             -  DOB: Jan 1, 2000 / date of birth is 01-02-2012</p>
+<p><strong>ssn:</strong> Keep/classify <code>True</code> social security numbers or to remove <code>False</code>. Ex.
+             -  123-84-1234 / 123 84 1234</p>
+<p><strong>telephone:</strong> Keep/classify <code>True</code> telephone numbers or to remove <code>False</code>. Ex.
+             -  (360) 123-1234 / +13601231234</p>
+<p><strong>name:</strong> Keep/classify <code>True</code> telephone numbers or to remove <code>False</code>. Ex.
+-   Albert Einstein / Donald J. Trump</p>
+<p><strong>address:</strong> Keep/classify/reduce street address or to remove <code>False</code>. Ex
+-   124 NE 34th Cir, Home Town, AZ, 99123</p>
+<p><strong>gender:</strong> Keep/classify <code>True</code> gender specifying words or remove <code>False</code>. Ex.
+-   male / man / gal / mom</p>
+<p><strong>sentiment:</strong> Keep/classify/reduce <code>True</code> sentiment word sequences or remove <br />
+<code>False</code>.
+                  - not bad / disgusting</p>
+<h6 id="exceptions">Exceptions</h6>
+<p>A <code>TypeError</code> is raised if the parameter is not the expected type.</p>
+<p>1.3 Words Properties</p>
+<p>1.3.1   text</p>
+<h6 id="synopsis_1">Synopsis</h6>
+<pre><code class="python"># Getter
+text = images.text
+
+# Setter
+images.text = text  
+</code></pre>
+
+<h6 id="usage">Usage</h6>
+<p>When used as a getter the property returns the original text.<br />
+When used as a setter  the property re-preprocesses the text into machine learning ready data.</p>
+<h6 id="exceptions_1">Exceptions</h6>
+<p>A <code>TypeError</code> is raised if the parameter is not the expected type.</p>
+<p>1.3.2   bare</p>
+<h6 id="synopsis_2">Synopsis</h6>
+<pre><code class="python"># Getter
+tokens = images.bare
+</code></pre>
+
+<h6 id="usage_1">Usage</h6>
+<p>When used as a getter the property returns the NLP tokenized list unprocessed. All punctuation, words, capitalization and diacritic characters and script are preserved. The tokenized list is in a dictionary format of the form:</p>
+<blockquote>
+<pre><code>[ { 'word': word1, 'tag': tag }, {'word': word2, 'tag': tag } .. ]
+</code></pre>
+</blockquote>
+<p>Except for numbers and acronyms, the tag values are set to untagged (0).</p>
+<p>1.3.3   Words</p>
+<h6 id="synopsis_3">Synopsis</h6>
+<pre><code class="python"># Getter
+words = images.words
+</code></pre>
+
+<h6 id="usage_2">Usage</h6>
+<p>When used as a getter the property returns the NLP tokenized list according to the specified parameters. The tokenized list is in dictionary format of the form, when the parameter pos is False:</p>
+<blockquote>
+<pre><code>[ { 'word': word1, 'tag': tag }, {'word': word2, 'tag': tag } .. ]
+</code></pre>
+</blockquote>
+<p>Otherwise, when the pos parameter is set to True:</p>
+<blockquote>
+<pre><code>[ { 'word': word1, 'tag': tag, 'pos': POS }, {'word': word2, 'tag': tag, 'pos': POS } .. ]
+</code></pre>
+</blockquote>
+<p>1.3.4   bagOfWords</p>
+<h6 id="synopsis_4">Synopsis</h6>
+<pre><code class="python"># Getter
+bag = images.bagOfWords
+</code></pre>
+
+<h6 id="usage_3">Usage</h6>
+<p>When used as a getter the property returns the word sequence as a Bag of Words, represented as a unordered dictionary, where the key is the word and the value is the number of occurrences:</p>
+<blockquote>
+<pre><code>{ '&lt;word'&gt; : &lt;no. of occurrences&gt;, … }
+</code></pre>
+</blockquote>
+<p>1.3.5   freqDist</p>
+<h6 id="synopsis_5">Synopsis</h6>
+<pre><code class="python"># Getter
+freq = images.freqDist
+</code></pre>
+
+<h6 id="usage_4">Usage</h6>
+<p>When used as a getter the property returns the sorted tuples of a frequency distribution of words (from bag of words), in descending order (i.e., highest first)</p>
+<blockquote>
+<pre><code>[ ( '&lt;word'&gt;: &lt;no.  of occurrences&gt; ), …. ]
+</code></pre>
+</blockquote>
+<p>1.3.5   termFreq</p>
+<h6 id="synopsis_6">Synopsis</h6>
+<pre><code class="python"># Getter
+tf = images.termFreq
+</code></pre>
+
+<h6 id="usage_5">Usage</h6>
+<p>When used as a getter the property returns the sorted tuples of a term frequency distribution (percent that term occurs), in descending order (i.e., highest first)</p>
+<blockquote>
+<pre><code>[ ( '&lt;word'&gt;: &lt;percentage  of occurrences&gt; ), …. ]
+</code></pre>
+<p>1.3.6   Static Variables</p>
+</blockquote>
+<p>The Words class contains the following static variables:</p>
+<ul>
+<li>DECIMAL – The decimal point (US Standard: period , EU: comma)</li>
+<li>THOUSANDS – The thousandths unit separator (US Standard comma , EU period)</li>
+</ul>
+<h3 id="14-words-overridden-operators">1.4  Words Overridden Operators</h3>
+<h4 id="141-len">1.4.1  len()</h4>
+<h6 id="synopsis_7">Synopsis</h6>
+<pre><code class="python">nwords = len(words)
+</code></pre>
+
+<h6 id="usage_6">Usage</h6>
+<p>The <code>len()</code> <code>(__len__)</code> operator is overridden to return  the number of NLP tokenized words.</p>
+<h4 id="142">1.4.2  +=</h4>
+<h6 id="synopsis_8">Synopsis</h6>
+<pre><code class="python">words += text
+</code></pre>
+
+<h6 id="usage_7">Usage</h6>
+<p>The <code>+=</code> <code>(__iadd__)</code> method is overridden to add words to the sequenced word list (append).</p>
+<h3 id="15-words-private-methods">1.5  Words Private Methods</h3>
+<p>The Words class contains the following private methods, which are called by the initializer:</p>
+<ul>
+<li><code>_split()</code> – This method performs the first phase of NLP preprocessing of the raw text into a sequenced list of words (bare processing mode).<ul>
+<li>Contractions are expanded (e.g., can't =&gt; can not). </li>
+<li>Newlines, carriage returns and tabs removed.</li>
+<li>Duplicated whitespace is removed. </li>
+<li>Text is split into words and punctuation.</li>
+<li>Punctuation is removed (except in numerical and date representations when property number and/or date and/or dob is True).
+ </li>
+</ul>
+</li>
+<li>
+<p><code>_preprocess()</code>  - This method performs the second of NLP preprocessing of the 'bare' tokenized words.</p>
+<ul>
+<li>Identify acronyms.</li>
+<li>Identify proper names.</li>
+<li>Words are lowercased.</li>
+<li>Optionally words are Romanized, if roman attribute is set to True.</li>
+</ul>
+</li>
+<li>
+<p><code>_stem()</code> – This method performs the third phase of NLP preprocessing of the tokenized words by removing word endings and reducing word to its root stem (e.g., rider -&gt; ride). </p>
+<ul>
+<li>Remove plural endings (e.g., flies -&gt; fly).</li>
+<li>Remove past tense endings (e.g., baked -&gt; bake).</li>
+<li>Remove present participle endings (e.g., eating -&gt; eat).</li>
+<li>Remove verb to noun and comparative endings (e.g., rider -&gt; ride, taller-&gt; tall).</li>
+<li>Remove noun to verb endings (e.g., flatten -&gt; flat).</li>
+<li>Remove adjective to adverb endings (e.g, costly -&gt; cost).</li>
+<li>Remove superlative endings (e.g., greatest -&gt; great).</li>
+<li>Spell check/replacement, if enabled, occurs prior to stemming.</li>
+</ul>
+</li>
+<li>
+<p><code>_nltkStem()</code> – This method uses the open source NLTK stemmer methods to perform the third phase of NLP preprocessing of the tokenized words, as an alternative to the internal stemmer (i.e. stem)). The Porter, Snowball, Lancaster and WordNetLemmatizer are selectable.</p>
+</li>
+<li>
+<p><code>_stopwords()</code> – This method performs the fourth phase of NLP preprocessing of the tokenized words by removing/keeping stop words.</p>
+<ul>
+<li>Remove word (including infinity) and numeric representations of numbers, unless property number is True, then all numbers are retained.<ul>
+<li>If retained, EU decimal and thousandths unit separators converted to US standard.</li>
+<li>+/- signs preserved.</li>
+<li>Thousandths unit separator removed.</li>
+<li>Hex numbers (starting with 0x prefix) are converted to integer value.</li>
+<li>Text represented numbers (e.g., ten) are converted to integer value.</li>
+<li>Text represented numeric ordering (e.g., 1st) are converted to integer value.</li>
+<li>Fractions are converted to floating point value.</li>
+</ul>
+</li>
+<li>Remove units of measurement, unless property unit is True.<ul>
+<li>US Standard and Metric, including abbreviations, are recognized.</li>
+<li>US and EU spelling of metric units are recognized.</li>
+</ul>
+</li>
+<li>Remove dates, unless property date is True.</li>
+<li>Remove date of birth, unless property dob is True.</li>
+<li>Remove USA social security numbers, unless property ssn is True, where the SSN number is converted to a 9 digit value.</li>
+<li>Remove USA/CA telephone numbers, unless property telephone is True, where the telephone number is converted to a 10 digit number.</li>
+<li>Remove USA/CA addresses, unless property address is True, where addresses are converted to the USPO addressing standard.</li>
+<li>Remove gender indicating words (e.g., man) – inclusive of transgender, unless property telephone is True.</li>
+<li>Remove proper names and titles (e.g., Dr.), unless property name is True.</li>
+<li>Remove quantifier indicating words (e.g., all, any), unless property quantifier is True.</li>
+<li>Remove prepositions (e.g., above, under), unless property preposition is True.</li>
+<li>Remove conjunctions (e.g., and, or), unless property conjunction is True. </li>
+<li>Remove articles (e.g., a, an), unless property article is True.</li>
+<li>Remove demonstratives (e.g., this, that), unless property demonstrative is True.</li>
+<li>Remove pronouns (e.g., his, her), unless property pronoun is True.</li>
+<li>Remove question words (e.g., what, why), unless property question is True.</li>
+<li>Remove common high frequency words i.e., Porter List).</li>
+<li>Remove sentiment sequence (e.g., good, bad), unless sentiment property is True.<ul>
+<li>Sequence (e.g., not bad) replaced with "positive" or "negative".</li>
+</ul>
+</li>
+<li>Remove punctuation and symbols, unless punct property is True.</li>
+</ul>
+</li>
+<li>
+<p><code>_isdate()</code> – This method is a support method for _stopwords(). It will recognize date strings and convert them to ISO 8601 format. The following formats are recognized:</p>
+<ul>
+<li>MM/DD/YY and MM/DD/YYYY</li>
+<li>MM-DD-YY and MM-DD-YYYY</li>
+<li>YYYY-MM-DD (ISO 8601)</li>
+<li>Month Day, Year (e.g., January 6, 2016)</li>
+<li>Abbr-Month Day, Year (e.g., Jan 6, 2016 and Jan. 6, 2016)</li>
+</ul>
+</li>
+</ul>
+<p>If the preceding word is birth or DOB, then the date will be tagged as a date of birth (vs. date).</p>
+<ul>
+<li>
+<p><code>_isnumber()</code> - This method is a support method for _stopwords(). It will recognize numerical sequences and convert them to decimal base 10 format. The following formats are recognized</p>
+<ul>
+<li>Base 10 integer, floating point, exponent, fraction</li>
+<li>Base 16 hex integers</li>
+</ul>
+</li>
+<li>
+<p><code>_isSSN()</code> - This method is a support method for _stopwords(). It will recognize USA Social Security numbers. The following formats are recognized:</p>
+<ul>
+<li>Prefixed with SSN or Soc. Sec. No. or Social Security Number</li>
+<li>Number Format: <ul>
+<li>12-123-1234 / 12 123 1234 / 121231234</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>_isTele()</code> - This method is a support method for _stopwords(). It will recognize USA/CA Telephone numbers. The following formats are recognized:</p>
+<ul>
+<li>Prefixed with Tele, Phone, Mobile, Office, etc, optionally followed by Number, Num, No, #</li>
+<li>Number Format: <ul>
+<li>1231231234 / 123 123 1234 / 123-123-123 / (360) 123-1234 / …</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>_isAddr()</code> – This method is a support method for <code>_stopwords()</code>. It will recognize USA/CA postal addresses. The following formats are recognized:</p>
+<ul>
+<li>[POB[,]] Street-Number  [Street-Direction] Street-Name [Street-Type] [Street-Direction] [,] [POB[,]] [Secondary-Address[,]][City[,]State]</li>
+<li>POB[,] City State</li>
+</ul>
+</li>
+<li>
+<p><code>_streetnum()</code> – This method supports the <code>_isAddr()</code> method in recognizing street numbers. The following formats are recognized:</p>
+<ul>
+<li>[(N|S|W|E)]digits[letter][-][digits|letter</li>
+<li>Ex. N1300 / 123-33 / 33A / 33</li>
+</ul>
+</li>
+<li>
+<p><code>_streetdir()</code> – This method supports the <code>_isAddr()</code> method in recognizing directional phrases. The following formats are recognized:</p>
+<ul>
+<li>North|South[sp][West|East]</li>
+<li>N|S[.][w|e][.]</li>
+</ul>
+</li>
+<li>
+<p><code>_citystate()</code> – This method supports the <code>_isAddr()</code> method in recognizing city/state references in a postal address. The following formats are recognized:</p>
+<ul>
+<li>City<a href="Full-State|Abbr-State">,</a>
+   USA and Canadian state names are replaced with their ISO 3166-2 codes (e.g., Alabama =&gt; ISO3166-2:US-AL).</li>
+</ul>
+</li>
+<li>
+<p><code>_pob()</code> – This method supports the <code>_isAddr()</code> method in recognizing USA and Canadian Post Office Boxes and Private Mail Boxes in street addresses. The following formats are recognized:</p>
+<ul>
+<li>( P.O.B | POB | P.O. Box | P.O. | PO ) digits [ (STN | RPO) words ]</li>
+<li>( P.M.B | PMB | P.M. Box ) digits</li>
+</ul>
+</li>
+<li>
+<p><code>_streetaddr2()</code> – This method supports the <code>_isAddr()</code> method in recognizing secondary address components in street addresses. The following formats are recognized:</p>
+<ul>
+<li>(Apt|Ste|Rm|Fl|Bldg|Dept)<a href="word[-][word">#</a></li>
+</ul>
+</li>
+<li>
+<p><code>_postalcode()</code> – This method supports the <code>_isAddr</code> method() in recognizing USA and Canadian postal codes. The following formats are recognized:</p>
+<ul>
+<li>5digits[-4digits]           # USA</li>
+<li>[3letters][sp][3letters]        # Canada</li>
+</ul>
+</li>
+<li>
+<p><code>_isGender()</code> – This method supports gender recognition in stopwords. It recognizes phrases:</p>
+<ul>
+<li>(Sex|Gender)[:] (M|F|Male|Female)</li>
+</ul>
+</li>
+<li>
+<p><code>_conversion()</code> – This method performs the fifth phase of NLP preprocessing of the tokenized words of converting Standard to Metric (standard=True) and vice-versa (metric=True).</p>
+</li>
+<li>
+<p><code>_partsofspeech()</code> – This method performs the sixth phase of NLP preprocessing of the tokenized words of tagging words with their parts of speech tag (using NLTK).</p>
+</li>
+</ul>
+<p>1.5 Words Public Methods</p>
+<hr />
+<p>The Words class contains no public methods.</p>
+<h2 id="appendix-i-updates">APPENDIX I: Updates</h2>
+<p><strong>Pre-Gap (Epipog) v1.1</strong>
++   Refactored Stopword Removal for Parts of Speech, Numbers and Dates
++   Added Vocabulary class and Lemmatizing
++   Added support for Date of Birth
++   Added support for recognizing word version of numbers.
++   Fixed handling of Hex numbers</p>
+<p><strong>Pre-Gap (Epipog) v1.2</strong>
++   Added support for Social Security Numbers
++   Added support for Telephone Numbers
++   Added support for Proper Names
++   Fix not recognizing Acronym if first word
++   Refactored tokenization and added bare mode.</p>
+<p><strong>Pre-Gap (Epipog) v1.3</strong>
++   Added support for Spanish punctuation:  ¿¡
++   Added support for numeric multipliers (e.g., 10 million).
++   Added support for unit of measurements.
++   Added conversion of unit of measurements between Standard and Metric.
++   Added support for Sex/Gender[:] M/F 
++   Added support for USA street addresses
++   Fix not recognizing single letter abbreviations.
++   Fixed not recognizing title (name) proceeded by a comma.
++   Fixed not recognizing number followed by unit of measurement when combined (e.g., 2cm).</p>
+<p><strong>Pre-Gap (Epipog) v1.4</strong>
++   Added NLTK options for stemming, lemmatization and parts of speech.
++   Change outputting of US State names to ISO 3166-2 standard.
++   Added support for PMB in postal address.
++   Added is/of separator between key and value (e.g., SSN is XXX-XX-XXXX).
++   Added support for Canadian Street/Postal addresses.
++   Added support for Romanizing latin-1 character encodings into ASCII.
++   Added support for measurements</p>
+<p><strong>Pre-Gap (Epipog) v1.5</strong>
++   Added Bag of Words, Word Frequency Distribution and Term Frequency (TF)</p>
+<p><strong>Gap v0.9.1 (alpha)</strong>
++   Rewrote Specification.
++   Added spell check/replacement
++   Added UK to US spelling correction</p>
+<h2 id="appendix-ii-anticipated-engineering">APPENDIX II: Anticipated Engineering</h2>
+<p>The following has been identified as enhancement/issues to be addressed in subsequent update:
+1.  Support for detecting Abbreviations
+2.  Support for email addresses
+3.  Add support for mail stop Secondary Street Address components.
+4.  Add support for Currency.
+5.  Add <SOS> and <EOS> annotation.
+6.  Fix lose next word after street/postal address</p>
+<p>Proprietary Information
+Copyright ©2018, Epipog, All Rights Reserved</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../vision_spec/" class="btn btn-neutral float-right" title="Vision">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../splitter_spec/" class="btn btn-neutral" title="Splitter"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/virtualdvid/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../splitter_spec/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../vision_spec/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="None">
+  
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <title>Home - Gap-ML</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Home";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="js/jquery-2.1.1.min.js" defer></script>
+  <script src="js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-124105572-1', 'https://virtualdvid.github.io/Gap/');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> Gap-ML</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href=".">Home</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#gap-nlpcv-data-engineering-framework-v092-pre-launch-alpha">Gap : NLP/CV Data Engineering Framework, v0.9.2 (Pre-launch: alpha)</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#natural-language-processing-for-pdf-tiff-and-camera-captured-documents-and">Natural Language Processing for PDF, TIFF, and Camera Captured Documents, and</a></li>
+        
+            <li><a class="toctree-l3" href="#computer-vision-processing-for-images">Computer Vision Processing for Images</a></li>
+        
+            <li><a class="toctree-l3" href="#audience">Audience</a></li>
+        
+            <li><a class="toctree-l3" href="#license">License</a></li>
+        
+            <li><a class="toctree-l3" href="#prerequites">Prerequites</a></li>
+        
+            <li><a class="toctree-l3" href="#installation">Installation:</a></li>
+        
+            <li><a class="toctree-l3" href="#modules">Modules</a></li>
+        
+            <li><a class="toctree-l3" href="#users-guide">User's Guide</a></li>
+        
+            <li><a class="toctree-l3" href="#releases">Releases</a></li>
+        
+            <li><a class="toctree-l3" href="#testing">Testing</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="about/">About</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="quick-start-guide/">quick start guide</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Modules</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="modules/segmentation_spec/">Segmentation</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="modules/splitter_spec/">Splitter</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="modules/syntax_spec/">Syntax</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="modules/vision_spec/">Vision</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Tutorials</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="tutorials/computer_vision/">Computer Vision</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">Gap-ML</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Home</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/virtualdvid/Gap/edit/master/docs/index.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="gap-nlpcv-data-engineering-framework-v092-pre-launch-alpha">Gap : NLP/CV Data Engineering Framework, v0.9.2 (Pre-launch: alpha)</h1>
+<h2 id="natural-language-processing-for-pdf-tiff-and-camera-captured-documents-and">Natural Language Processing for PDF, TIFF, and Camera Captured Documents, and</h2>
+<h2 id="computer-vision-processing-for-images">Computer Vision Processing for Images</h2>
+<h3 id="framework">Framework</h3>
+<p>The Gap NLP/CV data engineering framework provides an easy to get started into the world of machine learning for your unstructured data in PDF documents, scanned documents, TIFF facsimiles and camera captured documents, and your image data in image files and image repositories.</p>
+<p><em>NLP</em></p>
+<ul>
+<li>Automatic OCR of scanned PDF and camera captured images.</li>
+<li>Automatic Text Extraction from documents.</li>
+<li>Automatic Syntax Analysis.</li>
+<li>Optional Romanization of Latin-1 diacritic characters.</li>
+<li>Optional Spell Correction.</li>
+<li>
+<p>Programmatic control for data extraction or redaction (de-identification).</p>
+<ul>
+<li>Names, Addresses, Proper Places</li>
+<li>Social Security Numbers, Data of Birth, Gender, Age</li>
+<li>Telephone Numbers</li>
+<li>Numerical Information (e.g., medical, financial, …) and units of measurement.</li>
+<li>Unit conversion from US Standard to Metric, and vice-versa</li>
+<li>Unicode character recognition</li>
+</ul>
+</li>
+<li>
+<p>Machine Training of Document and Page Classification.</p>
+</li>
+<li>Asynchronous processing of documents.</li>
+<li>Automatic generation of NLP machine learning ready data.</li>
+</ul>
+<p><em>CV</em></p>
+<ul>
+<li>Automatic storage and retrieval with high performance HDF5 files.</li>
+<li>Automatic handling of mixed channels (grayscale, RGB and RGBA) and pixel size.</li>
+<li>Programmatic control of resizing.</li>
+<li>Programmatic control of conversion into machine learning ready data format: decompression, normalize, flatten.</li>
+<li>Programmatic control of minibatch generation.</li>
+<li>Programmatic control of image augmentation.</li>
+<li>Asynchronous processing of images.</li>
+<li>Automatic generation of CV machine learning ready data.</li>
+</ul>
+<p>The framework consists of a sequence of Python modules which can be retrofitted into a variety of configurations. The framework is designed to fit seamlessly and scale with an accompanying infrastructure. To achieve this, the design incorporates:</p>
+<ul>
+<li>Problem and Modular Decomposition utilizing Object Oriented Programming Principles.</li>
+<li>Isolation of Operations and Parallel Execution utilizing Functional Programming Principles.</li>
+<li>High Performance utilizing Performance Optimized Python Structures and Libraries.</li>
+<li>High Reliability and Accuracy using Test Driven Development Methodology.</li>
+</ul>
+<h2 id="audience">Audience</h2>
+<p>This framework is ideal for any organization planning to do:</p>
+<ul>
+<li>Data extraction from their repository of documents into an RDBMS system for CART analysis, linear/logistic regressions,          <br />
+    or generating word vectors for natural language deep learning (DeepNLP).</li>
+<li>Generating machine learning ready datan from their repository of images for computer vision.</li>
+</ul>
+<h2 id="license">License</h2>
+<p>The source code is made available under the Apache 2.0 license: <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a></p>
+<h2 id="prerequites">Prerequites</h2>
+<p>The Gap framework extensively uses a number of open source applications/modules. The following applications and modules will be downloaded and installed on your computer/laptop, when the package is installed.</p>
+<ol>
+<li>Artifex's Ghostscript - extracting text from text PDF</li>
+<li>ImageMagic's Magick - extracting image from scanned PDF</li>
+<li>Google's Tesseract - OCR of scanned/image captured text</li>
+<li>NLTK (Natural Language Toolkit) - stemming/lemmatizer/parts of speech annotation</li>
+<li>unidecode - romanization of latin character codes</li>
+<li>numpy - high performance in-memory arrays (tensors)</li>
+<li>HDF5 - high performance of on-disk data (tensors) access</li>
+<li>openCV - image manipulation and processing for computer vision</li>
+<li>imutils - image manipulation for computer vision</li>
+<li>pyaspeller - spelling dictionary for text</li>
+</ol>
+<h2 id="installation">Installation:</h2>
+<p>The Gap framework is supported on Windows, MacOS, and Linux. It has been packaged for distribution via PyPi on launch. \</p>
+<p>For pre-launch, after you have clone the source code, from the root of the source tree do the following to complete the install:</p>
+<pre><code>python setup.py install
+</code></pre>
+<h4 id="pypi-dependencies">PyPi Dependencies</h4>
+<p>The dependencies for python packages distributed at PyPi are automatically checked for and installed by the setup.py script. These include:</p>
+<ul>
+<li>nltk : http://www.nltk.org/</li>
+<li>numpy : http://www.numpy.org/</li>
+<li>h5py : https://www.h5py.org/</li>
+<li>unidecode : https://pypi.org/project/Unidecode/</li>
+<li>openCV : https://www.opencv.org/</li>
+<li>imultils : https://github.com/jrosebr1/imutils</li>
+<li>pyaspeller : https://pypi.org/project/pyaspeller/</li>
+</ul>
+<h4 id="3rd-party-dependencies">3rd Party Dependencies</h4>
+<p>The dependencies for non-python packages are automatically checked for and installed by the setup.py script. These include:</p>
+<ul>
+<li>Ghostscript : https://www.ghostscript.com</li>
+<li>Tesseract : https://github.com/tesseract-ocr/tesseract/wiki</li>
+<li>Imagik :  https://www.imagemagick.org</li>
+</ul>
+<h2 id="modules">Modules</h2>
+<p>The framework provides the following pipeline of modules to support your data and knowledge extraction from both digital and scanned PDF documents, TIFF facsimiles and image captured documents.</p>
+<h4 id="splitter"><span style='color: saddlebrown'>SPLITTER</span></h4>
+<p>The <a href="https://virtualdvid.github.io/Gap/modules/splitter_spec/">splitter</a> module is the NLP entry point into the pipeline. It consists of a Document and Page class. The Document class handles the splitting of PDF documents into PDF pages, TIFF facsimiles into TIFF pages, OCR and raw text extraction. PDF splitting and image extraction is handled by the open source Artifex’s Ghostscript ©, and TIFF splitting by open source Image Magic’s Magick ©. OCR is handled by the open source Google’s Tesseract ©. The Document object stores the individual PDF/TIFF/image pages and corresponding raw text and optionally page images (when scanned PDF, TIFF or images) in the specified storage path. The splitting process can be done synchronously or asynchronously, where in the latter case an event handler signals when the splitting/OCR has been completed and the page table is accessible.</p>
+<p>For OCR, the resolution of the image extraction is settable, which will affect the quality of the OCR, and corresponding processing time. If the resolution of the original scanned page is lower than the setting, it will be up-sampled, and conversely if it is higher it will be down-sampled.</p>
+<p>The Page class handles access to the individual pages, via the page table of the document class. Access is provided to the individual PDF, TIFF or image page, the scanned image (when scanned PDF, TIFF or images), raw text and the Natural Language Processing (NLP) processed tokens (when SYNTAX module is installed).</p>
+<p>NLP processing of the raw text is deferred until first access (JIT), and then preserved in memory as long as the corresponding page object is referenced. The NLP processed tokens may be further segmented into regions, consisting of tables, paragraphs, columns, etc. when the SEGMENTATION module is installed.</p>
+<p>The document and corresponding pages may be classified (i.e., category of the content) when the CLASSIFICATION module is installed.</p>
+<h4 id="syntax"><span style='color: saddlebrown'>SYNTAX</span></h4>
+<p>The <a href="https://virtualdvid.github.io/Gap/modules/syntax_spec/">syntax</a> module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.</p>
+<p>The word classifier recognizes:</p>
+<ul>
+<li>Syntax Units: Articles, Demonstratives, Prepositions, Pronouns, Conjunctions, Quantifiers, Questions</li>
+<li>Abbreviations</li>
+<li>Acronyms</li>
+<li>Gender (inclusive of Transgender)</li>
+<li>Date of Birth</li>
+<li>USA and Canadian Addresses</li>
+<li>USA and Canadian Telephone Numbers</li>
+<li>USA Social Security numbers</li>
+<li>USA and ISO Standard for Dates</li>
+<li>USA and ISO Standard for Numbers and units of measure.</li>
+<li>Geographic Locations</li>
+<li>Sentiment</li>
+</ul>
+<p>Dates, numbers and units of measure can be converted to either USA Standard or ISO Standard.  USA and Canadian postal addresses are converted to the USPO standard for address matching.</p>
+<p>Along with the builtin stemmer and lemmatizer, the module can optionally be configured to use the NLTK (open source) stemmers, lemmatizer and parts of speech annotations.</p>
+<h4 id="segmentation"><span style='color: saddlebrown'>SEGMENTATION</span></h4>
+<p>The <a href="https://virtualdvid.github.io/Gap/modules/segmentation_spec/">segmentation</a> module was introduced as part of the pre-launch of Gap v0.9. It currently is in the demonstration stage, and not ready for commericial-product code ready. The segmentation module examines the whitespace layout of the text to identify 'human' layout of text and corresponding context, such as paragraphs, headings, columns, page numbering, letterhead, etc. The text is then separated into segments based on recognized layout and within the segments the text is NLP preprocessed. In this mode, the NLP preprocessed text is hierarchical. At the top level are the segments, with corresponding segment tag, and the child is the NLP preprocessed text within the segment.</p>
+<h4 id="vision"><span style='color: saddlebrown'>VISION</span></h4>
+<p>The <a href="https://virtualdvid.github.io/Gap/modules/vision_spec/">splitter</a> module is the CV entry point into the pipeline. It consists of a Images and Image class. The Images class handles the storage and (random access) batch retrieval of CV machine learning ready data, using open source openCV image processing, numpy high performance arrays (tensors) and HDF5 high performance disk (tensor) access. The Image class handles preprocessing of individual images into CV machine learning ready data. The batch and image preprocessing can be done synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing of an image or batch has been completed and the machine learning ready data is accessible.</p>
+<p>The vision module handles:</p>
+<ul>
+<li>Mixed image size, format, resolution, number of channels</li>
+<li>Decompression, Resizing, Normalizing, Flattening</li>
+</ul>
+<h2 id="users-guide">User's Guide</h2>
+<p>The User's (Programming) Quick Start Guide can be found <a href="https://virtualdvid.github.io/Gap/quick-start-guide/">here</a></p>
+<h2 id="releases">Releases</h2>
+<p>-- describe here</p>
+<h2 id="testing">Testing</h2>
+<p>The GAP framework is developed using Test Driven Development methodology. The automated unit tests for the framework use pytest, which is a xUnit style form of testing (e.g., jUnit, nUnit, jsUnit, etc).</p>
+<h4 id="installation-and-documentation">Installation and Documentation</h4>
+<p>The pytest application can be installed using pip:</p>
+<pre><code>pip install pytest
+</code></pre>
+<p>Online documentation for <a href="https://docs.pytest.org">pytest</a></p>
+<h4 id="execution">Execution</h4>
+<p>The following are the pre-built automated unit tests, which are located under the subdirectory tests:</p>
+<pre><code>document_test.py    # Tests the Document Class in the Splitter Module
+page_test.py        # Tests the Page Class in the Splitter Module
+words_test.py       # Tests the Words and Addresses Class in the Syntax Module
+segment_test.py     # Tests the Segment Class in the Segment Module
+image_test.py       # Tests the Image and Images Class in the Vision Module
+</code></pre>
+<p>The automated tests are executed as follows:</p>
+<pre><code>pytest -v document_test.py
+pytest -v page_test.py
+pytest -v words_test.py
+pytest -v segment_test.py
+pytest -v image_test.py
+</code></pre>
+<h4 id="code-coverage">Code Coverage</h4>
+<p>Information on the percent of code that is covered (and what source lines not covered) by the automated tests is obtained using pytest-cov. This version of pytest is installed using pip:</p>
+<pre><code>pip install pytest-cov
+</code></pre>
+<p>Testing with code coverage is executed as follows:</p>
+<pre><code>pytest --cov=splitter document_test.py page_test.py
+
+    Statements=456, Missed=60, Percent Covered: 87%
+
+pytest --cov=syntax words_test.py
+
+    Statements=456, Missed=60, Percent Covered: 93%
+
+pytest --cov=address words_test.py
+
+    Statements=456, Missed=60, Percent Covered: 90%
+
+pytest --cov=vision image_test.py
+
+    Statements=456, Missed=60, Percent Covered: 89%
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="about/" class="btn btn-neutral float-right" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/virtualdvid/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+      
+        <span style="margin-left: 15px"><a href="about/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '.';</script>
+    <script src="js/theme.js" defer></script>
+      <script src="search/main.js" defer></script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.0.1
+Build Date UTC : 2018-08-17 03:14:53
+-->

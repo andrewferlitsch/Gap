@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Segmentation - Gap-ML</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Segmentation";
+    var mkdocs_page_input_path = "modules\\segmentation_spec.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-124105572-1', 'https://virtualdvid.github.io/Gap/');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Gap-ML</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../about/">About</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../quick-start-guide/">quick start guide</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Modules</span>
+    <ul class="subnav">
+                <li class=" current">
+                    
+    <a class="current" href="./">Segmentation</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#natural-language-processing-for-pdftiffimage-documents">Natural Language Processing for PDF/TIFF/Image Documents</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#computer-vision-for-image-data">Computer Vision for Image Data</a></li>
+        
+            <li><a class="toctree-l4" href="#there-are-no-public-methods">+  There are no public methods.</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../splitter_spec/">Splitter</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../syntax_spec/">Syntax</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../vision_spec/">Vision</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Tutorials</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../tutorials/computer_vision/">Computer Vision</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Gap-ML</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Modules &raquo;</li>
+        
+      
+    
+    <li>Segmentation</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/virtualdvid/Gap/edit/master/docs/modules/segmentation_spec.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="natural-language-processing-for-pdftiffimage-documents">Natural Language Processing for PDF/TIFF/Image Documents</h1>
+<h2 id="computer-vision-for-image-data">Computer Vision for Image Data</h2>
+<h3 id="segmentation-module">SEGMENTATION MODULE</h3>
+<h4 id="high-precision-document-segmentation">High Precision Document Segmentation</h4>
+<h4 id="technical-specification-gap-v092">Technical Specification, Gap v0.9.2</h4>
+<h3 id="1-segment">1.  Segment</h3>
+<h4 id="11-segment-overview">1.1  Segment Overview</h4>
+<p>The segment NLP preprocessor contains the following primary classes, and their relationships:</p>
+<ul>
+<li><code>Segment</code> - This is the base class for the representation of a Natural Language Processed text segmented into human perceived text layout, such as headings, paragraphs, table columns, etc. The constructor takes as a parameter a text to segment.</li>
+</ul>
+<pre><code class="python">segments = Segment(text)
+</code></pre>
+
+<p>Fig. 1a High Level view of Segment Class Object Relationships</p>
+<h4 id="12-segment-initializer-constructor">1.2  Segment Initializer (Constructor)</h4>
+<h6 id="synopsis">Synopsis</h6>
+<pre><code class="python">Segment(text=None)
+</code></pre>
+
+<h6 id="parameters">Parameters</h6>
+<blockquote>
+<pre><code>text : A Unicode text string
+</code></pre>
+</blockquote>
+<h6 id="usage">Usage</h6>
+<p>When specified without parameters, an empty Segments object is created.</p>
+<p>Otherwise, the text sequence is analyzed for region detection based on whitespace surrounding the text.<br />
+Regions include:</p>
+<ul>
+<li>Headings</li>
+<li>Paragraphs</li>
+<li>Page Numbering</li>
+</ul>
+<h6 id="exceptions">Exceptions</h6>
+<p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.</p>
+<h4 id="13-segment-properties">1.3  Segment Properties</h4>
+<h5 id="131-segments">1.3.1  segments</h5>
+<h6 id="synopsis_1">Synopsis</h6>
+<pre><code class="python"># Getter
+segments = segment.segments         
+</code></pre>
+
+<h6 id="usage_1">Usage</h6>
+<p>When used as a getter the property returns <code>REWRITE IN PROGRESS</code></p>
+<h4 id="14-segment-overridden-operators">1.4  Segment Overridden Operators</h4>
+<h5 id="141-len">1.4.1  len()</h5>
+<h6 id="synopsis_2">Synopsis</h6>
+<pre><code class="python">nsegments = len(segment)
+</code></pre>
+
+<h6 id="usage_2">Usage</h6>
+<p>The <code>len()</code> <code>(__len__)</code> operator is overridden to return the number of Image objects in the collection.</p>
+<h5 id="141">1.4.1  []</h5>
+<h6 id="synopsis_3">Synopsis</h6>
+<pre><code class="python">image = images[n] 
+</code></pre>
+
+<h6 id="usage_3">Usage</h6>
+<p>The <code>[]</code> <code>(__getitem__)</code> operator is overridden to return the segment at the specified index. </p>
+<h6 id="exceptions_1">Exceptions</h6>
+<p>A <code>IndexError</code> is raised if the index is out of range.</p>
+<h4 id="15-segment-private-methods">1.5  Segment Private Methods</h4>
+<p>The segment class contains the following private methods:</p>
+<ul>
+<li><code>_segmentation()</code> – This method is called by the constructor. It parses the text to identify text layouts, such as headings, paragraphs, columns, page numbering, etc, and separates the text into segments according to the identified layout.</li>
+</ul>
+<h4 id="16-segment-public-methods">1.6  Segment Public Methods</h4>
+<p>The Segment class contains of following public methods:</p>
+<h2 id="there-are-no-public-methods">+  There are no public methods.</h2>
+<h3 id="appendix-i-updates">APPENDIX I: Updates</h3>
+<p>Pre-Gap (Epipog) v1.4
++   An initial prototype was built</p>
+<p>Gap v0.91 (alpha)
++   Rewrite of Specification </p>
+<h3 id="appendix-ii-anticipated-engineering">APPENDIX II: Anticipated Engineering</h3>
+<p>The following has been identified as enhancement/issues to be addressed in subsequent update:</p>
+<ol>
+<li>Add support for splitting dual column pages.</li>
+</ol>
+<p>Proprietary Information
+Copyright ©2018, Epipog, All Rights Reserved</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../splitter_spec/" class="btn btn-neutral float-right" title="Splitter">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../quick-start-guide/" class="btn btn-neutral" title="quick start guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/virtualdvid/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../../quick-start-guide/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../splitter_spec/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>
