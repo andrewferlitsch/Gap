@@ -118,7 +118,7 @@ The document and corresponding pages may be classified (i.e., category of the co
 
 #### <span style='color: saddlebrown'>SYNTAX</span>
 
-The [**syntax**](specs/spyntax_spec.md) module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.
+The [**syntax**](specs/syntax_spec.md) module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.
 
 The word classifier recognizes:
 
