@@ -33,7 +33,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-124105572-1', 'https://virtualdvid.github.io/Gap/');
+      ga('create', 'UA-124105572-1', 'https://andrewferlitsch.github.io/Gap/');
       ga('send', 'pageview');
   </script>
   
@@ -75,23 +75,23 @@
           
             <li class="toctree-l1">
 		
-    <span class="caption-text">Modules</span>
+    <span class="caption-text">specifications</span>
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../modules/segmentation_spec/">Segmentation</a>
+    <a class="" href="../../specs/segmentation_spec/">Segmentation</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../modules/splitter_spec/">Splitter</a>
+    <a class="" href="../../specs/splitter_spec/">Splitter</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../modules/syntax_spec/">Syntax</a>
+    <a class="" href="../../specs/syntax_spec/">Syntax</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../modules/vision_spec/">Vision</a>
+    <a class="" href="../../specs/vision_spec/">Vision</a>
                 </li>
     </ul>
 	    </li>
@@ -150,7 +150,7 @@
     <li>Computer Vision</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/virtualdvid/Gap/edit/master/docs/tutorials/computer_vision.md"
+        <a href="https://github.com/andrewferlitsch/Gap/edit/master/docs/tutorials/computer_vision.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -178,8 +178,8 @@ or a convolutional neural network (<a href="https://github.com/andrewferlitsch/T
 neural network, and the target application.</p>
 <p>Images can come from a variety of sources, such as by your cell phone, images found on the Internet, a <a href="https://en.wikipedia.org/wiki/TIFF">facsimile image (FAX)</a>, a <a href="https://en.wikipedia.org/wiki/Film_frame#Video_frames">video frame from a video stream</a>, a <a href="https://en.wikipedia.org/wiki/Digital_radiography">digitized medical/dental x-ray</a>, a <a href="https://en.wikipedia.org/wiki/Magnetic_resonance_imaging">magnetic resonance imaging (MRI)</a>, a <a href="https://en.wikipedia.org/wiki/Transmission_electron_microscopy">electron microscopy (TEM)</a>, etc. </p>
 <p>Images go from very basic like <a href="https://en.wikipedia.org/wiki/Binary_image">1-bit BW single channel (color plane)</a>, to <a href="https://en.wikipedia.org/wiki/Grayscale">8-bit gray scale single channel</a>, to <a href="https://en.wikipedia.org/wiki/8-bit_color">8-bit color three channel (RGB)</a>, to <a href="https://en.wikipedia.org/wiki/Alpha_compositing">8-bit color four channel (+alpha channel)</a>, to <a href="https://en.wikipedia.org/wiki/CMYK_color_model">16-bit high tone (CMYK)</a>, to <a href="https://en.wikipedia.org/wiki/Infrared_photography">infrared</a>, to <a href="https://en.wikipedia.org/wiki/Stereoscopy">stereoscopic images (3D)</a>, <a href="https://en.wikipedia.org/wiki/Sonar">sound navigation and ranging (SONAR)</a>, to <a href="https://en.wikipedia.org/wiki/Radar">RADAR</a>, and more.</p>
-<p><img src="pixels.png"></p>
-<p><img src="color.png"></p>
+<p><img alt="pixels" src="../../img/tutorials/pixels.png" /></p>
+<p><img alt="color" src="../../img/tutorials/color.png" /></p>
 <h3 id="fundamentals-in-preparing-an-image-for-machine-learning">Fundamentals in Preparing an Image for Machine Learning</h3>
 <p>Neural networks take as input numbers, specifically numbers that are continous real numbers and have been <a href="https://en.wikipedia.org/wiki/Normalization_(statistics)">normalized</a>. For images, pixel values are proportionally squashed between 0 and 1. For ANN networks, the inputs need to be a 1D vector, in which case the input data needs to be flatten, while in a CNN, the input is a 2D vector. Neural networks for computer vision take input of fixed sizes, so there is a transformation step to transform the pixel data to the input size and shape of the neural network, and finally assigning a label to the image (e.g., it's a cat). Again, for labels, neural networks use integer numbers; for example a cat must be assigned to a unique integer value and a dog to a different unique integer value. </p>
 <p>These are the basic steps for all computer vision based neural networks:</p>
@@ -554,7 +554,7 @@ pass
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="../../modules/vision_spec/" class="btn btn-neutral" title="Vision"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../specs/vision_spec/" class="btn btn-neutral" title="Vision"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -579,10 +579,10 @@ pass
   <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/virtualdvid/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/andrewferlitsch/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../../modules/vision_spec/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../specs/vision_spec/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
     </span>

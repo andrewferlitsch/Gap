@@ -18,7 +18,7 @@
   <script>
     // Current page data
     var mkdocs_page_name = "Vision";
-    var mkdocs_page_input_path = "modules\\vision_spec.md";
+    var mkdocs_page_input_path = "specs\\vision_spec.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -33,7 +33,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-124105572-1', 'https://virtualdvid.github.io/Gap/');
+      ga('create', 'UA-124105572-1', 'https://andrewferlitsch.github.io/Gap/');
       ga('send', 'pageview');
   </script>
   
@@ -75,7 +75,7 @@
           
             <li class="toctree-l1">
 		
-    <span class="caption-text">Modules</span>
+    <span class="caption-text">specifications</span>
     <ul class="subnav">
                 <li class="">
                     
@@ -152,14 +152,14 @@
     
       
         
-          <li>Modules &raquo;</li>
+          <li>specifications &raquo;</li>
         
       
     
     <li>Vision</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/virtualdvid/Gap/edit/master/docs/modules/vision_spec.md"
+        <a href="https://github.com/andrewferlitsch/Gap/edit/master/docs/specs/vision_spec.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -189,6 +189,7 @@ Alternately, the list of labels maybe a single value; in which case, the label a
 <ul>
 <li>Image – This is the base class for the representation of a single Computer Vision (CV). The constructor optionally takes as parameters an image (path), corresponding label, and flags for CV preprocessing the image.</li>
 </ul>
+<p><img alt="images_relationships" src="../../img/specs/images_relationships.png" /></p>
 <p>Fig. 1a High Level view of Images Class Object Relationships</p>
 <h3 id="12-images-initializer-constructor">1.2  Images Initializer (Constructor)</h3>
 <h6 id="synopsis">Synopsis</h6>
@@ -337,7 +338,7 @@ When used as a getter, the property returns whether image augmentation is enable
 
 <h6 id="usage_9">Usage</h6>
 <p>The <code>len()</code> <code>(__len__)</code> operator is overridden to return the number of <code>Image</code> objects in the collection.</p>
-<p>1.4.1   []</p>
+<h4 id="142">1.4.2  []</h4>
 <h6 id="synopsis_10">Synopsis</h6>
 <pre><code class="python">image = images[n] 
 </code></pre>
@@ -346,7 +347,7 @@ When used as a getter, the property returns whether image augmentation is enable
 <p>The <code>[]</code> <code>(__getitem__)</code> operator is overridden to return the Image object at the specified index. </p>
 <h6 id="exceptions_5">Exceptions</h6>
 <p>A <code>IndexError</code> is raised if the index is out of range.</p>
-<h4 id="142-next">1.4.2  next()</h4>
+<h4 id="143-next">1.4.3  next()</h4>
 <h6 id="synopsis_11">Synopsis</h6>
 <pre><code class="python">data, label = next(images) 
 </code></pre>
@@ -414,13 +415,13 @@ By default, the image will be preprocessed as follows:</p>
 <li>Upon completion, the raw pixel data and the preprocessed machine learning data for the image is stored as a single HDF5 file in the current working directory. The root name of the file will be the root name of the image.</li>
 <li>Attributes of the raw and preprocessed image are stored in the HDF5 file.</li>
 </ol>
-<p>If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.<br />
-If the parameter dir is specified, then the generated HDF5 file is stored in the specified directory. If the directory does not exist, it is created.<br />
-If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the Image object passed as a parameter. The ehandler parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.<br />
-If the configuration setting grayscale (may be shortened to gray) is specified, then the image is converted to a single channel grayscale image, if not already.<br />
-If the configuration setting resize is specified, then the image is resized to the specified height and width.<br />
-If the configuration setting flatten (may be shortened to flat) is specified, the image is flattened into a single 1D vector (i.e., for input to a ANN).<br />
-If the configuration setting thumb is specified, then a thumbnail of the raw pixel data is generated to the specified height and width and stored in the HDF5 file. </p>
+<p>If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.</p>
+<p>If the parameter dir is specified, then the generated HDF5 file is stored in the specified directory. If the directory does not exist, it is created.</p>
+<p>If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the Image object passed as a parameter. The ehandler parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.</p>
+<p>If the configuration setting grayscale (may be shortened to gray) is specified, then the image is converted to a single channel grayscale image, if not already.</p>
+<p>If the configuration setting resize is specified, then the image is resized to the specified height and width.</p>
+<p>If the configuration setting flatten (may be shortened to flat) is specified, the image is flattened into a single 1D vector (i.e., for input to a ANN).</p>
+<p>If the configuration setting thumb is specified, then a thumbnail of the raw pixel data is generated to the specified height and width and stored in the HDF5 file. </p>
 <h6 id="exceptions_7">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>AttributeError</code> is raised if an invalid configuration setting is specified.<br />
@@ -477,20 +478,17 @@ pixels = image.raw
 <p>When used as a getter the property returns the raw pixel data of the uncompressed image.</p>
 <h4 id="236-thumb">2.3.6  thumb</h4>
 <h6 id="synopsis_19">Synopsis</h6>
-<pre><code class="python">
-# Getter
+<pre><code class="python"># Getter
 pixels = image.thumb
 
 ###### Usage
 
 When used as a getter the property returns the pixel data for the thumbnail image.
+</code></pre>
 
-#### 2.3.7  label
-
-###### Synopsis
-
-```python
-# Getter
+<h4 id="237-label">2.3.7  label</h4>
+<h6 id="synopsis_20">Synopsis</h6>
+<pre><code class="python"># Getter
 label = image.label
 
 # Setter
@@ -502,8 +500,8 @@ image.label = label
 When used as a setter the property sets the label of the image to the specified integer value.</p>
 <h6 id="exceptions_9">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.</p>
-<h4 id="238-dir">2.3.8  dir</h4>
-<h6 id="synopsis_20">Synopsis</h6>
+<h4 id="237-dir">2.3.7  dir</h4>
+<h6 id="synopsis_21">Synopsis</h6>
 <pre><code class="python"># Getter
 subfolder = image.dir
 
@@ -517,16 +515,16 @@ When used as a setter, it is only applicable when used in conjunction with the <
 <h6 id="exceptions_10">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>FileNotFoundError</code> is raised if the directory does not exist.</p>
-<h4 id="239-data">2.3.9  data</h4>
-<h6 id="synopsis_21">Synopsis</h6>
+<h4 id="238-data">2.3.8  data</h4>
+<h6 id="synopsis_22">Synopsis</h6>
 <pre><code class="python"># Getter
 data = image.data
 </code></pre>
 
 <h6 id="usage_21">Usage</h6>
 <p>When used as a getter the property returns the preprocessed machine learning ready data.</p>
-<h4 id="2310-shape">2.3.10  shape</h4>
-<h6 id="synopsis_22">Synopsis</h6>
+<h4 id="239-shape">2.3.9  shape</h4>
+<h6 id="synopsis_23">Synopsis</h6>
 <pre><code class="python"># Getter
 shape = image.shape
 </code></pre>
@@ -534,8 +532,8 @@ shape = image.shape
 <h6 id="usage_22">Usage</h6>
 <p>When used as a getter the property returns the shape of the preprocessed machine learning ready data (e.g., (50, 50, 3)).
  </p>
-<h4 id="2311-time">2.3.11  time</h4>
-<h6 id="synopsis_23">Synopsis</h6>
+<h4 id="2310-time">2.3.10  time</h4>
+<h6 id="synopsis_24">Synopsis</h6>
 <pre><code class="python"># Getter
 secs = image.time
 </code></pre>
@@ -544,7 +542,7 @@ secs = image.time
 <p>When used as a getter the property returns the amount of time (in seconds) it took to preprocess the image into machine learning ready data.</p>
 <h3 id="24-image-overridden-operators">2.4  Image Overridden Operators</h3>
 <h4 id="241-str">2.4.1  str()</h4>
-<h6 id="synopsis_24">Synopsis</h6>
+<h6 id="synopsis_25">Synopsis</h6>
 <pre><code class="python">label = str(image)
 </code></pre>
 
@@ -552,7 +550,7 @@ secs = image.time
 <p>The <code>str()</code> <code>(__str__)</code> operator is overridden to return the label of the image as a string.</p>
 <h3 id="25-image-public-methods">2.5  Image Public Methods</h3>
 <h4 id="251-load">2.5.1  load()</h4>
-<h6 id="synopsis_25">Synopsis</h6>
+<h6 id="synopsis_26">Synopsis</h6>
 <pre><code class="python">image.load(name, dir=None) 
 </code></pre>
 
@@ -566,7 +564,7 @@ Once loaded, the Image object will have the same characteristics as when the Ima
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>ValueError</code> is raised if the name parameter is None.</p>
 <h4 id="252-rotate">2.5.2 rotate()</h4>
-<h6 id="synopsis_26">Synopsis</h6>
+<h6 id="synopsis_27">Synopsis</h6>
 <pre><code class="python">image.rotate(degree) 
 </code></pre>
 
@@ -634,7 +632,7 @@ Copyright ©2018, Epipog, All Rights Reserved</p>
   <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/virtualdvid/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/andrewferlitsch/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
         <span><a href="../syntax_spec/" style="color: #fcfcfc;">&laquo; Previous</a></span>

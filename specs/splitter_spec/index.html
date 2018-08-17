@@ -18,7 +18,7 @@
   <script>
     // Current page data
     var mkdocs_page_name = "Splitter";
-    var mkdocs_page_input_path = "modules\\splitter_spec.md";
+    var mkdocs_page_input_path = "specs\\splitter_spec.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -33,7 +33,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-124105572-1', 'https://virtualdvid.github.io/Gap/');
+      ga('create', 'UA-124105572-1', 'https://andrewferlitsch.github.io/Gap/');
       ga('send', 'pageview');
   </script>
   
@@ -75,7 +75,7 @@
           
             <li class="toctree-l1">
 		
-    <span class="caption-text">Modules</span>
+    <span class="caption-text">specifications</span>
     <ul class="subnav">
                 <li class="">
                     
@@ -151,14 +151,14 @@
     
       
         
-          <li>Modules &raquo;</li>
+          <li>specifications &raquo;</li>
         
       
     
     <li>Splitter</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/virtualdvid/Gap/edit/master/docs/modules/splitter_spec.md"
+        <a href="https://github.com/andrewferlitsch/Gap/edit/master/docs/specs/splitter_spec.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -186,6 +186,7 @@ Technical Specification, Gap v0.91</p>
 <ul>
 <li><strong>Page</strong> – This is a base class for the representation of an extracted page from the document. The <code>Document</code> class contains a list (index) of the extracted pages as <code>Page</code> objects.</li>
 </ul>
+<p><img alt="document_relationships" src="../../img/specs/document_relationships.png" /></p>
 <p>Fig. 1a High Level view of <code>Document</code> Class Object Relationships</p>
 <h3 id="12-initializer-constructor">1.2  Initializer (Constructor)</h3>
 <h6 id="synopsis">Synopsis</h6>
@@ -504,6 +505,7 @@ A <code>ValueError</code> is raised if the name parameter is <code>None</code>.<
 <ul>
 <li><code>Words</code> – This is a base class for representation of the text as NLP preprocessed list of words.</li>
 </ul>
+<p><img alt="page_relationships" src="../../img/specs/page_relationships.png" /></p>
 <p>Fig. 2a High Level view of Page Class Object Relationships</p>
 <h3 id="22-page-initializer-constructor">2.2  Page Initializer (Constructor)</h3>
 <h6 id="synopsis_19">Synopsis</h6>
@@ -511,8 +513,8 @@ A <code>ValueError</code> is raised if the name parameter is <code>None</code>.<
 </code></pre>
 
 <h6 id="parameters_2">Parameters</h6>
-<p><strong>page:</strong>   If not None, the local path to the page.
-<strong>text:</strong>   If not None, the text corresponding to the page.
+<p><strong>page:</strong>   If not None, the local path to the page.<br />
+<strong>text:</strong>   If not None, the text corresponding to the page.<br />
 <strong>pageno:</strong> If not None, the page number in the corresponding Document object.</p>
 <h6 id="usage_18">Usage</h6>
 <p>If the text parameter is not None, a <code>Words</code> object is created and instantiated with the corresponding text. The text is then NLP preprocessed according to the configuration settings stored as static members in the Page class (i.e., set by the parent Document object):</p>
@@ -534,8 +536,8 @@ page.path= path
 </code></pre>
 
 <h6 id="usage_19">Usage</h6>
-<p>When used as a getter the property returns the path of the corresponding page (i.e., split by Document object) in its native format.<br />
-When used as a setter the property sets the path of the corresponding split page.</p>
+<p>When used as a getter the property returns the path of the corresponding page (i.e., split by Document object) in its native format.</p>
+<p>When used as a setter the property sets the path of the corresponding split page.</p>
 <h6 id="exceptions_7">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>FileNotFoundError</code> is raised if the file specified by path does not exist.</p>
@@ -565,8 +567,8 @@ page.label = label
 </code></pre>
 
 <h6 id="usage_22">Usage</h6>
-<p>When used as a getter the property returns the <code>integer</code> label that has been assigned to the page.<br />
-When used as a setter the property assigns <code>sets</code> a label to the page.</p>
+<p>When used as a getter the property returns the <code>integer</code> label that has been assigned to the page.</p>
+<p>When used as a setter the property assigns <code>sets</code> a label to the page.</p>
 <h6 id="exceptions_8">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.</p>
 <h4 id="235-words">2.3.5  words</h4>
@@ -635,7 +637,7 @@ tf = page.termFreq
 <h6 id="usage_28">Usage</h6>
 <p>The <code>+=</code> <code>(__iadd__)</code> method is overridden to append text to the page, which is then NLP preprocessed.</p>
 <h6 id="exceptions_9">Exceptions</h6>
-<p>A TypeError is raised if the type of the parameter is not the expected type.</p>
+<p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.</p>
 <h4 id="243-str">2.4.3  str()</h4>
 <h6 id="synopsis_29">Synopsis</h6>
 <pre><code class="python">label = str(image)
@@ -735,7 +737,7 @@ Copyright ©2018, Epipog, All Rights Reserved</p>
   <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/virtualdvid/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/andrewferlitsch/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
         <span><a href="../segmentation_spec/" style="color: #fcfcfc;">&laquo; Previous</a></span>

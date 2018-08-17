@@ -18,7 +18,7 @@
   <script>
     // Current page data
     var mkdocs_page_name = "Syntax";
-    var mkdocs_page_input_path = "modules\\syntax_spec.md";
+    var mkdocs_page_input_path = "specs\\syntax_spec.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -33,7 +33,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-124105572-1', 'https://virtualdvid.github.io/Gap/');
+      ga('create', 'UA-124105572-1', 'https://andrewferlitsch.github.io/Gap/');
       ga('send', 'pageview');
   </script>
   
@@ -75,7 +75,7 @@
           
             <li class="toctree-l1">
 		
-    <span class="caption-text">Modules</span>
+    <span class="caption-text">specifications</span>
     <ul class="subnav">
                 <li class="">
                     
@@ -150,14 +150,14 @@
     
       
         
-          <li>Modules &raquo;</li>
+          <li>specifications &raquo;</li>
         
       
     
     <li>Syntax</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/virtualdvid/Gap/edit/master/docs/modules/syntax_spec.md"
+        <a href="https://github.com/andrewferlitsch/Gap/edit/master/docs/specs/syntax_spec.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -190,6 +190,7 @@ Technical Specification, Gap v0.91</p>
 <p>Vocabulary – A performance optimized python dictionary for word classification and lemmatizing.</p>
 </li>
 </ul>
+<p><img alt="words_relationships" src="../../img/specs/words_relationships.png" /></p>
 <p>Fig. 1a High Level view of Words Class Object Relationships</p>
 <h3 id="12-words-initializer-constructor">1.2 Words Initializer (Constructor)</h3>
 <h6 id="synopsis">Synopsis</h6>
@@ -250,8 +251,8 @@ Technical Specification, Gap v0.91</p>
                   - not bad / disgusting</p>
 <h6 id="exceptions">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the parameter is not the expected type.</p>
-<p>1.3 Words Properties</p>
-<p>1.3.1   text</p>
+<h3 id="13-words-properties">1.3 Words Properties</h3>
+<h4 id="131-text">1.3.1 text</h4>
 <h6 id="synopsis_1">Synopsis</h6>
 <pre><code class="python"># Getter
 text = images.text
@@ -265,7 +266,7 @@ images.text = text
 When used as a setter  the property re-preprocesses the text into machine learning ready data.</p>
 <h6 id="exceptions_1">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the parameter is not the expected type.</p>
-<p>1.3.2   bare</p>
+<h4 id="132-bare">1.3.2 bare</h4>
 <h6 id="synopsis_2">Synopsis</h6>
 <pre><code class="python"># Getter
 tokens = images.bare
@@ -278,7 +279,7 @@ tokens = images.bare
 </code></pre>
 </blockquote>
 <p>Except for numbers and acronyms, the tag values are set to untagged (0).</p>
-<p>1.3.3   Words</p>
+<h4 id="133-words">1.3.3 Words</h4>
 <h6 id="synopsis_3">Synopsis</h6>
 <pre><code class="python"># Getter
 words = images.words
@@ -295,7 +296,7 @@ words = images.words
 <pre><code>[ { 'word': word1, 'tag': tag, 'pos': POS }, {'word': word2, 'tag': tag, 'pos': POS } .. ]
 </code></pre>
 </blockquote>
-<p>1.3.4   bagOfWords</p>
+<h4 id="134-bagofwords">1.3.4 bagOfWords</h4>
 <h6 id="synopsis_4">Synopsis</h6>
 <pre><code class="python"># Getter
 bag = images.bagOfWords
@@ -307,7 +308,7 @@ bag = images.bagOfWords
 <pre><code>{ '&lt;word'&gt; : &lt;no. of occurrences&gt;, … }
 </code></pre>
 </blockquote>
-<p>1.3.5   freqDist</p>
+<h4 id="135-freqdist">1.3.5 freqDist</h4>
 <h6 id="synopsis_5">Synopsis</h6>
 <pre><code class="python"># Getter
 freq = images.freqDist
@@ -319,7 +320,7 @@ freq = images.freqDist
 <pre><code>[ ( '&lt;word'&gt;: &lt;no.  of occurrences&gt; ), …. ]
 </code></pre>
 </blockquote>
-<p>1.3.5   termFreq</p>
+<h4 id="135-termfreq">1.3.5 termFreq</h4>
 <h6 id="synopsis_6">Synopsis</h6>
 <pre><code class="python"># Getter
 tf = images.termFreq
@@ -330,8 +331,8 @@ tf = images.termFreq
 <blockquote>
 <pre><code>[ ( '&lt;word'&gt;: &lt;percentage  of occurrences&gt; ), …. ]
 </code></pre>
-<p>1.3.6   Static Variables</p>
 </blockquote>
+<h4 id="136-static-variables">1.3.6 Static Variables</h4>
 <p>The Words class contains the following static variables:</p>
 <ul>
 <li>DECIMAL – The decimal point (US Standard: period , EU: comma)</li>
@@ -352,7 +353,7 @@ tf = images.termFreq
 
 <h6 id="usage_7">Usage</h6>
 <p>The <code>+=</code> <code>(__iadd__)</code> method is overridden to add words to the sequenced word list (append).</p>
-<h3 id="15-words-private-methods">1.5  Words Private Methods</h3>
+<h3 id="15-words-private-methods">1.5 Words Private Methods</h3>
 <p>The Words class contains the following private methods, which are called by the initializer:</p>
 <ul>
 <li><code>_split()</code> – This method performs the first phase of NLP preprocessing of the raw text into a sequenced list of words (bare processing mode).<ul>
@@ -530,7 +531,7 @@ tf = images.termFreq
 <p><code>_partsofspeech()</code> – This method performs the sixth phase of NLP preprocessing of the tokenized words of tagging words with their parts of speech tag (using NLTK).</p>
 </li>
 </ul>
-<p>1.5 Words Public Methods</p>
+<h3 id="15-words-public-methods">1.5 Words Public Methods</h3>
 <hr />
 <p>The Words class contains no public methods.</p>
 <h2 id="appendix-i-updates">APPENDIX I: Updates</h2>
@@ -615,7 +616,7 @@ Copyright ©2018, Epipog, All Rights Reserved</p>
   <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/virtualdvid/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/andrewferlitsch/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
         <span><a href="../splitter_spec/" style="color: #fcfcfc;">&laquo; Previous</a></span>
