@@ -590,10 +590,17 @@ pass
 # Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
 pass
 ```
+     
+### Image (Data) Augmentation
 
-            
-### Data Augmentation
+Image Augmentation is the process of generating (synthesizing) new images from existing images, which can then be used to augment the training process. Synthesis can include, rotation, skew, sharpending and blur of existing images. These new images are then feed into the neural network during training to augment the training set. Rotating and skew aid in recognizing images from different angles, and sharpening and blur help generalize recognition (offset overfitting), as well as recognition under different lightening and time of day conditions.
+
+*in progress*
+
+```python
+image.augment = True
+```
 
 ### Transformation
         
-
+*in progress*
