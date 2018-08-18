@@ -1,9 +1,8 @@
-# Natural Language Processing for PDF/TIFF/Image Documents 
-## Computer Vision for Image Data
+# <span style='color:saddlebrown'>Gap</span> Framework - Natural Language Processing for PDF/TIFF/Image Documents 
 
 ## SPLITTER Module
 High Precision PDF Page Splitting/OCR/Text Extraction
-Technical Specification, Gap v0.91
+Technical Specification, Gap v0.9.2
 
 ## 1.  Document
 ### 1.1  Document Overview
