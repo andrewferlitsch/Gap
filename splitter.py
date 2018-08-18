@@ -402,7 +402,7 @@ class Document(object):
                 continue
             count += 1
             if self.WORDDICT == 'norvig':
-                norvig = Norvig()
+                norvig = Norvig(self._lang)
                 if norvig.known(words[_]['word'].lower()):
                     correct += 1
           

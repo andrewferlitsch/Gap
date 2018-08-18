@@ -1,4 +1,4 @@
-word2int_sp = {
+word2int_es = {
 "tiene":164,
 "pescado":3148,
 "calle":477,
