@@ -10,13 +10,13 @@ Before the advent of machine learning with computer vision and today's modern ML
 
 For the data analyst and statisticians whom feel they don't have the necessary software development background, we encourage you to visit the collaborative lab's training site for fundamentials in modern software programming. Likewise, for those software developers whom feel they don't have the necessary background in statistics and machine learning, we encourage you to visit the collaborative lab's training site for fundamentials in [modern statistics and machine learning](https://github.com/andrewferlitsch/Training/tree/master/AITraining/Fundamentals/Machine%20Learning).
 
-As far as our team and contributers, they keep a single phrase in mind when designing, coding and building tutorials. They like to say that Gap is:
+As far as our team and contributers, they keep a single phrase in mind when designing, coding and building tutorials. They like to say that **Gap** is:
 
                                             Machine Learning for Humans
 
 ## The First Steps in using Gap for Computer Vision (CV)
 
-The first step in using Gap for machine learning (ML) of computer vision (CV) is learning to classify a single object in an image. Is it a dog, a cat, what digit is it, what sign language digit is it, etc...
+The first step in using **Gap** for machine learning (ML) of computer vision (CV) is learning to classify a single object in an image. Is it a dog, a cat, what digit is it, what sign language digit is it, etc...
 
 To do single object classification, depending on the images, one will use either a artificial neural network 
 ([ANN](https://github.com/andrewferlitsch/Training/blob/master/AITraining/Fundamentals/Machine%20Learning/ML%20Neural%20Networks.pptx)) 
@@ -62,7 +62,7 @@ The first step is to instantiate an `Image` class object and load the image into
 image = Image("../tests/files/1_100.jpg", 1)
 ```
 
-While Python does not have OOP polymorphism builtin, the class objects in Gap have been constructed to emulate polymorphism in a variety of ways. The first positional parameter (image path) to the `Image` class can either be a local path or a remote path. In the latter case, a path starting with http or https is a remote path. In this case, a HTTP request to fetch the image from the remote location is made.
+While Python does not have OOP polymorphism builtin, the class objects in **Gap** have been constructed to emulate polymorphism in a variety of ways. The first positional parameter (image path) to the `Image` class can either be a local path or a remote path. In the latter case, a path starting with http or https is a remote path. In this case, a HTTP request to fetch the image from the remote location is made.
 
 ```python
 image = Image("https://en.wikipedia.org/wiki/File:Example.jpg", 1)
@@ -120,7 +120,7 @@ When processing of the image is completed, the raw pixel data, machine learning 
 
 `./1_100.hd5`
 
-The path location of the stored HDF5 can be specified with the keyword parameter *dir*.
+The path location of the stored HDF5 can be specified with the keyword parameter `dir`.
 
 ```python
 image = Image("../tests/files/1_100.jpg", 1, dir="tmp")
@@ -158,7 +158,7 @@ def next_step(step):
 
 ### Preprocessing Transformations: Resizing, Reshaping, Flattening
 
-The keyword parameter `config` has a number of settings for specifying how the raw pixel data is preprocessed. The Gap framework is designed to eliminate the use of large numbers of keyword parameters, and instead uses a modern convention of passing in a configuration parameter. Here are some of the configuration settings:
+The keyword parameter `config` has a number of settings for specifying how the raw pixel data is preprocessed. The **Gap** framework is designed to eliminate the use of large numbers of keyword parameters, and instead uses a modern convention of passing in a configuration parameter. Here are some of the configuration settings:
 
 >     nostore                 # do not store in a HDF5 file
 >     grayscale | gray        # convert to a grayscale image with a single channel (i.e., color plane)
@@ -187,7 +187,7 @@ print(image.shape)  # would output (50, 50, 3)
 
 ### Example: Image Processing Dashboard
 
-Let's expand on the real-word cloud example from earlier. In this case, let's assume that one wants to have a dashboard for a devOps person to monitor the preprocessing of images from a user, with the requirements:
+Let's expand on the real-word cloud example from earlier. In this case, let's assume that one wants to have a dashboard for a DevOps person to monitor the preprocessing of images from a user, with the requirements:
 
 + Each time an image is preprocessed, the following is displayed on the dashboard:
     - A thumbnail of the source image.
@@ -263,11 +263,11 @@ data = image.data
 
 ### Image Reference
 
-For a complete reference on all methods and properties for the Image class, see [reference](https://virtualdvid.github.io/Gap/modules/vision_spec/).
+For a complete reference on all methods and properties for the `Image` class, see [reference](https://virtualdvid.github.io/Gap/modules/vision_spec/).
 
 ### Image Collections
    
-The `Images` class provides preprocessing of a collections of images (vs. a single image). The parameters and emulated polymorphism are identical to the Image class, except the images and labels parameter refer to a plurality of images, which comprise the collection. The positional parameter `images` can be specified as:
+The `Images` class provides preprocessing of a collections of images (vs. a single image). The parameters and emulated polymorphism are identical to the `Image` class, except the images and labels parameter refer to a plurality of images, which comprise the collection. The positional parameter `images` can be specified as:
 
  + A list of local or remote images (e.g., [ '1_100.jpg', '2_100.jpg', '3_100.jpg'])
  + A single directory path of images  (e.g., 'apple')
