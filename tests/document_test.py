@@ -692,11 +692,11 @@ class MyTest(unittest.TestCase):
         """ Document - lang type, page 1 """
         document = Document("files/lang-en.txt", "./")
         self.assertEquals(document.lang, 'en')
-        document = Document("files/lang-sp.txt", "./")
-        self.assertEquals(document.lang, 'sp')
+        document = Document("files/lang-es.txt", "./")
+        self.assertEquals(document.lang, 'es')
         document = Document("files/lang-fr.txt", "./")
         self.assertEquals(document.lang, 'fr')
-        for lang in ['en', 'sp', 'fr']:
+        for lang in ['en', 'es', 'fr']:
             os.remove("lang-" + lang + "1.txt")
             os.remove("lang-" + lang + "1.json")
 		

@@ -22,7 +22,7 @@ from syntax import Words, Vocabulary, Norvig
 from pdf_res import PDFResource
 from word2int import word2int
 from word2int_fr import word2int_fr
-from word2int_sp import word2int_sp
+from word2int_es import word2int_es
 
 
 if shutil.which('gswin64c'):
@@ -365,7 +365,7 @@ class Document(object):
                 pass
                 
             try:
-                id = word2int_sp[words[_]['word']]
+                id = word2int_es[words[_]['word']]
                 spanish += 1
             except:
                 pass
@@ -381,7 +381,7 @@ class Document(object):
         elif french > spanish:
             self._lang = 'fr'
         else:
-            self._lang = 'sp'
+            self._lang = 'es'
         
     def _scancheck(self, words):
         """ Use spell checker to determine the quality of the scan """

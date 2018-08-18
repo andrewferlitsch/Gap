@@ -1507,7 +1507,7 @@ class Words(object):
         
 from word2int import word2int 
 from word2int_fr import word2int_fr
-from word2int_sp import word2int_sp
+from word2int_es import word2int_es
         
 class Norvig(object):
     """ 
@@ -1519,11 +1519,11 @@ class Norvig(object):
     """
     
     def __init__(self, lang='en'):
-        global word2int, word2int_fr, word2int_sp
+        global word2int, word2int_fr, word2int_es
         if lang == 'en':
             self.word2int = word2int
-        elif lang == 'sp':
-            self.word2int = word2int_sp
+        elif lang == 'es':
+            self.word2int = word2int_es
         elif lang == 'fr':
             self.word2int = word2int_fr
                     
