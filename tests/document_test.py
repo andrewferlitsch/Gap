@@ -710,28 +710,6 @@ class MyTest(unittest.TestCase):
         for lang in ['en', 'sp', 'fr']:
             os.remove("lang-" + lang + "1.txt")
             os.remove("lang-" + lang + "1.json")
-        
-    def test_076(self):
-        """ Document - lang type, page 2 """
-        document = Document("test.txt", "./")
-        with open('files/lang-en.txt', 'r') as f:
-            page = Page(text='f.read()')
-            document[1] = page
-        self.assertEquals(document.lang, 'en')
-        document = Document("test.txt", "./")
-        with open('files/lang-sp.txt', 'r', encoding='utf-8') as f:
-            page = Page(text='f.read()')
-            document[1] = page
-        self.assertEquals(document.lang, 'sp')
-        document = Document("test.txt", "./")
-        with open('files/lang-fr.txt', 'r', encoding='utf-8') as f:
-            page = Page(text='f.read()')
-            document[1] = page
-        self.assertEquals(document.lang, 'fr')
-        os.remove('test1.txt')
-        os.remove('test2.txt')
-        os.remove('test1.json')
-        os.remove('test2.json')
 		
     def done(self, document):
         self.isdone = True
