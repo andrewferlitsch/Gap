@@ -211,7 +211,7 @@ lang = document.lang
 
 ###### Usage
 
-When used as a getter the property returns whether the language of the document, which may be either 'en' (English), 'sp' (Spanish) or 'fr' (French).
+When used as a getter the property returns whether the language of the document, which may be either 'en' (English), 'es' (Spanish) or 'fr' (French).
 
 
 #### 1.3.8  scanned
