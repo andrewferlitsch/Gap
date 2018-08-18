@@ -313,7 +313,7 @@ The Document class contains the following static variables:
 
 +	**RESOLUTION** – The image resolution when converting `PDF` to `PNG` for `OCR` (default `300`).  
 +	**SCANCHECK**  – The number of `OCR` words to check to estimate the quality of the scan.  
-+	**WORDDICT**   - The word dictionary to use for scan spell check (default to `pyaspeller`).
++	**WORDDICT**   - The word dictionary to use for scan spell check (default to `norvig`).
 
 ### 1.4  Document Overridden Operators
 
