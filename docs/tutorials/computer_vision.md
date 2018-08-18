@@ -492,27 +492,108 @@ X_train, X_test, Y_train, Y_test = images.split
 
 nepochs = 200   # the number of times to feed the entire training set while training the neural network
 for _ in range(nepochs):
-    # feed the entire training set per epoch (i.e., X_train, Y_train)
+    # Feed the entire training set per epoch (i.e., X_train, Y_train) and calculate the cost function
     pass
 
-    # run the optimizer (backward probagation) to update the weights
+    # Run the optimizer (backward probagation) to update the weights
     pass
 
     # Re-randomize the training set
     X_train, _, Y_train, _ = images.split
 
-# feed the entire text data and calculate accuracy (i.e., X_test, Y_test)
+
+# Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
+pass
+
+# Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
 pass
 ```
 
 #### Stochastic Feeding
 
+Another way of feeding a neural network is to feed one image at a time and do backward probagation, using gradient descent. This is known as 'stochastic gradient descent'.
 
-            
-*in progress*
+The `next()` operator supports iterating through the training list one image object at a time. Once all of the entire training set has been iterated through, the `next()` operator returns None, and the training set is randomly re-shuffled for the next epoch.
+
+```python
+# Split the data into test and training datasets
+images.split = 0.2, 42
+
+# Forward Feed the training set 200 times (epochs)
+epochs = 200
+for _ in range(epochs):
+
+  # Now terate through the ML ready data and label for each image in the training set
+  while True:
+      data, label = next(images)
+      if data is None: break
+
+      # Forward feed the image data and label through the neural network and calculate the cost function
+      pass
+      
+      # Run the optimizer (backward probagation) to update the weights
+      pass
+      
+      
+# Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
+pass
+
+# Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
+pass
+```
+
+#### Mini-Batch Feeding
+
+Another way of feeding a neural network is through mini-batches. A mini-batch is a subset of the training set, that is greater than one. After each mini-batch is feed, then backward probagation, using gradient descent, is done.
+
+Typically, mini-batches are set to sizes like 30, 50, 100, or 200. The `minibatch` property when used as a setter, will set the size of the mini-batches. In the example below, the mini-batch size is set to 100.
+
+```python
+images.minibatch = 100
+```
+
+When the `minibatch` property is used as a getter, it will produce a generator, which will generate a batch from the training set of the size specified when used as a setter. Each time the `minibatch` property is called as a getter, it will sequentially move through the randomized set of training data. Upon completion of an epoch, the training set is re-randomized, and the `minibatch` property will reset to the begining of the training set. In the example below:
+
++ The minibatch size is set to 100.
++ The total number of batches for the training set is calculated.
++ The training set is forward feed through the neural network 200 times (epochs).
++ On each epoch, the training set is partitioned into mini-batches.
++ After each mini-batch is feed, run the optimizer to update the weights.
+
+```python
+# Set the minibatch size
+images.minibatch = 100
+
+# Calculate the number of batches
+nbatches = len(images) // 100
+
+# Forward Feed the training set 200 times (epochs)
+epochs = 200
+for _ in range(epochs):
+
+  # Process each mini-batch
+  for _ in range(nbatches):
+      # Create a generator for the next minibatch
+      g = images.minibatch
+
+      # Get the data, labels for each item in the minibatch
+      for data, label in g:
+          # Forward Feed the image data and label
+          pass
+
+      # Run the optimizer (backward probagation) to update the weights after each mini-batch
+      pass
+      
+# Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
+pass
+
+# Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
+pass
+```
+
             
 ### Data Augmentation
 
 ### Transformation
         
- *fix it: label should be labels*
+
