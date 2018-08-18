@@ -53,7 +53,7 @@ Words( text, flags … )
 **pos:** Annotate `True` or not annotate `False` NLP preprocessed tokens with
                parts of speech using NLTK `pos_tag()`.
 
-**spell:** Spell check and replace misspelled words using pyaspeller.
+**spell:** Spell check and replace misspelled words using norvig.
 
 **roman:** Romanize `True` or not Romanize `False` latin-1 encodings of NLP 
                preprocessed tokens into ASCII encoding.
@@ -371,8 +371,6 @@ If the preceding word is birth or DOB, then the date will be tagged as a date of
 + `_partsofspeech()` – This method performs the sixth phase of NLP preprocessing of the tokenized words of tagging words with their parts of speech tag (using NLTK).
 
 ### 1.5 Words Public Methods
-
----
 
 The Words class contains no public methods.
 
