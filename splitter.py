@@ -17,8 +17,6 @@ import sys
 import json
 import shutil
 
-import pyaspeller
-
 from segment import Segment
 from syntax import Words, Vocabulary, Norvig
 from pdf_res import PDFResource
@@ -104,7 +102,7 @@ class Document(object):
                 elif setting.startswith('spell'):
                     vals = setting.split('=')
                     if len(vals) == 2:
-                        if vals[1] in ['norvig', 'pya']:
+                        if vals[1] in ['norvig']:
                             Page.SPELL = vals[1]
                         else:
                             raise AttributeError("Setting spell set to an invalid value: " + vals[1])
@@ -407,11 +405,7 @@ class Document(object):
                 norvig = Norvig()
                 if norvig.known(words[_]['word'].lower()):
                     correct += 1
-            else:
-                check = pyaspeller.Word(words[_]['word'].lower())
-                if check.correct:
-                    correct += 1
-                      
+          
         if count:
             self._quality = correct / count
         else:

@@ -14,7 +14,6 @@ from nltk import pos_tag
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 from unidecode import unidecode
-import pyaspeller
 
 from vocabulary import Vocabulary, vocab
 from address import Address
@@ -406,13 +405,7 @@ class Words(object):
                     spell = Norvig()
                     replace = spell.correction(self._words[i]['word'])
                     self._words[i]['word'] = replace
-                else:
-                    check = pyaspeller.Word(self._words[i]['word'])
-                    if not check.correct:
-                        replace = check.spellsafe
-                        if replace:
-                            self._words[i]['word'] = replace
-            
+                
             # If in vocabulary, do not stem
             try:
                 v = vocab[word]

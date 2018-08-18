@@ -647,20 +647,9 @@ class MyTest(unittest.TestCase):
     def test_070(self):
         """ config - spell checker - invalid """
         with pytest.raises(AttributeError):
-            document = Document(config=['spell=foo'])
+            document = Document(config=['spell=foo'])            
             
     def test_071(self):
-        """ config - spell checker - pya """
-        with open("spell.txt", "w") as f:
-            f.write("mispell speling similiar")
-        Document.WORDDICT = 'pyaspeller'
-        document = Document('spell.txt')
-        page = document[0]
-        os.remove('spell.txt')
-        os.remove('spell1.txt')
-        os.remove('spell1.json')
-            
-    def test_072(self):
         """ config - spell checker - norvig """
         with open("spell.txt", "w") as f:
             f.write("mispell speling similiar")
@@ -671,7 +660,7 @@ class MyTest(unittest.TestCase):
         os.remove('spell1.txt')
         os.remove('spell1.json')
         
-    def test_073(self): 
+    def test_072(self): 
         """ Document - scanned PDF - scancheck with norvig """
         Document.WORDDICT = 'norvig'
         document = Document("files/scan.pdf", "./")
@@ -685,7 +674,7 @@ class MyTest(unittest.TestCase):
         os.remove("scan1.png")
         os.remove("scan1.json")
         
-    def test_074(self): 
+    def test_073(self): 
         """ Document - scanned PDF - disable scan check """
         Document.SCANCHECK = 0
         document = Document("files/scan.pdf", "./")
@@ -699,7 +688,7 @@ class MyTest(unittest.TestCase):
         os.remove("scan1.png")
         os.remove("scan1.json")
         
-    def test_075(self):
+    def test_074(self):
         """ Document - lang type, page 1 """
         document = Document("files/lang-en.txt", "./")
         self.assertEquals(document.lang, 'en')
