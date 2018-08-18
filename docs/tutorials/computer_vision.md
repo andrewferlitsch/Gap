@@ -639,8 +639,10 @@ If parameter to the `augment` property may also be a tuple. The tuple specifies 
 images.augment = -45, 120, 3
 images.minibatch = 100
 ```
-*Specifying the parameter as a tuple is anticipated for v0.9.5 (beta)
+*Specifying the parameter as a tuple is anticipated for v0.9.5 (beta)*
 
 ### Transformation
+
+The transformation methods provide the ability to transform the existing stored machine learning ready data into another shape without reprocessing the image data. This feature is particularly useful if the existing machine learning ready data is repurposed for another neural network whose input is a different shape.
         
-*in progress*
+*The above feature is anticipated for v0.9.5 (beta)*
