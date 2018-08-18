@@ -90,10 +90,7 @@
     <a class="current" href="./">Syntax</a>
     <ul class="subnav">
             
-    <li class="toctree-l3"><a href="#natural-language-processing-for-pdftiffimage-documents">Natural Language Processing for PDF/TIFF/Image Documents</a></li>
-    
-
-    <li class="toctree-l3"><a href="#computer-vision-for-image-data">Computer Vision for Image Data</a></li>
+    <li class="toctree-l3"><a href="#gap-framework-natural-language-processing-for-pdftiffimage-documents">Gap Framework - Natural Language Processing for PDF/TIFF/Image Documents</a></li>
     
         <ul>
         
@@ -167,11 +164,10 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="natural-language-processing-for-pdftiffimage-documents">Natural Language Processing for PDF/TIFF/Image Documents</h1>
-<h1 id="computer-vision-for-image-data">Computer Vision for Image Data</h1>
+                <h1 id="gap-framework-natural-language-processing-for-pdftiffimage-documents">Gap Framework - Natural Language Processing for PDF/TIFF/Image Documents</h1>
 <h2 id="syntax-module">SYNTAX MODULE</h2>
 <p>High Precision Natural Language Processing<br />
-Technical Specification, Gap v0.91</p>
+Technical Specification, Gap v0.9.2</p>
 <h2 id="1-words">1  Words</h2>
 <h3 id="11-words-overview">1.1  Words Overview</h3>
 <p>The words NLP preprocessor contains the following primary classes, and their relationships:</p>
@@ -209,7 +205,7 @@ Technical Specification, Gap v0.91</p>
                 lemma</p>
 <p><strong>pos:</strong> Annotate <code>True</code> or not annotate <code>False</code> NLP preprocessed tokens with
                parts of speech using NLTK <code>pos_tag()</code>.</p>
-<p><strong>spell:</strong> Spell check and replace misspelled words using pyaspeller.</p>
+<p><strong>spell:</strong> Spell check and replace misspelled words using norvig.</p>
 <p><strong>roman:</strong> Romanize <code>True</code> or not Romanize <code>False</code> latin-1 encodings of NLP 
                preprocessed tokens into ASCII encoding.</p>
 <p><strong>number:</strong> Keep/classify <code>True</code> or remove <code>False</code> numerical numbers. Ex.
@@ -532,7 +528,6 @@ tf = images.termFreq
 </li>
 </ul>
 <h3 id="15-words-public-methods">1.5 Words Public Methods</h3>
-<hr />
 <p>The Words class contains no public methods.</p>
 <h2 id="appendix-i-updates">APPENDIX I: Updates</h2>
 <p><strong>Pre-Gap (Epipog) v1.1</strong>
