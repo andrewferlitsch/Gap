@@ -284,7 +284,7 @@ The example below creates an `Images` objects consisting of three images with co
 images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3])
 ```
 
-For each image specified, the `Images` class creates an `Image` object, which are maintained in the `Images` object as a list. The list of corresonding Image objects can be accessed from the property `images`. In the example below, a collection of three images is created, and then the `images` property is accessed as a list iterator in a for loop. On each loop, the next `Image` object is accessed and inside the loop the code prints the name and label of the corresponding `Image` object.
+For each image specified, the `Images` class creates an `Image` object, which are maintained in the `images` objects as a list. The list of corresonding `Image` objects can be accessed from the property `images`. In the example below, a collection of three images is created, and then the `images` property is accessed as a list iterator in a for loop. On each loop, the next `Image` object is accessed and inside the loop the code prints the name and label of the corresponding `Image` object.
 
 ```python
 images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3])
@@ -307,7 +307,7 @@ The builtin operators `len()` and `[]` are overridden in the `Images` class. The
 
 ### Collection Storage & Retrieval
 
-The `Images` class, disables the Image objects from storing the machine learning ready data as individual HDF5 files per image, and insteads stores a single HDF5 for the entire collection. By default, the file name combines the prefix `collection.` with the root name of the first image in the collection, and is stored in the current working directory. In the above example, the machine learning ready data for the entire collection would be stored as:
+The `Images` class, disables the `Image` objects from storing the machine learning ready data as individual HDF5 files per image, and insteads stores a single HDF5 for the entire collection. By default, the file name combines the prefix `collection.` with the root name of the first image in the collection, and is stored in the current working directory. In the above example, the machine learning ready data for the entire collection would be stored as:
 
 `./collection.1_100.h5`
         
@@ -342,11 +342,11 @@ images.load('apples', dir='tmp')
  
 ### Example: Data Preparation for a Fruits Dataset: As Individual Collections
  
-In this example, a dataset of images of fruit are preprocessed into machine learning data, as follows:
+In this example, a dataset of images of fruit are preprocessed into machine learning ready data, as follows:
 
   1. The images for each type of fruit are in separate directories (i.e., apple, pear, banana).
   2. The labels for the fruit will are sequentially numbered (i.e., 1, 2, 3).
-  3. The images will be preserved as color images, but resized to (50,50)
+  3. The images will be preserved as color images, but resized to (50,50).
   4. The shape of the preprocessed machine learning data will be (50, 50, 3) for input to a CNN.
   
 In the example below, a separate collection is created for each type of fruit:
@@ -382,10 +382,10 @@ def collectionHandler(images):
 
 Let's describe some of the aspects of the above example. For the directories, we created a list of the directory names and then iterated through it. For each iteration, we:
 
-+ Instantiate an Images object for the current fruit.
-+ Set the collection name to the plural of the fruit name (i.e., fruit + 's')
++ Instantiate an `Images` object for the current fruit.
++ Set the collection name to the plural of the fruit name (i.e., fruit + 's').
 + Use an incrementer, starting at 1, for the label.
-+ Use the ehandler parameter to process the collection asynchronously.
++ Use the `ehandler` parameter to process the collection asynchronously.
   
 When each collection is completed, the function collectionHandler is called. This function will print the number of images
 processed in the collection, the time (in seconds) to process the collection, and the accumulated processing time for all the collections.
@@ -437,7 +437,7 @@ Because the processing and invoking the event handler happen concurrently, there
 
 The first step to training a neural network is to split the collection into training and test data. We will cover some basic cases here.
 
-One uses the property `split` as a setter to split the collection into training and test data. This property will randomized the order of the Image objects in the collection, create a partition between the train and test data and create a corresponding internal index. The `split` property is implemented using emulated polymorphism, whereby the property can be given a single value or a tuple. The first value (parameter) is the percentage of the collection that will be set aside as testing data, and must be between 0 and 1. Below is an example:
+One uses the property `split` as a setter to split the collection into training and test data. This property will randomized the order of the `Image` objects in the collection, create a partition between the train and test data and create a corresponding internal index. The `split` property is implemented using emulated polymorphism, whereby the property can be given a single value or a tuple. The first value (parameter) is the percentage of the collection that will be set aside as testing data, and must be between 0 and 1. Below is an example:
 
 ```python
 # 20% of the collection is test, and 80% is training
@@ -453,7 +453,7 @@ train.split = 0
 test.split  = 0
 ```
 
-The random number generation by default will start at different seed each time. If you need (desire) consistency between training on the results for comparison or demo'ing, then one specifies a seed value for the random number generation. The seed value is an integer value and is specified as a second parameter (i.e., tuple) to the *split* property. In the example below, the split is set to 20% test, and the random seed to 42.
+The random number generation by default will start at a different seed each time. If you need (desire) consistency between training on the results for comparison or demo'ing, then one specifies a seed value for the random number generation. The seed value is an integer value and is specified as a second parameter (i.e., tuple) to the `split` property. In the example below, the split is set to 20% test, and the random seed set to 42.
 
 `images.split = 0.2, 42`
 
