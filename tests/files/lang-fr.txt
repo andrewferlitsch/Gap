@@ -1,0 +1,4 @@
+Bienvenue dans les ateliers de laboratoire collaboratifs sur l'apprentissage automatique.
+
+Les didacticiels de traitement du langage naturel (NLP) commenceront par les bases et les progrès vers les applications avancées du monde réel.
+Les didacticiels vont au-delà de l’explication du code et des étapes, pour inclure les réponses aux questions de ce qui est anticipé et pourquoi.

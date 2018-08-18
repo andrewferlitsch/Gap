@@ -1,0 +1,4 @@
+Welcome to the labs.earth collaborative laboratory tutorials on machine learning.
+
+The natural language processing (NLP) tutorials will start with the basics and progress to advanced real world applications. 
+The tutorials go beyond explaining the code and steps, to include the answers to the anticipated what and why questions.

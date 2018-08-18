@@ -114,7 +114,7 @@ class MyTest(unittest.TestCase):
         os.remove("test1.json")
         
     def test_012(self):
-        """ Document constructr - non-ascii characters in document (UTF-8 encoding) """
+        """ Document constructor - non-ascii characters in document (UTF-8 encoding) """
         document = Document("files/7page.pdf", "./")
         self.assertEqual(document[0].text.strip()[0:7], "MEDICAL")
         for i in range(1,8):
@@ -698,6 +698,40 @@ class MyTest(unittest.TestCase):
         os.remove("scan1.pdf")
         os.remove("scan1.png")
         os.remove("scan1.json")
+        
+    def test_075(self):
+        """ Document - lang type, page 1 """
+        document = Document("files/lang-en.txt", "./")
+        self.assertEquals(document.lang, 'en')
+        document = Document("files/lang-sp.txt", "./")
+        self.assertEquals(document.lang, 'sp')
+        document = Document("files/lang-fr.txt", "./")
+        self.assertEquals(document.lang, 'fr')
+        for lang in ['en', 'sp', 'fr']:
+            os.remove("lang-" + lang + "1.txt")
+            os.remove("lang-" + lang + "1.json")
+        
+    def test_076(self):
+        """ Document - lang type, page 2 """
+        document = Document("test.txt", "./")
+        with open('files/lang-en.txt', 'r') as f:
+            page = Page(text='f.read()')
+            document[1] = page
+        self.assertEquals(document.lang, 'en')
+        document = Document("test.txt", "./")
+        with open('files/lang-sp.txt', 'r', encoding='utf-8') as f:
+            page = Page(text='f.read()')
+            document[1] = page
+        self.assertEquals(document.lang, 'sp')
+        document = Document("test.txt", "./")
+        with open('files/lang-fr.txt', 'r', encoding='utf-8') as f:
+            page = Page(text='f.read()')
+            document[1] = page
+        self.assertEquals(document.lang, 'fr')
+        os.remove('test1.txt')
+        os.remove('test2.txt')
+        os.remove('test1.json')
+        os.remove('test2.json')
 		
     def done(self, document):
         self.isdone = True
