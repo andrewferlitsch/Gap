@@ -457,24 +457,37 @@ The random number generation by default will start at a different seed each time
 
 `images.split = 0.2, 42`
 
+One can see the index of the randomized distribution by displaying the internal member `_train`. This member is a list of integers which correspond to the index in the `images` list. While Python does not support the OOP concept of data encapsulation using private members, the **Gap** framework follows the convention that any member beginning with an underscore should be treated by developers as private. While not enforced by Python, members like `_train` should only be read and not written. The example below accesses (read) the randomized index for the training data and then prints it.
+
+```python
+indexes = images._train
+print(indexes)
+```
+
 ### Forward Feeding a Neural Network
 
-The `Images` class provides methods for batch, stochastic and mini-batch feeding for training and evaluating a neural network. The feeders produce full batch samples, single samples and mini-batch samples as numpy matrixes, which are compatible for input with all Python machine learning networks that support numpy arrays, such as Tensorflow, Keras and Pytorch, for example. Batch feeding is also randomized, and the entire collection(s) can be continuously re-feed (i.e., epoch), where each time they are re-randomized.
+The `Images` class provides methods for batch, stochastic and mini-batch feeding for training and evaluating a neural network. The feeders produce full batch samples, single samples and mini-batch samples as numpy matrixes, which are compatible for input with all Python machine learning frameworks that support numpy arrays, such as Tensorflow, Keras and Pytorch, for example. Forward feeding is randomized, and the entire collection(s) can be continuously re-feed (i.e., epoch), where each time they are re-randomized.
 
 The `split`, `minibatch`, and overriden `next()` operator support forward feeding. 
 
 #### Batch Feeding
 
-If batch feeding a neural network (i.e., feed all samples before backward probagation), one uses the *split* property as a getter per pass (i.e., epoch). The steps are:
+In batch mode, the entire training set can be ran through the neural network as a single pass, prior to backward probagation and updating the weights using gradient descent. This is known as 'batch gradient descent'.
 
-  1. Do a first split of the training and test data, and set aside the test data.
-  2. Loop for each epoch (i.e., number of times to pass the entire training set).
-  3. 
+When the `split` property is used as a getter, it returns the image data and corresponding labels for the training and test set similar to using sci-learn's train_test_split() function. In the example below:
 
-If one is batch feeding  
++ The dataset is split into 20% test and 80% training.
++ The X_train and X_test is the list of machine learning ready data, as numpy arrays, of the corresponding training and test images.
++ The Y_train and Y_test is the list of the corresponding labels.
++ The variable epochs is the number of times the X_train dataset will be forward feed through the neural network.
++ The optimizer performs backward probagation to update the weights.
++ At the end of each epoch, The training data is re-randomized by calling the `split` method again as a getter.
++ When training is done, the X_test and corresponding Y_test are forward feed to evaluate the accuracy of the trained model.
+
 
 ```python
 # Get the first randomized split of the dataset
+images.split = 0.2, 42
 X_train, X_test, Y_train, Y_test = images.split
 
 nepochs = 200   # the number of times to feed the entire training set while training the neural network
