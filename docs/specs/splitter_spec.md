@@ -200,7 +200,21 @@ When used as a setter the property sets the label of the document to the specifi
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
 
-#### 1.3.7  scanned
+#### 1.3.7 lang
+
+###### Synopsis
+
+```python
+# Getter
+lang = document.lang
+```
+
+###### Usage
+
+When used as a getter the property returns whether the language of the document, which may be either 'en' (English), 'sp' (Spanish) or 'fr' (French).
+
+
+#### 1.3.8  scanned
 
 ###### Synopsis
 
@@ -213,7 +227,7 @@ scanned, quality = document.scanned
 
 When used as a getter the property returns whether the document is a scanned image `True` or digital text `False` document, and the estimated quality of the scan as a percentage (between 0 and 1).
 
-#### 1.3.8  time
+#### 1.3.9  time
 
 ###### Synopsis
 
@@ -226,7 +240,7 @@ secs = document.time
 
 When used as a getter the property returns the amount of time (in seconds) it took to preprocess the document into machine learning ready data.
 
-#### 1.3.9  text
+#### 1.3.10  text
 
 ###### Synopsis
 
@@ -239,7 +253,7 @@ text = document.text
 
 When used as a getter the property returns a list, one entry per page, of the extracted text from the document in its original Unicode format.
 
-#### 1.3.10  pages
+#### 1.3.11  pages
 
 ###### Synopsis
 
@@ -248,7 +262,7 @@ When used as a getter the property returns a list, one entry per page, of the ex
 pages = document.pages
 ```
 
-#### 1.3.11  bagOfWords
+#### 1.3.12  bagOfWords
 
 ###### Synopsis
 
@@ -263,7 +277,7 @@ When used as a getter the property returns the document’s word sequences as a 
 
 >     { ‘<word’> : <no. of occurrences>, … }
 
-#### 1.3.12  freqDist
+#### 1.3.13  freqDist
 
 ###### Synopsis
 
@@ -278,7 +292,7 @@ When used as a getter the property returns the sorted tuples of a frequency dist
 
 >     [ ( ‘<word’>: <no.  of occurrences> ), …. ]
 
-#### 1.3.13  termFreq
+#### 1.3.14  termFreq
 
 ###### Synopsis
 
@@ -293,7 +307,7 @@ When used as a getter the property returns the sorted tuples of a term frequency
 
 >     [ ( ‘<word’>: <percentage  of occurrences> ), …. ]
 
-#### 1.3.14  Static Variables
+#### 1.3.15  Static Variables
 
 The Document class contains the following static variables:
 
