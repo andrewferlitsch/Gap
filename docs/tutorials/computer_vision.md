@@ -492,27 +492,157 @@ X_train, X_test, Y_train, Y_test = images.split
 
 nepochs = 200   # the number of times to feed the entire training set while training the neural network
 for _ in range(nepochs):
-    # feed the entire training set per epoch (i.e., X_train, Y_train)
+    # Feed the entire training set per epoch (i.e., X_train, Y_train) and calculate the cost function
     pass
 
-    # run the optimizer (backward probagation) to update the weights
+    # Run the optimizer (backward probagation) to update the weights
     pass
 
     # Re-randomize the training set
     X_train, _, Y_train, _ = images.split
 
-# feed the entire text data and calculate accuracy (i.e., X_test, Y_test)
+
+# Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
+pass
+
+# Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
 pass
 ```
 
 #### Stochastic Feeding
 
+Another way of feeding a neural network is to feed one image at a time and do backward probagation, using gradient descent. This is known as 'stochastic gradient descent'.
 
-            
-*in progress*
-            
-### Data Augmentation
+The `next()` operator supports iterating through the training list one image object at a time. Once all of the entire training set has been iterated through, the `next()` operator returns None, and the training set is randomly re-shuffled for the next epoch.
+
+```python
+# Split the data into test and training datasets
+images.split = 0.2, 42
+
+# Forward Feed the training set 200 times (epochs)
+epochs = 200
+for _ in range(epochs):
+
+  # Now terate through the ML ready data and label for each image in the training set
+  while True:
+      data, label = next(images)
+      if data is None: break
+
+      # Forward feed the image data and label through the neural network and calculate the cost function
+      pass
+      
+      # Run the optimizer (backward probagation) to update the weights
+      pass
+      
+      
+# Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
+pass
+
+# Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
+pass
+```
+
+#### Mini-Batch Feeding
+
+Another way of feeding a neural network is through mini-batches. A mini-batch is a subset of the training set, that is greater than one. After each mini-batch is feed, then backward probagation, using gradient descent, is done.
+
+Typically, mini-batches are set to sizes like 30, 50, 100, or 200. The `minibatch` property when used as a setter, will set the size of the mini-batches. In the example below, the mini-batch size is set to 100.
+
+```python
+images.minibatch = 100
+```
+
+When the `minibatch` property is used as a getter, it will produce a generator, which will generate a batch from the training set of the size specified when used as a setter. Each time the `minibatch` property is called as a getter, it will sequentially move through the randomized set of training data. Upon completion of an epoch, the training set is re-randomized, and the `minibatch` property will reset to the begining of the training set. In the example below:
+
++ The minibatch size is set to 100.
++ The total number of batches for the training set is calculated.
++ The training set is forward feed through the neural network 200 times (epochs).
++ On each epoch, the training set is partitioned into mini-batches.
++ After each mini-batch is feed, run the optimizer to update the weights.
+
+```python
+# Set the minibatch size
+images.minibatch = 100
+
+# Calculate the number of batches
+nbatches = len(images) // 100
+
+# Forward Feed the training set 200 times (epochs)
+epochs = 200
+for _ in range(epochs):
+
+  # Process each mini-batch
+  for _ in range(nbatches):
+      # Create a generator for the next minibatch
+      g = images.minibatch
+
+      # Get the data, labels for each item in the minibatch
+      for data, label in g:
+          # Forward Feed the image data and label
+          pass
+
+      # Run the optimizer (backward probagation) to update the weights after each mini-batch
+      pass
+      
+# Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
+pass
+
+# Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
+pass
+```
+     
+### Image (Data) Augmentation
+
+Image Augmentation is the process of generating (synthesizing) new images from existing images, which can then be used to augment the training process. Synthesis can include, rotation, skew, sharpending and blur of existing images. These new images are then feed into the neural network during training to augment the training set. Rotating and skew aid in recognizing images from different angles, and sharpening and blur help generalize recognition (offset overfitting), as well as recognition under different lightening and time of day conditions.
+
+When the `augment` property is used as a setter, it will either enable or disable image augmentation when forward feeding the neural network when used in conjunction with the `split` property, `minibatch` property or `next()` operator. The `augment` property uses emulated polymorphism for the paramters. When the parameter is True, the feed forward process (e.g., `next()`) will generate an additional augmented image for each image in the training set, where the augmented image is a random rotation between -90 and 90 degress of the original image. The augmentation process adjusts the height and width of the image prior to rotation, as to prevent cropping, and then resizes back to the target size.
+
+```python
+# Split the data into test and training datasets
+images.split = 0.2, 42
+
+# Enable image augmentation
+images.augmentation = True
+
+# Forward Feed the training set 200 times (epochs)
+epochs = 200
+for _ in range(epochs):
+
+  # Now terate through the ML ready data and label for each image in the training set
+  while True:
+      # Twice as many images as size of the training set will be generated, where every other image
+      # is a random rotation between -90 and 90 degrees of the last image.
+      data, label = next(images)
+      if data is None: break
+
+      # Forward feed the image data and label through the neural network and calculate the cost function
+      pass
+      
+      # Run the optimizer (backward probagation) to update the weights
+      pass
+      
+      
+# Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
+pass
+
+# Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
+pass
+```
+
+If parameter to the `augment` property may also be a tuple. The tuple specifies the rotation range and optionally the number of agumented images to generate per image; otherwise defaults to one. In the example below:
+
++ Augmented images will be a random rotation between -45 and 120.
++ For each image, three augmented images will be generated.
++ The mini-batch size is set to 100, so with the augmentation each mini-batch will produce 400 images.
+
+```python
+images.augment = -45, 120, 3
+images.minibatch = 100
+```
+*Specifying the parameter as a tuple is anticipated for v0.9.5 (beta)*
 
 ### Transformation
+
+The transformation methods provide the ability to transform the existing stored machine learning ready data into another shape without reprocessing the image data. This feature is particularly useful if the existing machine learning ready data is repurposed for another neural network whose input is a different shape.
         
- *fix it: label should be labels*
+*The above feature is anticipated for v0.9.5 (beta)*

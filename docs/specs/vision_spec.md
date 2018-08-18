@@ -1,9 +1,8 @@
-# Natural Language Processing for PDF/TIFF/Image Documents
-# Computer Vision for Image Data
+# Gap Framework - Computer Vision for Image Data
 
 ## VISION MODULE
 High Precision Image Processing 
-Technical Specification, Gap v0.91
+Technical Specification, Gap v0.9.2
 
 ## 1  Images
 ### 1.1  Images Overview
@@ -133,13 +132,13 @@ images = images.images
 
 When used as a getter the property returns the list of Image objects generated for the collection.
 
-#### 1.3.4  label
+#### 1.3.4  labels
 
 ###### Synopsis
 
 ```python
 # Getter
-labels = images.label
+labels = images.labels
 ```
 
 ###### Usage

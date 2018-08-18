@@ -1,9 +1,8 @@
-# Natural Language Processing for PDF/TIFF/Image Documents 
-# Computer Vision for Image Data
+# Gap Framework - Natural Language Processing for PDF/TIFF/Image Documents 
 
 ## SYNTAX MODULE
 High Precision Natural Language Processing  
-Technical Specification, Gap v0.91
+Technical Specification, Gap v0.9.2
 
 ## 1  Words
 ### 1.1  Words Overview
