@@ -426,7 +426,7 @@ class MyTest(unittest.TestCase):
         """ images properties dir, class """
         images = Images(["files/0_100.jpg"], labels=[2], dir="tmp")
         self.assertTrue(images.dir, "tmp")
-        self.assertTrue(images.label, [2])
+        self.assertTrue(images.labels, [2])
         os.remove("tmp/collection.0_100.h5")
         os.rmdir("tmp")
         

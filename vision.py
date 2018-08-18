@@ -605,12 +605,12 @@ class Images(object):
         self._dir = dir 
         
     @property
-    def label(self):
+    def labels(self):
         """ Getter for image labels (classification) """
         return self._labels
         
-    @label.setter
-    def label(self, labels):
+    @labels.setter
+    def labels(self, labels):
         """ Setter for image labels (classification) """
         self._labels = labels
         
