@@ -70,17 +70,28 @@
           
             <li class="toctree-l1">
 		
-    <a class="" href="../../quick-start-guide/">quick start guide</a>
+    <a class="" href="../../quick-start-guide/">Quick Start Guide</a>
 	    </li>
           
             <li class="toctree-l1">
 		
-    <span class="caption-text">specifications</span>
+    <span class="caption-text">Tutorials</span>
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../segmentation_spec/">Segmentation</a>
+    <a class="" href="../../tutorials/computer_vision/">Computer Vision</a>
                 </li>
+                <li class="">
+                    
+    <a class="" href="../../tutorials/natural_language_processing/">Natural Language Processing</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Specifications</span>
+    <ul class="subnav">
                 <li class="">
                     
     <a class="" href="../splitter_spec/">Splitter</a>
@@ -109,18 +120,11 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../vision_spec/">Vision</a>
+    <a class="" href="../segmentation_spec/">Segmentation</a>
                 </li>
-    </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <span class="caption-text">Tutorials</span>
-    <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../tutorials/computer_vision/">Computer Vision</a>
+    <a class="" href="../vision_spec/">Vision</a>
                 </li>
     </ul>
 	    </li>
@@ -147,7 +151,7 @@
     
       
         
-          <li>specifications &raquo;</li>
+          <li>Specifications &raquo;</li>
         
       
     
@@ -205,7 +209,7 @@ Technical Specification, Gap v0.9.2</p>
                 lemma</p>
 <p><strong>pos:</strong> Annotate <code>True</code> or not annotate <code>False</code> NLP preprocessed tokens with
                parts of speech using NLTK <code>pos_tag()</code>.</p>
-<p><strong>spell:</strong> Spell check and replace misspelled words using norvig.</p>
+<p><strong>spell:</strong> Spell check and replace misspelled words using norvig. The parameter may be set to one of en (English), es (Spanish) or fr (French).</p>
 <p><strong>roman:</strong> Romanize <code>True</code> or not Romanize <code>False</code> latin-1 encodings of NLP 
                preprocessed tokens into ASCII encoding.</p>
 <p><strong>number:</strong> Keep/classify <code>True</code> or remove <code>False</code> numerical numbers. Ex.
@@ -275,7 +279,7 @@ tokens = images.bare
 </code></pre>
 </blockquote>
 <p>Except for numbers and acronyms, the tag values are set to untagged (0).</p>
-<h4 id="133-words">1.3.3 Words</h4>
+<h4 id="133-words">1.3.3 words</h4>
 <h6 id="synopsis_3">Synopsis</h6>
 <pre><code class="python"># Getter
 words = images.words
@@ -380,7 +384,7 @@ tf = images.termFreq
 <li>Remove noun to verb endings (e.g., flatten -&gt; flat).</li>
 <li>Remove adjective to adverb endings (e.g, costly -&gt; cost).</li>
 <li>Remove superlative endings (e.g., greatest -&gt; great).</li>
-<li>Spell check/replacement, if enabled, occurs prior to stemming.</li>
+<li>Spell check/replacement (according to the specified language), if enabled, occurs prior to stemming.</li>
 </ul>
 </li>
 <li>
@@ -566,6 +570,8 @@ tf = images.termFreq
 +   Rewrote Specification.
 +   Added spell check/replacement
 +   Added UK to US spelling correction</p>
+<p><strong>Gap v0.9.2 (alpha)</strong>
++   Extend Spell Checking to Spanish and French.</p>
 <h2 id="appendix-ii-anticipated-engineering">APPENDIX II: Anticipated Engineering</h2>
 <p>The following has been identified as enhancement/issues to be addressed in subsequent update:
 1.  Support for detecting Abbreviations
@@ -583,7 +589,7 @@ Copyright ©2018, Epipog, All Rights Reserved</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../vision_spec/" class="btn btn-neutral float-right" title="Vision">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../segmentation_spec/" class="btn btn-neutral float-right" title="Segmentation">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../splitter_spec/" class="btn btn-neutral" title="Splitter"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -617,7 +623,7 @@ Copyright ©2018, Epipog, All Rights Reserved</p>
         <span><a href="../splitter_spec/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../vision_spec/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../segmentation_spec/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
