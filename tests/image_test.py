@@ -944,6 +944,16 @@ class MyTest(unittest.TestCase):
         os.remove("collection.1_100.h5")
         self._isdone = False
  
+    def test_098(self):
+        """ Images - mixed size images """
+        images = Images(['files/1_100.jpg', 'files/text.jpg'], [1,2], config=['resize=(100,100)'])
+        images = Images()
+        images.load('collection.1_100')
+        self.assertEquals(len(images), 2)
+        self.assertEquals(images[0].raw.shape, (100, 100, 3))
+        self.assertEquals(images[1].raw.shape, (297, 275, 3))
+        os.remove("collection.1_100.h5")
+ 
         
     def done(self, image):
         self.isdone = True

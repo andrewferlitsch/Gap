@@ -569,13 +569,12 @@ class Images(object):
             self._name = "collection." + self._data[0].name
             
         # Write the images and labels to disk as HD5 file
-        with h5py.File(self._dir + self._name + '.h5', 'w') as hf:
-            # needed to store raw data of varying lengths
-            #dt = h5py.special_dtype(vlen=np.dtype('float64'))
-            
+        with h5py.File(self._dir + self._name + '.h5', 'w') as hf:      
             hf.create_dataset("images",  data=imgdata)
             hf.create_dataset("labels",  data=clsdata)
-            hf.create_dataset("raw",     data=rawdata)
+            # use separate datasets to handle raw images of different size/shape
+            for _ in range(len(rawdata)):
+                 hf.create_dataset("raw" + str(_), data=rawdata[_])
             if len(thmdata) > 0:
                 hf.create_dataset("thumb",   data=thmdata)
             hf.create_dataset("size",    data=sizdata)
@@ -650,7 +649,7 @@ class Images(object):
             for i in range(length):
                 image = Image()
                 image._imgdata = hf["images"][i]
-                image._raw = hf["raw"][i]
+                image._raw = hf["raw" + str(i)][:]
                 image._size = hf["size"][i]
                 image._label = hf["labels"][i]
                 try:

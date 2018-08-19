@@ -728,7 +728,6 @@ class MyTest(unittest.TestCase):
         for i in range(1,9):
             os.remove("french-scan" + str(i) + ".pdf")
             os.remove("french-scan" + str(i) + ".txt")
-            os.remove("french-scan" + str(i) + ".png")
             os.remove("french-scan" + str(i) + ".json")
             
 		
