@@ -126,7 +126,10 @@ tests_require=[
     'pytest',
     'pytest-cov']
 
-package_data ={'gapml': ['org-os/*', 'plan/*', 'specs/*', 'test/*', 'tools/*', 'train/*']}
+package_data={'gapml': ['org-os/*', 'plan/*', 'tools/*', 'train/*']}
+
+project_urls={"Documentation": "https://andrewferlitsch.github.io/Gap/",
+              "Source Code": "https://github.com/andrewferlitsch/Gap"}
 
 #https://pypi.org/pypi?%3Aaction=list_classifiers
 classifiers=[
@@ -155,8 +158,9 @@ setup(
     author_email='aferlitsch@gmail.com',
     license='Apache 2.0',
     url='https://github.com/andrewferlitsch/Gap',
+    project_urls=project_urls,
     long_description=long_description,
-    packages=find_packages(), #exclude=['tests', 'tests*']
+    packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     install_requires=install_requires,
     tests_require=tests_require,
     package_data=package_data,
