@@ -439,7 +439,9 @@ The `Document` class contains the following private methods:
     
    - If the document format is TIFF, then page splitting is done with the open source Magick and then OCR’d using open source Tesseract.
 
-+ `_scancheck()` – This method is called after NLP preprocessing of the document has been completed, and the document was a scanned image. The method will sample upto `SCANCHECK` number of words for recognition in a English dictionary (i.e., norvig). The method will check the words on either page 1 or page 2, depending on which page has a greater number of words. Punctuation, symbols, acronyms or single letter words are excluded. The method then sets the internal variable _quality to the percentage of the words that were recognized (between 0 and 1).
++ `_langcheck()` - This method is called after NLP preprocessing of the document has been completed. The method will sample upto ten words to probabilistically determine the language of the document. The detected languages are English, French and Spanish.
+
++ `_scancheck()` – This method is called after NLP preprocessing of the document has been completed, and the document was a scanned image. The method will sample upto `SCANCHECK` number of words for recognition in the detected language dictionary (i.e., English, Spanish or French). The method will check the words on either page 1 or page 2, depending on which page has a greater number of words. Punctuation, symbols, acronyms or single letter words are excluded. The method then sets the internal variable _quality to the percentage of the words that were recognized (between 0 and 1).
 
 + `_async()` – This method performs asynchronous processing of the `_collate()` function, when the optional ehandler parameter to the constructor is not `None`. When processing is completed, the ehandler parameter value is called as a function to signal completion of the processing, and the document object is passed as a parameter.
 
@@ -739,9 +741,12 @@ A `FileNotFoundError` is raised if the file path is invalid.
 **Pre-Gap (Epipog) v1.5** 
 1.	Added `bagOfWords`, `freqDist`, and `termFreq` properties to `Document` and `Page` class.
 
-**Gap v0.91 (alpha)**
+**Gap v0.9.1 (alpha)**
 1.	Rewrote Specification
 2.	Add `OCR` quality estimate
+
+**Gap v0.9.2 (alpha)**
+1. Add language detection for English, Spanish and French.
 
 ## APPENDIX II: Anticipated Engineering
 
