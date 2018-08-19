@@ -114,7 +114,7 @@ class MyTest(unittest.TestCase):
         os.remove("test1.json")
         
     def test_012(self):
-        """ Document constructr - non-ascii characters in document (UTF-8 encoding) """
+        """ Document constructor - non-ascii characters in document (UTF-8 encoding) """
         document = Document("files/7page.pdf", "./")
         self.assertEqual(document[0].text.strip()[0:7], "MEDICAL")
         for i in range(1,8):
@@ -647,20 +647,9 @@ class MyTest(unittest.TestCase):
     def test_070(self):
         """ config - spell checker - invalid """
         with pytest.raises(AttributeError):
-            document = Document(config=['spell=foo'])
+            document = Document(config=['spell=foo'])            
             
     def test_071(self):
-        """ config - spell checker - pya """
-        with open("spell.txt", "w") as f:
-            f.write("mispell speling similiar")
-        Document.WORDDICT = 'pyaspeller'
-        document = Document('spell.txt')
-        page = document[0]
-        os.remove('spell.txt')
-        os.remove('spell1.txt')
-        os.remove('spell1.json')
-            
-    def test_072(self):
         """ config - spell checker - norvig """
         with open("spell.txt", "w") as f:
             f.write("mispell speling similiar")
@@ -671,7 +660,7 @@ class MyTest(unittest.TestCase):
         os.remove('spell1.txt')
         os.remove('spell1.json')
         
-    def test_073(self): 
+    def test_072(self): 
         """ Document - scanned PDF - scancheck with norvig """
         Document.WORDDICT = 'norvig'
         document = Document("files/scan.pdf", "./")
@@ -685,7 +674,7 @@ class MyTest(unittest.TestCase):
         os.remove("scan1.png")
         os.remove("scan1.json")
         
-    def test_074(self): 
+    def test_073(self): 
         """ Document - scanned PDF - disable scan check """
         Document.SCANCHECK = 0
         document = Document("files/scan.pdf", "./")
@@ -698,6 +687,50 @@ class MyTest(unittest.TestCase):
         os.remove("scan1.pdf")
         os.remove("scan1.png")
         os.remove("scan1.json")
+        
+    def test_074(self):
+        """ Document - lang type, page 1 """
+        document = Document("files/lang-en.txt", "./")
+        self.assertEquals(document.lang, 'en')
+        document = Document("files/lang-es.txt", "./")
+        self.assertEquals(document.lang, 'es')
+        document = Document("files/lang-fr.txt", "./")
+        self.assertEquals(document.lang, 'fr')
+        for lang in ['en', 'es', 'fr']:
+            os.remove("lang-" + lang + "1.txt")
+            os.remove("lang-" + lang + "1.json")
+        
+    def test_075(self):
+        """ Document - Spanish PDF """
+        document = Document("files/spanish.pdf", "./")
+        self.assertEquals(document.lang, 'es')
+        self.assertEquals(len(document), 2)
+        for i in range(1,3):
+            os.remove("spanish" + str(i) + ".pdf")
+            os.remove("spanish" + str(i) + ".txt")
+            os.remove("spanish" + str(i) + ".json")
+        
+    def test_076(self):
+        """ Document - French PDF """
+        document = Document("files/french.pdf", "./")
+        self.assertEquals(document.lang, 'fr')
+        self.assertEquals(len(document), 2)
+        for i in range(1,3):
+            os.remove("french" + str(i) + ".pdf")
+            os.remove("french" + str(i) + ".txt")
+            os.remove("french" + str(i) + ".json")
+        
+    def test_077(self):
+        """ Document - French Scanned PDF """
+        document = Document("files/french-scan.pdf", "./")
+        self.assertEquals(document.lang, 'fr')
+        self.assertEquals(document.scanned, (False, 0))
+        for i in range(1,9):
+            os.remove("french-scan" + str(i) + ".pdf")
+            os.remove("french-scan" + str(i) + ".txt")
+            os.remove("french-scan" + str(i) + ".png")
+            os.remove("french-scan" + str(i) + ".json")
+            
 		
     def done(self, document):
         self.isdone = True

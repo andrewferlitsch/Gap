@@ -17,11 +17,12 @@ import sys
 import json
 import shutil
 
-import pyaspeller
-
 from segment import Segment
 from syntax import Words, Vocabulary, Norvig
 from pdf_res import PDFResource
+from word2int import word2int
+from word2int_fr import word2int_fr
+from word2int_es import word2int_es
 
 
 if shutil.which('gswin64c'):
@@ -67,6 +68,7 @@ class Document(object):
         self._bow      = None       # Bag of Words for the document
         self._freq     = None       # Frequency Distribution (word counts) for the document
         self._tf       = None       # Term Frequency (TF) for the document
+        self._lang     = 'en'       # Document language
 
         # value must be a string
         if dir is not None and isinstance(dir, str) == False:
@@ -100,7 +102,7 @@ class Document(object):
                 elif setting.startswith('spell'):
                     vals = setting.split('=')
                     if len(vals) == 2:
-                        if vals[1] in ['norvig', 'pya']:
+                        if vals[1] in ['norvig']:
                             Page.SPELL = vals[1]
                         else:
                             raise AttributeError("Setting spell set to an invalid value: " + vals[1])
@@ -321,6 +323,12 @@ class Document(object):
                     self.__iadd__(page)
 
             self._scanned = True
+                
+        # Determine the document's language 
+        if len(self.pages) == 1 or len(self.pages[0]) > len(self.pages[1]):
+            self._langcheck(self.pages[0].words)
+        else:
+            self._langcheck(self.pages[1].words)
                             
         # If scanned document, determine the quality of the scan
         if self._scanned:
@@ -331,6 +339,49 @@ class Document(object):
 
         # Total time to do processing
         self._time = time.time() - start
+        
+    def _langcheck(self, words):
+        """ Use the speller checker to determine which language the document is in """
+        english = 0
+        spanish = 0
+        french  = 0
+        for _ in range(12):
+            try:
+                if len(words[_]['word']) == 1:
+                    continue
+            # bad entry
+            except:
+                continue
+                
+            if words[_]['word'].isdigit():
+                continue
+            elif words[_]['tag'] == Vocabulary.ACRONYM:
+                continue
+                
+            try:
+                id = word2int[words[_]['word']]
+                english += 1
+            except:
+                pass
+                
+            try:
+                id = word2int_es[words[_]['word']]
+                spanish += 1
+            except:
+                pass
+                
+            try:
+                id = word2int_fr[words[_]['word']]
+                french += 1
+            except:
+                pass
+                
+        if english > spanish and english > french:
+            self._lang = 'en'
+        elif french > spanish:
+            self._lang = 'fr'
+        else:
+            self._lang = 'es'
         
     def _scancheck(self, words):
         """ Use spell checker to determine the quality of the scan """
@@ -344,20 +395,17 @@ class Document(object):
             except:
                 count += 1
                 continue
+                
             if words[_]['word'].isdigit():
                 continue
             elif words[_]['tag'] == Vocabulary.ACRONYM:
                 continue
             count += 1
             if self.WORDDICT == 'norvig':
-                norvig = Norvig()
+                norvig = Norvig(self._lang)
                 if norvig.known(words[_]['word'].lower()):
                     correct += 1
-            else:
-                check = pyaspeller.Word(words[_]['word'].lower())
-                if check.correct:
-                    correct += 1
-                      
+          
         if count:
             self._quality = correct / count
         else:
@@ -459,6 +507,11 @@ class Document(object):
     def time(self):
         """ Return the elapse time to do processing """
         return self._time
+        
+    @property
+    def lang(self):
+        """ Return the document language """
+        return self._lang
 
     @property
     def scanned(self):
@@ -471,7 +524,7 @@ class Document(object):
         if self._bow is None:
             # Seed the dictionary with the first page's bag of words
             self._bow = self[0].bagOfWords
-            # Incremently merge in each of the remaining page's bag of words
+            # Incrementally merge in each of the remaining page's bag of words
             for i in range(1, len(self)):
                 bag = self[i].bagOfWords
                 for word, count in bag.items():

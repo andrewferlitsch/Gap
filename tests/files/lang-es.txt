@@ -1,0 +1,4 @@
+Bienvenido a los tutoriales de laboratorios colaborativos de labs.earth sobre aprendizaje automático.
+
+Los tutoriales de procesamiento del lenguaje natural (NLP) comenzarán con lo básico y progresarán a aplicaciones avanzadas del mundo real.
+Los tutoriales van más allá de explicar el código y los pasos, para incluir las respuestas a las preguntas anticipadas de qué y por qué.

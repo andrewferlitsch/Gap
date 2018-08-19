@@ -14,7 +14,6 @@ from nltk import pos_tag
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 from unidecode import unidecode
-import pyaspeller
 
 from vocabulary import Vocabulary, vocab
 from address import Address
@@ -139,7 +138,11 @@ class Words(object):
         if text is not None:
             if isinstance(text, str) is False:
                 raise TypeError("String expected for text")
+        if spell is not None:
+            if spell not in ['en', 'es', 'sp']:
+                raise ValueError("Wrong value for spell: en, es, or fr")
             
+        if text is not None:
             self._split()
             if self._bare == False:
                 # preprocess the tokens
@@ -395,24 +398,17 @@ class Words(object):
         for i in range(length):
             word = self._words[i]['word']
             l = len(word)
-            
+
             # Don't stem words already categorized
             if self._words[i]['tag'] != Vocabulary.UNTAG:
                 continue
                 
             # Do spell checking
             if self._spell is not None:
-                if self._spell == 'norvig':
-                    spell = Norvig()
-                    replace = spell.correction(self._words[i]['word'])
-                    self._words[i]['word'] = replace
-                else:
-                    check = pyaspeller.Word(self._words[i]['word'])
-                    if not check.correct:
-                        replace = check.spellsafe
-                        if replace:
-                            self._words[i]['word'] = replace
-            
+                spell = Norvig( self._spell)
+                replace = spell.correction(self._words[i]['word'])
+                self._words[i]['word'] = replace
+                
             # If in vocabulary, do not stem
             try:
                 v = vocab[word]
@@ -1514,7 +1510,7 @@ class Words(object):
         
 from word2int import word2int 
 from word2int_fr import word2int_fr
-from word2int_sp import word2int_sp
+from word2int_es import word2int_es
         
 class Norvig(object):
     """ 
@@ -1526,11 +1522,11 @@ class Norvig(object):
     """
     
     def __init__(self, lang='en'):
-        global word2int, word2int_fr, word2int_sp
+        global word2int, word2int_fr, word2int_es
         if lang == 'en':
             self.word2int = word2int
-        elif lang == 'sp':
-            self.word2int = word2int_sp
+        elif lang == 'es':
+            self.word2int = word2int_es
         elif lang == 'fr':
             self.word2int = word2int_fr
                     

@@ -1,9 +1,8 @@
-# Natural Language Processing for PDF/TIFF/Image Documents 
-# Computer Vision for Image Data
+# Gap Framework - Natural Language Processing for PDF/TIFF/Image Documents 
 
 ## SYNTAX MODULE
 High Precision Natural Language Processing  
-Technical Specification, Gap v0.91
+Technical Specification, Gap v0.9.2
 
 ## 1  Words
 ### 1.1  Words Overview
@@ -54,7 +53,7 @@ Words( text, flags … )
 **pos:** Annotate `True` or not annotate `False` NLP preprocessed tokens with
                parts of speech using NLTK `pos_tag()`.
 
-**spell:** Spell check and replace misspelled words using pyaspeller.
+**spell:** Spell check and replace misspelled words using norvig. The parameter may be set to one of en (English), es (Spanish) or fr (French).
 
 **roman:** Romanize `True` or not Romanize `False` latin-1 encodings of NLP 
                preprocessed tokens into ASCII encoding.
@@ -157,7 +156,7 @@ When used as a getter the property returns the NLP tokenized list unprocessed. A
 
 Except for numbers and acronyms, the tag values are set to untagged (0).
 
-#### 1.3.3 Words
+#### 1.3.3 words
 
 ###### Synopsis
 
@@ -279,7 +278,7 @@ The Words class contains the following private methods, which are called by the 
     -	Remove noun to verb endings (e.g., flatten -> flat).
     -	Remove adjective to adverb endings (e.g, costly -> cost).
     -	Remove superlative endings (e.g., greatest -> great).
-    -	Spell check/replacement, if enabled, occurs prior to stemming.
+    -	Spell check/replacement (according to the specified language), if enabled, occurs prior to stemming.
 
 + `_nltkStem()` – This method uses the open source NLTK stemmer methods to perform the third phase of NLP preprocessing of the tokenized words, as an alternative to the internal stemmer (i.e. stem)). The Porter, Snowball, Lancaster and WordNetLemmatizer are selectable.
 
@@ -373,8 +372,6 @@ If the preceding word is birth or DOB, then the date will be tagged as a date of
 
 ### 1.5 Words Public Methods
 
----
-
 The Words class contains no public methods.
 
 ## APPENDIX I: Updates
@@ -420,6 +417,9 @@ The Words class contains no public methods.
 +	Rewrote Specification.
 +	Added spell check/replacement
 +	Added UK to US spelling correction
+
+**Gap v0.9.2 (alpha)**
++	Extend Spell Checking to Spanish and French.
 
 ## APPENDIX II: Anticipated Engineering
 

@@ -10,13 +10,13 @@ Before the advent of machine learning with computer vision and today's modern ML
 
 For the data analyst and statisticians whom feel they don't have the necessary software development background, we encourage you to visit the collaborative lab's training site for fundamentials in modern software programming. Likewise, for those software developers whom feel they don't have the necessary background in statistics and machine learning, we encourage you to visit the collaborative lab's training site for fundamentials in [modern statistics and machine learning](https://github.com/andrewferlitsch/Training/tree/master/AITraining/Fundamentals/Machine%20Learning).
 
-As far as our team and contributers, they keep a single phrase in mind when designing, coding and building tutorials. They like to say that Gap is:
+As far as our team and contributers, they keep a single phrase in mind when designing, coding and building tutorials. They like to say that **Gap** is:
 
                                             Machine Learning for Humans
 
 ## The First Steps in using Gap for Computer Vision (CV)
 
-The first step in using Gap for machine learning (ML) of computer vision (CV) is learning to classify a single object in an image. Is it a dog, a cat, what digit is it, what sign language digit is it, etc...
+The first step in using **Gap** for machine learning (ML) of computer vision (CV) is learning to classify a single object in an image. Is it a dog, a cat, what digit is it, what sign language digit is it, etc...
 
 To do single object classification, depending on the images, one will use either a artificial neural network 
 ([ANN](https://github.com/andrewferlitsch/Training/blob/master/AITraining/Fundamentals/Machine%20Learning/ML%20Neural%20Networks.pptx)) 
@@ -62,7 +62,7 @@ The first step is to instantiate an `Image` class object and load the image into
 image = Image("../tests/files/1_100.jpg", 1)
 ```
 
-While Python does not have OOP polymorphism builtin, the class objects in Gap have been constructed to emulate polymorphism in a variety of ways. The first positional parameter (image path) to the `Image` class can either be a local path or a remote path. In the latter case, a path starting with http or https is a remote path. In this case, a HTTP request to fetch the image from the remote location is made.
+While Python does not have OOP polymorphism builtin, the class objects in **Gap** have been constructed to emulate polymorphism in a variety of ways. The first positional parameter (image path) to the `Image` class can either be a local path or a remote path. In the latter case, a path starting with http or https is a remote path. In this case, a HTTP request to fetch the image from the remote location is made.
 
 ```python
 image = Image("https://en.wikipedia.org/wiki/File:Example.jpg", 1)
@@ -120,7 +120,7 @@ When processing of the image is completed, the raw pixel data, machine learning 
 
 `./1_100.hd5`
 
-The path location of the stored HDF5 can be specified with the keyword parameter *dir*.
+The path location of the stored HDF5 can be specified with the keyword parameter `dir`.
 
 ```python
 image = Image("../tests/files/1_100.jpg", 1, dir="tmp")
@@ -158,7 +158,7 @@ def next_step(step):
 
 ### Preprocessing Transformations: Resizing, Reshaping, Flattening
 
-The keyword parameter `config` has a number of settings for specifying how the raw pixel data is preprocessed. The Gap framework is designed to eliminate the use of large numbers of keyword parameters, and instead uses a modern convention of passing in a configuration parameter. Here are some of the configuration settings:
+The keyword parameter `config` has a number of settings for specifying how the raw pixel data is preprocessed. The **Gap** framework is designed to eliminate the use of large numbers of keyword parameters, and instead uses a modern convention of passing in a configuration parameter. Here are some of the configuration settings:
 
 >     nostore                 # do not store in a HDF5 file
 >     grayscale | gray        # convert to a grayscale image with a single channel (i.e., color plane)
@@ -187,7 +187,7 @@ print(image.shape)  # would output (50, 50, 3)
 
 ### Example: Image Processing Dashboard
 
-Let's expand on the real-word cloud example from earlier. In this case, let's assume that one wants to have a dashboard for a devOps person to monitor the preprocessing of images from a user, with the requirements:
+Let's expand on the real-word cloud example from earlier. In this case, let's assume that one wants to have a dashboard for a DevOps person to monitor the preprocessing of images from a user, with the requirements:
 
 + Each time an image is preprocessed, the following is displayed on the dashboard:
     - A thumbnail of the source image.
@@ -263,11 +263,11 @@ data = image.data
 
 ### Image Reference
 
-For a complete reference on all methods and properties for the Image class, see [reference](https://virtualdvid.github.io/Gap/modules/vision_spec/).
+For a complete reference on all methods and properties for the `Image` class, see [reference](https://virtualdvid.github.io/Gap/modules/vision_spec/).
 
 ### Image Collections
    
-The `Images` class provides preprocessing of a collections of images (vs. a single image). The parameters and emulated polymorphism are identical to the Image class, except the images and labels parameter refer to a plurality of images, which comprise the collection. The positional parameter `images` can be specified as:
+The `Images` class provides preprocessing of a collections of images (vs. a single image). The parameters and emulated polymorphism are identical to the `Image` class, except the images and labels parameter refer to a plurality of images, which comprise the collection. The positional parameter `images` can be specified as:
 
  + A list of local or remote images (e.g., [ '1_100.jpg', '2_100.jpg', '3_100.jpg'])
  + A single directory path of images  (e.g., 'apple')
@@ -284,7 +284,7 @@ The example below creates an `Images` objects consisting of three images with co
 images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3])
 ```
 
-For each image specified, the `Images` class creates an `Image` object, which are maintained in the `Images` object as a list. The list of corresonding Image objects can be accessed from the property `images`. In the example below, a collection of three images is created, and then the `images` property is accessed as a list iterator in a for loop. On each loop, the next `Image` object is accessed and inside the loop the code prints the name and label of the corresponding `Image` object.
+For each image specified, the `Images` class creates an `Image` object, which are maintained in the `images` objects as a list. The list of corresonding `Image` objects can be accessed from the property `images`. In the example below, a collection of three images is created, and then the `images` property is accessed as a list iterator in a for loop. On each loop, the next `Image` object is accessed and inside the loop the code prints the name and label of the corresponding `Image` object.
 
 ```python
 images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3])
@@ -307,7 +307,7 @@ The builtin operators `len()` and `[]` are overridden in the `Images` class. The
 
 ### Collection Storage & Retrieval
 
-The `Images` class, disables the Image objects from storing the machine learning ready data as individual HDF5 files per image, and insteads stores a single HDF5 for the entire collection. By default, the file name combines the prefix `collection.` with the root name of the first image in the collection, and is stored in the current working directory. In the above example, the machine learning ready data for the entire collection would be stored as:
+The `Images` class, disables the `Image` objects from storing the machine learning ready data as individual HDF5 files per image, and insteads stores a single HDF5 for the entire collection. By default, the file name combines the prefix `collection.` with the root name of the first image in the collection, and is stored in the current working directory. In the above example, the machine learning ready data for the entire collection would be stored as:
 
 `./collection.1_100.h5`
         
@@ -342,11 +342,11 @@ images.load('apples', dir='tmp')
  
 ### Example: Data Preparation for a Fruits Dataset: As Individual Collections
  
-In this example, a dataset of images of fruit are preprocessed into machine learning data, as follows:
+In this example, a dataset of images of fruit are preprocessed into machine learning ready data, as follows:
 
   1. The images for each type of fruit are in separate directories (i.e., apple, pear, banana).
   2. The labels for the fruit will are sequentially numbered (i.e., 1, 2, 3).
-  3. The images will be preserved as color images, but resized to (50,50)
+  3. The images will be preserved as color images, but resized to (50,50).
   4. The shape of the preprocessed machine learning data will be (50, 50, 3) for input to a CNN.
   
 In the example below, a separate collection is created for each type of fruit:
@@ -382,10 +382,10 @@ def collectionHandler(images):
 
 Let's describe some of the aspects of the above example. For the directories, we created a list of the directory names and then iterated through it. For each iteration, we:
 
-+ Instantiate an Images object for the current fruit.
-+ Set the collection name to the plural of the fruit name (i.e., fruit + 's')
++ Instantiate an `Images` object for the current fruit.
++ Set the collection name to the plural of the fruit name (i.e., fruit + 's').
 + Use an incrementer, starting at 1, for the label.
-+ Use the ehandler parameter to process the collection asynchronously.
++ Use the `ehandler` parameter to process the collection asynchronously.
   
 When each collection is completed, the function collectionHandler is called. This function will print the number of images
 processed in the collection, the time (in seconds) to process the collection, and the accumulated processing time for all the collections.
@@ -437,7 +437,7 @@ Because the processing and invoking the event handler happen concurrently, there
 
 The first step to training a neural network is to split the collection into training and test data. We will cover some basic cases here.
 
-One uses the property `split` as a setter to split the collection into training and test data. This property will randomized the order of the Image objects in the collection, create a partition between the train and test data and create a corresponding internal index. The `split` property is implemented using emulated polymorphism, whereby the property can be given a single value or a tuple. The first value (parameter) is the percentage of the collection that will be set aside as testing data, and must be between 0 and 1. Below is an example:
+One uses the property `split` as a setter to split the collection into training and test data. This property will randomized the order of the `Image` objects in the collection, create a partition between the train and test data and create a corresponding internal index. The `split` property is implemented using emulated polymorphism, whereby the property can be given a single value or a tuple. The first value (parameter) is the percentage of the collection that will be set aside as testing data, and must be between 0 and 1. Below is an example:
 
 ```python
 # 20% of the collection is test, and 80% is training
@@ -453,53 +453,196 @@ train.split = 0
 test.split  = 0
 ```
 
-The random number generation by default will start at different seed each time. If you need (desire) consistency between training on the results for comparison or demo'ing, then one specifies a seed value for the random number generation. The seed value is an integer value and is specified as a second parameter (i.e., tuple) to the *split* property. In the example below, the split is set to 20% test, and the random seed to 42.
+The random number generation by default will start at a different seed each time. If you need (desire) consistency between training on the results for comparison or demo'ing, then one specifies a seed value for the random number generation. The seed value is an integer value and is specified as a second parameter (i.e., tuple) to the `split` property. In the example below, the split is set to 20% test, and the random seed set to 42.
 
 `images.split = 0.2, 42`
 
+One can see the index of the randomized distribution by displaying the internal member `_train`. This member is a list of integers which correspond to the index in the `images` list. While Python does not support the OOP concept of data encapsulation using private members, the **Gap** framework follows the convention that any member beginning with an underscore should be treated by developers as private. While not enforced by Python, members like `_train` should only be read and not written. The example below accesses (read) the randomized index for the training data and then prints it.
+
+```python
+indexes = images._train
+print(indexes)
+```
+
 ### Forward Feeding a Neural Network
 
-The `Images` class provides methods for batch, stochastic and mini-batch feeding for training and evaluating a neural network. The feeders produce full batch samples, single samples and mini-batch samples as numpy matrixes, which are compatible for input with all Python machine learning networks that support numpy arrays, such as Tensorflow, Keras and Pytorch, for example. Batch feeding is also randomized, and the entire collection(s) can be continuously re-feed (i.e., epoch), where each time they are re-randomized.
+The `Images` class provides methods for batch, stochastic and mini-batch feeding for training and evaluating a neural network. The feeders produce full batch samples, single samples and mini-batch samples as numpy matrixes, which are compatible for input with all Python machine learning frameworks that support numpy arrays, such as Tensorflow, Keras and Pytorch, for example. Forward feeding is randomized, and the entire collection(s) can be continuously re-feed (i.e., epoch), where each time they are re-randomized.
 
 The `split`, `minibatch`, and overriden `next()` operator support forward feeding. 
 
 #### Batch Feeding
 
-If batch feeding a neural network (i.e., feed all samples before backward probagation), one uses the *split* property as a getter per pass (i.e., epoch). The steps are:
+In batch mode, the entire training set can be ran through the neural network as a single pass, prior to backward probagation and updating the weights using gradient descent. This is known as 'batch gradient descent'.
 
-  1. Do a first split of the training and test data, and set aside the test data.
-  2. Loop for each epoch (i.e., number of times to pass the entire training set).
-  3. 
+When the `split` property is used as a getter, it returns the image data and corresponding labels for the training and test set similar to using sci-learn's train_test_split() function. In the example below:
 
-If one is batch feeding  
++ The dataset is split into 20% test and 80% training.
++ The X_train and X_test is the list of machine learning ready data, as numpy arrays, of the corresponding training and test images.
++ The Y_train and Y_test is the list of the corresponding labels.
++ The variable epochs is the number of times the X_train dataset will be forward feed through the neural network.
++ The optimizer performs backward probagation to update the weights.
++ At the end of each epoch, The training data is re-randomized by calling the `split` method again as a getter.
++ When training is done, the X_test and corresponding Y_test are forward feed to evaluate the accuracy of the trained model.
+
 
 ```python
 # Get the first randomized split of the dataset
+images.split = 0.2, 42
 X_train, X_test, Y_train, Y_test = images.split
 
 nepochs = 200   # the number of times to feed the entire training set while training the neural network
 for _ in range(nepochs):
-    # feed the entire training set per epoch (i.e., X_train, Y_train)
+    # Feed the entire training set per epoch (i.e., X_train, Y_train) and calculate the cost function
     pass
 
-    # run the optimizer (backward probagation) to update the weights
+    # Run the optimizer (backward probagation) to update the weights
     pass
 
     # Re-randomize the training set
     X_train, _, Y_train, _ = images.split
 
-# feed the entire text data and calculate accuracy (i.e., X_test, Y_test)
+
+# Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
+pass
+
+# Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
 pass
 ```
 
 #### Stochastic Feeding
 
+Another way of feeding a neural network is to feed one image at a time and do backward probagation, using gradient descent. This is known as 'stochastic gradient descent'.
 
-            
-*in progress*
-            
-### Data Augmentation
+The `next()` operator supports iterating through the training list one image object at a time. Once all of the entire training set has been iterated through, the `next()` operator returns None, and the training set is randomly re-shuffled for the next epoch.
+
+```python
+# Split the data into test and training datasets
+images.split = 0.2, 42
+
+# Forward Feed the training set 200 times (epochs)
+epochs = 200
+for _ in range(epochs):
+
+  # Now terate through the ML ready data and label for each image in the training set
+  while True:
+      data, label = next(images)
+      if data is None: break
+
+      # Forward feed the image data and label through the neural network and calculate the cost function
+      pass
+      
+      # Run the optimizer (backward probagation) to update the weights
+      pass
+      
+      
+# Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
+pass
+
+# Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
+pass
+```
+
+#### Mini-Batch Feeding
+
+Another way of feeding a neural network is through mini-batches. A mini-batch is a subset of the training set, that is greater than one. After each mini-batch is feed, then backward probagation, using gradient descent, is done.
+
+Typically, mini-batches are set to sizes like 30, 50, 100, or 200. The `minibatch` property when used as a setter, will set the size of the mini-batches. In the example below, the mini-batch size is set to 100.
+
+```python
+images.minibatch = 100
+```
+
+When the `minibatch` property is used as a getter, it will produce a generator, which will generate a batch from the training set of the size specified when used as a setter. Each time the `minibatch` property is called as a getter, it will sequentially move through the randomized set of training data. Upon completion of an epoch, the training set is re-randomized, and the `minibatch` property will reset to the begining of the training set. In the example below:
+
++ The minibatch size is set to 100.
++ The total number of batches for the training set is calculated.
++ The training set is forward feed through the neural network 200 times (epochs).
++ On each epoch, the training set is partitioned into mini-batches.
++ After each mini-batch is feed, run the optimizer to update the weights.
+
+```python
+# Set the minibatch size
+images.minibatch = 100
+
+# Calculate the number of batches
+nbatches = len(images) // 100
+
+# Forward Feed the training set 200 times (epochs)
+epochs = 200
+for _ in range(epochs):
+
+  # Process each mini-batch
+  for _ in range(nbatches):
+      # Create a generator for the next minibatch
+      g = images.minibatch
+
+      # Get the data, labels for each item in the minibatch
+      for data, label in g:
+          # Forward Feed the image data and label
+          pass
+
+      # Run the optimizer (backward probagation) to update the weights after each mini-batch
+      pass
+      
+# Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
+pass
+
+# Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
+pass
+```
+     
+### Image (Data) Augmentation
+
+Image Augmentation is the process of generating (synthesizing) new images from existing images, which can then be used to augment the training process. Synthesis can include, rotation, skew, sharpending and blur of existing images. These new images are then feed into the neural network during training to augment the training set. Rotating and skew aid in recognizing images from different angles, and sharpening and blur help generalize recognition (offset overfitting), as well as recognition under different lightening and time of day conditions.
+
+When the `augment` property is used as a setter, it will either enable or disable image augmentation when forward feeding the neural network when used in conjunction with the `split` property, `minibatch` property or `next()` operator. The `augment` property uses emulated polymorphism for the paramters. When the parameter is True, the feed forward process (e.g., `next()`) will generate an additional augmented image for each image in the training set, where the augmented image is a random rotation between -90 and 90 degress of the original image. The augmentation process adjusts the height and width of the image prior to rotation, as to prevent cropping, and then resizes back to the target size.
+
+```python
+# Split the data into test and training datasets
+images.split = 0.2, 42
+
+# Enable image augmentation
+images.augmentation = True
+
+# Forward Feed the training set 200 times (epochs)
+epochs = 200
+for _ in range(epochs):
+
+  # Now terate through the ML ready data and label for each image in the training set
+  while True:
+      # Twice as many images as size of the training set will be generated, where every other image
+      # is a random rotation between -90 and 90 degrees of the last image.
+      data, label = next(images)
+      if data is None: break
+
+      # Forward feed the image data and label through the neural network and calculate the cost function
+      pass
+      
+      # Run the optimizer (backward probagation) to update the weights
+      pass
+      
+      
+# Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
+pass
+
+# Forward feed the entire test data and calculate test accuracy (i.e., X_test, Y_test)
+pass
+```
+
+If parameter to the `augment` property may also be a tuple. The tuple specifies the rotation range and optionally the number of agumented images to generate per image; otherwise defaults to one. In the example below:
+
++ Augmented images will be a random rotation between -45 and 120.
++ For each image, three augmented images will be generated.
++ The mini-batch size is set to 100, so with the augmentation each mini-batch will produce 400 images.
+
+```python
+images.augment = -45, 120, 3
+images.minibatch = 100
+```
+*Specifying the parameter as a tuple is anticipated for v0.9.5 (beta)*
 
 ### Transformation
+
+The transformation methods provide the ability to transform the existing stored machine learning ready data into another shape without reprocessing the image data. This feature is particularly useful if the existing machine learning ready data is repurposed for another neural network whose input is a different shape.
         
- *fix it: label should be labels*
+*The above feature is anticipated for v0.9.5 (beta)*

@@ -1,5 +1,4 @@
-# Natural Language Processing for PDF/TIFF/Image Documents  
-## Computer Vision for Image Data  
+# Gap Framework - Natural Language Processing for PDF/TIFF/Image Documents  
 
 ### SEGMENTATION MODULE  
 

@@ -70,11 +70,10 @@ The Gap framework extensively uses a number of open source applications/modules.
   7. HDF5 - high performance of on-disk data (tensors) access
   8. openCV - image manipulation and processing for computer vision
   9. imutils - image manipulation for computer vision
-  10. pyaspeller - spelling dictionary for text
   
 ## Installation: 
 
-The Gap framework is supported on Windows, MacOS, and Linux. It has been packaged for distribution via PyPi on launch. \
+The Gap framework is supported on Windows, MacOS, and Linux. It has been packaged for distribution via PyPi on launch. 
 
 For pre-launch, after you have clone the source code, from the root of the source tree do the following to complete the install:
 

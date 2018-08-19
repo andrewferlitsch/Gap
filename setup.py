@@ -119,8 +119,7 @@ install_requires=[
     'nltk',
     'requests',
     'opencv-python',
-    'pillow',
-    'pyaspeller']
+    'pillow']
 		  
 tests_require=[
     'pytest',

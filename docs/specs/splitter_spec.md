@@ -1,9 +1,8 @@
-# Natural Language Processing for PDF/TIFF/Image Documents 
-## Computer Vision for Image Data
+# <span style='color:saddlebrown'>Gap</span> Framework - Natural Language Processing for PDF/TIFF/Image Documents 
 
 ## SPLITTER Module
 High Precision PDF Page Splitting/OCR/Text Extraction
-Technical Specification, Gap v0.91
+Technical Specification, Gap v0.9.2
 
 ## 1.  Document
 ### 1.1  Document Overview
@@ -201,7 +200,21 @@ When used as a setter the property sets the label of the document to the specifi
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
 
-#### 1.3.7  scanned
+#### 1.3.7 lang
+
+###### Synopsis
+
+```python
+# Getter
+lang = document.lang
+```
+
+###### Usage
+
+When used as a getter the property returns whether the language of the document, which may be either 'en' (English), 'es' (Spanish) or 'fr' (French).
+
+
+#### 1.3.8  scanned
 
 ###### Synopsis
 
@@ -214,7 +227,7 @@ scanned, quality = document.scanned
 
 When used as a getter the property returns whether the document is a scanned image `True` or digital text `False` document, and the estimated quality of the scan as a percentage (between 0 and 1).
 
-#### 1.3.8  time
+#### 1.3.9  time
 
 ###### Synopsis
 
@@ -227,7 +240,7 @@ secs = document.time
 
 When used as a getter the property returns the amount of time (in seconds) it took to preprocess the document into machine learning ready data.
 
-#### 1.3.9  text
+#### 1.3.10  text
 
 ###### Synopsis
 
@@ -240,7 +253,7 @@ text = document.text
 
 When used as a getter the property returns a list, one entry per page, of the extracted text from the document in its original Unicode format.
 
-#### 1.3.10  pages
+#### 1.3.11  pages
 
 ###### Synopsis
 
@@ -249,7 +262,7 @@ When used as a getter the property returns a list, one entry per page, of the ex
 pages = document.pages
 ```
 
-#### 1.3.11  bagOfWords
+#### 1.3.12  bagOfWords
 
 ###### Synopsis
 
@@ -264,7 +277,7 @@ When used as a getter the property returns the document’s word sequences as a 
 
 >     { ‘<word’> : <no. of occurrences>, … }
 
-#### 1.3.12  freqDist
+#### 1.3.13  freqDist
 
 ###### Synopsis
 
@@ -279,7 +292,7 @@ When used as a getter the property returns the sorted tuples of a frequency dist
 
 >     [ ( ‘<word’>: <no.  of occurrences> ), …. ]
 
-#### 1.3.13  termFreq
+#### 1.3.14  termFreq
 
 ###### Synopsis
 
@@ -294,13 +307,13 @@ When used as a getter the property returns the sorted tuples of a term frequency
 
 >     [ ( ‘<word’>: <percentage  of occurrences> ), …. ]
 
-#### 1.3.14  Static Variables
+#### 1.3.15  Static Variables
 
 The Document class contains the following static variables:
 
 +	**RESOLUTION** – The image resolution when converting `PDF` to `PNG` for `OCR` (default `300`).  
 +	**SCANCHECK**  – The number of `OCR` words to check to estimate the quality of the scan.  
-+	**WORDDICT**   - The word dictionary to use for scan spell check (default to `pyaspeller`).
++	**WORDDICT**   - The word dictionary to use for scan spell check (default to `norvig`).
 
 ### 1.4  Document Overridden Operators
 
@@ -426,7 +439,9 @@ The `Document` class contains the following private methods:
     
    - If the document format is TIFF, then page splitting is done with the open source Magick and then OCR’d using open source Tesseract.
 
-+ `_scancheck()` – This method is called after NLP preprocessing of the document has been completed, and the document was a scanned image. The method will sample upto `SCANCHECK` number of words for recognition in a English dictionary (i.e., pyaspeller). The method will check the words on either page 1 or page 2, depending on which page has a greater number of words. Punctuation, symbols, acronyms or single letter words are excluded. The method then sets the internal variable _quality to the percentage of the words that were recognized (between 0 and 1).
++ `_langcheck()` - This method is called after NLP preprocessing of the document has been completed. The method will sample upto ten words to probabilistically determine the language of the document. The detected languages are English, French and Spanish.
+
++ `_scancheck()` – This method is called after NLP preprocessing of the document has been completed, and the document was a scanned image. The method will sample upto `SCANCHECK` number of words for recognition in the detected language dictionary (i.e., English, Spanish or French). The method will check the words on either page 1 or page 2, depending on which page has a greater number of words. Punctuation, symbols, acronyms or single letter words are excluded. The method then sets the internal variable _quality to the percentage of the words that were recognized (between 0 and 1).
 
 + `_async()` – This method performs asynchronous processing of the `_collate()` function, when the optional ehandler parameter to the constructor is not `None`. When processing is completed, the ehandler parameter value is called as a function to signal completion of the processing, and the document object is passed as a parameter.
 
@@ -726,9 +741,12 @@ A `FileNotFoundError` is raised if the file path is invalid.
 **Pre-Gap (Epipog) v1.5** 
 1.	Added `bagOfWords`, `freqDist`, and `termFreq` properties to `Document` and `Page` class.
 
-**Gap v0.91 (alpha)**
+**Gap v0.9.1 (alpha)**
 1.	Rewrote Specification
 2.	Add `OCR` quality estimate
+
+**Gap v0.9.2 (alpha)**
+1. Add language detection for English, Spanish and French.
 
 ## APPENDIX II: Anticipated Engineering
 

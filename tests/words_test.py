@@ -2744,13 +2744,9 @@ class MyTest(unittest.TestCase):
         
     def test_321(self):
         """ spell check """
-        words = Words("mispelled grat", stopwords=True, spell='pya')
-        self.assertEqual(words.words, [{'word': 'misspell', 'tag': 0}, {'word': 'great', 'tag': 18}])
-        words = Words("foozoo", stopwords=True, spell='pya')
-        self.assertEqual(words.words, [{'word': 'foozoo', 'tag': 0}])
-        words = Words("similiar speling", stopwords=True, spell='norvig')
+        words = Words("similiar speling", stopwords=True, spell='en')
         self.assertEqual(words.words, [{'word': 'similar', 'tag': 0}, {'word': 'spell', 'tag': 0}])
-        words = Words("foozoo", stopwords=True, spell='norvig')
+        words = Words("foozoo", stopwords=True, spell='en')
         self.assertEqual(words.words, [{'word': 'foozoo', 'tag': 0}])
         
     def test_322(self):
