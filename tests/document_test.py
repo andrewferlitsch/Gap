@@ -699,6 +699,38 @@ class MyTest(unittest.TestCase):
         for lang in ['en', 'es', 'fr']:
             os.remove("lang-" + lang + "1.txt")
             os.remove("lang-" + lang + "1.json")
+        
+    def test_075(self):
+        """ Document - Spanish PDF """
+        document = Document("files/spanish.pdf", "./")
+        self.assertEquals(document.lang, 'es')
+        self.assertEquals(len(document), 2)
+        for i in range(1,3):
+            os.remove("spanish" + str(i) + ".pdf")
+            os.remove("spanish" + str(i) + ".txt")
+            os.remove("spanish" + str(i) + ".json")
+        
+    def test_076(self):
+        """ Document - French PDF """
+        document = Document("files/french.pdf", "./")
+        self.assertEquals(document.lang, 'fr')
+        self.assertEquals(len(document), 2)
+        for i in range(1,3):
+            os.remove("french" + str(i) + ".pdf")
+            os.remove("french" + str(i) + ".txt")
+            os.remove("french" + str(i) + ".json")
+        
+    def test_077(self):
+        """ Document - French Scanned PDF """
+        document = Document("files/french-scan.pdf", "./")
+        self.assertEquals(document.lang, 'fr')
+        self.assertEquals(document.scanned, (False, 0))
+        for i in range(1,9):
+            os.remove("french-scan" + str(i) + ".pdf")
+            os.remove("french-scan" + str(i) + ".txt")
+            os.remove("french-scan" + str(i) + ".png")
+            os.remove("french-scan" + str(i) + ".json")
+            
 		
     def done(self, document):
         self.isdone = True
