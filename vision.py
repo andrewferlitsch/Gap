@@ -453,6 +453,7 @@ class Images(object):
         self._next     = 0          # next item in training set
         self._augment  = False      # image augmentation
         self._toggle   = True       # toggle for image augmentation
+        self._nostore  = False      # do not store into HDF5 flag
         
         if images is None:
             return
@@ -503,8 +504,14 @@ class Images(object):
         
         if self._config is None:
             self._config = []
+        else:
+            for setting in config:
+                if setting == 'nostore':
+                    self._nostore = True
+                    
         # Tell downstream Image objects not to separately store the data
-        self._config.append("nostore")
+        if self._nostore == False:
+            self._config.append("nostore")
         
         # Process collection synchronously
         if ehandler is None:
@@ -543,7 +550,15 @@ class Images(object):
             else:
                 image = Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config)
                 self._data.append( image )
+                
+        # Store machine learning ready data
+        if self._nostore is False:
+            self.store()
             
+        self._time = time.time() - start
+
+    def store(self):
+        """ """
         # Store the images as a collection in an HD5 filesystem
         imgdata = []
         clsdata = []
@@ -583,8 +598,6 @@ class Images(object):
             try:
                 hf.attrs.create("paths", paths)
             except Exception as e: print(e)
-
-        self._time = time.time() - start
             
     @property
     def dir(self):
@@ -752,6 +765,8 @@ class Images(object):
     @augment.setter
     def augment(self, augment):
         """ Setter for image augmentation """
+        if not isinstance(augment, bool) and not isinstance(augment, tuple):
+           raise TypeError("Bool or Tuple expected for augment parameter")
         self._augment = augment
         
     def __next__(self):
@@ -792,3 +807,23 @@ class Images(object):
         if ix > len(self):
             raise IndexError("Index out of range for Images")
         return self._data[ ix ]
+
+    def __iadd__(self, image):
+        """ Override the += operator - add an image to the collection """
+        if image is None:
+            return self
+            
+        # Add single image
+        if isinstance(image, Image):  
+            self._data.append( image )
+        # Add a collection of images
+        elif isinstance(image, Images):
+            for img in image:
+                self._data.append(img)
+        else:
+            raise TypeError("Image(s) expected for image")
+
+        if self._nostore == False:
+            self.store()
+        return self
+        

@@ -954,6 +954,74 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[1].raw.shape, (297, 275, 3))
         os.remove("collection.1_100.h5")
  
+    def test_099(self):
+        """ Images - += Image """
+        images = Images(['files/1_100.jpg'], 1)
+        image = Image('files/2_100.jpg', 2, config=['nostore'])
+        images += image
+        self.assertEquals(len(images), 2)
+        self.assertEquals(images[0].name, '1_100')
+        self.assertEquals(images[1].name, '2_100')
+        self.assertEquals(images[0].label, 1)
+        self.assertEquals(images[1].label, 2)
+        os.remove("collection.1_100.h5")
+ 
+    def test_100(self):
+        """ Images - += Images """
+        images = Images(['files/1_100.jpg', 'files/2_100.jpg'], 1)
+        images2 = Images(['files/0_100.jpg', 'files/3_100.jpg'], 2, config=['nostore'])
+        images += images2
+        self.assertEquals(len(images), 4)
+        self.assertEquals(images[0].name, '1_100')
+        self.assertEquals(images[1].name, '2_100')
+        self.assertEquals(images[2].name, '0_100')
+        self.assertEquals(images[3].name, '3_100')
+        self.assertEquals(images[0].label, 1)
+        self.assertEquals(images[1].label, 1)
+        self.assertEquals(images[2].label, 2)
+        self.assertEquals(images[3].label, 2)
+        os.remove("collection.1_100.h5")
+ 
+    def test_101(self):
+        """ Images - += Images nostore, then store """
+        images = Images(['files/1_100.jpg', 'files/2_100.jpg'], 1, config=['nostore'])
+        images2 = Images(['files/0_100.jpg', 'files/3_100.jpg'], 2, config=['nostore'])
+        images += images2
+        self.assertEquals(len(images), 4)
+        self.assertEquals(images[0].name, '1_100')
+        self.assertEquals(images[1].name, '2_100')
+        self.assertEquals(images[2].name, '0_100')
+        self.assertEquals(images[3].name, '3_100')
+        self.assertEquals(images[0].label, 1)
+        self.assertEquals(images[1].label, 1)
+        self.assertEquals(images[2].label, 2)
+        self.assertEquals(images[3].label, 2)
+        images.store()
+        os.remove("collection.1_100.h5")
+ 
+    def test_102(self):
+        """ Images - nostore """
+        images = Images(['files/1_100.jpg', 'files/2_100.jpg'], 1, config=['nostore'])
+        self.assertFalse(os.path.isfile('collection.1_100.h5'))
+        
+    def test_103(self):
+        """ Images - += Images """
+        images = Images(['files/1_100.jpg', 'files/2_100.jpg'], 1)
+        images2 = Images(['files/0_100.jpg', 'files/3_100.jpg'], 2)
+        images += images2
+        self.assertEquals(len(images), 4)
+        self.assertEquals(images[0].name, '1_100')
+        self.assertEquals(images[1].name, '2_100')
+        self.assertEquals(images[2].name, '0_100')
+        self.assertEquals(images[3].name, '3_100')
+        self.assertEquals(images[0].label, 1)
+        self.assertEquals(images[1].label, 1)
+        self.assertEquals(images[2].label, 2)
+        self.assertEquals(images[3].label, 2)
+        images.store()
+        os.remove("collection.1_100.h5")
+        os.remove("collection.0_100.h5")
+ 
         
     def done(self, image):
         self.isdone = True
