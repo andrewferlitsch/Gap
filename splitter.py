@@ -780,7 +780,6 @@ class Page(object):
             return self
         if isinstance(text,str) == False:
             raise TypeError("String expected for text")
-            self._text = text
         else:
             # Extend the text
             if self._text is None:

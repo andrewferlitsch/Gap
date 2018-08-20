@@ -453,6 +453,8 @@ class Images(object):
         self._next     = 0          # next item in training set
         self._augment  = False      # image augmentation
         self._toggle   = True       # toggle for image augmentation
+        self._nostore  = False      # do not store into HDF5 flag
+        self._rotate   = [-90, 90, 1, 1] # rotation parameters for image augmentation
         
         if images is None:
             return
@@ -503,8 +505,14 @@ class Images(object):
         
         if self._config is None:
             self._config = []
+        else:
+            for setting in config:
+                if setting == 'nostore':
+                    self._nostore = True
+                    
         # Tell downstream Image objects not to separately store the data
-        self._config.append("nostore")
+        if self._nostore == False:
+            self._config.append("nostore")
         
         # Process collection synchronously
         if ehandler is None:
@@ -543,7 +551,15 @@ class Images(object):
             else:
                 image = Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config)
                 self._data.append( image )
+                
+        # Store machine learning ready data
+        if self._nostore is False:
+            self.store()
             
+        self._time = time.time() - start
+
+    def store(self):
+        """ """
         # Store the images as a collection in an HD5 filesystem
         imgdata = []
         clsdata = []
@@ -569,13 +585,12 @@ class Images(object):
             self._name = "collection." + self._data[0].name
             
         # Write the images and labels to disk as HD5 file
-        with h5py.File(self._dir + self._name + '.h5', 'w') as hf:
-            # needed to store raw data of varying lengths
-            #dt = h5py.special_dtype(vlen=np.dtype('float64'))
-            
+        with h5py.File(self._dir + self._name + '.h5', 'w') as hf:      
             hf.create_dataset("images",  data=imgdata)
             hf.create_dataset("labels",  data=clsdata)
-            hf.create_dataset("raw",     data=rawdata)
+            # use separate datasets to handle raw images of different size/shape
+            for _ in range(len(rawdata)):
+                 hf.create_dataset("raw" + str(_), data=rawdata[_])
             if len(thmdata) > 0:
                 hf.create_dataset("thumb",   data=thmdata)
             hf.create_dataset("size",    data=sizdata)
@@ -584,8 +599,6 @@ class Images(object):
             try:
                 hf.attrs.create("paths", paths)
             except Exception as e: print(e)
-
-        self._time = time.time() - start
             
     @property
     def dir(self):
@@ -650,7 +663,7 @@ class Images(object):
             for i in range(length):
                 image = Image()
                 image._imgdata = hf["images"][i]
-                image._raw = hf["raw"][i]
+                image._raw = hf["raw" + str(i)][:]
                 image._size = hf["size"][i]
                 image._label = hf["labels"][i]
                 try:
@@ -727,8 +740,9 @@ class Images(object):
             self._next += 1 
             yield self._data[ix]._imgdata , self._data[ix]._label
             if self._augment:
-                degree = random.randint(-90, 90)
-                yield self._data[ix].rotate(degree), self._data[ix]._label
+                for _ in range(self._rotate[2]):
+                    degree = random.randint(self._rotate[0], self._rotate[1])
+                    yield self._data[ix].rotate(degree), self._data[ix]._label
         
     @minibatch.setter
     def minibatch(self, batch_size):
@@ -753,7 +767,25 @@ class Images(object):
     @augment.setter
     def augment(self, augment):
         """ Setter for image augmentation """
-        self._augment = augment
+        if not isinstance(augment, bool) and not isinstance(augment, tuple):
+           raise TypeError("Bool or Tuple expected for augment parameter")
+        if isinstance(augment, tuple):
+            if len(augment) < 2:
+                raise AttributeError("Augment parameter must have at least two values")
+            if not isinstance(augment[0], int):
+                raise TypeError("Integer expected for minimum rotation")
+            if not isinstance(augment[1], int):
+                raise TypeError("Integer expected for minimum rotation")
+            self._rotate[0] = augment[0]
+            self._rotate[1] = augment[1]
+            if len(augment) > 2:
+                if not isinstance(augment[2], int):
+                    raise TypeError("Integer expected for number of augmentations")
+                self._rotate[2] = augment[2]
+                self._rotate[3] = augment[2]
+            self._augment = True
+        else:       
+            self._augment = augment
         
     def __next__(self):
         """ Iterate through the training set (single image at a time) """
@@ -767,14 +799,17 @@ class Images(object):
             # Reshuffle the training data for the next round
             random.shuffle(self._train)
             self._next = 0 
+            print("NONE")
             return None, None
  
         ix = self._train[self._next]
         if self._augment:
-            self._toggle = not self._toggle
-            if not self._toggle:
-                degree = random.randint(-90, 90)
+            if self._rotate[3] > 0:
+                self._rotate[3] -= 1
+                degree = random.randint(self._rotate[0], self._rotate[1])
                 return self._data[ix].rotate(degree) , self._data[ix]._label
+            else:
+                self._rotate[3] = self._rotate[2]
             
         self._next += 1
         return self._data[ix]._imgdata , self._data[ix]._label
@@ -793,3 +828,23 @@ class Images(object):
         if ix > len(self):
             raise IndexError("Index out of range for Images")
         return self._data[ ix ]
+
+    def __iadd__(self, image):
+        """ Override the += operator - add an image to the collection """
+        if image is None:
+            return self
+            
+        # Add single image
+        if isinstance(image, Image):  
+            self._data.append( image )
+        # Add a collection of images
+        elif isinstance(image, Images):
+            for img in image:
+                self._data.append(img)
+        else:
+            raise TypeError("Image(s) expected for image")
+
+        if self._nostore == False:
+            self.store()
+        return self
+        
