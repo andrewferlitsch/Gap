@@ -9,15 +9,18 @@ Technical Specification, Gap v0.9.2
 
 The Images CV preprocessor contains the following primary classes, and their relationships:
 
-+ Images - This is the base class for the representation of a Computer Vision (CV) preprocessed list of images. The constructor optionally takes as parameters a list of images (paths), and corresponding labels, and flags for CV preprocessing the images.
++ Images - This is the base class for the representation of a Computer Vision (CV) preprocessed list of images. The constructor optionally takes as parameters a list of images (paths), and corresponding labels, and flags for CV preprocessing the images into machine learning ready data.
 
 ```python
 images = Images([<list of images>], [<list_of_labels>], flags …)
 ```
     Alternately, the list of images can be a list of directories which contain images.  
+    Alternately, the list of images can be a list of URLs of remotely stored images.
     Alternately, the list of labels maybe a single value; in which case, the label applies to all the images.
 
 + Image – This is the base class for the representation of a single Computer Vision (CV). The constructor optionally takes as parameters an image (path), corresponding label, and flags for CV preprocessing the image.
+
+    Alternately, the image can be an URL of a remotely stored image.
 
   ![images_relationships](../img/specs/images_relationships.png)
 
@@ -58,22 +61,28 @@ def myHandler(images):
             flatten                 | flat
             resize=(height,width)   | resize=height,width
             thumb=(height,width)    | thumb=height,width
+	    nostore		   
 			
 ###### Usage
 
-When specified with no parameters, an empty Images object is created. The Images object may then be used to subsequent load (retrieve) previously stored preprocessed machine learning ready data (see `load()`).
+When specified with no parameters, an empty `Images` object is created. The `Images` object may then be used to subsequent load (retrieve) previously stored preprocessed machine learning ready data (see `load()`).
 
-Otherwise, both images and labels parameters must be specified. The labels parameter corresponds to the labels of the images. Each image specified by the images parameter will be preprocessed according to the optional parameters and configuration settings.
+Otherwise, both `images` and `labels` parameters must be specified. The `labels` parameter corresponds to the labels of the images. Each image specified by the `images` parameter will be preprocessed according to the optional parameters and configuration settings (i.e., `config` parameter).
 
 By default, the images will be preprocessed as follows:
 
-1.	An Image object is created for each image.
-2.	The config parameter will have the ‘nostore’ setting, which instructs each image object to not separately store the generated preprocessed machine learning ready data.
-3.	Upon completion, the preprocessed machine learning data for each image is stored as a single HDF5 file in the current working directory. The root name of the file will be the root name of the first image.
+1.	An `Image` object is created for each image.
+2.	The `config` parameter passed to the `Image` initializer (constructor) will have the ‘nostore’ setting, which instructs each image object to not separately store the generated preprocessed machine learning ready data.
+3.	Upon completion, the preprocessed machine learning data for each image is stored as a single HDF5 file in the current working directory, unless the `config` parameter 'nostore' was specified. The root name of the file will be the root name of the first image, preprended with 'collection'. For example, if the first image was cat.jpg, then the root name of the HDF5 will be:
 
-If either or both the dir and config options are not None, they are passed down to each `Image` object.
-If the name parameter is specified, the value will be the root name of the HDF5 stored file.
-If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the Images object passed as a parameter. The ehandler parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.
+	collection.cat.h5
+
+If either or both the `dir` and `config` options are not None, they are passed down to each `Image` object.
+
+If the `name` parameter is specified, the value will be the root name of the HDF5 stored file.
+
+If the `ehandler` parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the `Images` object passed as a parameter. The `ehandler` parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.
+
 If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
 
 ###### Exceptions
@@ -99,7 +108,7 @@ images.dir = path
 ###### Usage
 
 When used as a getter, the property returns the path where the HDF5 file is stored.  
-When used as a setter, it is only applicable when used in conjunction with the `load()` method, indicating where the path where the HDF5 file is found. Otherwise, it is ignored.
+When used as a setter, it is only applicable when used in conjunction with the `load()` or `store()` methods, indicating where the path where the HDF5 file is found. Otherwise, it is ignored.
 
 ###### Exceptions
 
@@ -172,9 +181,12 @@ images.split = percent [,seed]
 
 ###### Usage
 
-When used as a setter, a training and test set is generated. The percent parameter specifies the percent that is training data. The data is first randomized before the split. By default, the seed for the split is 0. A seed may be optional specified as a second value.  
+When used as a setter, a training and test dataset is generated. The `percent` parameter specifies the percent that is test data. The data is first randomized before the split. By default, the seed for the split is 0. A seed may be optional specified as a second value.  
+
 When repeated, the property will re-split the data and re-randomize it.  
-When used as a getter, the split training, test, and corresponding labels are returned as lists. This is typically used in conjunction with `next()` operator or minibatch property.  
+
+When used as a getter, the split training, test, and corresponding labels are returned as lists. This is typically used in conjunction with `next()` operator or `minibatch` property.  
+
 When the percent is 0, the data is not split. All the data will be returned in `x_train` and `y_train`, but will still be randomized; `x_test` and `y_test` will be `None`.
 
 ###### Exceptions
@@ -197,10 +209,11 @@ images.minibatch = batch_size
 
 ###### Usage
 
-When used as a setter, the [mini] batch size is set.
+When used as a setter, the mini-batch size is set.
 
-When used as a getter, a generator is returned. The generator will iterate sequentially through the minibatches of the training set.  
-If the property augment is set to True, for each image in the training set, an additional image is generated by rotating the image a random value between -90 and 90 degrees. Thus, if the mnibatch size is 100 images, the minibatch getter will build a generator for 200 images.
+When used as a getter, a generator is returned. The generator will iterate sequentially through the mini-batches of the training set.  
+
+If the `augment` property is set to True, for each image in the training set, an additional image is generated by rotating the image a random value between -90 and 90 degrees. Thus, if the mini-batch size is 100 images, the `minibatch` getter will build a generator for 200 images. See `augment` for more variations of image augmentation.
 
 ###### Exceptions
 
@@ -222,6 +235,7 @@ images.augment = augment
 ###### Usage
 
 When used as a setter and set to True, image augmentation is enabled during batch generation (see minibatch and `next()`).  
+
 When used as a getter, the property returns whether image augmentation is enabled.
 
 ###### Exceptions
@@ -339,9 +353,9 @@ def myHandler(image, dir):
 **config:** If not None, a list of one or more configuration settings as strings:
             grayscale               | gray
             flatten                 | flat
-            resize=(height,width)  	| resize=height,width
+            resize=(height,width)   | resize=height,width
             thumb=(height,width)    | thumb=height,width
-            nostore
+            nostore		 
 
 ###### Usage
 
