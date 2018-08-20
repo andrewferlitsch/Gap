@@ -431,8 +431,6 @@ In the above example, we used the variable dataset for the combined collection. 
 
 Because the processing and invoking the event handler happen concurrently, there are possible problems including a race condition (i.e., two threads access dataset at the same time), and trashing the internal data (i.e., two threads are combining data at the same time). We solve this by making this operation atomic using Python's thread lock mechanism.
 
-*Above feature anticipated for v0.9.5 (beta)
- 
 ### Splitting the Collection into Training and Test Data
 
 The first step to training a neural network is to split the collection into training and test data. We will cover some basic cases here.
@@ -646,3 +644,7 @@ images.minibatch = 100
 The transformation methods provide the ability to transform the existing stored machine learning ready data into another shape without reprocessing the image data. This feature is particularly useful if the existing machine learning ready data is repurposed for another neural network whose input is a different shape.
         
 *The above feature is anticipated for v0.9.5 (beta)*
+
+### Images Reference
+
+For a complete reference on all methods and properties for the `Images` class, see [reference]
