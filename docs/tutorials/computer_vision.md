@@ -637,7 +637,6 @@ If parameter to the `augment` property may also be a tuple. The tuple specifies 
 images.augment = -45, 120, 3
 images.minibatch = 100
 ```
-*Specifying the parameter as a tuple is anticipated for v0.9.5 (beta)*
 
 ### Transformation
 
