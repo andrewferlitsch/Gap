@@ -1,5 +1,7 @@
 .pytest_cache
-Gap_ML.egg-info
+build/
+dist/
+gap_ml.egg-info
 __pycache__
 tests/__pycache__
 site/

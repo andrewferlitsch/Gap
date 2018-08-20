@@ -31,7 +31,7 @@ def word_to_dictionary(file, output_dir):
     if lang != 'en':
         f_name='word2int_{}.py'.format(lang)
     else:
-        f_name='word2int.py'
+        f_name='word2int_en.py'
 
     #verify if folder was given 
     if not output_dir:
