@@ -296,12 +296,28 @@ If the augment property is set to True, for each image in the training set, an a
 
 #### 1.4.4 +=
 
+###### Synopsis
+
 ```python
 images += image
 
-images += images
-```
+images += images2
+``` 
+
+###### Parameters
+
+**image:** A single `Image` object
+
+**images2:** A single `Images` object (i.e., collection of `Image` objects).
+
+###### Usage
+
+The `[]` `(__iadd__)` operator is overridden to either add a single `Image` object or a `Images` object (i.e., collection) to an existing `Images` object. If the configuration setting 'nostore' is set for the parent `Images` object, the updated Images object is not stored to the corresponding HDF5 file, in which case one must explicity issue the `store()` method; otherwise ('nostore' is not set), the updated `Images` object is stored to the corresponding HDF5 file.
  
+###### Exceptions
+
+A `TypeError` is raised if the type of the parameter is not the expected type.  
+
 ### 1.5  Images Public Methods
 
 #### 1.5.1 load()
@@ -318,9 +334,9 @@ images.load(name, dir=None)
 
 ###### Usage
 
-This method will load into memory a preprocessed machine learning ready data from an HDF5 file specified by the collection name. The method will load the HDF5 by the filename <collection>.h5. If dir is None, then it will look for the file where the current value for dir is defined (either locally or reset by the dir property). Otherwise, it will look for the file under the directory specified by the dir parameter.
+This method will load into memory a preprocessed machine learning ready data from an HDF5 file specified by the collection name. The method will load the HDF5 by the filename <collection>.h5. If `dir` is None, then it will look for the file where the current value for `dir` is defined (either locally or reset by the `dir` property). Otherwise, it will look for the file under the directory specified by the `dir` parameter.
 	
-Once loaded, the Images object will have the same characteristics as when the Images object was created.
+Once loaded, the `Images` object will have the same characteristics as when the `Images` object was created.
 
 ###### Exceptions
 
@@ -389,8 +405,8 @@ def myHandler(image, dir):
 ###### Usage
 
 When specified with no parameters, an empty `Image` object is created. The `Image` object may then be used to subsequent load previously stored preprocessed machine learning ready data (see `load()`).
-Otherwise, both image and label parameters must be specified.  The label parameter corresponds to the label of the image. The image specified by the image option will be preprocessed according to the optional parameters and configuration settings.
-By default, the image will be preprocessed as follows:
+
+Otherwise, both `image` and `label` parameters must be specified.  The `label` parameter corresponds to the label of the image. The image specified by the `image` parameter will be preprocessed according to the optional parameters and configuration settings. By default, the image will be preprocessed as follows:
 
 1.	Decompressed into raw pixel data.
 2.	Converted to RGB, if not already.
@@ -400,17 +416,19 @@ By default, the image will be preprocessed as follows:
 
 If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
 
-If the parameter dir is specified, then the generated HDF5 file is stored in the specified directory. If the directory does not exist, it is created.
+If the parameter `dir` is specified, then the generated HDF5 file is stored in the specified directory. If the directory does not exist, it is created.
 
-If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the Image object passed as a parameter. The ehandler parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.
+If the `ehandler` parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the `Image` object passed as a parameter. The `ehandler` parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.
 
-If the configuration setting grayscale (may be shortened to gray) is specified, then the image is converted to a single channel grayscale image, if not already.
+If the configuration setting `grayscale` (may be shortened to gray) is specified, then the image is converted to a single channel grayscale image, if not already.
 
-If the configuration setting resize is specified, then the image is resized to the specified height and width.
+If the configuration setting `resize` is specified, then the image is resized to the specified height and width.
 
-If the configuration setting flatten (may be shortened to flat) is specified, the image is flattened into a single 1D vector (i.e., for input to a ANN).
+If the configuration setting `flatten` (may be shortened to flat) is specified, the image is flattened into a single 1D vector (i.e., for input to a ANN).
 
-If the configuration setting thumb is specified, then a thumbnail of the raw pixel data is generated to the specified height and width and stored in the HDF5 file. 
+If the configuration setting `thumb` is specified, then a thumbnail of the raw pixel data is generated to the specified height and width and stored in the HDF5 file. 
+
+If the configuration setting `nostore` is specified, then the image data and corresponding metadata are not stored in the HDF5 file.
 
 ###### Exceptions
 
@@ -436,6 +454,7 @@ image.image = path
 ###### Usage
 
 When used as a getter the property returns the path to the image file.  
+
 When used as a setter the property specifies the path of the image file to preprocess into machine learning ready data (see initializer).
 
 ###### Exceptions
@@ -523,7 +542,8 @@ image.label = label
 
 ###### Usage
 
-When used as a getter the property returns the (integer) label specified for the image.  
+When used as a getter the property returns the (integer) label specified for the image. 
+
 When used as a setter the property sets the label of the image to the specified integer value.
 
 ###### Exceptions
@@ -545,6 +565,7 @@ image.dir = subfolder
 ###### Usage
 
 When used as a getter the property returns the directory path where the corresponding HDF5 file is stored.  
+
 When used as a setter, it is only applicable when used in conjunction with the `load()` method, indicating where the path where the HDF5 file is found. Otherwise, it is ignored.
 
 ###### Exceptions
@@ -663,7 +684,7 @@ A `ValueError` is raised if the degree is not between 0 and 360.
 2.	Added iterating (next) through the training set
 3.	Added support for minibatch
 
-**Gap v0.91 (alpha)**
+**Gap v0.9.1 (alpha)**
 1.	Added support for Images to take list of directories of images.
 2.	Added support for Image for image path is an URL (http request).
 3.	Added image rotation.
@@ -673,10 +694,10 @@ A `ValueError` is raised if the degree is not between 0 and 360.
 7.	Added support for image augmentation in `next()`/minibatch.
 8.	Added support for raw pixel input to Image class.
 
-## APPENDIX II: Anticipated Engineering
+**Gap v0.9.2 (alpha)**
+1. 	Added support for mix image size/shape in Images object.
+2.	Added support += overriden operator.
 
-The following has been identified as enhancement/issues to be addressed in subsequent update:
-1.	Add transformations
 
 Proprietary Information
 Copyright ©2018, Epipog, All Rights Reserved
