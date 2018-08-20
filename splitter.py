@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 """ Splitter Module for Processing PDF Documents
 Copyright, 2018(c), Andrew Ferlitsch
 """
