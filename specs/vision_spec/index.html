@@ -121,8 +121,6 @@
         
             <li><a class="toctree-l4" href="#appendix-i-updates">APPENDIX I: Updates</a></li>
         
-            <li><a class="toctree-l4" href="#appendix-ii-anticipated-engineering">APPENDIX II: Anticipated Engineering</a></li>
-        
         </ul>
     
 
@@ -178,16 +176,20 @@ Technical Specification, Gap v0.9.2</p>
 <h3 id="11-images-overview">1.1  Images Overview</h3>
 <p>The Images CV preprocessor contains the following primary classes, and their relationships:</p>
 <ul>
-<li>Images - This is the base class for the representation of a Computer Vision (CV) preprocessed list of images. The constructor optionally takes as parameters a list of images (paths), and corresponding labels, and flags for CV preprocessing the images.</li>
+<li>Images - This is the base class for the representation of a Computer Vision (CV) preprocessed list of images. The constructor optionally takes as parameters a list of images (paths), and corresponding labels, and flags for CV preprocessing the images into machine learning ready data.</li>
 </ul>
 <pre><code class="python">images = Images([&lt;list of images&gt;], [&lt;list_of_labels&gt;], flags …)
 </code></pre>
 
 <pre><code>Alternately, the list of images can be a list of directories which contain images.  
+Alternately, the list of images can be a list of URLs of remotely stored images.
 Alternately, the list of labels maybe a single value; in which case, the label applies to all the images.
 </code></pre>
 <ul>
-<li>Image – This is the base class for the representation of a single Computer Vision (CV). The constructor optionally takes as parameters an image (path), corresponding label, and flags for CV preprocessing the image.</li>
+<li>
+<p>Image – This is the base class for the representation of a single Computer Vision (CV). The constructor optionally takes as parameters an image (path), corresponding label, and flags for CV preprocessing the image.</p>
+<p>Alternately, the image can be an URL of a remotely stored image.</p>
+</li>
 </ul>
 <p><img alt="images_relationships" src="../../img/specs/images_relationships.png" /></p>
 <p>Fig. 1a High Level view of Images Class Object Relationships</p>
@@ -215,20 +217,24 @@ Alternately, the list of labels maybe a single value; in which case, the label a
             grayscale               | gray
             flatten                 | flat
             resize=(height,width)   | resize=height,width
-            thumb=(height,width)    | thumb=height,width</p>
+            thumb=(height,width)    | thumb=height,width
+        nostore        </p>
 <h6 id="usage">Usage</h6>
-<p>When specified with no parameters, an empty Images object is created. The Images object may then be used to subsequent load (retrieve) previously stored preprocessed machine learning ready data (see <code>load()</code>).</p>
-<p>Otherwise, both images and labels parameters must be specified. The labels parameter corresponds to the labels of the images. Each image specified by the images parameter will be preprocessed according to the optional parameters and configuration settings.</p>
+<p>When specified with no parameters, an empty <code>Images</code> object is created. The <code>Images</code> object may then be used to subsequent load (retrieve) previously stored preprocessed machine learning ready data (see <code>load()</code>).</p>
+<p>Otherwise, both <code>images</code> and <code>labels</code> parameters must be specified. The <code>labels</code> parameter corresponds to the labels of the images. Each image specified by the <code>images</code> parameter will be preprocessed according to the optional parameters and configuration settings (i.e., <code>config</code> parameter).</p>
 <p>By default, the images will be preprocessed as follows:</p>
 <ol>
-<li>An Image object is created for each image.</li>
-<li>The config parameter will have the ‘nostore’ setting, which instructs each image object to not separately store the generated preprocessed machine learning ready data.</li>
-<li>Upon completion, the preprocessed machine learning data for each image is stored as a single HDF5 file in the current working directory. The root name of the file will be the root name of the first image.</li>
+<li>An <code>Image</code> object is created for each image.</li>
+<li>The <code>config</code> parameter passed to the <code>Image</code> initializer (constructor) will have the ‘nostore’ setting, which instructs each image object to not separately store the generated preprocessed machine learning ready data.</li>
+<li>
+<p>Upon completion, the preprocessed machine learning data for each image is stored as a single HDF5 file in the current working directory, unless the <code>config</code> parameter 'nostore' was specified. The root name of the file will be the root name of the first image, preprended with 'collection'. For example, if the first image was cat.jpg, then the root name of the HDF5 will be:</p>
+<p>collection.cat.h5</p>
+</li>
 </ol>
-<p>If either or both the dir and config options are not None, they are passed down to each <code>Image</code> object.
-If the name parameter is specified, the value will be the root name of the HDF5 stored file.
-If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the Images object passed as a parameter. The ehandler parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.
-If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.</p>
+<p>If either or both the <code>dir</code> and <code>config</code> options are not None, they are passed down to each <code>Image</code> object.</p>
+<p>If the <code>name</code> parameter is specified, the value will be the root name of the HDF5 stored file.</p>
+<p>If the <code>ehandler</code> parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the <code>Images</code> object passed as a parameter. The <code>ehandler</code> parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.</p>
+<p>If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.</p>
 <h6 id="exceptions">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>AttributeError</code> is raised if an invalid configuration setting is specified.<br />
@@ -245,7 +251,7 @@ images.dir = path
 
 <h6 id="usage_1">Usage</h6>
 <p>When used as a getter, the property returns the path where the HDF5 file is stored.<br />
-When used as a setter, it is only applicable when used in conjunction with the <code>load()</code> method, indicating where the path where the HDF5 file is found. Otherwise, it is ignored.</p>
+When used as a setter, it is only applicable when used in conjunction with the <code>load()</code> or <code>store()</code> methods, indicating where the path where the HDF5 file is found. Otherwise, it is ignored.</p>
 <h6 id="exceptions_1">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>FileNotFoundError</code> is raised if the directory does not exist.</p>
@@ -292,10 +298,10 @@ images.split = percent [,seed]
 </code></pre>
 
 <h6 id="usage_6">Usage</h6>
-<p>When used as a setter, a training and test set is generated. The percent parameter specifies the percent that is training data. The data is first randomized before the split. By default, the seed for the split is 0. A seed may be optional specified as a second value.<br />
-When repeated, the property will re-split the data and re-randomize it.<br />
-When used as a getter, the split training, test, and corresponding labels are returned as lists. This is typically used in conjunction with <code>next()</code> operator or minibatch property.<br />
-When the percent is 0, the data is not split. All the data will be returned in <code>x_train</code> and <code>y_train</code>, but will still be randomized; <code>x_test</code> and <code>y_test</code> will be <code>None</code>.</p>
+<p>When used as a setter, a training and test dataset is generated. The <code>percent</code> parameter specifies the percent that is test data. The data is first randomized before the split. By default, the seed for the split is 0. A seed may be optional specified as a second value.  </p>
+<p>When repeated, the property will re-split the data and re-randomize it.  </p>
+<p>When used as a getter, the split training, test, and corresponding labels are returned as lists. This is typically used in conjunction with <code>next()</code> operator or <code>minibatch</code> property.  </p>
+<p>When the percent is 0, the data is not split. All the data will be returned in <code>x_train</code> and <code>y_train</code>, but will still be randomized; <code>x_test</code> and <code>y_test</code> will be <code>None</code>.</p>
 <h6 id="exceptions_2">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>ValueError</code> is raised if a parameter is out of range.<br />
@@ -310,9 +316,9 @@ images.minibatch = batch_size
 </code></pre>
 
 <h6 id="usage_7">Usage</h6>
-<p>When used as a setter, the [mini] batch size is set.</p>
-<p>When used as a getter, a generator is returned. The generator will iterate sequentially through the minibatches of the training set.<br />
-If the property augment is set to True, for each image in the training set, an additional image is generated by rotating the image a random value between -90 and 90 degrees. Thus, if the mnibatch size is 100 images, the minibatch getter will build a generator for 200 images.</p>
+<p>When used as a setter, the mini-batch size is set.</p>
+<p>When used as a getter, a generator is returned. The generator will iterate sequentially through the mini-batches of the training set.  </p>
+<p>If the <code>augment</code> property is set to True, for each image in the training set, an additional image is generated by rotating the image a random value between -90 and 90 degrees. Thus, if the mini-batch size is 100 images, the <code>minibatch</code> getter will build a generator for 200 images. See <code>augment</code> for more variations of image augmentation.</p>
 <h6 id="exceptions_3">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>ValueError</code> is raised if the batch_size is out of range.</p>
@@ -322,12 +328,16 @@ A <code>ValueError</code> is raised if the batch_size is out of range.</p>
 augment = images.augment
 
 # Setter
-images.augment = augment
+images.augment = True | False
+
+images.augment = (min, max[, n])
 </code></pre>
 
 <h6 id="usage_8">Usage</h6>
-<p>When used as a setter and set to True, image augmentation is enabled during batch generation (see minibatch and <code>next()</code>).<br />
-When used as a getter, the property returns whether image augmentation is enabled.</p>
+<p>When used as a setter and set to True, image augmentation for rotation is enabled during batch generation (see <code>minibatch</code> and <code>next()</code>). In this mode, for each image, an additional image will be generated that is randomly rotated between -90 and 90 degrees.</p>
+<p>When used as a setter and set to a tuple, the min and max boundaries for degree rotation are specified, and optionally the number of augmented images to generate per original image.</p>
+<p>When used as a getter, the property returns whether image augmentation is enabled.</p>
+<p><em>in progress</em></p>
 <h6 id="exceptions_4">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.</p>
 <h3 id="14-images-overridden-operators">1.4  Images Overridden Operators</h3>
@@ -353,23 +363,45 @@ When used as a getter, the property returns whether image augmentation is enable
 </code></pre>
 
 <h6 id="usage_11">Usage</h6>
-<p>The <code>next()</code> operator is overridden and is used in conjunction with the split property. Once the collection has been split in training and test data, the <code>next()</code> operator will iterate through the training dataset one image, and corresponding label at a time.</p>
-<p>Once the training set has been fully iterated, the <code>next()</code> operator returns <code>None</code>, None and will reset and start with the first element.  Additionally, the training set will be randomly reshuffled.</p>
-<p>If the augment property is set, for each image in the training set, an additional image is generated by rotating the image a random value between -90 and 90 degrees. Thus, if the training set is 1000 images, the <code>next()</code> operator will iterate through 2000 images.
- </p>
-<h3 id="15-images-public-methods">1.5  Images Public Methods</h3>
+<p>The <code>next()</code> operator is overridden and is used in conjunction with the split property. Once the collection has been split in training and test data, the <code>next()</code> operator will iterate through the training dataset one image, and corresponding label, at a time.</p>
+<p>Once the training set has been fully iterated, the <code>next()</code> operator returns <code>None</code>, and will reset and start with the first element.  Additionally, the training set will be randomly reshuffled.</p>
+<p>If the augment property is set to True, for each image in the training set, an additional image is generated by rotating the image a random value between -90 and 90 degrees. Thus, if the training set is 1000 images, the <code>next()</code> operator will iterate through 2000 images.</p>
+<h4 id="144">1.4.4 +=</h4>
 <h6 id="synopsis_12">Synopsis</h6>
-<pre><code class="python">images.load(name, dir=None) 
+<pre><code class="python">images += image
+
+images += images2
 </code></pre>
 
 <h6 id="parameters_1">Parameters</h6>
-<p><strong>name:</strong> The name of the collection. </p>
+<p><strong>image:</strong> A single <code>Image</code> object</p>
+<p><strong>images2:</strong> A single <code>Images</code> object (i.e., collection of <code>Image</code> objects).</p>
 <h6 id="usage_12">Usage</h6>
-<p>This method will load into memory a preprocessed machine learning ready data from an HDF5 file specified by the collection name. The method will load the HDF5 by the filename <collection>.h5. If dir is None, then it will look for the file where the current value for dir is defined (either locally or reset by the dir property). Otherwise, it will look for the file under the directory specified by the dir parameter.
-Once loaded, the Images object will have the same characteristics as when the Images object was created.</p>
+<p>The <code>[]</code> <code>(__iadd__)</code> operator is overridden to either add a single <code>Image</code> object or a <code>Images</code> object (i.e., collection) to an existing <code>Images</code> object. If the configuration setting 'nostore' is set for the parent <code>Images</code> object, the updated Images object is not stored to the corresponding HDF5 file, in which case one must explicity issue the <code>store()</code> method; otherwise ('nostore' is not set), the updated <code>Images</code> object is stored to the corresponding HDF5 file.
+ </p>
 <h6 id="exceptions_6">Exceptions</h6>
+<p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.  </p>
+<h3 id="15-images-public-methods">1.5  Images Public Methods</h3>
+<h4 id="151-load">1.5.1 load()</h4>
+<h6 id="synopsis_13">Synopsis</h6>
+<pre><code class="python">images.load(name, dir=None) 
+</code></pre>
+
+<h6 id="parameters_2">Parameters</h6>
+<p><strong>name:</strong> The name of the collection. </p>
+<h6 id="usage_13">Usage</h6>
+<p>This method will load into memory a preprocessed machine learning ready data from an HDF5 file specified by the collection name. The method will load the HDF5 by the filename <collection>.h5. If <code>dir</code> is None, then it will look for the file where the current value for <code>dir</code> is defined (either locally or reset by the <code>dir</code> property). Otherwise, it will look for the file under the directory specified by the <code>dir</code> parameter.</p>
+<p>Once loaded, the <code>Images</code> object will have the same characteristics as when the <code>Images</code> object was created.</p>
+<h6 id="exceptions_7">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
-A <code>ValueError</code> is raised if the name parameter is None.
+A <code>ValueError</code> is raised if the name parameter is None.</p>
+<h4 id="152-store">1.5.2 store()</h4>
+<h6 id="synopsis_14">Synopsis</h6>
+<pre><code class="python">images.store() 
+</code></pre>
+
+<h6 id="usage_14">Usage</h6>
+<p>This method will store the machine learning ready data (and corresponding metadata) in a HDF5 file. 
  </p>
 <h2 id="2-image">2  Image</h2>
 <h3 id="21-image-overview">2.1  Image Overview</h3>
@@ -382,11 +414,11 @@ A <code>ValueError</code> is raised if the name parameter is None.
 
 <p>The image path maybe a local path or an URL to a remote location, or raw pixel data as a numpy array. For remote location, a HTTP request is made to obtain the image data.</p>
 <h3 id="22-image-initializer-constructor">2.2  Image Initializer (Constructor)</h3>
-<h6 id="synopsis_13">Synopsis</h6>
+<h6 id="synopsis_15">Synopsis</h6>
 <pre><code class="python">Image( image=None, label= 0, dir=’./’, ehandler=None,  config=None)
 </code></pre>
 
-<h6 id="parameters_2">Parameters</h6>
+<h6 id="parameters_3">Parameters</h6>
 <p><strong>image:</strong> If not None, a string of either:
 1.  local path to an image file
 2.  remote location of an image file (i.e., http[s]://….)
@@ -403,11 +435,10 @@ A <code>ValueError</code> is raised if the name parameter is None.
             flatten                 | flat
             resize=(height,width)   | resize=height,width
             thumb=(height,width)    | thumb=height,width
-            nostore</p>
-<h6 id="usage_13">Usage</h6>
-<p>When specified with no parameters, an empty <code>Image</code> object is created. The <code>Image</code> object may then be used to subsequent load previously stored preprocessed machine learning ready data (see <code>load()</code>).
-Otherwise, both image and label parameters must be specified.  The label parameter corresponds to the label of the image. The image specified by the image option will be preprocessed according to the optional parameters and configuration settings.
-By default, the image will be preprocessed as follows:</p>
+            nostore      </p>
+<h6 id="usage_15">Usage</h6>
+<p>When specified with no parameters, an empty <code>Image</code> object is created. The <code>Image</code> object may then be used to subsequent load previously stored preprocessed machine learning ready data (see <code>load()</code>).</p>
+<p>Otherwise, both <code>image</code> and <code>label</code> parameters must be specified.  The <code>label</code> parameter corresponds to the label of the image. The image specified by the <code>image</code> parameter will be preprocessed according to the optional parameters and configuration settings. By default, the image will be preprocessed as follows:</p>
 <ol>
 <li>Decompressed into raw pixel data.</li>
 <li>Converted to RGB, if not already.</li>
@@ -416,20 +447,21 @@ By default, the image will be preprocessed as follows:</p>
 <li>Attributes of the raw and preprocessed image are stored in the HDF5 file.</li>
 </ol>
 <p>If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.</p>
-<p>If the parameter dir is specified, then the generated HDF5 file is stored in the specified directory. If the directory does not exist, it is created.</p>
-<p>If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the Image object passed as a parameter. The ehandler parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.</p>
-<p>If the configuration setting grayscale (may be shortened to gray) is specified, then the image is converted to a single channel grayscale image, if not already.</p>
-<p>If the configuration setting resize is specified, then the image is resized to the specified height and width.</p>
-<p>If the configuration setting flatten (may be shortened to flat) is specified, the image is flattened into a single 1D vector (i.e., for input to a ANN).</p>
-<p>If the configuration setting thumb is specified, then a thumbnail of the raw pixel data is generated to the specified height and width and stored in the HDF5 file. </p>
-<h6 id="exceptions_7">Exceptions</h6>
+<p>If the parameter <code>dir</code> is specified, then the generated HDF5 file is stored in the specified directory. If the directory does not exist, it is created.</p>
+<p>If the <code>ehandler</code> parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the <code>Image</code> object passed as a parameter. The <code>ehandler</code> parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.</p>
+<p>If the configuration setting <code>grayscale</code> (may be shortened to gray) is specified, then the image is converted to a single channel grayscale image, if not already.</p>
+<p>If the configuration setting <code>resize</code> is specified, then the image is resized to the specified height and width.</p>
+<p>If the configuration setting <code>flatten</code> (may be shortened to flat) is specified, the image is flattened into a single 1D vector (i.e., for input to a ANN).</p>
+<p>If the configuration setting <code>thumb</code> is specified, then a thumbnail of the raw pixel data is generated to the specified height and width and stored in the HDF5 file. </p>
+<p>If the configuration setting <code>nostore</code> is specified, then the image data and corresponding metadata are not stored in the HDF5 file.</p>
+<h6 id="exceptions_8">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>AttributeError</code> is raised if an invalid configuration setting is specified.<br />
 A <code>FileNotFoundError</code> is raised if the image file does not exist.<br />
 A <code>IOError</code> is raised if an error occurs reading in the image file.</p>
 <h3 id="23-image-properties">2.3  Image Properties</h3>
 <h4 id="231-image">2.3.1  image</h4>
-<h6 id="synopsis_14">Synopsis</h6>
+<h6 id="synopsis_16">Synopsis</h6>
 <pre><code class="python"># Getter
 path = image.image
 
@@ -437,47 +469,47 @@ path = image.image
 image.image = path  
 </code></pre>
 
-<h6 id="usage_14">Usage</h6>
-<p>When used as a getter the property returns the path to the image file.<br />
-When used as a setter the property specifies the path of the image file to preprocess into machine learning ready data (see initializer).</p>
-<h6 id="exceptions_8">Exceptions</h6>
+<h6 id="usage_16">Usage</h6>
+<p>When used as a getter the property returns the path to the image file.  </p>
+<p>When used as a setter the property specifies the path of the image file to preprocess into machine learning ready data (see initializer).</p>
+<h6 id="exceptions_9">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>FileNotFoundError</code> is raised if the image file does not exist.<br />
 A <code>IOError</code> is raised if an error occurs reading in the image file.</p>
 <h4 id="232-name">2.3.2  name</h4>
-<h6 id="synopsis_15">Synopsis</h6>
+<h6 id="synopsis_17">Synopsis</h6>
 <pre><code class="python"># Getter
 root = image.name
 </code></pre>
 
-<h6 id="usage_15">Usage</h6>
+<h6 id="usage_17">Usage</h6>
 <p>When used as a getter the property returns the root name of the image file(e.g., /mydir/myimage.jpg -&gt; myimage). If the input was raw pixel data, the name property will return ‘untitled’.</p>
 <h4 id="233-type">2.3.3  type</h4>
-<h6 id="synopsis_16">Synopsis</h6>
+<h6 id="synopsis_18">Synopsis</h6>
 <pre><code class="python"># Getter
 suffix = image.type
 </code></pre>
 
-<h6 id="usage_16">Usage</h6>
+<h6 id="usage_18">Usage</h6>
 <p>When used as a getter the property returns the file suffix of the image file (e.g., jpg). If the input was raw pixel data, the property will return ‘raw’.</p>
 <h4 id="234-size">2.3.4 size</h4>
-<h6 id="synopsis_17">Synopsis</h6>
+<h6 id="synopsis_19">Synopsis</h6>
 <pre><code class="python"># Getter
 size = image.size
 </code></pre>
 
-<h6 id="usage_17">Usage</h6>
+<h6 id="usage_19">Usage</h6>
 <p>When used as a getter the property returns the file size of the image file in bytes.</p>
 <h4 id="235-raw">2.3.5 raw</h4>
-<h6 id="synopsis_18">Synopsis</h6>
+<h6 id="synopsis_20">Synopsis</h6>
 <pre><code class="python"># Getter
 pixels = image.raw
 </code></pre>
 
-<h6 id="usage_18">Usage</h6>
+<h6 id="usage_20">Usage</h6>
 <p>When used as a getter the property returns the raw pixel data of the uncompressed image.</p>
 <h4 id="236-thumb">2.3.6  thumb</h4>
-<h6 id="synopsis_19">Synopsis</h6>
+<h6 id="synopsis_21">Synopsis</h6>
 <pre><code class="python"># Getter
 pixels = image.thumb
 
@@ -487,7 +519,7 @@ When used as a getter the property returns the pixel data for the thumbnail imag
 </code></pre>
 
 <h4 id="237-label">2.3.7  label</h4>
-<h6 id="synopsis_20">Synopsis</h6>
+<h6 id="synopsis_22">Synopsis</h6>
 <pre><code class="python"># Getter
 label = image.label
 
@@ -495,13 +527,13 @@ label = image.label
 image.label = label 
 </code></pre>
 
-<h6 id="usage_19">Usage</h6>
-<p>When used as a getter the property returns the (integer) label specified for the image.<br />
-When used as a setter the property sets the label of the image to the specified integer value.</p>
-<h6 id="exceptions_9">Exceptions</h6>
+<h6 id="usage_21">Usage</h6>
+<p>When used as a getter the property returns the (integer) label specified for the image. </p>
+<p>When used as a setter the property sets the label of the image to the specified integer value.</p>
+<h6 id="exceptions_10">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.</p>
 <h4 id="237-dir">2.3.7  dir</h4>
-<h6 id="synopsis_21">Synopsis</h6>
+<h6 id="synopsis_23">Synopsis</h6>
 <pre><code class="python"># Getter
 subfolder = image.dir
 
@@ -509,70 +541,70 @@ subfolder = image.dir
 image.dir = subfolder   
 </code></pre>
 
-<h6 id="usage_20">Usage</h6>
-<p>When used as a getter the property returns the directory path where the corresponding HDF5 file is stored.<br />
-When used as a setter, it is only applicable when used in conjunction with the <code>load()</code> method, indicating where the path where the HDF5 file is found. Otherwise, it is ignored.</p>
-<h6 id="exceptions_10">Exceptions</h6>
+<h6 id="usage_22">Usage</h6>
+<p>When used as a getter the property returns the directory path where the corresponding HDF5 file is stored.  </p>
+<p>When used as a setter, it is only applicable when used in conjunction with the <code>load()</code> method, indicating where the path where the HDF5 file is found. Otherwise, it is ignored.</p>
+<h6 id="exceptions_11">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>FileNotFoundError</code> is raised if the directory does not exist.</p>
 <h4 id="238-data">2.3.8  data</h4>
-<h6 id="synopsis_22">Synopsis</h6>
+<h6 id="synopsis_24">Synopsis</h6>
 <pre><code class="python"># Getter
 data = image.data
 </code></pre>
 
-<h6 id="usage_21">Usage</h6>
+<h6 id="usage_23">Usage</h6>
 <p>When used as a getter the property returns the preprocessed machine learning ready data.</p>
 <h4 id="239-shape">2.3.9  shape</h4>
-<h6 id="synopsis_23">Synopsis</h6>
+<h6 id="synopsis_25">Synopsis</h6>
 <pre><code class="python"># Getter
 shape = image.shape
 </code></pre>
 
-<h6 id="usage_22">Usage</h6>
+<h6 id="usage_24">Usage</h6>
 <p>When used as a getter the property returns the shape of the preprocessed machine learning ready data (e.g., (50, 50, 3)).
  </p>
 <h4 id="2310-time">2.3.10  time</h4>
-<h6 id="synopsis_24">Synopsis</h6>
+<h6 id="synopsis_26">Synopsis</h6>
 <pre><code class="python"># Getter
 secs = image.time
 </code></pre>
 
-<h6 id="usage_23">Usage</h6>
+<h6 id="usage_25">Usage</h6>
 <p>When used as a getter the property returns the amount of time (in seconds) it took to preprocess the image into machine learning ready data.</p>
 <h3 id="24-image-overridden-operators">2.4  Image Overridden Operators</h3>
 <h4 id="241-str">2.4.1  str()</h4>
-<h6 id="synopsis_25">Synopsis</h6>
+<h6 id="synopsis_27">Synopsis</h6>
 <pre><code class="python">label = str(image)
 </code></pre>
 
-<h6 id="usage_24">Usage</h6>
+<h6 id="usage_26">Usage</h6>
 <p>The <code>str()</code> <code>(__str__)</code> operator is overridden to return the label of the image as a string.</p>
 <h3 id="25-image-public-methods">2.5  Image Public Methods</h3>
 <h4 id="251-load">2.5.1  load()</h4>
-<h6 id="synopsis_26">Synopsis</h6>
+<h6 id="synopsis_28">Synopsis</h6>
 <pre><code class="python">image.load(name, dir=None) 
 </code></pre>
 
-<h6 id="parameters_3">Parameters</h6>
+<h6 id="parameters_4">Parameters</h6>
 <p><strong>name:</strong> The filename of the stored HDF5 file. </p>
 <p><strong>dir:</strong> The directory where the HDF5 file is located.</p>
-<h6 id="usage_25">Usage</h6>
+<h6 id="usage_27">Usage</h6>
 <p>This method will load into memory a preprocessed machine learning ready data from an HDF5 file specified by the parameter name. The method will load the HDF5 by the filename <name>.h5. If dir is None, then it will look for the file where the current value for dir is defined (either locally or reset by the dir property). Otherwise, it will look for the file under the directory specified by the dir parameter.
 Once loaded, the Image object will have the same characteristics as when the Image object was created.</p>
-<h6 id="exceptions_11">Exceptions</h6>
+<h6 id="exceptions_12">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>ValueError</code> is raised if the name parameter is None.</p>
 <h4 id="252-rotate">2.5.2 rotate()</h4>
-<h6 id="synopsis_27">Synopsis</h6>
+<h6 id="synopsis_29">Synopsis</h6>
 <pre><code class="python">image.rotate(degree) 
 </code></pre>
 
-<h6 id="parameters_4">Parameters</h6>
+<h6 id="parameters_5">Parameters</h6>
 <p><strong>degree:</strong> The degree (angle) to rotate the image data.</p>
-<h6 id="usage_26">Usage</h6>
+<h6 id="usage_28">Usage</h6>
 <p>This method generates a rotated copy of the raw image data. The parameter degree specifies the degree (angle) to rotate the image. The method uses the imutils module which will resize the image to prevent clipping prior to the rotation. Once rotated, the image is resized back to the target size.</p>
-<h6 id="exceptions_12">Exceptions</h6>
+<h6 id="exceptions_13">Exceptions</h6>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>ValueError</code> is raised if the degree is not between 0 and 360.</p>
 <hr />
@@ -583,7 +615,7 @@ A <code>ValueError</code> is raised if the degree is not between 0 and 360.</p>
 1.  Added splitting collection into training and test data
 2.  Added iterating (next) through the training set
 3.  Added support for minibatch</p>
-<p><strong>Gap v0.91 (alpha)</strong>
+<p><strong>Gap v0.9.1 (alpha)</strong>
 1.  Added support for Images to take list of directories of images.
 2.  Added support for Image for image path is an URL (http request).
 3.  Added image rotation.
@@ -592,9 +624,9 @@ A <code>ValueError</code> is raised if the degree is not between 0 and 360.</p>
 6.  Added support for GIF.
 7.  Added support for image augmentation in <code>next()</code>/minibatch.
 8.  Added support for raw pixel input to Image class.</p>
-<h2 id="appendix-ii-anticipated-engineering">APPENDIX II: Anticipated Engineering</h2>
-<p>The following has been identified as enhancement/issues to be addressed in subsequent update:
-1.  Add transformations</p>
+<p><strong>Gap v0.9.2 (alpha)</strong>
+1.  Added support for mix image size/shape in Images object.
+2.  Added support += overriden operator.</p>
 <p>Proprietary Information
 Copyright ©2018, Epipog, All Rights Reserved</p>
               
