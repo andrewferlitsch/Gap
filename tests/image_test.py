@@ -1039,13 +1039,56 @@ class MyTest(unittest.TestCase):
             images.augment = 'a', 1
         with pytest.raises(TypeError):
             images.augment = 1, 'a'
+        with pytest.raises(TypeError):
+            images.augment = 1, 1, 'a'
         
     def test_106(self):
-        """ Images - augment - valid tuple """
+        """ Images - augment - valid tuple (min, max) """
         images = Images()
         images.augment = (-45, 45)
-        self.assertEquals(images._rot_min, -45)
-        self.assertEquals(images._rot_max, 45)
+        self.assertEquals(images._rotate[0], -45)
+        self.assertEquals(images._rotate[1], 45)
+        images.augment = 20, 60
+        self.assertEquals(images._rotate[0], 20)
+        self.assertEquals(images._rotate[1], 60)
+        
+    def test_107(self):
+        """ Images - augment - valid tuple (min, max, n) - next """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [0,1,2,3])
+        images.split = 0.50
+        images.augment = (-45, 45, 2)
+        self.assertEquals(images._rotate[0], -45)
+        self.assertEquals(images._rotate[1], 45)
+        self.assertEquals(images._rotate[2], 2)
+        self.assertEquals(images._rotate[3], 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(len(next(images)), 2)
+        self.assertEqual(next(images), (None, None))
+        os.remove("collection.0_100.h5")
+        
+    def test_108(self):
+        """ Images - augment - valid tuple (min, max, n) - minibatch """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg', 'files/3_100.jpg', 'files/1_100.jpg'], [1,2,3,4,5,6], name='foobar')
+        images.split = 0.5
+        images.minibatch = 2
+        images.augment = (-45, 45, 2)
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 6)
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 3)
+        g = images.minibatch
+        x = 0
+        for _ in g: x += 1
+        self.assertEquals(x, 0)
+        os.remove('foobar.h5')
  
         
     def done(self, image):

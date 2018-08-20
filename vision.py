@@ -454,8 +454,7 @@ class Images(object):
         self._augment  = False      # image augmentation
         self._toggle   = True       # toggle for image augmentation
         self._nostore  = False      # do not store into HDF5 flag
-        self._rot_min  = -90        # minimum rotation for image augmentation
-        self._rot_max  = 90         # maximum rotation for image augmentation
+        self._rotate   = [-90, 90, 1, 1] # rotation parameters for image augmentation
         
         if images is None:
             return
@@ -741,8 +740,9 @@ class Images(object):
             self._next += 1 
             yield self._data[ix]._imgdata , self._data[ix]._label
             if self._augment:
-                degree = random.randint(self._rot_min, self._rot_max)
-                yield self._data[ix].rotate(degree), self._data[ix]._label
+                for _ in range(self._rotate[2]):
+                    degree = random.randint(self._rotate[0], self._rotate[1])
+                    yield self._data[ix].rotate(degree), self._data[ix]._label
         
     @minibatch.setter
     def minibatch(self, batch_size):
@@ -776,9 +776,16 @@ class Images(object):
                 raise TypeError("Integer expected for minimum rotation")
             if not isinstance(augment[1], int):
                 raise TypeError("Integer expected for minimum rotation")
-            self._rot_min = augment[0]
-            self._rot_max = augment[1]
-        self._augment = augment
+            self._rotate[0] = augment[0]
+            self._rotate[1] = augment[1]
+            if len(augment) > 2:
+                if not isinstance(augment[2], int):
+                    raise TypeError("Integer expected for number of augmentations")
+                self._rotate[2] = augment[2]
+                self._rotate[3] = augment[2]
+            self._augment = True
+        else:       
+            self._augment = augment
         
     def __next__(self):
         """ Iterate through the training set (single image at a time) """
@@ -792,14 +799,17 @@ class Images(object):
             # Reshuffle the training data for the next round
             random.shuffle(self._train)
             self._next = 0 
+            print("NONE")
             return None, None
  
         ix = self._train[self._next]
         if self._augment:
-            self._toggle = not self._toggle
-            if not self._toggle:
-                degree = random.randint(self._rot_min, self._rot_max)
+            if self._rotate[3] > 0:
+                self._rotate[3] -= 1
+                degree = random.randint(self._rotate[0], self._rotate[1])
                 return self._data[ix].rotate(degree) , self._data[ix]._label
+            else:
+                self._rotate[3] = self._rotate[2]
             
         self._next += 1
         return self._data[ix]._imgdata , self._data[ix]._label
