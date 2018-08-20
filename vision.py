@@ -454,6 +454,8 @@ class Images(object):
         self._augment  = False      # image augmentation
         self._toggle   = True       # toggle for image augmentation
         self._nostore  = False      # do not store into HDF5 flag
+        self._rot_min  = -90        # minimum rotation for image augmentation
+        self._rot_max  = 90         # maximum rotation for image augmentation
         
         if images is None:
             return
@@ -739,7 +741,7 @@ class Images(object):
             self._next += 1 
             yield self._data[ix]._imgdata , self._data[ix]._label
             if self._augment:
-                degree = random.randint(-90, 90)
+                degree = random.randint(self._rot_min, self._rot_max)
                 yield self._data[ix].rotate(degree), self._data[ix]._label
         
     @minibatch.setter
@@ -767,6 +769,15 @@ class Images(object):
         """ Setter for image augmentation """
         if not isinstance(augment, bool) and not isinstance(augment, tuple):
            raise TypeError("Bool or Tuple expected for augment parameter")
+        if isinstance(augment, tuple):
+            if len(augment) < 2:
+                raise AttributeError("Augment parameter must have at least two values")
+            if not isinstance(augment[0], int):
+                raise TypeError("Integer expected for minimum rotation")
+            if not isinstance(augment[1], int):
+                raise TypeError("Integer expected for minimum rotation")
+            self._rot_min = augment[0]
+            self._rot_max = augment[1]
         self._augment = augment
         
     def __next__(self):
@@ -787,7 +798,7 @@ class Images(object):
         if self._augment:
             self._toggle = not self._toggle
             if not self._toggle:
-                degree = random.randint(-90, 90)
+                degree = random.randint(self._rot_min, self._rot_max)
                 return self._data[ix].rotate(degree) , self._data[ix]._label
             
         self._next += 1

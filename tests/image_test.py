@@ -1021,6 +1021,31 @@ class MyTest(unittest.TestCase):
         images.store()
         os.remove("collection.1_100.h5")
         os.remove("collection.0_100.h5")
+        
+    def test_104(self):
+        """ Images - augment - too few tuple """
+        images = Images()
+        with pytest.raises(TypeError):
+            images.augment = (1)
+        
+    def test_105(self):
+        """ Images - augment - tuple not an int """
+        images = Images()
+        with pytest.raises(TypeError):
+            images.augment = ('a', 1)
+        with pytest.raises(TypeError):
+            images.augment = (1, 'a')
+        with pytest.raises(TypeError):
+            images.augment = 'a', 1
+        with pytest.raises(TypeError):
+            images.augment = 1, 'a'
+        
+    def test_106(self):
+        """ Images - augment - valid tuple """
+        images = Images()
+        images.augment = (-45, 45)
+        self.assertEquals(images._rot_min, -45)
+        self.assertEquals(images._rot_max, 45)
  
         
     def done(self, image):
