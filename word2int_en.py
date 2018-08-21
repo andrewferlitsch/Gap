@@ -1,4 +1,4 @@
-word2int = {
+word2int_en = {
 "statuelike":34190,
 "liberalize":27603,
 "contra":12948,

@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 """ Splitter Module for Processing PDF Documents
 Copyright, 2018(c), Andrew Ferlitsch
 """
@@ -20,9 +20,11 @@ import shutil
 from segment import Segment
 from syntax import Words, Vocabulary, Norvig
 from pdf_res import PDFResource
-from word2int import word2int
+from word2int_en import word2int_en
 from word2int_fr import word2int_fr
 from word2int_es import word2int_es
+from word2int_it import word2int_it
+from word2int_ge import word2int_ge
 
 
 if shutil.which('gswin64c'):
@@ -345,6 +347,21 @@ class Document(object):
         english = 0
         spanish = 0
         french  = 0
+        italian = 0
+        german  = 0
+
+        lg = {'en':{'dict':word2int_en,
+                    'lang':english},
+              'es':{'dict':word2int_es,
+                    'lang':spanish},
+              'fr':{'dict':word2int_fr,
+                    'lang':french},
+              'it':{'dict':word2int_it,
+                    'lang':italian},
+              'ge':{'dict':word2int_ge,
+                    'lang':german}
+             }
+
         for _ in range(12):
             try:
                 if len(words[_]['word']) == 1:
@@ -358,30 +375,21 @@ class Document(object):
             elif words[_]['tag'] == Vocabulary.ACRONYM:
                 continue
                 
-            try:
-                id = word2int[words[_]['word']]
-                english += 1
-            except:
-                pass
-                
-            try:
-                id = word2int_es[words[_]['word']]
-                spanish += 1
-            except:
-                pass
-                
-            try:
-                id = word2int_fr[words[_]['word']]
-                french += 1
-            except:
-                pass
-                
-        if english > spanish and english > french:
-            self._lang = 'en'
-        elif french > spanish:
-            self._lang = 'fr'
-        else:
-            self._lang = 'es'
+            for item in lg:
+                try:
+                    id = lg[item]['dict'][words[_]['word']]
+                    lg[item]['lang'] += 1
+                except:
+                    pass
+
+        for i in lg:
+            #create a list with all the values in lg except i
+            exc_lg = [lg[j]['lang'] for j in lg if i != j]
+            #verify if value i is greater than the values in exc_lg
+            verify = all(lg[i]['lang'] > item for item in exc_lg)
+            #if True set the first two letters from dict key as lang
+            if verify:
+                self._lang = i
         
     def _scancheck(self, words):
         """ Use spell checker to determine the quality of the scan """

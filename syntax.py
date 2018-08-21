@@ -1508,9 +1508,11 @@ class Words(object):
             raise TypeError("String or List expected for words")
         return self
         
-from word2int import word2int 
+from word2int_en import word2int_en
 from word2int_fr import word2int_fr
 from word2int_es import word2int_es
+from word2int_it import word2int_it
+from word2int_ge import word2int_ge
         
 class Norvig(object):
     """ 
@@ -1522,13 +1524,17 @@ class Norvig(object):
     """
     
     def __init__(self, lang='en'):
-        global word2int, word2int_fr, word2int_es
+        global word2int, word2int_fr, word2int_es, word2int_it, word2int_ge
         if lang == 'en':
             self.word2int = word2int
         elif lang == 'es':
             self.word2int = word2int_es
         elif lang == 'fr':
             self.word2int = word2int_fr
+        elif lang == 'it':
+            self.word2int = word2int_it
+        elif lang == 'ge':
+            self.word2int = word2int_ge
                     
     def known(self, words): 
         "The subset of `words` that appear in the dictionary of WORDS."

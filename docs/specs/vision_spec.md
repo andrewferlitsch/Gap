@@ -692,6 +692,7 @@ A `TypeError` is raised if the type of the parameter is not the expected type.
 A `ValueError` is raised if the degree is not between 0 and 360.
 
 ---
+
 ## APPENDIX I: Updates
 
 **Pre-Gap (Epipog) v1.5**

@@ -24,7 +24,7 @@ class MyTest(unittest.TestCase):
         os.remove("test.txt")
         os.remove("empty.txt")
         os.remove("toosmall.pdf")
-    
+
     def test_001(self):
         """ Document Constructor - no document argument """
         document = Document()
@@ -687,7 +687,7 @@ class MyTest(unittest.TestCase):
         os.remove("scan1.pdf")
         os.remove("scan1.png")
         os.remove("scan1.json")
-        
+       
     def test_074(self):
         """ Document - lang type, page 1 """
         document = Document("files/lang-en.txt", "./")
@@ -699,7 +699,7 @@ class MyTest(unittest.TestCase):
         for lang in ['en', 'es', 'fr']:
             os.remove("lang-" + lang + "1.txt")
             os.remove("lang-" + lang + "1.json")
-        
+      
     def test_075(self):
         """ Document - Spanish PDF """
         document = Document("files/spanish.pdf", "./")
@@ -729,8 +729,7 @@ class MyTest(unittest.TestCase):
             os.remove("french-scan" + str(i) + ".pdf")
             os.remove("french-scan" + str(i) + ".txt")
             os.remove("french-scan" + str(i) + ".json")
-            
-		
+            	
     def done(self, document):
         self.isdone = True
         
