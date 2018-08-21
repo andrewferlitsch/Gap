@@ -24,7 +24,7 @@ from word2int_en import word2int_en
 from word2int_fr import word2int_fr
 from word2int_es import word2int_es
 from word2int_it import word2int_it
-from word2int_ge import word2int_ge
+from word2int_de import word2int_de
 
 
 if shutil.which('gswin64c'):
@@ -358,7 +358,7 @@ class Document(object):
                     'lang':french},
               'it':{'dict':word2int_it,
                     'lang':italian},
-              'ge':{'dict':word2int_ge,
+              'de':{'dict':word2int_de,
                     'lang':german}
              }
 
