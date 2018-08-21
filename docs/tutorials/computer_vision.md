@@ -641,8 +641,64 @@ images.minibatch = 100
 ### Transformation
 
 The transformation methods provide the ability to transform the existing stored machine learning ready data into another shape without reprocessing the image data. This feature is particularly useful if the existing machine learning ready data is repurposed for another neural network whose input is a different shape.
+
+The property `flatten` when used as a setter will flatten and unflatten the preprocessed machine learning ready data. When set to True, the preprocessed machine learning ready data will be transformed from 2D/3D matrixes to a 1D vector, such as repurposing the data from a CNN to an ANN. Below is an example:
+
+```python
+# Process images as shape (60, 60, 3)
+images =  Images(['apple', 'pear', 'banana'], [1,2,3], name='fruit', config=['resize=(60,60)'])
+ 
+# Retrieve the preprocess collection of images from storage
+images = Images()
+images.load('fruit')
+ 
+# Display the existing shape: will output (60, 60, 3)
+print(images[0].datas.shape)
         
-*The above feature is anticipated for v0.9.5 (beta)*
+# Convert to 1D vector
+images.flatten = True
+# Display the existing shape: will output (10800,)
+print(images[0].datas.shape)
+```
+  
+When set to False, the preprocessed machine learning ready data will be transformed from a 1D vector to a 3D matrix, such as repurposing from an ANN to a CNN. Below is an example:
+  
+```python
+# Process images as shape (10800,)
+images =  Images(['apple', 'pear', 'banana'], [1,2,3], name='fruit', config=['resize=(60,60)', 'flatten'])
+ 
+# Retrieve the preprocess collection of images from storage
+images = Images()
+images.load('fruit')
+ 
+# Display the existing shape: will output (10800,)
+print(images[0].datas.shape)
+        
+# Convert to 3D vector
+images.flatten = False
+# Display the existing shape: will output (60, 60, 3)
+print(images[0].datas.shape)
+```
+  
+The property resize when used as a setter will resize the preprocessed machine learning ready data.
+ 
+```python
+# Process images as shape (60, 60, 3)
+images =  Images(['apple', 'pear', 'banana'], [1,2,3], name='fruit', config=['resize=(60,60)']) 
+
+# Retrieve the preprocess collection of images from storage
+images = Images()
+images.load('fruit')
+ 
+# Display the existing shape: will output (60, 60, 3)
+print(images[0].datas.shape)
+
+# resize to (50, 50)
+images.resize = (50, 50)
+ 
+# Display the existing shape: will output (50, 50, 3)
+print(images[0].datas.shape)
+```
 
 ### Images Reference
 
