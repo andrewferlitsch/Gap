@@ -787,25 +787,28 @@ class Images(object):
         else:       
             self._augment = augment
             
+    @property
     def flatten(self):
-        """ Flatten the Image Data """
-        if len(self) == 0:
-            return
-        # Already Flattened
-        if len(self._data[0].shape) == 1:
-            return
-        for image in self._data:
-            image._imgdata = image._imgdata.flatten()
+        """ dummy property """
+        return None
             
-    def unflatten(self):
-        """ Flatten the Image Data """
+    @flatten.setter
+    def flatten(self, flatten):
+        """ (Un)Flatten the Image Data """
         if len(self) == 0:
             return
-        # Already Flattened
-        if len(self._data[0].shape) == 1:
-            return
-        for image in self._data:
-            image._imgdata = image._imgdata.reshape( image.shape )
+        if flatten == True:
+            # Already Flattened
+            if len(self._data[0].shape) == 1:
+                return
+            for image in self._data:
+                image._imgdata = image._imgdata.flatten()
+        else:
+            # Already Flattened
+            if len(self._data[0].shape) == 1:
+                return
+            for image in self._data:
+                image._imgdata = image._imgdata.reshape( image.shape )
       
     def __next__(self):
         """ Iterate through the training set (single image at a time) """
