@@ -795,6 +795,8 @@ class Images(object):
     @flatten.setter
     def flatten(self, flatten):
         """ (Un)Flatten the Image Data """
+        if not isinstance(flatten, bool):
+            raise TypeError("Boolean expected for flatten")
         if len(self) == 0:
             return
         if flatten == True:
@@ -804,11 +806,11 @@ class Images(object):
             for image in self._data:
                 image._imgdata = image._imgdata.flatten()
         else:
-            # Already Flattened
-            if len(self._data[0].shape) == 1:
+            # Already not Flattened
+            if len(self._data[0].shape) != 1:
                 return
             for image in self._data:
-                image._imgdata = image._imgdata.reshape( image.shape )
+                image._imgdata = image._imgdata.reshape( image._raw.shape )
       
     def __next__(self):
         """ Iterate through the training set (single image at a time) """
@@ -822,7 +824,6 @@ class Images(object):
             # Reshuffle the training data for the next round
             random.shuffle(self._train)
             self._next = 0 
-            print("NONE")
             return None, None
  
         ix = self._train[self._next]

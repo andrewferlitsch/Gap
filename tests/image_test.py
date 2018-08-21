@@ -1121,6 +1121,38 @@ class MyTest(unittest.TestCase):
         images.flatten = True
         self.assertEquals(images[0].data.shape, (10000,))
         self.assertEquals(images[1].data.shape, (10000,))
+        
+    def test_114(self):
+        """ Images - transform / flatten - not a boolean """
+        images = Images()
+        with pytest.raises(TypeError):
+            images.flatten = 3
+        
+    def test_115(self):
+        """ Images - transform / unflatten - already unflatten """
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore'])
+        images.flatten = False
+        self.assertEquals(images[0].data.shape, (100, 100, 3))
+        self.assertEquals(images[1].data.shape, (100, 100, 3))
+        
+    def test_116(self):
+        """ Images - transform / unflatten - already unflatten / gray """
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'gray'])
+        images.flatten = False
+        self.assertEquals(images[0].data.shape, (100, 100))
+        self.assertEquals(images[1].data.shape, (100, 100))
+        
+    def test_117(self):
+        """ Images - transform / unflatten - no images """
+        images = Images()
+        images.flatten = False
+        
+    def test_118(self):
+        """ Images - transform / unflatten - same size """
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flat'])
+        images.flatten = False
+        self.assertEquals(images[0].data.shape, (100, 100, 3))
+        self.assertEquals(images[1].data.shape, (100, 100, 3))
  
         
     def done(self, image):
