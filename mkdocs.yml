@@ -15,4 +15,4 @@ nav:
     - Segmentation: specs/segmentation_spec.md
     - Vision: specs/vision_spec.md
 - Organization:
-    - organization: org-os.md
+    - Organization: org-os.md
