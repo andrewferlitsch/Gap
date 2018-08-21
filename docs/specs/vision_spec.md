@@ -246,6 +246,22 @@ When used as a getter, the property returns whether image augmentation is enable
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
 
+#### 1.3.9 flatten
+
+```python
+images.flatten = True | False
+```
+
+###### Usage
+
+When used as a setter and set to True, the machine learning ready data is flatten to a 1D vector.
+
+When used as a setter and set to False, the machine learning ready data is unflatten back to a 2D (gray) or 3D (color) matrix.
+
+###### Exceptions
+
+A `TypeError` is raised if the type of the parameter is not the expected type.
+
 ### 1.4  Images Overridden Operators
 
 #### 1.4.1  len()
@@ -352,26 +368,6 @@ images.store()
 ###### Usage
 
 This method will store the machine learning ready data (and corresponding metadata) in a HDF5 file. 
-
-#### 1.5.3 flatten()
-
-```python
-images.flatten()
-```
-
-###### Usage
-
-This method will *in progress*
-
-#### 1.5.4 unflatten()
-
-```python
-images.unflatten()
-```
-
-###### Usage
-
-This method will *in progress*
  
 ## 2  Image
 
