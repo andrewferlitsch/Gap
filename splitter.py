@@ -348,7 +348,7 @@ class Document(object):
         spanish = 0
         french  = 0
         italian = 0
-        german = 0
+        german  = 0
 
         lg = {'en':{'dict':word2int_en,
                     'lang':english},
