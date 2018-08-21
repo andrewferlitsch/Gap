@@ -352,6 +352,26 @@ images.store()
 ###### Usage
 
 This method will store the machine learning ready data (and corresponding metadata) in a HDF5 file. 
+
+#### 1.5.3 flatten()
+
+```python
+images.flatten()
+```
+
+###### Usage
+
+This method will *in progress*
+
+#### 1.5.4 unflatten()
+
+```python
+images.unflatten()
+```
+
+###### Usage
+
+This method will *in progress*
  
 ## 2  Image
 
