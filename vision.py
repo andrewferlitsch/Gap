@@ -455,6 +455,7 @@ class Images(object):
         self._toggle   = True       # toggle for image augmentation
         self._nostore  = False      # do not store into HDF5 flag
         self._rotate   = [-90, 90, 1, 1] # rotation parameters for image augmentation
+        self._resize   = None       # config setting for resize
         
         if images is None:
             return
@@ -509,6 +510,13 @@ class Images(object):
             for setting in config:
                 if setting == 'nostore':
                     self._nostore = True
+                elif setting.startswith("resize="):
+                    param = setting.split('=')[1]
+                    toks  = param.split(',')
+                    if toks[0][0] == '(':
+                        toks[0] = toks[0][1:]
+                        toks[1] = toks[1][:-1]
+                    self._resize = ( int(toks[0]), int(toks[1]), 3)
                     
         # Tell downstream Image objects not to separately store the data
         if self._nostore == False:
@@ -809,8 +817,12 @@ class Images(object):
             # Already not Flattened
             if len(self._data[0].shape) != 1:
                 return
+            if self._resize != None:
+                resize = tuple(self._resize)
+            else:
+                resize = self._data[0]._raw.shape
             for image in self._data:
-                image._imgdata = image._imgdata.reshape( image._raw.shape )
+                image._imgdata = image._imgdata.reshape( resize )
       
     def __next__(self):
         """ Iterate through the training set (single image at a time) """

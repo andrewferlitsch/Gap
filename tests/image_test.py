@@ -1153,6 +1153,17 @@ class MyTest(unittest.TestCase):
         images.flatten = False
         self.assertEquals(images[0].data.shape, (100, 100, 3))
         self.assertEquals(images[1].data.shape, (100, 100, 3))
+        
+    def test_119(self):
+        """ Images - transform / unflatten - different size """
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flat', 'resize=(60,60)'])
+        images.flatten = False
+        self.assertEquals(images[0].data.shape, (60, 60, 3))
+        self.assertEquals(images[1].data.shape, (60, 60, 3))
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flat', 'resize=60,60'])
+        images.flatten = False
+        self.assertEquals(images[0].data.shape, (60, 60, 3))
+        self.assertEquals(images[1].data.shape, (60, 60, 3))
  
         
     def done(self, image):
