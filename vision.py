@@ -786,7 +786,27 @@ class Images(object):
             self._augment = True
         else:       
             self._augment = augment
-        
+            
+    def flatten(self):
+        """ Flatten the Image Data """
+        if len(self) == 0:
+            return
+        # Already Flattened
+        if len(self._data[0].shape) == 1:
+            return
+        for image in self._data:
+            image._imgdata = image._imgdata.flatten()
+            
+    def unflatten(self):
+        """ Flatten the Image Data """
+        if len(self) == 0:
+            return
+        # Already Flattened
+        if len(self._data[0].shape) == 1:
+            return
+        for image in self._data:
+            image._imgdata = image._imgdata.reshape( image.shape )
+      
     def __next__(self):
         """ Iterate through the training set (single image at a time) """
 
@@ -818,7 +838,7 @@ class Images(object):
     def __len__(self):
         """ Override the len() operator - return the number of images """
         if self._data is None:
-            raise IndexError("Index out of range for Images")
+            return 0
         return len(self._data)
         
     def __getitem__(self, ix):

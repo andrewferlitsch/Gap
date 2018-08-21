@@ -706,10 +706,9 @@ class MyTest(unittest.TestCase):
         os.remove('collection.1_100.h5')
         
     def test_075(self):
-        """ Images - len() invalid when no files loaded """
+        """ Images - len() returns 0 when no files loaded """
         images = Images()
-        with pytest.raises(IndexError):
-            n = len(images)
+        self.assertEquals(len(images), 0)
         
     def test_076(self):
         """ Image - load() attr type and size """
@@ -1089,6 +1088,36 @@ class MyTest(unittest.TestCase):
         for _ in g: x += 1
         self.assertEquals(x, 0)
         os.remove('foobar.h5')
+        
+    def test_109(self):
+        """ Images - transform / flatten """
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore'])
+        images.flatten()
+        self.assertEquals(images[0].data.shape, (30000,))
+        self.assertEquals(images[1].data.shape, (30000,))
+        
+    def test_110(self):
+        """ Images - transform / flatten - already flatten """
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flat'])
+        images.flatten()
+        self.assertEquals(images[0].data.shape, (30000,))
+        self.assertEquals(images[1].data.shape, (30000,))
+        
+    def test_111(self):
+        """ Images - transform / flatten - resized"""
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'resize=(50,50)'])
+        images.flatten()
+        self.assertEquals(images[0].data.shape, (7500,))
+        self.assertEquals(images[1].data.shape, (7500,))
+        
+    def test_112(self):
+        """ Images - transform / flatten - no images """
+        images = Images()
+        images.flatten
+        
+    def test_113(self):
+        """ Images - transform / flatten - grayscale """
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'gray'])
  
         
     def done(self, image):
