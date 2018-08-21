@@ -14,3 +14,5 @@ nav:
     - Syntax: specs/syntax_spec.md
     - Segmentation: specs/segmentation_spec.md
     - Vision: specs/vision_spec.md
+- Organization:
+    - organization: org-os.md
