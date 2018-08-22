@@ -359,7 +359,7 @@ class Document(object):
                     'lang':german}
              }
 
-        for _ in range(12):
+        for _ in range(15):
             try:
                 if len(words[_]['word']) == 1:
                     continue

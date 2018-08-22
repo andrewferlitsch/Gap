@@ -687,7 +687,7 @@ class MyTest(unittest.TestCase):
         os.remove("scan1.pdf")
         os.remove("scan1.png")
         os.remove("scan1.json")
-       
+
     def test_074(self):
         """ Document - lang type, page 1 """
         document = Document("files/lang-en.txt", "./")
@@ -698,12 +698,12 @@ class MyTest(unittest.TestCase):
         self.assertEquals(document.lang, 'fr')
         document = Document("files/lang-de.txt", "./")
         self.assertEquals(document.lang, 'de')
-        #document = Document("files/lang-it.txt", "./")
-        #self.assertEquals(document.lang, 'it')
-        for lang in ['en', 'es', 'fr', 'de']:
+        document = Document("files/lang-it.txt", "./")
+        self.assertEquals(document.lang, 'it')
+        for lang in ['en', 'es', 'fr', 'de', 'it']:
             os.remove("lang-" + lang + "1.txt")
             os.remove("lang-" + lang + "1.json")
-      
+
     def test_075(self):
         """ Document - Spanish PDF """
         document = Document("files/spanish.pdf", "./")
@@ -736,7 +736,6 @@ class MyTest(unittest.TestCase):
             	
     def done(self, document):
         self.isdone = True
-        
         
 def towords(list):
     words = []

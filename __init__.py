@@ -10,4 +10,4 @@ from .word2int_en import *
 from .word2int_es import *
 from .word2int_fr import *
 from .word2int_it import *
-from .word2int_ge import *
+from .word2int_de import *
