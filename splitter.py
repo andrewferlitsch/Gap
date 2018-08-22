@@ -379,7 +379,7 @@ class Document(object):
                 except:
                     pass
 
-            #varify after 12 iterations if exist a duplicate of words quantity
+            #verify after 12 iterations if exist a duplicate of words quantity
             if _ >= 11:
                 lg_list_val = [lg[item]['lang'] for item in lg]
                 if len(set(lg_list_val)) != len(lg_list_val):
@@ -807,7 +807,6 @@ class Page(object):
                 # Add tokens to existing list
                 self._words += words.words
         return self
-
 
 
 def towords(words):
