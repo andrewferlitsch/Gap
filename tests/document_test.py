@@ -736,7 +736,7 @@ class MyTest(unittest.TestCase):
             	
     def done(self, document):
         self.isdone = True
-        
+
 def towords(list):
     words = []
     for word in list:

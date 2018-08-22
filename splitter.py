@@ -359,7 +359,7 @@ class Document(object):
                     'lang':german}
              }
 
-        for _ in range(15):
+        for _ in range(20):
             try:
                 if len(words[_]['word']) == 1:
                     continue
@@ -378,6 +378,14 @@ class Document(object):
                     lg[item]['lang'] += 1
                 except:
                     pass
+
+            #varify after 12 iterations if exist a duplicate of words quantity
+            if _ >= 11:
+                lg_list_val = [lg[item]['lang'] for item in lg]
+                if len(set(lg_list_val)) != len(lg_list_val):
+                    continue
+                else:
+                    break
 
         for i in lg:
             #create a list with all the values in lg except i
