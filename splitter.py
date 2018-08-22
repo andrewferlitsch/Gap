@@ -6,7 +6,6 @@ Copyright, 2018(c), Andrew Ferlitsch
 
 version = '0.9.2'
 
-
 import os.path
 import re
 import threading
@@ -25,7 +24,6 @@ from word2int_fr import word2int_fr
 from word2int_es import word2int_es
 from word2int_it import word2int_it
 from word2int_de import word2int_de
-
 
 if shutil.which('gswin64c'):
     # Ghostscript executable for Windows.
@@ -123,7 +121,6 @@ class Document(object):
             else:
                 t = threading.Thread(target=self._async, args=(dir, ))
                 t.start()
-
 
     def _async(self, dir):
         """ Asynchronous processing of the document """

@@ -107,7 +107,7 @@ class CustomInstall(install):
         main()
 
 #setup components
-with open('README.md') as f:
+with open('README.md', 'r', encoding="utf-8") as f:
     long_description = f.read()
 
 install_requires=[
