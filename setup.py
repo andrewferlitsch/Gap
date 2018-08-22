@@ -107,7 +107,7 @@ class CustomInstall(install):
         main()
 
 #setup components
-with open('README.md') as f:
+with open('README.md', 'r', encoding="utf-8") as f:
     long_description = f.read()
 
 install_requires=[
@@ -150,7 +150,7 @@ classifiers=[
     'Programming Language :: Python :: 3.7']
 
 setup(
-    name='Gap-ML',
+    name='gap-ml',
     version='0.9.2',
     description='NLP and CV Data Engineering Framework',
     author='Andrew Ferlitsch',

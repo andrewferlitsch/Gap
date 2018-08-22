@@ -1,0 +1,4 @@
+Benvenuto in laboratorio. Tutorial di laboratorio collaborativo su machine learning.
+
+Le esercitazioni di elaborazione del linguaggio naturale (NLP) inizieranno con le basi e i progressi per le applicazioni avanzate del mondo reale.
+I tutorial vanno oltre la spiegazione del codice e dei passaggi, per includere le risposte alle domande e alle domande anticipate.

@@ -6,7 +6,6 @@ Copyright, 2018(c), Andrew Ferlitsch
 
 version = '0.9.2'
 
-
 import os.path
 import re
 import threading
@@ -25,7 +24,6 @@ from word2int_fr import word2int_fr
 from word2int_es import word2int_es
 from word2int_it import word2int_it
 from word2int_de import word2int_de
-
 
 if shutil.which('gswin64c'):
     # Ghostscript executable for Windows.
@@ -123,7 +121,6 @@ class Document(object):
             else:
                 t = threading.Thread(target=self._async, args=(dir, ))
                 t.start()
-
 
     def _async(self, dir):
         """ Asynchronous processing of the document """
@@ -362,7 +359,7 @@ class Document(object):
                     'lang':german}
              }
 
-        for _ in range(12):
+        for _ in range(20):
             try:
                 if len(words[_]['word']) == 1:
                     continue
@@ -381,6 +378,14 @@ class Document(object):
                     lg[item]['lang'] += 1
                 except:
                     pass
+
+            #verify after 12 iterations if exist a duplicate of words quantity
+            if _ >= 11:
+                lg_list_val = [lg[item]['lang'] for item in lg]
+                if len(set(lg_list_val)) != len(lg_list_val):
+                    continue
+                else:
+                    break
 
         for i in lg:
             #create a list with all the values in lg except i
@@ -802,7 +807,6 @@ class Page(object):
                 # Add tokens to existing list
                 self._words += words.words
         return self
-
 
 
 def towords(words):

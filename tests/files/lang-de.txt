@@ -1,0 +1,4 @@
+Willkommen zu den labs.earth Collaborative Labor Tutorials zum maschinellen Lernen.
+
+Die NLP-Tutorials (Natural Language Processing) beginnen mit den Grundlagen und dem Fortschritt bis hin zu fortgeschrittenen realen Anwendungen.
+Die Tutorials gehen über das Erklären des Codes und der Schritte hinaus, um die Antworten auf die vorweggenommenen Was- und Warum-Fragen aufzunehmen.

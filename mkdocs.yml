@@ -5,6 +5,7 @@ google_analytics: ['UA-124105572-1', 'https://andrewferlitsch.github.io/Gap/']
 nav:
 - Home: index.md
 - About: about.md
+- Organization: org-os.md
 - Quick Start Guide: quick-start-guide.md
 - Tutorials:
     - Computer Vision: tutorials/computer_vision.md
@@ -13,4 +14,4 @@ nav:
     - Splitter: specs/splitter_spec.md
     - Syntax: specs/syntax_spec.md
     - Segmentation: specs/segmentation_spec.md
-    - Vision: specs/vision_spec.md
+    - Vision: specs/vision_spec.md    
