@@ -150,7 +150,7 @@ classifiers=[
     'Programming Language :: Python :: 3.7']
 
 setup(
-    name='Gap-ML',
+    name='gap-ml',
     version='0.9.2',
     description='NLP and CV Data Engineering Framework',
     author='Andrew Ferlitsch',
