@@ -118,7 +118,7 @@ print(data[0][80])  # outputs machine learning ready data values (e.g., [0.98039
 
 When processing of the image is completed, the raw pixel data, machine learning ready data, and attributes are stored in a HDF5 (Hierarchical Data Format) formatted file. By default, the file is stored in the current local directory, where the rootname of the file is the rootname of the image. Storage provides the means to latter retrieval the machine learning ready data for feeding into a neural network, and/or retransforming the machine learning ready data. In the above example, the file would be stored as:
 
-`./1_100.hd5`
+    ./1_100.hd5
 
 The path location of the stored HDF5 can be specified with the keyword parameter `dir`.
 
@@ -160,11 +160,11 @@ def next_step(step):
 
 The keyword parameter `config` has a number of settings for specifying how the raw pixel data is preprocessed. The **Gap** framework is designed to eliminate the use of large numbers of keyword parameters, and instead uses a modern convention of passing in a configuration parameter. Here are some of the configuration settings:
 
->     nostore                 # do not store in a HDF5 file
->     grayscale | gray        # convert to a grayscale image with a single channel (i.e., color plane)
->     flatten   | flat        # flatten the machine learning ready data into a 1D vector
->     resize=(height, width)  # resize the raw pixel data
->     thumb=(height, width)   # create (and store) a thumbnail of the raw pixel data
+    nostore                 # do not store in a HDF5 file
+    grayscale | gray        # convert to a grayscale image with a single channel (i.e., color plane)
+    flatten   | flat        # flatten the machine learning ready data into a 1D vector
+    resize=(height, width)  # resize the raw pixel data
+    thumb=(height, width)   # create (and store) a thumbnail of the raw pixel data
         
 Let's look how you can use these settings for something like neural network's equivalent of the hello world example ~ [training the MNIST dataset](https://www.tensorflow.org/versions/r1.0/get_started/mnist/beginners). The MNIST dataset consists of 28x28 grayscale images. Do to its size, grayscale and simplicity, it can be trained with just a ANN (vs. CNN). Since ANN take as input a 1D vector, the machine learning ready data would need to be reshaped (i.e., flatten) into a 1D vector.
 
@@ -263,7 +263,7 @@ data = image.data
 
 ### Image Reference
 
-For a complete reference on all methods and properties for the `Image` class, see [reference](https://virtualdvid.github.io/Gap/modules/vision_spec/).
+For a complete reference on all methods and properties for the `Image` class, see [reference](../specs/vision_spec.md).
 
 ### Image Collections
    
@@ -292,11 +292,10 @@ for image in images.images:
     print(image.name, image.label)
 ```
 will output:
-```
-1_100 1
-2_100 2
-3_100 3
-```
+
+    1_100 1
+    2_100 2
+    3_100 3
 
 The builtin operators `len()` and `[]` are overridden in the `Images` class. The `len()` operator will return the number of images, and the list (array) index operator `[]` will return the `Image` object at the corresponding index. Using the builtin operators, the above example can be alternately coded as:
 
@@ -309,7 +308,7 @@ The builtin operators `len()` and `[]` are overridden in the `Images` class. The
 
 The `Images` class, disables the `Image` objects from storing the machine learning ready data as individual HDF5 files per image, and insteads stores a single HDF5 for the entire collection. By default, the file name combines the prefix `collection.` with the root name of the first image in the collection, and is stored in the current working directory. In the above example, the machine learning ready data for the entire collection would be stored as:
 
-`./collection.1_100.h5`
+    ./collection.1_100.h5
         
 The directory where the HDF5 file is stored can be changed with the keyword paramater `dir`, and the root name of the file can be set with the keyword parameter `name`.
 
@@ -319,7 +318,7 @@ images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3], dir='tmp', n
 
 In the above example, the machine learning ready data is stored as:
 
-`./tmp/apples.h5`
+    ./tmp/apples.h5
         
 A stored collection can the be subsequently retrieved from storage by instantiating an empty `Images` object and invoking the `load()` method with the corresponding collection name. For the above example, the apples collection would be retrieved and `Images` and corresponding `Image` objects reconstructed in memory:
 
@@ -352,9 +351,9 @@ In this example, a dataset of images of fruit are preprocessed into machine lear
 In the example below, a separate collection is created for each type of fruit:
 
 ```python
-        apples   = Images( 'apple',  1, name='apples',  config=['resize=(50,50)'] )
-        pears    = Images( 'pear' ,  2, name='pears',   config=['resize=(50,50)'] )
-        bananas  = Images( 'banana', 3, name='bananas', config=['resize=(50,50)'] )
+apples   = Images( 'apple',  1, name='apples',  config=['resize=(50,50)'] )
+pears    = Images( 'pear' ,  2, name='pears',   config=['resize=(50,50)'] )
+bananas  = Images( 'banana', 3, name='bananas', config=['resize=(50,50)'] )
 ```
 
 In the above example, the machine learning ready data is stored as:
@@ -400,7 +399,7 @@ fruits = Images( ['apples', 'pears', 'bananas'], [1, 2, 3], name='fruits', confi
 
 In the above example, the machine learning ready data is stored as:
 
-`./fruits.h5`
+    ./fruits.h5
         
 Can we improve on the above? We got the benefit of a combined collection, but lost the benefit of concurrently preprocessing each collection. That's not overlooked. The `+=` operator for the `Images` collection is overridden to combine collections. Let's update the earlier example to preprocess each collection asynchronously and combine them into a single collection.
 
@@ -453,7 +452,7 @@ test.split  = 0
 
 The random number generation by default will start at a different seed each time. If you need (desire) consistency between training on the results for comparison or demo'ing, then one specifies a seed value for the random number generation. The seed value is an integer value and is specified as a second parameter (i.e., tuple) to the `split` property. In the example below, the split is set to 20% test, and the random seed set to 42.
 
-`images.split = 0.2, 42`
+    images.split = 0.2, 42
 
 One can see the index of the randomized distribution by displaying the internal member `_train`. This member is a list of integers which correspond to the index in the `images` list. While Python does not support the OOP concept of data encapsulation using private members, the **Gap** framework follows the convention that any member beginning with an underscore should be treated by developers as private. While not enforced by Python, members like `_train` should only be read and not written. The example below accesses (read) the randomized index for the training data and then prints it.
 
@@ -470,17 +469,17 @@ The `split`, `minibatch`, and overriden `next()` operator support forward feedin
 
 #### Batch Feeding
 
-In batch mode, the entire training set can be ran through the neural network as a single pass, prior to backward probagation and updating the weights using gradient descent. This is known as 'batch gradient descent'.
+In batch mode, the entire training set can be ran through the neural network as a single pass, prior to backward propagation and updating the weights using gradient descent. This is known as 'batch gradient descent'.
 
-When the `split` property is used as a getter, it returns the image data and corresponding labels for the training and test set similar to using sci-learn's train_test_split() function. In the example below:
+When the `split` property is used as a getter, it returns the image data and corresponding labels for the training and test set similar to using sci-learn's `train_test_split()` function. In the example below:
 
 + The dataset is split into 20% test and 80% training.
-+ The X_train and X_test is the list of machine learning ready data, as numpy arrays, of the corresponding training and test images.
-+ The Y_train and Y_test is the list of the corresponding labels.
-+ The variable epochs is the number of times the X_train dataset will be forward feed through the neural network.
++ The `X_train` and `X_test` is the list of machine learning ready data, as numpy arrays, of the corresponding training and test images.
++ The `Y_train` and `Y_test` is the list of the corresponding labels.
++ The variable epochs is the number of times the `X_train` dataset will be forward feed through the neural network.
 + The optimizer performs backward probagation to update the weights.
 + At the end of each epoch, The training data is re-randomized by calling the `split` method again as a getter.
-+ When training is done, the X_test and corresponding Y_test are forward feed to evaluate the accuracy of the trained model.
++ When training is done, the `X_test` and corresponding `Y_test` are forward feed to evaluate the accuracy of the trained model.
 
 
 ```python
@@ -531,7 +530,6 @@ for _ in range(epochs):
       
       # Run the optimizer (backward probagation) to update the weights
       pass
-      
       
 # Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
 pass
@@ -619,7 +617,6 @@ for _ in range(epochs):
       # Run the optimizer (backward probagation) to update the weights
       pass
       
-      
 # Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
 pass
 
@@ -629,8 +626,8 @@ pass
 
 If parameter to the `augment` property may also be a tuple. The tuple specifies the rotation range and optionally the number of agumented images to generate per image; otherwise defaults to one. In the example below:
 
-+ Augmented images will be a random rotation between -45 and 120.
-+ For each image, three augmented images will be generated.
++ Augmented images will be a random rotation between -45 and 120.  
++ For each image, three augmented images will be generated.  
 + The mini-batch size is set to 100, so with the augmentation each mini-batch will produce 400 images.
 
 ```python
@@ -702,4 +699,4 @@ print(images[0].datas.shape)
 
 ### Images Reference
 
-For a complete reference on all methods and properties for the `Images` class, see [reference]
+For a complete reference on all methods and properties for the `Images` class, see [reference](../specs/vision_spec.md).
