@@ -46,8 +46,11 @@ The Project Managers would be equivalent to Project Managers/Leads in a Corporat
     1. Take Ownership of a section of the code.
     2. Recruit contributers.
     3. Make contributions.
-    
-David Molina - QA Project Manager
+
+ 
+Chris Heckler - QA Project Manager
+
+David Molina - Linguistics Project Lead
 
 Rene Mesias - Admin Project Manager
 
@@ -62,4 +65,3 @@ The Contributers would be equivalent to Technical Staff in a Corporate or Non-Pr
 The source code and intellectual property will be assigned to (owned) by the formed entity.
 
 The entity will make the source code and intellectual property freely available to the public through the Apache Foundation 2.0 License.
-

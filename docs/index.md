@@ -112,9 +112,9 @@ For OCR, the resolution of the image extraction is settable, which will affect t
 
 The Page class handles access to the individual pages, via the page table of the document class. Access is provided to the individual PDF, TIFF or image page, the scanned image (when scanned PDF, TIFF or images), raw text and the Natural Language Processing (NLP) processed tokens (when SYNTAX module is installed).
 
-NLP processing of the raw text is deferred until first access (JIT), and then preserved in memory as long as the corresponding page object is referenced. The NLP processed tokens may be further segmented into regions, consisting of tables, paragraphs, columns, etc. when the SEGMENTATION module is installed.
+NLP processing of the raw text is deferred until first access (JIT), and then preserved in memory as long as the corresponding page object is referenced. The NLP processed tokens may be further segmented into regions, consisting of tables, paragraphs, columns, etc. when the `SEGMENTATION` module is installed.
 
-The document and corresponding pages may be classified (i.e., category of the content) when the CLASSIFICATION module is installed.
+The document and corresponding pages may be classified (i.e., category of the content) when the `CLASSIFICATION` module is installed.
 
 #### <span style='color: saddlebrown'>SYNTAX</span>
 
