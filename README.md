@@ -89,7 +89,7 @@ The dependencies for python packages distributed at PyPi are automatically check
   - unidecode : https://pypi.org/project/Unidecode/
   - openCV : https://www.opencv.org/
   - imultils : https://github.com/jrosebr1/imutils
-  - pyaspeller : https://pypi.org/project/pyaspeller/
+
   
  #### 3rd Party Dependencies
  
