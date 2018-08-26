@@ -2,7 +2,7 @@
 
 ## VISION MODULE
 High Precision Image Processing  
-Technical Specification, Gap v0.9.2
+Technical Specification, Gap v0.9.3
 
 ## 1 Images
 ### 1.1 Images Overview
@@ -190,7 +190,7 @@ When used as a setter, a training and test dataset is generated. The `percent` p
 
 When repeated, the property will re-split the data and re-randomize it.  
 
-When used as a getter, the split training, test, and corresponding labels are returned as lists. This is typically used in conjunction with `next()` operator or `minibatch` property.  
+When used as a getter, the split training, test, and corresponding labels are returned as lists converted to numpy arrays. This is typically used in conjunction with `next()` operator or `minibatch` property.  
 
 When the percent is `0`, the data is not split. All the data will be returned in `x_train` and `y_train`, but will still be randomized; `x_test` and `y_test` will be `None`.
 
