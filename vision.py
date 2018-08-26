@@ -707,7 +707,7 @@ class Images(object):
             ix = self._test[_]
             X_test.append( self._data[ix]._imgdata )
             Y_test.append( self._data[ix]._label )
-        return X_train, X_test, Y_train, Y_test
+        return np.asarray(X_train), np.asarray(X_test), np.asarray(Y_train), np.asarray(Y_test)
         
     @split.setter
     def split(self, percent):
