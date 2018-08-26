@@ -2743,13 +2743,33 @@ class MyTest(unittest.TestCase):
         self.assertEqual(words.words, [{'word': 'dumb', 'tag': 19}])
         
     def test_321(self):
-        """ spell check """
+        """ spell check - english """
         words = Words("similiar speling", stopwords=True, spell='en')
         self.assertEqual(words.words, [{'word': 'similar', 'tag': 0}, {'word': 'spell', 'tag': 0}])
         words = Words("foozoo", stopwords=True, spell='en')
         self.assertEqual(words.words, [{'word': 'foozoo', 'tag': 0}])
         
     def test_322(self):
+        """ spell check - french """
+        words = Words("seulemant", stopwords=True, spell='fr')
+        self.assertEqual(words.words, [{'word': 'seulement', 'tag': 0}])
+        
+    def test_323(self):
+        """ spell check - spanish """
+        words = Words("candidate", stopwords=True, spell='es')
+        self.assertEqual(words.words, [{'word': 'candidato', 'tag': 0}])
+        
+    def test_324(self):
+        """ spell check - german """
+        words = Words("night", stopwords=True, spell='de')
+        self.assertEqual(words.words, [{'word': 'nicht', 'tag': 0}])
+        
+    def test_325(self):
+        """ spell check - italian """
+        words = Words("questa", stopwords=True, spell='it')
+        self.assertEqual(words.words, [{'word': 'questo', 'tag': 0}])
+        
+    def test_326(self):
         """ more stemming """
         words = Words("changed changes changing", stopwords=True)
         self.assertEqual(words.words, [{'word': 'change', 'tag': 0}, {'word': 'change', 'tag': 0}, {'word': 'change', 'tag': 0}])
@@ -2780,7 +2800,7 @@ class MyTest(unittest.TestCase):
         words = Words("learnt", stopwords=True)
         self.assertEqual(words.words, [{'word': 'learn', 'tag': 0}])
         
-    def test_323(self):
+    def test_327(self):
         """ more stemming - UK words """
         words = Words("centre centres centred centring", stopwords=True)
         self.assertEqual(words.words, [{'word': 'center', 'tag': 0}, {'word': 'center', 'tag': 0}, {'word': 'center', 'tag': 0}, {'word': 'center', 'tag': 0}])
@@ -2899,7 +2919,7 @@ class MyTest(unittest.TestCase):
         words = Words("unfavourable", stopwords=True)
         self.assertEqual(words.words, [{'word': 'unfavorable', 'tag': 0}])
         
-    def test_324(self):
+    def test_328(self):
         """ more stemming """
         words = Words("manufacturer manufactured", stopwords=True)
         self.assertEqual(words.words, [{'word': 'manufacture', 'tag': 0}, {'word': 'manufacture', 'tag': 0}])
