@@ -139,8 +139,8 @@ class Words(object):
             if isinstance(text, str) is False:
                 raise TypeError("String expected for text")
         if spell is not None:
-            if spell not in ['en', 'es', 'sp']:
-                raise ValueError("Wrong value for spell: en, es, or fr")
+            if spell not in ['en', 'fr', 'es', 'it', 'de']:
+                raise ValueError("Wrong value for spell: en, es, fr, it or de")
             
         if text is not None:
             self._split()
@@ -1533,7 +1533,7 @@ class Norvig(object):
             self.word2int = word2int_fr
         elif lang == 'it':
             self.word2int = word2int_it
-        elif lang == 'ge':
+        elif lang == 'de':
             self.word2int = word2int_de
                     
     def known(self, words): 
