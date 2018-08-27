@@ -7,27 +7,27 @@ Users Guide, Gap v0.9.2
 ## 1 Introduction
 
 The target audience for this users guide are your software developers whom will be integrating the core inner block into your product and/or service. It is not meant to be a complete reference guide or comprehensive tutorial, but a brief get started guide.
-To utilize this module, the Gap framework will automatically install:
+
+To utilize this module, the **Gap** framework will automatically install:
 
     1.	This Python module.
     2.	Python 3.6 or latter
-    3.	Ghostscript ©(open source from Artifex).    [will auto-install with pip install on Linux/Mac].
-    4.	Tesseract ©(open source from Google).       [will auto-install with pip install on Linux/Mac].
-    5.	Magick ©(open source from Image Magic).     [will auto-install with pip install on Linux/Mac].
+    3.	Ghostscript ©(open source from Artifex).    [will auto-install with pip install].
+    4.	Tesseract ©(open source from Google).       [will auto-install with pip install].
+    5.	Magick ©(open source from Image Magic).     [will auto-install with pip install].
     6.	NLTK Toolkit (open source)                  [will auto-install with pip install].
     7.	Unidecode (open source)                     [will auto-install with pip install].
     8.	HD5 (open source)                           [will auto-install with pip install].
     9.	Numpy (open source)                         [will auto-install with pip install].
     10.	OpenCV (open source)                        [will auto-install with pip install]. 
     11.	Imutils (open source)                       [will auto-install with pip install].
-    12. Pyaspeller (open source)                    [will auto-install with pip install].
 
 ---
 
 ## 2 SPLITTER Module
 ### 2.1 Document Loading
 
-To load a PDF document, TIFF facsimile or image captured document you create a Document (class) object, passing as parameters the path to the PDF/TIFF/image document and a path for storing the split pages/text. Below is a code example.
+To load a PDF document, TIFF facsimile or image captured document you create a `Document` (class) object, passing as parameters the path to the PDF/TIFF/image document and a path for storing the split pages/text. Below is a code example.
 
 ```python
 from splitter import Document, Page
@@ -63,7 +63,7 @@ If the document is an image capture (e.g., JPG), the image is OCR using Tesserac
 
 ### 2.4 Image Resolution for OCR
 
-The resolution of the image rendered by Ghostscript from a scanned PDF page will affect the OCR quality and processing time. By default the resolution is set to 300. The resolution can be set for a (or all) documents with the static member RESOLUTION of the Document class. This property only affects the rendering of scanned PDF; it does not affect TIFF facsimile or image capture.
+The resolution of the image rendered by Ghostscript from a scanned PDF page will affect the OCR quality and processing time. By default the resolution is set to 300. The resolution can be set for a (or all) documents with the static member `RESOLUTION` of the `Document` class. This property only affects the rendering of scanned PDF; it does not affect TIFF facsimile or image capture.
 
 ```python
 # Set the Resolution of Image Extraction of all scanned PDF pages
@@ -75,7 +75,7 @@ document = Document("scanneddocument.pdf", "storage_path")
 
 ### 2.5 Page Access
 
-Each page is represented by a `Page` (class) object. Access to the page object is obtained from the pages property member of the Document object. The number of pages in the document is returned by the `len()` builtin operator for the Document class.
+Each page is represented by a `Page` (class) object. Access to the page object is obtained from the pages property member of the Document object. The number of pages in the document is returned by the `len()` builtin operator for the `Document` class.
 
 ```python
 document = Document("yourdocument.pdf", "storage_path")
@@ -118,7 +118,7 @@ print(len(document))
 
 ### 2.7 Text Extraction
 
-The raw text for the page is obtained by the text property of the page class. The byte size of the raw text is obtained from the `size()` method of the page class.
+The raw text for the page is obtained by the text property of the page class. The byte size of the raw text is obtained from the `size()` method of the `Page` class.
 
 ```python
 # Get the page table
@@ -134,7 +134,7 @@ bytes = page1.size()
 text = page1.text
 ```
 
-The property scanned is set to True if the text was extracted using OCR; otherwise it is false (i.e., origin was digital text). The property additionally returns a second value which is the estimated quality of the scan as a percentage (between 0 and 1).
+The property `scanned` is set to True if the text was extracted using OCR; otherwise it is false (i.e., origin was digital text). The property additionally returns a second value which is the estimated quality of the scan as a percentage (between 0 and 1).
 
 ```python
 # Determine if text extraction was obtained by OCR
@@ -143,7 +143,7 @@ scanned, quality = document.scanned
 
 ### 2.8 Asynchronous Processing
 
-To enhance concurrent execution between a main thread and worker activities, the Document class supports asynchronous processing of the document (i.e., Page Splitting, OCR and Text Extraction). Asynchronous processing will occur if the optional parameter ehandler is set when instantiating the Document object. Upon completion of the processing, the ehandler is called, where the Document object is passed as a parameter.
+To enhance concurrent execution between a main thread and worker activities, the `Document` class supports asynchronous processing of the document (i.e., Page Splitting, OCR and Text Extraction). Asynchronous processing will occur if the optional parameter ehandler is set when instantiating the Document object. Upon completion of the processing, the ehandler is called, where the `Document` object is passed as a parameter.
 
 ```python
 def done(d):
@@ -156,7 +156,7 @@ document = Document("yourdocument.pdf", "storage_path", ehandler=done)
 
 ### 2.9 NLP Preprocessing of the Text
 
-NLP preprocessing of the text requires the SYNTAX module. The processing of the raw text into NLP sequenced tokens (syntax) is deferred and is executed in a JIT (Just in Time) principle. If installed, the NLP sequenced tokens are access through the words property of the Page class. The first time the property is accessed for a page, the raw text is preprocessed, and then retained in memory for subsequent access.
+NLP preprocessing of the text requires the <b style='class:saddlebrown'>SYNTAX</b> module. The processing of the raw text into NLP sequenced tokens (syntax) is deferred and is executed in a JIT (Just in Time) principle. If installed, the NLP sequenced tokens are access through the `words` property of the `Page` class. The first time the property is accessed for a page, the raw text is preprocessed, and then retained in memory for subsequent access.
 
 ```python
 # Get the page table
@@ -175,7 +175,7 @@ The NLP preprocessed text is stored separately in the storage path with the foll
 
 ### 2.10 NLP Preprocessing Settings (Config)
 
-NLP Preprocessing of the text may be configured for several settings  when instantiating a Document object with the optional config parameter, which consists of a list of one or more predefined options.
+NLP Preprocessing of the text may be configured for several settings  when instantiating a `Document` object with the optional `config` parameter, which consists of a list of one or more predefined options.
 
 ```python
 document = Document("yourdocument.pdf", "storage_path", config=[options])
@@ -266,7 +266,7 @@ will output:
 
 ### 2.13 Document and Page Classification
 
-Semantic Classification (e.g., category) of the document and individual pages requires the `CLASSIFICATION` module. The classification is deferred and is executed in a JIT (Just in Time) principle. If installed, the classification is access through the classification property of the document and page classes, respectively. The first time the property is accessed for a document or page, the NLP sequenced tokens for each page are processed for classification of the content of individual pages and the first page is further processed for the classification of the content of the entire document.
+Semantic Classification (e.g., category) of the document and individual pages requires the <b style='color:saddlebrown'>CLASSIFICATION</b> module. The classification is deferred and is executed in a JIT (Just in Time) principle. If installed, the classification is access through the classification property of the document and page classes, respectively. The first time the property is accessed for a document or page, the NLP sequenced tokens for each page are processed for classification of the content of individual pages and the first page is further processed for the classification of the content of the entire document.
 
 ```python
 # Get the classification for the document
@@ -280,7 +280,7 @@ for page in document.pages:
 ## 3 SYNTAX Module
 ### 3.1 NLP Processing
 
-The `Words` (class) object does the NLP preprocessing of the extracted (raw) text. If the extracted text is from a Page object (see [SPLITTER](#2-splitter-module)), the NLP preprocessing occurs the first time the words property of the Page object is accessed.
+The `Words` (class) object does the NLP preprocessing of the extracted (raw) text. If the extracted text is from a `Page` object (see [SPLITTER](#2-splitter-module)), the NLP preprocessing occurs the first time the words property of the `Page` object is accessed.
 
 ```python
 from syntax import Words, Vocabulary
@@ -300,7 +300,7 @@ type(words)
 
 ### 3.2 Words Properties
 
-The `Words` (class) object has four public properties: `text`, `words`, `bagOfWords`, and `freqDist`. The text property is used to access the raw text and the words property is used to access the NLP processed tokens from the raw text.	
+The `Words` (class) object has four public properties: `text`, `words`, `bagOfWords`, and `freqDist`. The `text` property is used to access the raw text and the words property is used to access the NLP processed tokens from the raw text.	
 
 ```python
 # Get the NLP processed words (Words class) object from the page as a list.
@@ -308,7 +308,11 @@ words = page.words
 
 # Get the original (raw) text as a string
 text = words.text
+```
 
+The `words` property is used to access NLP preprocessed list of words.
+
+```python
 # Get the NLP processed words from the original text as a Python list.
 words = words.words
 
@@ -331,7 +335,7 @@ The `words` property returns a sequenced Python list of words as a dictionary fr
 
 ### 3.4 Traversing the NLP Processed Words
 
-The NLP processed words returned from the words property are sequenced in the same order as the original text. All punctuation is removed, and except for detected Acronyms, all remaining words are lowercased. The sequenced list of words may be a subset of the original words, depending on the stopwords properties and may be stemmed, lemma, or replaced.
+The NLP processed words returned from the `words` property are sequenced in the same order as the original text. All punctuation is removed, and except for detected Acronyms, all remaining words are lowercased. The sequenced list of words may be a subset of the original words, depending on the stopwords properties and may be stemmed, lemma, or replaced.
 
 ```python
 # Get the NLP processed words from the original text as a Python list.
@@ -348,7 +352,7 @@ for word in words:
 
 The properties which determine which words are removed, stemmed, lemmatized, or replaced are set as keyword parameters in the constructor for the `Words` class. If no keyword parameters are specified, then all stopwords are removed after being stemmed/lemmatized. The list of stopwords is a superset of the Porter list and additionally includes removing additionally syntactical constructs such as numbers, dates, etc. For a complete list, see the reference manual.
 
-If the keyword parameter stopwords is set to False, then all word removal is disabled, while stemming/lemmatization/reducing are still enabled, along with the removal of punctuation. Note in the example below, while stopwords is disabled, the word jumping is replaced with its stem jump.
+If the keyword parameter `stopwords` is set to `False`, then all word removal is disabled, while stemming/lemmatization/reducing are still enabled, along with the removal of punctuation. Note in the example below, while stopwords is disabled, the word jumping is replaced with its stem jump.
 
 ```python
 # No stopword removal
@@ -362,7 +366,7 @@ words = Words("The lazy brown fox jumped over the fence.", stopwords=True)
 
 ### 3.6 Bare
 
-When the keyword parameter bare is True, all stopword removal, stemming/lemmatization/reducing ad punctuation removal are disabled. 
+When the keyword parameter `bare` is `True`, all stopword removal, stemming/lemmatization/reducing and punctuation removal are disabled. 
 
 ```python
 # Bare Mode
@@ -372,7 +376,7 @@ words = Words("The lazy brown fox jumped over the fence.", bare=False)
 
 ### 3.7 Numbers
 
-When the keyword parameter number is True, text and numeric version of numbers are preserved; otherwise they are removed. Numbers which are text based (e.g., one) are converted to their numeric representation (e.g., one => 1). The tag value for numbers is set to `Vocabulary.NUMBER`.
+When the keyword parameter `number` is `True`, text and numeric version of numbers are preserved; otherwise they are removed. Numbers which are text based (e.g., one) are converted to their numeric representation (e.g., one => 1). The tag value for numbers is set to `Vocabulary.NUMBER`.
 
 ```python
 # keep/replace numbers
@@ -404,7 +408,7 @@ will output:
 
 ### 3.8 Unit of Measurement
 
-When the keyword parameter unit is True, US Standard and Metric units of measurement are preserved; otherwise they are removed. Both US and EU spelling of metric units are recognized (e.g., meter/metre, liter/litre). The tag value for units of measurement is set to `Vocabulary.UNIT`.
+When the keyword parameter `unit` is `True`, US Standard and Metric units of measurement are preserved; otherwise they are removed. Both US and EU spelling of metric units are recognized (e.g., meter/metre, liter/litre). The tag value for units of measurement is set to `Vocabulary.UNIT`.
 
 ```python
 # keep/replace unit
@@ -421,7 +425,7 @@ will output:
 
 ### 3.9 Standard vs. Metric
 
-When the keyword parameter standard is True, Metric units of measurement are converted to US Standard. When the keyword parameter metric is True, Standard units of measurement are converted to Metric Standard.
+When the keyword parameter `standard` is `True`, Metric units of measurement are converted to US Standard. When the keyword parameter `metric` is `True`, Standard units of measurement are converted to Metric Standard.
 
 ```python
 # keep/replace unit
@@ -438,7 +442,7 @@ will output:
 
 ### 3.10 Date
 
-When the keyword parameter date is True, USA and ISO standard date representation and text representation of dates are preserved; otherwise they are removed. Dates are converted to the ISO standard and the tag value is set to `Vocabulary.DATE`.
+When the keyword parameter `date` is `True`, USA and ISO standard date representation and text representation of dates are preserved; otherwise they are removed. Dates are converted to the ISO standard and the tag value is set to `Vocabulary.DATE`.
 
 ```python
 # keep/replace dates
@@ -455,7 +459,7 @@ will output:
 
 ### 3.11 Date of Birth
 
-When the keyword parameter dob is True, date of births are preserved; otherwise they are removed. Date of births are converted to the ISO standard and the tag value is set to `Vocabulary.DOB`.
+When the keyword parameter `dob` is `True`, date of births are preserved; otherwise they are removed. Date of births are converted to the ISO standard and the tag value is set to `Vocabulary.DOB`.
 
 ```python
 # keep/replace dates
@@ -470,11 +474,11 @@ will output:
     { 'word': '2017-01-02',  tag: Vocabulary.DOB },
     ]
 
-If date is set to True without date of birth set to True, date of births will be removed while other dates will be preserved.
+If `dat`e is set to `True` without `dob` (date of birth) set to `True`, date of births will be removed while other dates will be preserved.
  
 ### 3.12 Social Security Number
 
-When the keyword parameter ssn is True, USA Social Security numbers are preserved; otherwise they are removed. Social Security numbers are detected from the prefix presence of text sequences indicating a Social Security number will follow, such as SSN, Soc. Sec., Social Security, etc. Social Security numbers are converted to their single 9 digit value and the tag value is set to `Vocabulary.SSN`.
+When the keyword parameter `ssn` is `True`, USA Social Security numbers are preserved; otherwise they are removed. Social Security numbers are detected from the prefix presence of text sequences indicating a Social Security number will follow, such as SSN, Soc. Sec., Social Security, etc. Social Security numbers are converted to their single 9 digit value and the tag value is set to `Vocabulary.SSN`.
 
 ```python
 # keep/replace dates
@@ -491,7 +495,7 @@ will output:
 
 ### 3.13 Telephone Number
 
-When the keyword parameter telephone is True, USA/CA telephone numbers are preserved; otherwise they are removed. Telephone numbers are detected from the prefix presence of text sequences indicating a telephone number will follow, such Phone:, Mobile Number, etc. Telephone numbers are converted to their single 10 digit value, inclusive of area code, and the tag value is set to one of:
+When the keyword parameter `telephone` is `True`, USA/CA telephone numbers are preserved; otherwise they are removed. Telephone numbers are detected from the prefix presence of text sequences indicating a telephone number will follow, such Phone:, Mobile Number, etc. Telephone numbers are converted to their single 10 digit value, inclusive of area code, and the tag value is set to one of:
 
 ```python
 Vocabulary.TELEPHONE
@@ -516,7 +520,7 @@ will output:
  
 ### 3.14 Address
 
-When the keyword parameter address is True, USA/CA street and postal addresses are preserved; otherwise they are removed. Each component in the address is tagged according to the above street/postal address component type, as follows:
+When the keyword parameter `address` is `True`, USA/CA street and postal addresses are preserved; otherwise they are removed. Each component in the address is tagged according to the above street/postal address component type, as follows:
 
 + Postal Box        (Vocabulary.POB)
 + Street Number     (Vocabuary.STREET_NUM)
@@ -547,7 +551,7 @@ will output:
 
 ### 3.15 Gender
 
-When the keyword parameter gender is True, words indicating gender are preserved; otherwise they are removed. Transgender is inclusive in the recognition. The tag value is set to one of `Vocabulary.MALE`, `Vocabulary.FEMALE` or `Vocabulary.TRANSGENDER`.
+When the keyword parameter `gender` is `True`, words indicating gender are preserved; otherwise they are removed. Transgender is inclusive in the recognition. The tag value is set to one of `Vocabulary.MALE`, `Vocabulary.FEMALE` or `Vocabulary.TRANSGENDER`.
 
 ```python
 # keep/replace gender indicating words
@@ -567,7 +571,7 @@ will output:
 
 ### 3.16 Sentiment
 
-When the keyword parameter sentiment is True, word and word phrases indicating sentiment are preserved; otherwise they are removed. Sentiment phrases are reduced to the single primary word indicating the sentiment and the tag value is set to either `Vocabulary.POSITIVE` or `Vocabulary.NEGATIVE`.
+When the keyword parameter `sentiment` is True, word and word phrases indicating sentiment are preserved; otherwise they are removed. Sentiment phrases are reduced to the single primary word indicating the sentiment and the tag value is set to either `Vocabulary.POSITIVE` or `Vocabulary.NEGATIVE`.
 
 ```python
 # keep/replace sentiment indicating phrases
@@ -583,11 +587,11 @@ will output:
 
 ### 3.17 Spell Checking
 
-When the keyword parameter spell is True, each tokenized word is looked up in the pyaspeller word dictionary. If the word is not found (presumed misspelled) and the pyaspeller recommends a safe replacement, the word is replaced with the pyaspeller's safe replacement. The spell check/replacement occurs prior to stemming, lemmatizing, and stopword removal.
+When the keyword parameter `spell` is set to one of 'en', 'es', 'fr', 'de', or 'it', each tokenized word is looked up in the builtin Norvig speller for the corresponding language (e.g., en = English). If the word is not found (presumed misspelled) and the Norvig recommends a replacement, the word is replaced with the Norvig replacement. The spell check/replacement occurs prior to stemming, lemmatizing, and stopword removal.
 
 ```python
 # add parts of speech tagging
-words = Words("mispelled", spell=True) 
+words = Words("mispelled", spell='en') 
 print(words.words)
 ```
 
@@ -599,7 +603,7 @@ will output:
 
 ### 3.18 Parts of Speech
 
-When the keyword parameter pos is True, each tokenized word is further annotated with it's corresponding NLTK parts of speech tag.
+When the keyword parameter `pos` is `True`, each tokenized word is further annotated with it's corresponding NLTK parts of speech tag.
 
 ```python
 # add parts of speech tagging
@@ -616,7 +620,7 @@ will output:
 
 ### 3.19 Romanization
 
-When the keyword parameter roman is True, the latin-1 character encoding of each tokenized is converted to ASCII.
+When the keyword parameter `roman` is `True`, the latin-1 character encoding of each tokenized is converted to ASCII.
 
 ```python
 # Romanization of latin-1 character encodings
@@ -662,7 +666,9 @@ will output:
 ## 4 VISION Module
 ### 4.1 Image Processing
 
-To preprocess an image for computer vision machine learning, you create an `Image` (class) object, passing as parameters the path to the image, the corresponding label and a path for storing the preprocessed image data, the original image and optionally a thumbnail. The label must be specified as an integer value. Below is a code example.
+CV preprocessing of images requires the <b style='class:saddlebrown'>VISION</b> module.
+
+To preprocess an image for computer vision machine learning, you create an `Image` (class) object, passing as parameters the path to the image, the corresponding label and a path for storing the preprocessed image data, the original image, optionally a thumbnail, and metadata. The label must be specified as an integer value. Below is a code example.
 
 ```python
 from vision import Image
@@ -688,7 +694,7 @@ Alternately, the input may be raw pixel data as a numpy array.
 
 ### 4.2 Image Processing Settings (Config)
 
-CV Preprocessing of the image may be configured for several settings when instantiating an Image object with the optional config parameter, which consists of a list of one or more predefined options.
+CV Preprocessing of the image may be configured for several settings when instantiating an `Image` object with the optional `config` parameter, which consists of a list of one or more predefined options.
 
 ```python
 image = Image("yourimage.jpg", 101, "storage_path", config=[options])
@@ -712,7 +718,7 @@ image = Image("image.jpg", 101, "path", config=['flatten', 'thumb=(16,16)'])
 
 ### 4.3 Get Properties of Preprocessed Image Data
 
-After an image has been preprocessed, several properties of the preprocessed image data can be obtained from the Image class properties:
+After an image has been preprocessed, several properties of the preprocessed image data can be obtained from the `Image` class properties:
 
 ```python
 name	- The root name of the image.
@@ -734,7 +740,7 @@ Will output something like:
 
 ### 4.4 Asynchronous Processing
 
-To enhance concurrent execution between a main thread and worker activities, the Image class supports asynchronous processing of the image. Asynchronous processing will occur if the optional parameter ehandler is set when instantiating the Image object. Upon completion of the processing, the ehandler is called, where the Image object is passed as a parameter.
+To enhance concurrent execution between a main thread and worker activities, the `Image` class supports asynchronous processing of the image. Asynchronous processing will occur if the optional parameter `ehandler` is set when instantiating the `Image` object. Upon completion of the processing, the `ehandler` is called, where the `Image` object is passed as a parameter.
 
 ```python
 def done(i):
@@ -768,7 +774,7 @@ The above will generate the following output files:
 
     train/c1.h5 # preprocessed image data
 
-The `Images` object will implicitly add the 'nostore' setting to the configuration parameter of each Image object created. This will direct each of the Image objects to not store the corresponding image data in an HD5 file. 
+The `Images` object will implicitly add the 'nostore' setting to the configuration parameter of each `Image` object created. This will direct each of the `Image` objects to not store the corresponding image data in an HD5 file. 
 
 Instead, upon completion of the preprocessing of the collection of image data, the entire collection of preprocessed data is stored in a single HD5 file.
 
@@ -786,7 +792,7 @@ images = Images(["image1.jpg", "image2.jpg"], labels=101, name=' c1') 
 
 ### 4.7 Image Collection Processing Settings (Config)
 
-Configuration settings supported by the Image class may be specified as an optional parameter to the Images object, which are then passed down to each `Image` object generated for the collection. 
+Configuration settings supported by the `Image` class may be specified as the optional `config` parameter to the `Images` object, which are then passed down to each `Image` object generated for the collection. 
 
 ```python
 # Preprocess each image by normalizing the pixel data and then flatten into a 1D vector
@@ -795,7 +801,7 @@ images = Images(["image1.jpg", "image2.jpg"], "train", labels=[101, 102], config
 
 ### 4.8 Get Properties of a Collection
 
-After a collection of images has been preprocessed, several properties of the preprocessed image data can be obtained from the Images class properties:
+After a collection of images has been preprocessed, several properties of the preprocessed image data can be obtained from the `Images` class properties:
 
 ```python
 name – The name of the collection file.
@@ -812,9 +818,9 @@ for ix in range(len(images)):
 
 ### 4.9 Splitting a Collection into Training and Test Data
 
-Batch, mini-batch and stochastic feed modes are supported. The percentage of data that is test (vs. training) is set by the split property, where the default is 0.2. Optionally, a mini-batch size is set by the minibatch property. Prior to the split, the data is randomized.
+Batch, mini-batch and stochastic feed modes are supported. The percentage of data that is test (vs. training) is set by the `split` property, where the default is 0.2. Optionally, a mini-batch size is set by the `minibatch` property. Prior to the split, the data is randomized.
 
-The `split()` property when called as a getter will return the training data, training labels, test data, and test labels.
+The `split` property when called as a getter will return the training data, training labels, test data, and test labels, where the data and labels are returned as numpy lists, and the labels have been one-hot encoded.
 
 ```python
 # Set 30% of the images in the collection to be test data
@@ -835,7 +841,7 @@ while ( data, label = next(images) ) is not None:
     pass
 ```
 
-Training data can also be fetched in minibatches. The mini batch size is set using the minibatch property. The minibatch property when called as a getter will return a generator. The generator will iterate through each image, and corresponding label, of the generated mini-batch. Successive calls to the minibatch property will iterate through the training data.
+Training data can also be fetched in minibatches. The mini batch size is set using the `minibatch` property. The `minibatch` property when called as a getter will return a generator. The generator will iterate through each image, and corresponding label, of the generated mini-batch. Successive calls to the `minibatch` property will iterate through the training data.
 
 ```python
 # Set 30% of the images in the collection to be test data
@@ -864,7 +870,7 @@ images.split = 0.3, 42
 
 ### 4.10 Image Augmentation
 
-Image augmentation is supported. By default, images are not augmented. If the property augment is set to True, then for each image generated for feeding (see `next()` and minibatch) an additional image will be generated. The additional image will be a randomized rotation between -90 and 90 degrees of the corresponding image. For example, if a training set has a 1000 images, then 2000 images will be feed when the property augment is set to True, where 1000 of the images are the original images, and another 1000 are the generated augmented images.
+Image augmentation is supported. By default, images are not augmented. If the property `augment` is set to `True`, then for each image generated for feeding (see `next()` and minibatch) an additional image will be generated. The additional image will be a randomized rotation between -90 and 90 degrees of the corresponding image. For example, if a training set has a 1000 images, then 2000 images will be feed when the property augment is set to True, where 1000 of the images are the original images, and another 1000 are the generated augmented images.
 
 ```python
 images.split = 0.3, 42
@@ -879,7 +885,7 @@ while ( data, label = next(images) ) is not None:
 
 ### 4.11 Asynchronous Collection Processing
 
-To enhance concurrent execution between a main thread and worker activities, the `Images` class supports asynchronous processing of the collection of images. Asynchronous processing will occur if the optional parameter ehandler is set when instantiating the Images object. Upon completion of the processing, the ehandler is called, where the `Images` object is passed as a parameter.
+To enhance concurrent execution between a main thread and worker activities, the `Images` class supports asynchronous processing of the collection of images. Asynchronous processing will occur if the optional parameter `ehandler` is set when instantiating the Images object. Upon completion of the processing, the ehandler is called, where the `Images` object is passed as a parameter.
 
 ```python
 def done(i):
@@ -892,7 +898,7 @@ images = Images(["img1.png", "img2.png"], "train", labels=[0,1], ehandler=done)
 
 ### 4.12 Collection Reloading
 
-Once an Images object has been stored, it can later be retrieved from storage, reconstructing the Images object, and corresponding list of Image objects. An Images object is first instantiated, and then the `load()` method is called specifying the collection name and corresponding storage path. The collection name and storage path are used to identify and locate the corresponding stored image data.
+Once an `Images` object has been stored, it can later be retrieved from storage, reconstructing the `Images` object, and corresponding list of `Image` objects. An `Image`s object is first instantiated, and then the `load()` method is called specifying the collection name and corresponding storage path. The collection name and storage path are used to identify and locate the corresponding stored image data.
 
 ```python
 # Instantiate an Images object
