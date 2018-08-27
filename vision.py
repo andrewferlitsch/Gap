@@ -602,8 +602,12 @@ class Images(object):
             if len(thmdata) > 0:
                 hf.create_dataset("thumb",   data=thmdata)
             hf.create_dataset("size",    data=sizdata)
-            hf.attrs.create("names", names)
-            hf.attrs.create("types", types)
+            try:
+                hf.attrs.create("names", names)
+            except Exception as e: print(e)
+            try:
+                hf.attrs.create("types", types)
+            except Exception as e: print(e)
             try:
                 hf.attrs.create("paths", paths)
             except Exception as e: print(e)
@@ -707,7 +711,13 @@ class Images(object):
             ix = self._test[_]
             X_test.append( self._data[ix]._imgdata )
             Y_test.append( self._data[ix]._label )
-        return np.asarray(X_train), np.asarray(X_test), np.asarray(Y_train), np.asarray(Y_test)
+            
+        # Calculate the number of labels as a sequence starting from 0
+        nlabels = np.max(Y_train)
+        if 0 not in Y_train:
+            nlabels += 1
+            
+        return np.asarray(X_train), np.asarray(X_test), self._one_hot(np.asarray(Y_train), nlabels), self._one_hot(np.asarray(Y_test), nlabels)
         
     @split.setter
     def split(self, percent):
@@ -731,13 +741,23 @@ class Images(object):
         random.seed(self._seed)
         self._indices = random.sample([ index for index in range(len(self._data))], len(self._data))
         
-        # split the indices into train and test
+        # split the indexes into train and test
         split = int((1 - percent) * len(self._data))
         self._train   = self._indices[:split]
         self._test    = self._indices[split:]
         self._trainsz = len(self._train)
         self._testsz  = len(self._test)
         self._next    = 0
+        
+    def _one_hot(self, Y, C=0):
+        """ Convert Vector to one-hot encoding """
+        if C == 0:
+            # Calculate the number of labels in Y
+            C = len(np.max(Y))
+            if 0 not in Y:
+                C += 1
+        Y = np.eye(C)[Y.reshape(-1)]
+        return Y
     
     @property
     def minibatch(self):

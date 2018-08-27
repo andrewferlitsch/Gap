@@ -9,6 +9,7 @@ import sys
 import time
 from shutil import copy
 import cv2
+import numpy as np
 
 class MyTest(unittest.TestCase):
         
@@ -1164,6 +1165,19 @@ class MyTest(unittest.TestCase):
         images.flatten = False
         self.assertEquals(images[0].data.shape, (60, 60, 3))
         self.assertEquals(images[1].data.shape, (60, 60, 3))
+        
+    def test_120(self):
+        """ Images - labels are one hot encoded in split """
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flat', 'resize=(60,60)'])
+        images.split = 0.5
+        X_train, X_test, Y_train, Y_test = images.split
+        self.assertTrue(type(X_train), np.ndarray)
+        self.assertTrue(type(X_test ), np.ndarray)
+        self.assertTrue(type(Y_train), np.ndarray)
+        self.assertTrue(type(Y_test ), np.ndarray)
+        self.assertTrue(Y_train.shape, (2,3))
+        self.assertTrue(Y_test.shape, (2,3))
+        
  
         
     def done(self, image):
