@@ -190,7 +190,7 @@ When used as a setter, a training and test dataset is generated. The `percent` p
 
 When repeated, the property will re-split the data and re-randomize it.  
 
-When used as a getter, the split training, test, and corresponding labels are returned as lists converted to numpy arrays. This is typically used in conjunction with `next()` operator or `minibatch` property.  
+When used as a getter, the split training, test, and corresponding labels are returned as lists converted to numpy arrays, and the labels are one-hot encoded. This is typically used in conjunction with `next()` operator or `minibatch` property.  
 
 When the percent is `0`, the data is not split. All the data will be returned in `x_train` and `y_train`, but will still be randomized; `x_test` and `y_test` will be `None`.
 
@@ -538,11 +538,11 @@ When used as a getter the property returns the raw pixel data of the uncompresse
 ```python
 # Getter
 pixels = image.thumb
+```
 
 **Usage**
 
 When used as a getter the property returns the pixel data for the thumbnail image.
-```
 
 #### 2.3.7 label
 
@@ -659,7 +659,8 @@ image.load(name, dir=None)
 **Usage**
 
 This method will load into memory a preprocessed machine learning ready data from an HDF5 file specified by the parameter name. The method will load the HDF5 by the filename `<name>.h5`. If dir is None, then it will look for the file where the current value for dir is defined (either locally or reset by the dir property). Otherwise, it will look for the file under the directory specified by the dir parameter.
-Once loaded, the Image object will have the same characteristics as when the Image object was created.
+
+Once loaded, the `Image` object will have the same characteristics as when the `Image` object was created.
 
 **Exceptions**
 
@@ -713,6 +714,9 @@ A `ValueError` is raised if the degree is not between 0 and 360.
 1. 	Added support for mix image size/shape in Images object.  
 2.	Added support += overriden operator.  
 3.	Added support for specifying (min,max,n) for Image Augmentation.
+
+**Gap v0.9.3 (alpha)**
+1. 	Added converting to numpy arrays and one hot encoding of labels for Image split getter
 
 Proprietary Information  
 Copyright ©2018, Epipog, All Rights Reserved
