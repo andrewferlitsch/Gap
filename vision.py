@@ -713,9 +713,7 @@ class Images(object):
             Y_test.append( self._data[ix]._label )
             
         # Calculate the number of labels as a sequence starting from 0
-        nlabels = np.max(Y_train)
-        if 0 not in Y_train:
-            nlabels += 1
+        nlabels = np.max(Y_train) + 1
             
         return np.asarray(X_train), np.asarray(X_test), self._one_hot(np.asarray(Y_train), nlabels), self._one_hot(np.asarray(Y_test), nlabels)
         
@@ -753,9 +751,7 @@ class Images(object):
         """ Convert Vector to one-hot encoding """
         if C == 0:
             # Calculate the number of labels in Y
-            C = len(np.max(Y))
-            if 0 not in Y:
-                C += 1
+            C = len(np.max(Y)) + 1
         Y = np.eye(C)[Y.reshape(-1)]
         return Y
     
