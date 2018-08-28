@@ -11,13 +11,13 @@ def word_to_dictionary(file, output_dir):
         first_line = f.readline()
         f.seek(0)
         if len(first_line.split()) == 1:
-            words_dict = {word.rstrip('\n'):number for number, word in enumerate(f, 100)}
+            words_dict = {word.rstrip('\n'):number for number, word in enumerate(f, 100) if len(word)>1}
         else:
             line = first_line.split()
             #verify if file has header
             if line[0] not in '.-0123456789':
                 next(f)
-            words_dict = {line.split()[1]:number for number, line in enumerate(f, 100)}
+            words_dict = {line.split()[1]:number for number, line in enumerate(f, 100) if len(word)>1}
 
     words_dict['<PAD>'] = 0
     words_dict['<OUT>'] = 1
@@ -36,7 +36,7 @@ def word_to_dictionary(file, output_dir):
 
     #verify if folder was given 
     if not output_dir:
-        output_dir='../'
+        output_dir='../gapml/lg'
     file_out=os.path.join(output_dir,f_name)
 
     #creates new py file with the dict as a content
