@@ -591,7 +591,7 @@ pass
 
 Image Augmentation is the process of generating (synthesizing) new images from existing images, which can then be used to augment the training process. Synthesis can include, rotation, skew, sharpending and blur of existing images. These new images are then feed into the neural network during training to augment the training set. Rotating and skew aid in recognizing images from different angles, and sharpening and blur help generalize recognition (offset overfitting), as well as recognition under different lightening and time of day conditions.
 
-When the `augment` property is used as a setter, it will either enable or disable image augmentation when forward feeding the neural network when used in conjunction with the `split` property, `minibatch` property or `next()` operator. The `augment` property uses emulated polymorphism for the paramters. When the parameter is True, the feed forward process (e.g., `next()`) will generate an additional augmented image for each image in the training set, where the augmented image is a random rotation between -90 and 90 degress of the original image. The augmentation process adjusts the height and width of the image prior to rotation, as to prevent cropping, and then resizes back to the target size.
+When the `augment` property is used as a setter, it will either enable or disable image augmentation when forward feeding the neural network when used in conjunction with the `split` property, `minibatch` property or `next()` operator. The `augment` property uses emulated polymorphism for the paramters. When the parameter is `True`, the feed forward process (e.g., `next()`) will generate an additional augmented image for each image in the training set, where the augmented image is a random rotation between -90 and 90 degress of the original image. The augmentation process adjusts the height and width of the image prior to rotation, as to prevent cropping, and then resizes back to the target size.
 
 ```python
 # Split the data into test and training datasets
@@ -624,7 +624,7 @@ pass
 pass
 ```
 
-If parameter to the `augment` property may also be a tuple. The tuple specifies the rotation range and optionally the number of agumented images to generate per image; otherwise defaults to one. In the example below:
+The parameter to the `augment` property may also be a tuple. The tuple specifies the rotation range and optionally the number of agumented images to generate per image; otherwise defaults to one. In the example below:
 
 + Augmented images will be a random rotation between -45 and 120.  
 + For each image, three augmented images will be generated.  
