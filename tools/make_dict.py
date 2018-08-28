@@ -17,7 +17,7 @@ def word_to_dictionary(file, output_dir):
             #verify if file has header
             if line[0] not in '.-0123456789':
                 next(f)
-            words_dict = {line.split()[1]:number for number, line in enumerate(f, 100) if len(word)>1}
+            words_dict = {line.split()[1]:number for number, line in enumerate(f, 100) if len(line.split()[1])>1}
 
     words_dict['<PAD>'] = 0
     words_dict['<OUT>'] = 1
