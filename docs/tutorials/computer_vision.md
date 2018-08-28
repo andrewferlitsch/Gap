@@ -471,7 +471,7 @@ The `split`, `minibatch`, and overriden `next()` operator support forward feedin
 
 In batch mode, the entire training set can be ran through the neural network as a single pass, prior to backward propagation and updating the weights using gradient descent. This is known as 'batch gradient descent'.
 
-When the `split` property is used as a getter, it returns the image data and corresponding labels for the training and test set similar to using sci-learn's `train_test_split()` function. In the example below:
+When the `split` property is used as a getter, it returns the image data and corresponding labels for the training and test set similar to using sci-learn's `train_test_split()` function, as numpy arrays, and the labels are one hot encoded. In the example below:
 
 + The dataset is split into 20% test and 80% training.
 + The `X_train` and `X_test` is the list of machine learning ready data, as numpy arrays, of the corresponding training and test images.
