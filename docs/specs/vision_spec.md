@@ -241,11 +241,13 @@ images.augment = (min, max[, n])
 
 **Usage**
 
-When used as a setter and set to True, image augmentation for rotation is enabled during batch generation (see `minibatch` and `next()`). In this mode, for each image, an additional image will be generated that is randomly rotated between -90 and 90 degrees.
+When used as a setter and set to `True`, image augmentation for rotation is enabled during batch generation (see `minibatch` and `next()`). In this mode, for each image, an additional image will be generated that is randomly rotated between -90 and 90 degrees.
 
 When used as a setter and set to a tuple, the min and max boundaries for degree rotation are specified, and optionally the number of augmented images to generate per original image.
 
 When used as a getter, the property returns whether image augmentation is enabled.
+
+The parameter to the `augment` property may also be a tuple. The tuple specifies the rotation range and optionally the number of agumented images to generate per image; otherwise defaults to one. In the example below:
 
 **Exceptions**
 
@@ -259,15 +261,30 @@ images.flatten = True | False
 
 **Usage**
 
-When used as a setter and set to True, the machine learning ready data is flatten to a 1D vector.
+When used as a setter and set to `True`, the machine learning ready data is flatten to a 1D vector.
 
-When used as a setter and set to False, the machine learning ready data is unflatten back to a 2D (gray) or 3D (color) matrix.
+When used as a setter and set to `False`, the machine learning ready data is unflatten back to a 2D (gray) or 3D (color) matrix.
+
+**Exceptions**
+
+A `TypeError` is raised if the type of the parameter is not the expected type.
+
+#### 1.3.10 resize
+
+```python
+images.resize = (height, width)
+```
+
+**Usage**
+
+When used as a setter, the machine learning ready data is resized to the specified height and width.
 
 **Exceptions**
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
 
 ### 1.4 Images Overridden Operators
+
 #### 1.4.1 len()
 
 **Synopsis**
