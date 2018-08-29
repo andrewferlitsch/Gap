@@ -422,7 +422,7 @@ class Image(object):
     def elapsed(self):
         """ Returns elapsed time in hh:mm:ss format to do collation """
         elapsed = time.time()-self._time 
-        return time.strftime("%H:%M:%S", time.gmtime(elapsed))    
+        return time.strftime("%H:%M:%S", time.gmtime(elapsed))
 
     @property
     def thumb(self):
