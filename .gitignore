@@ -1,8 +1,9 @@
 .pytest_cache
 build/
 dist/
-gap_ml.egg-info
+gapml.egg-info
 __pycache__
 tests/__pycache__
+train/.ipynb_checkpoints/
 site/
 templates/

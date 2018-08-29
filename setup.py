@@ -125,7 +125,7 @@ tests_require=[
     'pytest',
     'pytest-cov']
 
-package_data={'gapml': ['org-os/*', 'plan/*', 'tools/*', 'train/*']}
+package_data={'gapml': ['tools/*', 'train/*']}
 
 project_urls={"Documentation": "https://andrewferlitsch.github.io/Gap/",
               "Source Code": "https://github.com/andrewferlitsch/Gap"}
@@ -150,8 +150,8 @@ classifiers=[
     'Programming Language :: Python :: 3.7']
 
 setup(
-    name='gap-ml',
-    version='0.9.2',
+    name='gapml',
+    version='0.9.3',
     description='NLP and CV Data Engineering Framework',
     author='Andrew Ferlitsch',
     author_email='aferlitsch@gmail.com',
