@@ -51,7 +51,7 @@ classifiers=[
 
 setup(
     name='gapml',
-    version='0.8.2',
+    version='0.8.3',
     description='NLP and CV Data Engineering Framework',
     author='Andrew Ferlitsch',
     author_email='aferlitsch@gmail.com',
