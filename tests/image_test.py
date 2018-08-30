@@ -1,7 +1,7 @@
 """
 Copyright, 2018(c), Andrew Ferlitsch
 """
-from vision import Image, Images
+from gapml.vision import Image, Images
 import unittest
 import pytest
 import os
@@ -340,55 +340,62 @@ class MyTest(unittest.TestCase):
         image = Image("files/0_100.jpg")
         self.assertTrue(image.time > 0)
         os.remove("0_100.h5")
+
+    def test_035(self):
+        """ elapsed """
+        from datetime import datetime
+        image = Image("files/0_100.jpg")
+        self.assertIsInstance(image.elapsed, str)
+        os.remove("0_100.h5")
         
     ### Images
     
-    def test_035(self):
+    def test_036(self):
         """ Images Constructor - no images argument """
         images = Images()
         self.assertEqual(images.images, None)
         
-    def test_036(self):
+    def test_037(self):
         """ Images Constructor - images = None """
         images = Images(None)
         self.assertEqual(images.images, None)
         
-    def test_037(self):
+    def test_038(self):
         """ Images Constructor - images = not a list """
         with pytest.raises(TypeError):
             images = Images(1, [0])
         
-    def test_038(self):
+    def test_039(self):
         """ Images Constructor - images = entries not a string """
         with pytest.raises(TypeError):
             images = Images([0], [0])
         
-    def test_039(self):
+    def test_040(self):
         """ Images Constructor - images = image not exist """
         with pytest.raises(FileNotFoundError):
             images = Images(["files/nonexist.jpg"], [0])
         
-    def test_040(self):
+    def test_041(self):
         """ Images Constructor - labels not a string """
         with pytest.raises(TypeError):
             images = Images(["files/0_100.jpg"], ['a'])
         
-    def test_041(self):
+    def test_042(self):
         """ Images Constructor - labels not specified """
         with pytest.raises(TypeError):
             images = Images(["files/0_100.jpg"])
         
-    def test_042(self):
+    def test_043(self):
         """ Images Constructor - labels not match images """
         with pytest.raises(IndexError):
             images = Images(["files/0_100.jpg"], [0, 1])
         
-    def test_043(self):
+    def test_044(self):
         """ Images Constructor - labels is None """
         with pytest.raises(TypeError):
             images = Images(["files/0_100.jpg"], labels=None)
         
-    def test_044(self):
+    def test_045(self):
         """ Images Constructor - single file """
         images = Images(["files/0_100.jpg"], labels=[2])
         self.assertEqual(len(images), 1)
@@ -403,7 +410,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[0].thumb, None )
         os.remove("collection.0_100.h5")
         
-    def test_045(self):
+    def test_046(self):
         """ Images Constructor - multi file """
         images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=[2, 2])
         self.assertEqual(len(images), 2)
@@ -423,7 +430,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images.name, 'collection.0_100')
         os.remove("collection.0_100.h5")
         
-    def test_046(self):
+    def test_047(self):
         """ images properties dir, class """
         images = Images(["files/0_100.jpg"], labels=[2], dir="tmp")
         self.assertTrue(images.dir, "tmp")
@@ -431,24 +438,24 @@ class MyTest(unittest.TestCase):
         os.remove("tmp/collection.0_100.h5")
         os.rmdir("tmp")
         
-    def test_047(self):
+    def test_048(self):
         """ images constructor - dir not a string """
         with pytest.raises(TypeError):
             images = Images(["files/0_100.jpg"], labels=[0], dir=0)
         
-    def test_048(self):
+    def test_049(self):
         """ images constructor - collection not a string """
         with pytest.raises(TypeError):
             images = Images(["files/0_100.jpg"], labels=[0], collection=0)
         
-    def test_049(self):
+    def test_050(self):
         """ images properties dir, class """
         images = Images(["files/0_100.jpg"], labels=[2], name="foobar")
         self.assertEqual(images.name, 'foobar')
         self.assertTrue(os.path.isfile("foobar.h5"))
         os.remove("foobar.h5")
         
-    def test_050(self):
+    def test_051(self):
         """ Images Constructor - multi file """
         images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=2)
         self.assertEqual(len(images), 2)
@@ -468,7 +475,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images.name, 'collection.0_100')
         os.remove("collection.0_100.h5")
                 
-    def test_051(self):
+    def test_052(self):
         """ images load - default collection name """
         images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=[1,2])
         self.assertEqual(images.name, 'collection.0_100')
@@ -480,7 +487,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[1].label, 2)
         os.remove("collection.0_100.h5")
             
-    def test_052(self):
+    def test_053(self):
         """ images load - collection name """
         images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=[1,2], name='foobar')
         self.assertEqual(images.name, 'foobar')
@@ -492,7 +499,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[1].label, 2)
         os.remove("foobar.h5")
             
-    def test_053(self):
+    def test_054(self):
         """ images async """
         self.isdone = False
         images = Images(["files/0_100.jpg", "files/1_100.jpg"], labels=[1,2], name='foobar', ehandler=self.done) 
@@ -505,28 +512,28 @@ class MyTest(unittest.TestCase):
         os.remove("foobar.h5")
         self.is_done = False
         
-    def test_054(self):
+    def test_055(self):
         """ Images - time """
         images = Images(["files/0_100.jpg"], labels=[2])
         self.assertEqual(len(images), 1)
         self.assertTrue(images.time > 0)
         os.remove("collection.0_100.h5")
         
-    def test_055(self):
+    def test_056(self):
         """ Images - create dir"""
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg'], 2, name='foobar', dir='tmp2')
         self.assertTrue(os.path.isfile("tmp2/foobar.h5"))
         os.remove("tmp2/foobar.h5")
         os.rmdir('tmp2')
         
-    def test_056(self):
+    def test_057(self):
         """ Images - split not an float """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4], name='foobar')
         with pytest.raises(TypeError):
             images.split = 'a'
         os.remove('foobar.h5')
         
-    def test_057(self):
+    def test_058(self):
         """ Images - split not a valid range """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4], name='foobar')
         with pytest.raises(ValueError):
@@ -535,7 +542,7 @@ class MyTest(unittest.TestCase):
             images.split = 1.0
         os.remove('foobar.h5')
         
-    def test_058(self):
+    def test_059(self):
         """ Images - split by default """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
         x1, x2, y1, y2 = images.split
@@ -545,7 +552,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(len(y2), 1)
         os.remove('collection.0_100.h5')
         
-    def test_059(self):
+    def test_060(self):
         """ Images - split, set percent """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
         images.split = 0.5
@@ -553,7 +560,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(len(images._test), 2)
         os.remove('collection.0_100.h5')
         
-    def test_060(self):
+    def test_061(self):
         """ Images - split, percent specified """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
         images.split = 0.25
@@ -564,7 +571,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(len(y2), 1)
         os.remove('collection.0_100.h5')
         
-    def test_061(self):
+    def test_062(self):
         """ Images - iterate through collection """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
         images.split = 0.25
@@ -574,7 +581,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(next(images), (None, None))
         os.remove('collection.0_100.h5')
             
-    def test_062(self):
+    def test_063(self):
         """ Images - iterate 2nd pass """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg', 'files/3_100.jpg'], [1,2,3,4,5], name='foobar')
         images.split = 0.5
@@ -586,14 +593,14 @@ class MyTest(unittest.TestCase):
         self.assertEqual(next(images), (None, None))
         os.remove('foobar.h5')
         
-    def test_063(self):
+    def test_064(self):
         """ Images - minibatch not an integer """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4], name='foobar')
         with pytest.raises(TypeError):
             images.minibatch = 'a'
         os.remove('foobar.h5')
         
-    def test_064(self):
+    def test_065(self):
         """ Images - minibatch invalid range """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4], name='foobar')
         with pytest.raises(ValueError):
@@ -602,7 +609,7 @@ class MyTest(unittest.TestCase):
             images.minibatch = 4
         os.remove('foobar.h5')
         
-    def test_065(self):
+    def test_066(self):
         """ Images - minibatch - fetch """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg', 'files/3_100.jpg', 'files/1_100.jpg'], [1,2,3,4,5,6], name='foobar')
         images.split = 0.5
@@ -621,14 +628,14 @@ class MyTest(unittest.TestCase):
         self.assertEquals(x, 0)
         os.remove('foobar.h5')
         
-    def test_066(self):
+    def test_067(self):
         """ Images - split - invalid tuple size """
         images = Images(['files/0_100.jpg'], [1], name='foobar')
         with pytest.raises(AttributeError):
             images.split = (0.9, 2, 3)
         os.remove('foobar.h5')
         
-    def test_067(self):
+    def test_068(self):
         """ Images - split - tuple, percent not a float, seed not an int """
         images = Images(['files/0_100.jpg'], [1], name='foobar')
         with pytest.raises(TypeError):
@@ -637,14 +644,14 @@ class MyTest(unittest.TestCase):
             images.split = (0.8, 'a')
         os.remove('foobar.h5')
         
-    def test_068(self):
+    def test_069(self):
         """ Image - split - tuple valid """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg'], [1, 2], name='foobar')
         images.split = 0.5, 2
         self.assertEqual(len(next(images)), 2)
         os.remove('foobar.h5')
         
-    def test_069(self):
+    def test_070(self):
         """ Image - remote image """
         image = Image('https://cdn.cnn.com/cnnnext/dam/assets/180727161452-trump-speech-economy-072718-exlarge-tease.jpg', 2)
         self.assertEqual(image.type, "jpg")
@@ -656,12 +663,12 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.shape, (438, 780))
         os.remove('180727161452-trump-speech-economy-072718-exlarge-tease.h5')
         
-    def test_070(self):
+    def test_071(self):
         """ Image - nonexistent remote image """
         image = Image('https://cdn.cnn.com/cnnnext/dam/assets/18ch-economy-072718-exlarge-tease.jpg', 2)
         self.assertEqual(image.data, None)
         
-    def test_071(self):
+    def test_072(self):
         """ Image - bad image """
         f = open("tmp.jpg", "w")
         f.write("foobar")
@@ -670,7 +677,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.data, None)
         os.remove('tmp.jpg')
         
-    def test_072(self):
+    def test_073(self):
         """ Images - directory """
         os.mkdir("tmp1")
         copy('files/0_100.jpg', 'tmp1')
@@ -688,7 +695,7 @@ class MyTest(unittest.TestCase):
         os.remove('tmp2/3_100.jpg')
         os.rmdir("tmp2")
         
-    def test_073(self):
+    def test_074(self):
         """ Image - rotate - grayscale """
         image = Image("files/1_100.jpg", 1, config=['resize=(64,64)', 'grayscale'])
         rotated = image.rotate(90)
@@ -699,19 +706,19 @@ class MyTest(unittest.TestCase):
         self.assertTrue(rotated.shape, (64, 64))
         os.remove('1_100.h5')
         
-    def test_074(self):
+    def test_075(self):
         """ Images - [] not an int """
         images = Images(["files/1_100.jpg"], 1)
         with pytest.raises(TypeError):
             image = images['abc']
         os.remove('collection.1_100.h5')
         
-    def test_075(self):
+    def test_076(self):
         """ Images - len() returns 0 when no files loaded """
         images = Images()
         self.assertEquals(len(images), 0)
         
-    def test_076(self):
+    def test_077(self):
         """ Image - load() attr type and size """
         image = Image("files/0_100.jpg", 1)
         image = Image()
@@ -720,7 +727,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(image.size, 3643)
         os.remove('0_100.h5')
         
-    def test_077(self):
+    def test_078(self):
         """ Images - directories as image arguments """
         images = Images(["files/imtest1", "files/imtest2"], [1,2], name="foobar")
         self.assertEquals(len(images), 4)
@@ -734,7 +741,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[3].label, 2)
         os.remove("foobar.h5")
         
-    def test_078(self):
+    def test_079(self):
         """ Images - split = 0 """
         images = Images(["files/imtest1", "files/imtest2"], [1,2], name="foobar")
         images.split = 0.0
@@ -745,7 +752,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(len(images._test), 0)
         os.remove("foobar.h5")
         
-    def test_079(self):
+    def test_080(self):
         """ Image - gif file """
         image = Image("files/gray.gif", 1)
         self.assertEquals(image.shape, (415, 506, 3))
@@ -758,7 +765,7 @@ class MyTest(unittest.TestCase):
         os.remove("gray.h5")
         os.remove("rgb.h5")
         
-    def test_080(self):
+    def test_081(self):
         """ Image - rotate - grayscale, non-90 degree """
         image = Image("files/1_100.jpg", 1, config=['resize=(64,64)', 'grayscale'])
         rotated = image.rotate(30)
@@ -769,7 +776,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(rotated.shape, (64, 64))
         os.remove('1_100.h5')
         
-    def test_081(self):
+    def test_082(self):
         """ Image - rotate - rgb """
         image = Image("files/1_100.jpg", 1, config=['resize=(64,64)'])
         rotated = image.rotate(90)
@@ -780,7 +787,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(rotated.shape, (64, 64))
         os.remove('1_100.h5')
         
-    def test_082(self):
+    def test_083(self):
         """ Image - rotate - rgb, non-90 degree """
         image = Image("files/1_100.jpg", 1, config=['resize=(64,64)'])
         rotated = image.rotate(30)
@@ -791,7 +798,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(rotated.shape, (64, 64))
         os.remove('1_100.h5')
         
-    def test_083(self):
+    def test_084(self):
         """ Image - rotate - rgb,negative degree """
         image = Image("files/1_100.jpg", 1, config=['resize=(64,64)'])
         rotated = image.rotate(-30)
@@ -802,7 +809,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(rotated.shape, (64, 64))
         os.remove('1_100.h5')
         
-    def test_084(self):
+    def test_085(self):
         """ Image - rotate invalid """
         image = Image("files/1_100.jpg", 1, config=['resize=(64,64)'])
         with pytest.raises(ValueError):
@@ -811,7 +818,7 @@ class MyTest(unittest.TestCase):
             image.rotate(360)
         os.remove('1_100.h5')
         
-    def test_085(self):
+    def test_086(self):
         """ Images - iterate through collection multiple times """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [0,1,2,3])
         images.split = 0.50
@@ -825,7 +832,7 @@ class MyTest(unittest.TestCase):
             data, label = next(images)
         os.remove('collection.0_100.h5')
         
-    def test_086(self):
+    def test_087(self):
         """ Images - next() - augmentation """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [0,1,2,3])
         images.split = 0.50
@@ -842,7 +849,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(next(images), (None, None))
         os.remove('collection.0_100.h5')
         
-    def test_087(self):
+    def test_088(self):
         """ Images - minibatch - augmentation """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg', 'files/3_100.jpg', 'files/1_100.jpg'], [1,2,3,4,5,6], name='foobar')
         images.split = 0.5
@@ -862,13 +869,13 @@ class MyTest(unittest.TestCase):
         self.assertEquals(x, 0)
         os.remove('foobar.h5')
         
-    def test_088(self):
+    def test_089(self):
         """ Images - thumbnail """
         images = Images(["files/0_100.jpg"], 1, config=['thumb=16,16'], name='foobar')
         self.assertEquals(images[0].thumb.shape, (16, 16, 3))
         os.remove('foobar.h5')
         
-    def test_089(self):
+    def test_090(self):
         """ Images - thumbnail - load """
         images = Images(["files/0_100.jpg"], 1, config=['thumb=16,16'], name='foobar')
         images = Images()
@@ -876,7 +883,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[0].thumb.shape, (16, 16, 3))
         os.remove('foobar.h5')
         
-    def test_090(self):
+    def test_091(self):
         """ Image - raw pixel input """
         pixels = cv2.imread('files/1_100.jpg')
         image = Image(pixels, 1)
@@ -891,7 +898,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(image.shape, (100, 100))
         os.remove('untitled.h5')
         
-    def test_091(self):
+    def test_092(self):
         """ Image - raw pixel input - gray to color """
         pixels = cv2.imread('files/1_100.jpg', cv2.IMREAD_GRAYSCALE)
         image = Image(pixels, 1)
@@ -906,17 +913,17 @@ class MyTest(unittest.TestCase):
         self.assertEquals(image.shape, (100, 100))
         os.remove('untitled.h5')
  
-    def test_092(self):
+    def test_093(self):
         """ Image - ehandler not a function """
         with pytest.raises(TypeError):
             image = Image('files/1_100.jpg', 1, ehandler=2)
  
-    def test_093(self):
+    def test_094(self):
         """ Image - ehandler not a function """
         with pytest.raises(TypeError):
             image = Image('files/1_100.jpg', 1, ehandler=(2,2))
  
-    def test_094(self):
+    def test_095(self):
         """ Image - ehandler with arguments """
         image = Image('files/1_100.jpg', 1, ehandler=(self.done2, 6))
         time.sleep(3)
@@ -925,17 +932,17 @@ class MyTest(unittest.TestCase):
         os.remove("1_100.h5")
         self._isdone = False
  
-    def test_095(self):
+    def test_096(self):
         """ Images - ehandler not a function """
         with pytest.raises(TypeError):
             image = Images(['files/1_100.jpg'], 1, ehandler=2)
  
-    def test_096(self):
+    def test_097(self):
         """ Images - ehandler not a function """
         with pytest.raises(TypeError):
             image = Images(['files/1_100.jpg'], 1, ehandler=(2,2))
  
-    def test_097(self):
+    def test_098(self):
         """ Images - ehandler with arguments """
         images = Images(['files/1_100.jpg'], 1, ehandler=(self.done2, 6))
         time.sleep(3)
@@ -944,7 +951,7 @@ class MyTest(unittest.TestCase):
         os.remove("collection.1_100.h5")
         self._isdone = False
  
-    def test_098(self):
+    def test_099(self):
         """ Images - mixed size images """
         images = Images(['files/1_100.jpg', 'files/text.jpg'], [1,2], config=['resize=(100,100)'])
         images = Images()
@@ -954,7 +961,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[1].raw.shape, (297, 275, 3))
         os.remove("collection.1_100.h5")
  
-    def test_099(self):
+    def test_100(self):
         """ Images - += Image """
         images = Images(['files/1_100.jpg'], 1)
         image = Image('files/2_100.jpg', 2, config=['nostore'])
@@ -966,7 +973,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[1].label, 2)
         os.remove("collection.1_100.h5")
  
-    def test_100(self):
+    def test_101(self):
         """ Images - += Images """
         images = Images(['files/1_100.jpg', 'files/2_100.jpg'], 1)
         images2 = Images(['files/0_100.jpg', 'files/3_100.jpg'], 2, config=['nostore'])
@@ -982,7 +989,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[3].label, 2)
         os.remove("collection.1_100.h5")
  
-    def test_101(self):
+    def test_102(self):
         """ Images - += Images nostore, then store """
         images = Images(['files/1_100.jpg', 'files/2_100.jpg'], 1, config=['nostore'])
         images2 = Images(['files/0_100.jpg', 'files/3_100.jpg'], 2, config=['nostore'])
@@ -999,12 +1006,12 @@ class MyTest(unittest.TestCase):
         images.store()
         os.remove("collection.1_100.h5")
  
-    def test_102(self):
+    def test_103(self):
         """ Images - nostore """
         images = Images(['files/1_100.jpg', 'files/2_100.jpg'], 1, config=['nostore'])
         self.assertFalse(os.path.isfile('collection.1_100.h5'))
         
-    def test_103(self):
+    def test_104(self):
         """ Images - += Images """
         images = Images(['files/1_100.jpg', 'files/2_100.jpg'], 1)
         images2 = Images(['files/0_100.jpg', 'files/3_100.jpg'], 2)
@@ -1022,13 +1029,13 @@ class MyTest(unittest.TestCase):
         os.remove("collection.1_100.h5")
         os.remove("collection.0_100.h5")
         
-    def test_104(self):
+    def test_105(self):
         """ Images - augment - too few tuple """
         images = Images()
         with pytest.raises(TypeError):
             images.augment = (1)
         
-    def test_105(self):
+    def test_106(self):
         """ Images - augment - tuple not an int """
         images = Images()
         with pytest.raises(TypeError):
@@ -1042,7 +1049,7 @@ class MyTest(unittest.TestCase):
         with pytest.raises(TypeError):
             images.augment = 1, 1, 'a'
         
-    def test_106(self):
+    def test_107(self):
         """ Images - augment - valid tuple (min, max) """
         images = Images()
         images.augment = (-45, 45)
@@ -1052,7 +1059,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images._rotate[0], 20)
         self.assertEquals(images._rotate[1], 60)
         
-    def test_107(self):
+    def test_108(self):
         """ Images - augment - valid tuple (min, max, n) - next """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [0,1,2,3])
         images.split = 0.50
@@ -1070,7 +1077,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(next(images), (None, None))
         os.remove("collection.0_100.h5")
         
-    def test_108(self):
+    def test_109(self):
         """ Images - augment - valid tuple (min, max, n) - minibatch """
         images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg', 'files/3_100.jpg', 'files/1_100.jpg'], [1,2,3,4,5,6], name='foobar')
         images.split = 0.5
@@ -1090,72 +1097,72 @@ class MyTest(unittest.TestCase):
         self.assertEquals(x, 0)
         os.remove('foobar.h5')
         
-    def test_109(self):
+    def test_110(self):
         """ Images - transform / flatten """
         images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore'])
         images.flatten = True
         self.assertEquals(images[0].data.shape, (30000,))
         self.assertEquals(images[1].data.shape, (30000,))
         
-    def test_110(self):
+    def test_111(self):
         """ Images - transform / flatten - already flatten """
         images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flat'])
         images.flatten = True
         self.assertEquals(images[0].data.shape, (30000,))
         self.assertEquals(images[1].data.shape, (30000,))
         
-    def test_111(self):
+    def test_112(self):
         """ Images - transform / flatten - resized"""
         images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'resize=(50,50)'])
         images.flatten = True
         self.assertEquals(images[0].data.shape, (7500,))
         self.assertEquals(images[1].data.shape, (7500,))
         
-    def test_112(self):
+    def test_113(self):
         """ Images - transform / flatten - no images """
         images = Images()
         images.flatten = True
         
-    def test_113(self):
+    def test_114(self):
         """ Images - transform / flatten - grayscale """
         images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'gray'])
         images.flatten = True
         self.assertEquals(images[0].data.shape, (10000,))
         self.assertEquals(images[1].data.shape, (10000,))
         
-    def test_114(self):
+    def test_115(self):
         """ Images - transform / flatten - not a boolean """
         images = Images()
         with pytest.raises(TypeError):
             images.flatten = 3
         
-    def test_115(self):
+    def test_116(self):
         """ Images - transform / unflatten - already unflatten """
         images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore'])
         images.flatten = False
         self.assertEquals(images[0].data.shape, (100, 100, 3))
         self.assertEquals(images[1].data.shape, (100, 100, 3))
         
-    def test_116(self):
+    def test_117(self):
         """ Images - transform / unflatten - already unflatten / gray """
         images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'gray'])
         images.flatten = False
         self.assertEquals(images[0].data.shape, (100, 100))
         self.assertEquals(images[1].data.shape, (100, 100))
         
-    def test_117(self):
+    def test_118(self):
         """ Images - transform / unflatten - no images """
         images = Images()
         images.flatten = False
         
-    def test_118(self):
+    def test_119(self):
         """ Images - transform / unflatten - same size """
         images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flat'])
         images.flatten = False
         self.assertEquals(images[0].data.shape, (100, 100, 3))
         self.assertEquals(images[1].data.shape, (100, 100, 3))
         
-    def test_119(self):
+    def test_120(self):
         """ Images - transform / unflatten - different size """
         images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flat', 'resize=(60,60)'])
         images.flatten = False
@@ -1166,7 +1173,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[0].data.shape, (60, 60, 3))
         self.assertEquals(images[1].data.shape, (60, 60, 3))
         
-    def test_120(self):
+    def test_121(self):
         """ Images - labels are one hot encoded in split """
         images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flat', 'resize=(60,60)'])
         images.split = 0.5
