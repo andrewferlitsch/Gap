@@ -1,7 +1,7 @@
 """
 Copyright, 2018(c), Andrew Ferlitsch
 """
-from gapml.vision import Image, Images
+from vision import Image, Images
 import unittest
 import pytest
 import os
@@ -1184,8 +1184,6 @@ class MyTest(unittest.TestCase):
         self.assertTrue(type(Y_test ), np.ndarray)
         self.assertTrue(Y_train.shape, (2,3))
         self.assertTrue(Y_test.shape, (2,3))
-        
- 
         
     def done(self, image):
         self.isdone = True
