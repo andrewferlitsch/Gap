@@ -36,7 +36,7 @@ def word_to_dictionary(file, output_dir):
 
     #verify if folder was given 
     if not output_dir:
-        output_dir='../'
+        output_dir='../gapml/lg'
     file_out=os.path.join(output_dir,f_name)
 
     #creates new py file with the dict as a content
