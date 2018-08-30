@@ -645,6 +645,19 @@ secs = image.time
 
 When used as a getter the property returns the amount of time (in seconds) it took to preprocess the image into machine learning ready data.
 
+#### 2.3.11 elapsed
+
+**Synopsis**
+
+```python
+# Getter
+time_elapsed = image.elapsed
+```
+
+**Usage**
+
+When used as a getter the property returns time (in hh:mm:ss format) it took to preprocess the image into machine learning ready data.
+
 ### 2.4 Image Overridden Operators
 #### 2.4.1 str()
 
