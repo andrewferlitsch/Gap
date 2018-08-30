@@ -343,7 +343,6 @@ class MyTest(unittest.TestCase):
 
     def test_035(self):
         """ elapsed """
-        from datetime import datetime
         image = Image("files/0_100.jpg")
         self.assertIsInstance(image.elapsed, str)
         os.remove("0_100.h5")
