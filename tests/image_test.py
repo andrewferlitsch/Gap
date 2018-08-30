@@ -1185,6 +1185,22 @@ class MyTest(unittest.TestCase):
         self.assertTrue(Y_train.shape, (2,3))
         self.assertTrue(Y_test.shape, (2,3))
         
+    def test_122(self):
+        """ Image / Images: time property when on processing """
+        image = Image()
+        images = Images()
+        self.assertEquals(image.time, 0)
+        self.assertEquals(images.time, 0)
+        
+    def test_123(self):
+        """ Image / Images - time property is non-zero """
+        image = Image('files/0_100.jpg', 1)
+        self.assertTrue(image.time > 0)
+        os.remove('0_100.h5')
+        images = Images(['files/0_100.jpg'], 1)
+        self.assertTrue(images.time > 0)
+        os.remove('collection.0_100.h5')
+        
     def done(self, image):
         self.isdone = True
         os.remove(image)
