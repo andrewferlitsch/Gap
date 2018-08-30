@@ -421,8 +421,7 @@ class Image(object):
     @property
     def elapsed(self):
         """ Returns elapsed time in hh:mm:ss format to do collation """
-        elapsed = time.time()-self._time 
-        return time.strftime("%H:%M:%S", time.gmtime(elapsed))
+        return time.strftime("%H:%M:%S", time.gmtime(self._time))
 
     @property
     def thumb(self):
@@ -462,6 +461,7 @@ class Images(object):
         self._nostore  = False      # do not store into HDF5 flag
         self._rotate   = [-90, 90, 1, 1] # rotation parameters for image augmentation
         self._resize   = None       # config setting for resize
+        self._time     = 0          # processing time
         
         if images is None:
             return
@@ -664,7 +664,7 @@ class Images(object):
     def elapsed(self):
         """ Elapsed time in hh:mm:ss format for the processing time """
         elapsed = time.time()-self._time 
-        return time.strftime("%H:%M:%S", time.gmtime(elapsed))
+        return time.strftime("%H:%M:%S", time.gmtime(self._time))
         
     def load(self, name, dir=None):
         """ Load a Collection of Images """
