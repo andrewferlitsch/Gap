@@ -82,7 +82,7 @@ The Gap framework is supported on Windows, MacOS, and Linux. It has been package
       + activate it with: `source activate gap`
 
   3. install GapML:  
-      + `pip install gapml
+      + `pip install gapml`
 
       Dependecies if you are on **Linux** or **Mac**:  
       + tesseract:  `conda install -c conda-forge tesseract`  
