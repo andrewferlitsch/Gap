@@ -84,12 +84,12 @@ The Gap framework is supported on Windows, MacOS, and Linux. It has been package
   3. install GapML:  
       + `pip install gapml
 
-    +  Dependecies if you are on **Linux** or **Mac**:  
+      Dependecies if you are on **Linux** or **Mac**:  
       + tesseract:  `conda install -c conda-forge tesseract`  
       + ghostscript: `conda install -c conda-forge ghostscript`  
       + imagemagick: `conda install -c conda-forge imagemagick`
 
-    +  for **Windows**:  
+      for **Windows**:  
       + Ghostscript: https://www.ghostscript.com/download/gsdnld.html  
       + Imagemagick: https://www.imagemagick.org/script/download.php  
       + Tesseract:   https://github.com/UB-Mannheim/tesseract/wiki
