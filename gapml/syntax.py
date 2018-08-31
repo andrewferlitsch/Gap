@@ -15,8 +15,8 @@ nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 from unidecode import unidecode
 
-from vocabulary import Vocabulary, vocab
-from address import Address
+from .vocabulary import Vocabulary, vocab
+from .address import Address
 
         
 class Words(object):
@@ -1508,11 +1508,11 @@ class Words(object):
             raise TypeError("String or List expected for words")
         return self
         
-from word2int_en import word2int_en
-from word2int_fr import word2int_fr
-from word2int_es import word2int_es
-from word2int_it import word2int_it
-from word2int_de import word2int_de
+from .lg.word2int_en import word2int_en
+from .lg.word2int_fr import word2int_fr
+from .lg.word2int_es import word2int_es
+from .lg.word2int_it import word2int_it
+from .lg.word2int_de import word2int_de
         
 class Norvig(object):
     """ 

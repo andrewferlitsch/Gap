@@ -16,14 +16,14 @@ import sys
 import json
 import shutil
 
-from segment import Segment
-from syntax import Words, Vocabulary, Norvig
-from pdf_res import PDFResource
-from word2int_en import word2int_en
-from word2int_fr import word2int_fr
-from word2int_es import word2int_es
-from word2int_it import word2int_it
-from word2int_de import word2int_de
+from .segment import Segment
+from .syntax import Words, Vocabulary, Norvig
+from .pdf_res import PDFResource
+from .lg.word2int_en import word2int_en
+from .lg.word2int_fr import word2int_fr
+from .lg.word2int_es import word2int_es
+from .lg.word2int_it import word2int_it
+from .lg.word2int_de import word2int_de
 
 if shutil.which('gswin64c'):
     # Ghostscript executable for Windows.

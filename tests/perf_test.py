@@ -9,7 +9,7 @@ import PIL
 from PIL import Image
 import cv2
 
-from vision import Image, Images
+from gapml.vision import Image, Images
 
 def test_001():
     global files, dir

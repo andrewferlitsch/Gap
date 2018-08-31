@@ -2,9 +2,9 @@
 Copyright, 2018(c), Andrew Ferlitsch
 """
 
-from splitter import Page
-from syntax import Words
-from segment import Segment
+from gapml.splitter import Page
+from gapml.syntax import Words
+from gapml.segment import Segment
 import unittest
 import pytest
 import os
