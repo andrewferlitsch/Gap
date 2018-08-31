@@ -2767,7 +2767,7 @@ class MyTest(unittest.TestCase):
     def test_325(self):
         """ spell check - italian """
         words = Words("questa", stopwords=True, spell='it')
-        self.assertEqual(words.words, [{'word': 'questo', 'tag': 0}])
+        self.assertEqual(words.words, [{'word': 'questi', 'tag': 0}])
         
     def test_326(self):
         """ more stemming """
