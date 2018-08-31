@@ -75,17 +75,21 @@ The Gap framework extensively uses a number of open source applications/modules.
 
 The Gap framework is supported on Windows, MacOS, and Linux. It has been packaged for distribution via PyPi on launch.
 
-  1. install [miniconda](https://conda.io/miniconda.html)  
+  1. install [miniconda](https://conda.io/miniconda.html)
+
   2. (optional)  
       + create an environment with: `conda create -n gap python==3.7 jupyter`  
-      + activate it with: `source activate gap`  
+      + activate it with: `source activate gap`
+
   3. install GapML:  
-      + `pip install gapml`  
-      Dependecies if you are on Linux or Mac:  
+      + `pip install gapml
+
+    Dependecies if you are on **Linux** or **Mac**:  
       + tesseract:  `conda install -c conda-forge tesseract`  
       + ghostscript: `conda install -c conda-forge ghostscript`  
-      + imagemagick: `conda install -c conda-forge imagemagick`  
-      for Windows:  
+      + imagemagick: `conda install -c conda-forge imagemagick`
+
+    for **Windows**:  
       + Ghostscript: https://www.ghostscript.com/download/gsdnld.html  
       + Imagemagick: https://www.imagemagick.org/script/download.php  
       + Tesseract:   https://github.com/UB-Mannheim/tesseract/wiki
