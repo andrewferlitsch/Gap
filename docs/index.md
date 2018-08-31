@@ -70,11 +70,30 @@ The Gap framework extensively uses a number of open source applications/modules.
   7. HDF5 - high performance of on-disk data (tensors) access
   8. openCV - image manipulation and processing for computer vision
   9. imutils - image manipulation for computer vision
-  10. pyaspeller - spelling dictionary for text
   
 ## Installation: 
 
-The Gap framework is supported on Windows, MacOS, and Linux. It has been packaged for distribution via PyPi on launch. \
+The Gap framework is supported on Windows, MacOS, and Linux. It has been packaged for distribution via PyPi on launch.
+
+  1. install [miniconda](https://conda.io/miniconda.html)
+
+  2. (optional)  
+      + Create an environment with: `conda create -n gap python==3.7 jupyter`  
+      + Activate: `source activate gap`
+      + Deactivate: `source deactivate`
+
+  3. install GapML:  
+      + `pip install gapml`
+
+      Dependecies if you are on **Linux** or **Mac**:  
+      + Tesseract:    `conda install -c conda-forge tesseract`  
+      + Ghostscript:  `conda install -c conda-forge ghostscript`  
+      + Imagemagick:  `conda install -c conda-forge imagemagick`
+
+      for **Windows**:  
+      + Ghostscript:  https://www.ghostscript.com/download/gsdnld.html  
+      + Imagemagick:  https://www.imagemagick.org/script/download.php  
+      + Tesseract:    https://github.com/UB-Mannheim/tesseract/wiki
 
 For pre-launch, after you have clone the source code, from the root of the source tree do the following to complete the install:
 
@@ -90,9 +109,9 @@ The dependencies for python packages distributed at PyPi are automatically check
   - unidecode : https://pypi.org/project/Unidecode/
   - openCV : https://www.opencv.org/
   - imultils : https://github.com/jrosebr1/imutils
-  - pyaspeller : https://pypi.org/project/pyaspeller/
+
   
-#### 3rd Party Dependencies
+ #### 3rd Party Dependencies
  
  The dependencies for non-python packages are automatically checked for and installed by the setup.py script. These include:
  
@@ -100,25 +119,28 @@ The dependencies for python packages distributed at PyPi are automatically check
   - Tesseract : https://github.com/tesseract-ocr/tesseract/wiki
   - Imagik :  https://www.imagemagick.org
 
+
 ## Modules
 
 The framework provides the following pipeline of modules to support your data and knowledge extraction from both digital and scanned PDF documents, TIFF facsimiles and image captured documents.
 
 #### <span style='color: saddlebrown'>SPLITTER</span>
 
-The [**splitter**](specs/splitter_spec.md) module is the NLP entry point into the pipeline. It consists of a Document and Page class. The Document class handles the splitting of PDF documents into PDF pages, TIFF facsimiles into TIFF pages, OCR and raw text extraction. PDF splitting and image extraction is handled by the open source Artifex’s Ghostscript ©, and TIFF splitting by open source Image Magic’s Magick ©. OCR is handled by the open source Google’s Tesseract ©. The Document object stores the individual PDF/TIFF/image pages and corresponding raw text and optionally page images (when scanned PDF, TIFF or images) in the specified storage path. The splitting process can be done synchronously or asynchronously, where in the latter case an event handler signals when the splitting/OCR has been completed and the page table is accessible.
+The splitter module is the NLP entry point into the pipeline. It consists of a Document and Page class. The Document class handles the splitting of PDF documents into PDF pages, TIFF facsimiles into TIFF pages, OCR and raw text extraction. PDF splitting and image extraction is handled by the open source Artifex’s Ghostscript ©, and TIFF splitting by open source Image Magic’s Magick ©. OCR is handled by the open source Google’s Tesseract ©. The Document object stores the individual PDF/TIFF/image pages and corresponding raw text and optionally page images (when scanned PDF, TIFF or images) in the specified storage path. The splitting process can be done synchronously or asynchronously, where in the latter case an event handler signals when the splitting/OCR has been completed and the page table is accessible.
 
 For OCR, the resolution of the image extraction is settable, which will affect the quality of the OCR, and corresponding processing time. If the resolution of the original scanned page is lower than the setting, it will be up-sampled, and conversely if it is higher it will be down-sampled.
 
 The Page class handles access to the individual pages, via the page table of the document class. Access is provided to the individual PDF, TIFF or image page, the scanned image (when scanned PDF, TIFF or images), raw text and the Natural Language Processing (NLP) processed tokens (when SYNTAX module is installed).
 
-NLP processing of the raw text is deferred until first access (JIT), and then preserved in memory as long as the corresponding page object is referenced. The NLP processed tokens may be further segmented into regions, consisting of tables, paragraphs, columns, etc. when the `SEGMENTATION` module is installed.
+NLP processing of the raw text is deferred until first access (JIT), and then preserved in memory as long as the corresponding page object is referenced. The NLP processed tokens may be further segmented into regions, consisting of tables, paragraphs, columns, etc. when the SEGMENTATION module is installed.
 
-The document and corresponding pages may be classified (i.e., category of the content) when the `CLASSIFICATION` module is installed.
+The document and corresponding pages may be classified (i.e., category of the content) when the CLASSIFICATION module is installed.
+
+[Specification](specs/splitter_spec.docx)
 
 #### <span style='color: saddlebrown'>SYNTAX</span>
 
-The [**syntax**](specs/syntax_spec.md) module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.
+The syntax module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.
 
 The word classifier recognizes:
 
@@ -139,22 +161,29 @@ Dates, numbers and units of measure can be converted to either USA Standard or I
 
 Along with the builtin stemmer and lemmatizer, the module can optionally be configured to use the NLTK (open source) stemmers, lemmatizer and parts of speech annotations.
 
+[Specification](specs/syntax_spec.docx)
+
+
 #### <span style='color: saddlebrown'>SEGMENTATION</span>
 
-The [**segmentation**](specs/segmentation_spec.md) module was introduced as part of the pre-launch of Gap v0.9. It currently is in the demonstration stage, and not ready for commericial-product code ready. The segmentation module examines the whitespace layout of the text to identify 'human' layout of text and corresponding context, such as paragraphs, headings, columns, page numbering, letterhead, etc. The text is then separated into segments based on recognized layout and within the segments the text is NLP preprocessed. In this mode, the NLP preprocessed text is hierarchical. At the top level are the segments, with corresponding segment tag, and the child is the NLP preprocessed text within the segment.
+The segmentation module was introduced as part of the pre-launch of Gap v0.9. It currently is in the demonstration stage, and not ready for commericial-product code ready. The segmentation module examines the whitespace layout of the text to identify 'human' layout of text and corresponding context, such as paragraphs, headings, columns, page numbering, letterhead, etc. The text is then separated into segments based on recognized layout and within the segments the text is NLP preprocessed. In this mode, the NLP preprocessed text is hierarchical. At the top level are the segments, with corresponding segment tag, and the child is the NLP preprocessed text within the segment.
+
+[Specification](specs/segment_spec.docx)
 
 #### <span style='color: saddlebrown'>VISION</span>
 
-The [**splitter**](specs/vision_spec.md) module is the CV entry point into the pipeline. It consists of a Images and Image class. The Images class handles the storage and (random access) batch retrieval of CV machine learning ready data, using open source openCV image processing, numpy high performance arrays (tensors) and HDF5 high performance disk (tensor) access. The Image class handles preprocessing of individual images into CV machine learning ready data. The batch and image preprocessing can be done synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing of an image or batch has been completed and the machine learning ready data is accessible.
+The splitter module is the CV entry point into the pipeline. It consists of a Images and Image class. The Images class handles the storage and (random access) batch retrieval of CV machine learning ready data, using open source openCV image processing, numpy high performance arrays (tensors) and HDF5 high performance disk (tensor) access. The Image class handles preprocessing of individual images into CV machine learning ready data. The batch and image preprocessing can be done synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing of an image or batch has been completed and the machine learning ready data is accessible.
 
 The vision module handles:
 
   - Mixed image size, format, resolution, number of channels
   - Decompression, Resizing, Normalizing, Flattening
 
+[Specification](specs/vision_spec.docx)
+
 ## User's Guide
 
-The User's (Programming) Quick Start Guide can be found [here](quick-start-guide.md)
+The User's (Programming) Quick Start Guide can be found [here](specs/quick%20start%20guide.docx)
 
 ## Releases
 
@@ -213,3 +242,4 @@ Testing with code coverage is executed as follows:
     pytest --cov=vision image_test.py
 
         Statements=456, Missed=60, Percent Covered: 89%
+```
