@@ -103,7 +103,7 @@ To install GapML via setup.py:
       + `git clone git@github.com:andrewferlitsch/Gap.git`
 
   2. install the GapML setup file. 
-      + 'python setup.py install'
+      + `python setup.py install`
 
 ## Modules
 
