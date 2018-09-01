@@ -49,7 +49,7 @@ These are the basic steps for all computer vision based neural networks:
 The **Vision** module of the **Gap** framework implements the classes and methods for computer vision. Within the [Vision](https://github.com/andrewferlitsch/Gap/blob/master/vision.py) module are two primary class objects for data management of images. The `Image` class manages individual images, while the `Images` class manages collections of images. As a first step, in your Python script or program you want to import from the `Vision` module the `Image` and `Images` class objects.
 
 ```python
-from vision import Image, Images
+from gapml.vision import Image, Images
 ```
  
 ### Preprocessing (Preparing) an image with Gap

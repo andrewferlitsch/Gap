@@ -73,7 +73,7 @@ By default, the document will be preprocessed as follows:
 3.	If the document (or page) is an image (e.g., scanned PDF), it will be OCR’d.
 4.	The digital text will be extracted from each page and stored in the `Page` object.
 5.	The text will be optionally segmented into regions if the configuration setting segment is specified.
-6.	The text from each page object will be preprocessed into machine learning ready data (see [**syntax**](specs/syntax_spec.md) module specification), according to the optional parameters and configuration settings.
+6.	The text from each page object will be preprocessed into machine learning ready data (see [**syntax**](syntax_spec.md) module specification), according to the optional parameters and configuration settings.
 7.	If the document was a scanned or image document, the quality of the scan will be estimated, unless `Document.SCANCHECK` is set to zero.
 
 The machine learning ready data will be stored on a per page basis in the directory specified by the parameter dir.

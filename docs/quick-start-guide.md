@@ -30,7 +30,7 @@ To utilize this module, the **Gap** framework will automatically install:
 To load a PDF document, TIFF facsimile or image captured document you create a `Document` (class) object, passing as parameters the path to the PDF/TIFF/image document and a path for storing the split pages/text. Below is a code example.
 
 ```python
-from splitter import Document, Page
+from gapml.splitter import Document, Page
 document = Document("yourdocument.pdf", "storage_path")
 ```
 
@@ -272,7 +272,7 @@ Semantic Classification (e.g., category) of the document and individual pages re
 # Get the classification for the document
 document_classification = document.label
 # Get the classification for each page
-for page in document.pages:
+for gapml.page in document.pages:
     classification = page.label
 ```
 ---
@@ -283,7 +283,7 @@ for page in document.pages:
 The `Words` (class) object does the NLP preprocessing of the extracted (raw) text. If the extracted text is from a `Page` object (see [SPLITTER](#2-splitter-module)), the NLP preprocessing occurs the first time the words property of the `Page` object is accessed.
 
 ```python
-from syntax import Words, Vocabulary
+from gapml.syntax import Words, Vocabulary
 
 # Get the first page in the document
 page = document.pages[0]
@@ -671,7 +671,7 @@ CV preprocessing of images requires the <b style='class:saddlebrown'>VISION</b> 
 To preprocess an image for computer vision machine learning, you create an `Image` (class) object, passing as parameters the path to the image, the corresponding label and a path for storing the preprocessed image data, the original image, optionally a thumbnail, and metadata. The label must be specified as an integer value. Below is a code example.
 
 ```python
-from vision import Image
+from gapml.vision import Image
 image = Image("yourimage.jpg", 101, "storage_path")
 ```
 
@@ -766,7 +766,7 @@ image.load( "myimage.png", "mystorage" )
 To preprocess a collection of images for computer vision machine learning, you create an `Images` (class) object, passing as parameters a list of the paths to the images, a list of the corresponding label and a path for storing the collection of preprocessed image data, the original images and optionally thumbnails. Each label must be specified as an integer value. Below is a code example.
 
 ```python
-from images import Images
+from gapml.images import Images
 images = Images(["image1.jpg", "image2.jpg"], labels=[101, 102], name=' c1')
 ```
 
@@ -922,7 +922,7 @@ When the config option 'segment' is specified on a `Document` object, the corres
 
 ```python
 # import the segmentation module
-from segment import Segment
+from gapml.segment import Segment
 segment = Segment("para 1\n\npara 2")
 print(segment.segments)
 ```
