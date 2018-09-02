@@ -64,7 +64,8 @@ def myHandler(images):
         flatten                 | flat  
         resize=(height,width)   | resize=height,width  
         thumb=(height,width)    | thumb=height,width  
-    nostore		   
+    	nostore
+	raw
 			
 **Usage**
 
@@ -75,18 +76,18 @@ Otherwise, both `images` and `labels` parameters must be specified. The `labels`
 By default, the images will be preprocessed as follows:
 
 1.	An `Image` object is created for each image.
-2.	The `config` parameter passed to the `Image` initializer (constructor) will have the ‘nostore’ setting, which instructs each image object to not separately store the generated preprocessed machine learning ready data.
+2.	The `config` parameter passed to the `Image` initializer (constructor) will have the ‘nostore’ setting, which instructs each `Image` object to not separately store the generated preprocessed machine learning ready data.
 3.	Upon completion, the preprocessed machine learning data for each image is stored as a single HDF5 file in the current working directory, unless the `config` parameter 'nostore' was specified. The root name of the file will be the root name of the first image, preprended with 'collection'. For example, if the first image was `cat.jpg`, then the root name of the HDF5 will be:
 
 ```
 collection.cat.h5
 ```
 
-If either or both the `dir` and `config` options are not None, they are passed down to each `Image` object.
+If either or both the `dir` and `config` options are not `None`, they are passed down to each `Image` object.
 
 If the `name` parameter is specified, the value will be the root name of the HDF5 stored file.
 
-If the `ehandler` parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the `Images` object passed as a parameter. The `ehandler` parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.
+If the `ehandler` parameter is not `None`, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the `Images` object passed as a parameter. The `ehandler` parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.
 
 If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
 
@@ -97,6 +98,7 @@ A `AttributeError` is raised if an invalid configuration setting is specified.
 A `IndexError` is raised if the size of the labels list does not match the size of the images list.
 
 ### 1.3 Images Properties
+
 #### 1.3.1 dir
 
 **Synopsis**
@@ -435,6 +437,7 @@ def myHandler(image, dir):
             resize=(height,width)   | resize=height,width  
             thumb=(height,width)    | thumb=height,width  
             nostore
+	    raw
 
 **Usage**
 
@@ -445,8 +448,9 @@ Otherwise, both `image` and `label` parameters must be specified.  The `label` p
 1.	Decompressed into raw pixel data.
 2.	Converted to RGB, if not already.
 3.	The pixel values are normalized (i.e., pixel integer values 0..255 converted to floating point values between 0 and 1).
-4.	Upon completion, the raw pixel data and the preprocessed machine learning data for the image is stored as a single HDF5 file in the current working directory. The root name of the file will be the root name of the image.
-5.	Attributes of the raw and preprocessed image are stored in the HDF5 file.
+4.	Upon completion, the preprocessed machine learning data for the image is stored as a single HDF5 file in the current working directory. The root name of the file will be the root name of the image.
+5.	If the config setting 'raw' is specified, the raw pixel data for the image is additionally stored in the HDF5 file.
+6.	Attributes of the raw and preprocessed image are stored in the HDF5 file.
 
 If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
 
@@ -464,6 +468,8 @@ If the configuration setting `thumb` is specified, then a thumbnail of the raw p
 
 If the configuration setting `nostore` is specified, then the image data and corresponding metadata are not stored in the HDF5 file.
 
+If the configuration setting `raw` is specirfied, then the raw pixel image data is stored in the HDF5 file.
+
 **Exceptions**
 
 A `TypeError` is raised if the type of the parameter is not the expected type.  
@@ -472,6 +478,7 @@ A `FileNotFoundError` is raised if the image file does not exist.
 A `IOError` is raised if an error occurs reading in the image file.
 
 ### 2.3 Image Properties
+
 #### 2.3.1 image
 
 **Synopsis**
@@ -746,7 +753,8 @@ A `ValueError` is raised if the degree is not between 0 and 360.
 3.	Added support for specifying (min,max,n) for Image Augmentation.
 
 **Gap v0.9.3 (alpha)**
-1. 	Added converting to numpy arrays and one hot encoding of labels for Image split getter
+1. 	Added converting to numpy arrays and one hot encoding of labels for Image split getter.
+2.	Added raw setting to config parameter.
 
 Proprietary Information  
 Copyright ©2018, Epipog, All Rights Reserved
