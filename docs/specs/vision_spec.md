@@ -755,6 +755,7 @@ A `ValueError` is raised if the degree is not between 0 and 360.
 **Gap v0.9.3 (alpha)**
 1. 	Added converting to numpy arrays and one hot encoding of labels for Image split getter.
 2.	Added raw setting to config parameter.
+3.	Added transformation property flatten.
 
 Proprietary Information  
 Copyright ©2018, Epipog, All Rights Reserved
