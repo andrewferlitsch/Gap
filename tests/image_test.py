@@ -1229,6 +1229,27 @@ class MyTest(unittest.TestCase):
         self.assertTrue(len(images[0].raw) > 0 )
         self.assertEqual(images[0].thumb, None )
         os.remove("collection.0_100.h5")
+         
+    def test_126(self):
+        """ Image Constructor - default float32 on normalize """
+        image = Image("files/0_100.jpg", 2)
+        self.assertEquals(type(image.data[0][0][0]), np.float32)
+        os.remove("0_100.h5")
+         
+    def test_127(self):
+        """ Image Constructor - set float on normalize """
+        image = Image("files/0_100.jpg", 2, config=['float16'])
+        self.assertEquals(type(image.data[0][0][0]), np.float16)
+        image = Image("files/0_100.jpg", 2, config=['float32'])
+        self.assertEquals(type(image.data[0][0][0]), np.float32)
+        image = Image("files/0_100.jpg", 2, config=['float64'])
+        self.assertEquals(type(image.data[0][0][0]), np.float64)
+        os.remove("0_100.h5")
+        
+    def test_128(self):
+        """ Image - config setting float invalid """
+        with pytest.raises(AttributeError):
+            image = Image("files/0_100.jpg", 2, config=['float24'])
         
     def done(self, image):
         self.isdone = True

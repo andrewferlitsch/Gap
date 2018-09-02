@@ -53,6 +53,7 @@ class Image(object):
         self._raw       = None      # unprocessed image data in memory
         self._thumb     = None      # thumb image data in memory
         self._time      = 0         # elapse time to do processing
+        self._float     = np.float32    # data type after normalization
         
         if self._debug: print(config)
         
@@ -126,6 +127,15 @@ class Image(object):
                     if not vals[0].isdigit() or not vals[1].isdigit():
                         raise AttributeError("Thumbnail values must be an integer")
                     self._thumbnail = ( int(vals[1]), int(vals[0]) )
+                elif setting.startswith('float'):
+                    if setting == 'float16':
+                        self._float = np.float16
+                    elif setting == 'float32':
+                        self._float = np.float32
+                    elif setting == 'float64':
+                        self._float = np.float64
+                    else:
+                        raise AttributeError("Float values must be float16, float32 or float64")
                 else:
                     raise AttributeError("Setting is not recognized: " + setting)
         
@@ -258,7 +268,12 @@ class Image(object):
         self._shape = image.shape
             
         # Normalize the image (convert pixel values from int range 0 .. 255 to float range 0 .. 1)
-        image = image / 255
+        if self._float == np.float16:
+            image = (image / 255.0).astype(np.float16)
+        elif self._float == np.float64:
+            image = (image / 255.0).astype(np.float64)
+        else:
+            image = (image / 255.0).astype(np.float32)
             
         # Flatten the image into a 1D vector
         if self._flatten:
