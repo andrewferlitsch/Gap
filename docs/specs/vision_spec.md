@@ -64,6 +64,7 @@ def myHandler(images):
         flatten                 | flat  
         resize=(height,width)   | resize=height,width  
         thumb=(height,width)    | thumb=height,width  
+	float=float16		| float32 | float64
     	nostore
 	raw
 			
@@ -393,6 +394,7 @@ images.store()
 This method will store the machine learning ready data (and corresponding metadata) in a HDF5 file. 
  
 ## 2 Image
+
 ### 2.1 Image Overview
 
 The Image CV preprocessor contains the following primary classes, and their relationships:
@@ -436,6 +438,7 @@ def myHandler(image, dir):
             flatten                 | flat  
             resize=(height,width)   | resize=height,width  
             thumb=(height,width)    | thumb=height,width  
+	    float=float16	    | float32 | float64
             nostore
 	    raw
 
@@ -469,6 +472,8 @@ If the configuration setting `thumb` is specified, then a thumbnail of the raw p
 If the configuration setting `nostore` is specified, then the image data and corresponding metadata are not stored in the HDF5 file.
 
 If the configuration setting `raw` is specirfied, then the raw pixel image data is stored in the HDF5 file.
+
+By default, the data type of the preprocessed machine learning ready data is np.float32 (4 bytes per pixel). The data type can be change with the `config` parameter setting `float`, which can be set to either float16 (2 bytes per pixel), float32 (4 bytes per pixel) or float64 (8 bytes per pixel).
 
 **Exceptions**
 
@@ -755,7 +760,8 @@ A `ValueError` is raised if the degree is not between 0 and 360.
 **Gap v0.9.3 (alpha)**
 1. 	Added converting to numpy arrays and one hot encoding of labels for Image split getter.
 2.	Added raw setting to config parameter.
-3.	Added transformation property flatten.
+3. 	Added float setting to config parameter.
+4.	Added transformation property flatten.
 
 Proprietary Information  
 Copyright ©2018, Epipog, All Rights Reserved
