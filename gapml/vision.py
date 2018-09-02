@@ -48,6 +48,7 @@ class Image(object):
         self._flatten   = False     # flatten the data (into 1D vector)
         self._resize    = None      # resize the image
         self._hd5       = True      # store processed image data to hd5 filesystem
+        self._noraw     = True      # config setting for storing raw ata
         self._imgdata   = None      # processed image data in memory
         self._raw       = None      # unprocessed image data in memory
         self._thumb     = None      # thumb image data in memory
@@ -95,6 +96,8 @@ class Image(object):
                     self._flatten = True
                 elif setting in ['nostore']:
                     self._hd5 = False
+                elif setting in ['raw']:
+                    self._noraw = False
                 elif setting.startswith('resize='):
                     toks = setting.split('=')
                     if len(toks) != 2:
@@ -239,7 +242,8 @@ class Image(object):
         if np.any(image == None):
             return None
             
-        self._raw = image   
+        if self._noraw == False:
+            self._raw = image   
 
         # Create the thumbnail
         if self._thumbnail:
@@ -285,7 +289,8 @@ class Image(object):
             imgset.attrs['type']  = self._type
             imgset.attrs['size']  = self._size
             imgset.attrs['type']  = self._type
-            hf.create_dataset("raw", data=[self._raw])
+            if not self._noraw:
+                hf.create_dataset("raw", data=[self._raw])
             try:
                 hf.create_dataset("thumb", data=[self._thumb])
             except: pass
@@ -339,7 +344,9 @@ class Image(object):
             imgset = hf['images']
             self._imgdata =  hf['images'][0]
             self._label   =  hf['labels'][0]
-            self._raw     =  hf['raw'][0]
+            try:
+                self._raw     =  hf['raw'][0]
+            except: pass
             try:
                 self._thumb =  hf['thumb'][0]
             except: pass  
@@ -461,6 +468,7 @@ class Images(object):
         self._nostore  = False      # do not store into HDF5 flag
         self._rotate   = [-90, 90, 1, 1] # rotation parameters for image augmentation
         self._resize   = None       # config setting for resize
+        self._noraw    = True       # config setting for not storing raw data
         self._time     = 0          # processing time
         
         if images is None:
@@ -516,6 +524,8 @@ class Images(object):
             for setting in config:
                 if setting == 'nostore':
                     self._nostore = True
+                elif setting == 'raw':
+                    self._noraw = False
                 elif setting.startswith("resize="):
                     param = setting.split('=')[1]
                     toks  = param.split(',')
@@ -527,6 +537,8 @@ class Images(object):
         # Tell downstream Image objects not to separately store the data
         if self._nostore == False:
             self._config.append("nostore")
+        if self._noraw == False:
+            self._config.append('raw')
         
         # Process collection synchronously
         if ehandler is None:
@@ -586,7 +598,8 @@ class Images(object):
         for img in self._data:
             imgdata.append( img.data )
             clsdata.append( img.label )
-            rawdata.append( img.raw )
+            if img.raw is not None:
+                rawdata.append( img.raw )
             sizdata.append( img.size )
             if img.thumb is not None:
                 thmdata.append( img.thumb )
@@ -686,13 +699,14 @@ class Images(object):
             for i in range(length):
                 image = Image()
                 image._imgdata = hf["images"][i]
-                image._raw = hf["raw" + str(i)][:]
+                try:
+                    image._raw = hf["raw" + str(i)][:]
+                except: pass
                 image._size = hf["size"][i]
                 image._label = hf["labels"][i]
                 try:
                     image._thumb = hf["thumb"][i]
-                except:
-                    pass
+                except: pass
                 image._name  = hf.attrs["names"][i].decode()
                 image._type  = hf.attrs["types"][i].decode()
                 image._image = hf.attrs["paths"][i].decode()

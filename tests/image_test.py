@@ -63,7 +63,7 @@ class MyTest(unittest.TestCase):
 
     def test_009(self):
         """ image properties """
-        image = Image("files/0_100.jpg")
+        image = Image("files/0_100.jpg", config=['raw'])
         self.assertEqual(image.image, "files/0_100.jpg")
         self.assertEqual(image.name, "0_100")
         self.assertEqual(image.type, "jpg")
@@ -78,7 +78,7 @@ class MyTest(unittest.TestCase):
         
     def test_010(self):
         """ image dir is None """
-        image = Image("files/0_100.jpg", dir=None)
+        image = Image("files/0_100.jpg", dir=None, config=['raw'])
         self.assertEqual(image.image, "files/0_100.jpg")
         self.assertTrue(os.path.isfile("0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
@@ -87,7 +87,7 @@ class MyTest(unittest.TestCase):
         
     def test_011(self):
         """ image dir is not-None - nonexist """
-        image = Image("files/0_100.jpg", dir='tmp')
+        image = Image("files/0_100.jpg", dir='tmp', config=['raw'])
         self.assertTrue(os.path.isfile("tmp/0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
         self.assertEqual(image.thumb, None )
@@ -95,7 +95,7 @@ class MyTest(unittest.TestCase):
         
     def test_012(self):
         """ image dir is not-None - exist """
-        image = Image("files/0_100.jpg", dir='tmp')
+        image = Image("files/0_100.jpg", dir='tmp', config=['raw'])
         self.assertTrue(os.path.isfile("tmp/0_100.h5"))
         self.assertTrue(len(image.raw) > 0 )
         self.assertEqual(image.thumb, None )
@@ -109,7 +109,7 @@ class MyTest(unittest.TestCase):
             
     def test_014(self):
         """ label is valid """
-        image = Image("files/0_100.jpg", dir='tmp', label=16)
+        image = Image("files/0_100.jpg", dir='tmp', label=16, config=['raw'])
         self.assertEqual(image.label, 16)
         self.assertTrue(len(image.raw) > 0 )
         self.assertEqual(image.thumb, None )
@@ -127,7 +127,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.shape, (100, 100, 3))
         self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
-        self.assertTrue(len(image.raw) > 0 )
+        self.assertEquals(image.raw, None )
         self.assertEqual(image.thumb, None )
         os.remove("0_100.h5")
             
@@ -142,7 +142,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(image.shape, (100, 100, 3))
         self.assertEqual(image.label, 0)
         self.assertTrue(os.path.isfile("0_100.h5"))
-        self.assertTrue(len(image.raw) > 0 )
+        self.assertEquals(image.raw, None)
         self.assertEqual(image.thumb, None )
         os.remove("0_100.h5")
             
@@ -405,7 +405,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[0].size, 3643)
         self.assertEqual(images[0].shape, (100, 100, 3))
         self.assertEqual(images[0].label, 2)
-        self.assertTrue(len(images[0].raw) > 0 )
+        self.assertEqual(images[0].raw, None )
         self.assertEqual(images[0].thumb, None )
         os.remove("collection.0_100.h5")
         
@@ -424,7 +424,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[1].size, 3574)
         self.assertEqual(images[1].shape, (100, 100, 3))
         self.assertEqual(images[1].label, 2)
-        self.assertTrue(len(images[1].raw) > 0 )
+        self.assertEqual(images[1].raw, None )
         self.assertEqual(images[1].thumb, None)
         self.assertEqual(images.name, 'collection.0_100')
         os.remove("collection.0_100.h5")
@@ -469,7 +469,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(images[1].size, 3574)
         self.assertEqual(images[1].shape, (100, 100, 3))
         self.assertEqual(images[1].label, 2)
-        self.assertTrue(len(images[1].raw) > 0 )
+        self.assertEqual(images[1].raw, None)
         self.assertEqual(images[1].thumb, None)
         self.assertEqual(images.name, 'collection.0_100')
         os.remove("collection.0_100.h5")
@@ -952,7 +952,7 @@ class MyTest(unittest.TestCase):
  
     def test_099(self):
         """ Images - mixed size images """
-        images = Images(['files/1_100.jpg', 'files/text.jpg'], [1,2], config=['resize=(100,100)'])
+        images = Images(['files/1_100.jpg', 'files/text.jpg'], [1,2], config=['resize=(100,100)', 'raw'])
         images = Images()
         images.load('collection.1_100')
         self.assertEquals(len(images), 2)
@@ -1156,7 +1156,7 @@ class MyTest(unittest.TestCase):
         
     def test_119(self):
         """ Images - transform / unflatten - same size """
-        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flat'])
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flat', 'raw'])
         images.flatten = False
         self.assertEquals(images[0].data.shape, (100, 100, 3))
         self.assertEquals(images[1].data.shape, (100, 100, 3))
@@ -1199,6 +1199,36 @@ class MyTest(unittest.TestCase):
         images = Images(['files/0_100.jpg'], 1)
         self.assertTrue(images.time > 0)
         os.remove('collection.0_100.h5')
+        
+    def test_124(self):
+        """ Image - config setting is raw """
+        image = Image("files/0_100.jpg", config=['raw'])
+        self.assertEqual(image.image, "files/0_100.jpg")
+        self.assertEqual(image.name, "0_100")
+        self.assertEqual(image.type, "jpg")
+        self.assertEqual(image.dir, "./")
+        self.assertEqual(image.size, 3643)
+        self.assertEqual(image.shape, (100, 100, 3))
+        self.assertEqual(image.label, 0)
+        self.assertTrue(os.path.isfile("0_100.h5"))
+        self.assertTrue(len(image.raw) > 0 )
+        self.assertEqual(image.thumb, None )
+        os.remove("0_100.h5")
+         
+    def test_125(self):
+        """ Images Constructor - single file """
+        images = Images(["files/0_100.jpg"], labels=[2], config=['raw'])
+        self.assertEqual(len(images), 1)
+        self.assertTrue(os.path.isfile("collection.0_100.h5"))
+        self.assertEqual(images[0].name, "0_100")
+        self.assertEqual(images[0].type, "jpg")
+        self.assertEqual(images[0].dir, "./")
+        self.assertEqual(images[0].size, 3643)
+        self.assertEqual(images[0].shape, (100, 100, 3))
+        self.assertEqual(images[0].label, 2)
+        self.assertTrue(len(images[0].raw) > 0 )
+        self.assertEqual(images[0].thumb, None )
+        os.remove("collection.0_100.h5")
         
     def done(self, image):
         self.isdone = True
