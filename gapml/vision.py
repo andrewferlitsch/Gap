@@ -12,6 +12,7 @@ import copy
 import random
 import requests
 import imutils
+import gc
 
 # Import numpy for the high performance in-memory matrix/array storage and operations.
 import numpy as np
@@ -735,6 +736,8 @@ class Images(object):
                 image._dir   = self._dir
                 self._data.append( image )
             self._labels = hf["labels"][:]
+            
+        gc.collect()
         
     @property
     def split(self):
@@ -939,6 +942,7 @@ class Images(object):
         elif isinstance(image, Images):
             for img in image:
                 self._data.append(img)
+            self._time += image.time
         else:
             raise TypeError("Image(s) expected for image")
 
