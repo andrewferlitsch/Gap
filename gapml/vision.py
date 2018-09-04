@@ -638,13 +638,13 @@ class Images(object):
             hf.create_dataset("size",    data=sizdata)
             try:
                 hf.attrs.create("names", names)
-            except Exception as e: print(e)
+            except Exception as e: print("Warning: metadata names too long to store")
             try:
                 hf.attrs.create("types", types)
-            except Exception as e: print(e)
+            except Exception as e: print("Warning: metadata types too long to store")
             try:
                 hf.attrs.create("paths", paths)
-            except Exception as e: print(e)
+            except Exception as e: print("Warning: metadata paths too long to store")
             
     @property
     def dir(self):
@@ -722,9 +722,15 @@ class Images(object):
                 try:
                     image._thumb = hf["thumb"][i]
                 except: pass
-                image._name  = hf.attrs["names"][i].decode()
-                image._type  = hf.attrs["types"][i].decode()
-                image._image = hf.attrs["paths"][i].decode()
+                try:
+                    image._name  = hf.attrs["names"][i].decode()
+                except: pass
+                try:
+                    image._type  = hf.attrs["types"][i].decode()
+                except: pass
+                try:
+                    image._image = hf.attrs["paths"][i].decode()
+                except: pass
                 image._shape = image._imgdata.shape
                 image._dir   = self._dir
                 self._data.append( image )
