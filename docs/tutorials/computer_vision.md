@@ -430,6 +430,23 @@ In the above example, we used the variable dataset for the combined collection. 
 
 Because the processing and invoking the event handler happen concurrently, there are possible problems including a race condition (i.e., two threads access dataset at the same time), and trashing the internal data (i.e., two threads are combining data at the same time). We solve this by making this operation atomic using Python's thread lock mechanism.
 
+### Size of Preprocessed Machine Learning Ready Data
+
+When preprocessing image data into machine learning ready data, there can be a significant expansion in size. For example, the average size of an (compressed) JPEG flowers sample set (not shown) image is 30K bytes. The compression ratio on these image is as much as 90%. When read in by openCV and decompressed into a raw pixel image, the size typically is 250K bytes. In the raw pixel data, the byte size per pixel is 1 (i.e., 8bits per pixel). When the data is normalized (e.g., divided by 255.0), each pixel becomes represented by a floating point value. By default, the data type is np.float32, which is a 4 byte per pixel representation. Thus, a 250K byte raw pixel image will expand to 1Mb in memory.
+
+The `config` parameter setting `float=` overrides the size of the floating point representation after normalization. We generally recommend maintaining the 32-bit representation (np.float32). A smaller representation, such as a half floating point (np.float16) may expose the model to a vanishing gradient during training, while half the memory size. Some hardware, such as newer NVIDIA GPUs doing 16bit matrix multiplicaiton, have specialized hardware using stochastic rounding to eliminate the vanishing gradient problem. If you have this type of hardware, you can utilize the float16 representation to decrease the memory footprint by 50% and reduce instruction execution by appropriametly 75%. The following are the `float` settings for the `config` parameter:
+
+    float16
+    float32
+    float64
+
+The following is an example usage:
+
+```python
+# Use 16-bit floating point representation per pixel
+images = Images(['flowers_photo/roses'], 1, config=['float16'])
+```
+
 ### Splitting the Collection into Training and Test Data
 
 The first step to training a neural network is to split the collection into training and test data. We will cover some basic cases here.
