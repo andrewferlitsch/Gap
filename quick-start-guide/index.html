@@ -33,7 +33,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-124105572-1', 'https://andrewferlitsch.github.io/Gap/');
+      ga('create', 'UA-124527631-1', 'https://andrewferlitsch.github.io/Gap/');
       ga('send', 'pageview');
   </script>
   
@@ -68,6 +68,11 @@
     <a class="" href="../about/">About</a>
 	    </li>
           
+            <li class="toctree-l1">
+		
+    <a class="" href="../org-os/">Organization</a>
+	    </li>
+          
             <li class="toctree-l1 current">
 		
     <a class="current" href="./">Quick Start Guide</a>
@@ -77,15 +82,15 @@
     
         <ul>
         
-            <li><a class="toctree-l3" href="#1-introduction">1   Introduction</a></li>
+            <li><a class="toctree-l3" href="#1-introduction">1 Introduction</a></li>
         
-            <li><a class="toctree-l3" href="#2-splitter-module">2  SPLITTER Module</a></li>
+            <li><a class="toctree-l3" href="#2-splitter-module">2 SPLITTER Module</a></li>
         
-            <li><a class="toctree-l3" href="#3-syntax-module">3  SYNTAX Module</a></li>
+            <li><a class="toctree-l3" href="#3-syntax-module">3 SYNTAX Module</a></li>
         
-            <li><a class="toctree-l3" href="#4-vision-module">4  VISION Module</a></li>
+            <li><a class="toctree-l3" href="#4-vision-module">4 VISION Module</a></li>
         
-            <li><a class="toctree-l3" href="#5-segmentation-module">5   SEGMENTATION Module</a></li>
+            <li><a class="toctree-l3" href="#5-segmentation-module">5 SEGMENTATION Module</a></li>
         
         </ul>
     
@@ -170,64 +175,51 @@
 <p>Users Guide<br />
 High Precision Natural Language Processing for PDF/TIFF/Image Documents and Computer Vision for Images<br />
 Users Guide, Gap v0.9.2</p>
-<h3 id="1-introduction">1   Introduction</h3>
-<p>The target audience for this users guide are your software developers whom will be integrating the core inner block into your product and/or service. It is not meant to be a complete reference guide or comprehensive tutorial, but a brief get started guide.
-To utilize this module, the Gap framework will automatically install:</p>
-<blockquote>
-<pre><code>1.    This Python module.
-2.    Python 3.6 or latter
-3.    Ghostscript ©(open source from Artifex).    [will auto-install with pip install on Linux/Mac].
-4.    Tesseract ©(open source from Google).       [will auto-install with pip install on Linux/Mac].
-5.    Magick ©(open source from Image Magic).     [will auto-install with pip install on Linux/Mac].
-6.    NLTK Toolkit (open source)                  [will auto-install with pip install].
-7.    Unidecode (open source)                     [will auto-install with pip install].
-8.    HD5 (open source)                           [will auto-install with pip install].
-9.    Numpy (open source)                         [will auto-install with pip install].
-10.   OpenCV (open source)                        [will auto-install with pip install]. 
-11.   Imutils (open source)                       [will auto-install with pip install].
-12.   Pyaspeller (open source)                    [will auto-install with pip install].
+<h2 id="1-introduction">1 Introduction</h2>
+<p>The target audience for this users guide are your software developers whom will be integrating the core inner block into your product and/or service. It is not meant to be a complete reference guide or comprehensive tutorial, but a brief get started guide.</p>
+<p>To utilize this module, the <strong>Gap</strong> framework will automatically install:</p>
+<pre><code>1.  This Python module.
+2.  Python 3.6 or latter
+3.  Ghostscript ©(open source from Artifex).    [will auto-install with pip install].
+4.  Tesseract ©(open source from Google).       [will auto-install with pip install].
+5.  Magick ©(open source from Image Magic).     [will auto-install with pip install].
+6.  NLTK Toolkit (open source)                  [will auto-install with pip install].
+7.  Unidecode (open source)                     [will auto-install with pip install].
+8.  HD5 (open source)                           [will auto-install with pip install].
+9.  Numpy (open source)                         [will auto-install with pip install].
+10. OpenCV (open source)                        [will auto-install with pip install]. 
+11. Imutils (open source)                       [will auto-install with pip install].
 </code></pre>
-</blockquote>
 <hr />
-<h3 id="2-splitter-module">2  SPLITTER Module</h3>
-<h4 id="21-document-loading">2.1  Document Loading</h4>
-<p>To load a PDF document, TIFF facsimile or image captured document you create a Document (class) object, passing as parameters the path to the PDF/TIFF/image document and a path for storing the split pages/text. Below is a code example.</p>
-<pre><code class="python">from splitter import Document, Page
+<h2 id="2-splitter-module">2 SPLITTER Module</h2>
+<h3 id="21-document-loading">2.1 Document Loading</h3>
+<p>To load a PDF document, TIFF facsimile or image captured document you create a <code>Document</code> (class) object, passing as parameters the path to the PDF/TIFF/image document and a path for storing the split pages/text. Below is a code example.</p>
+<pre><code class="python">from gapml.splitter import Document, Page
 document = Document(&quot;yourdocument.pdf&quot;, &quot;storage_path&quot;)
 </code></pre>
 
-<h4 id="22-page-splitting">2.2  Page Splitting</h4>
+<h3 id="22-page-splitting">2.2 Page Splitting</h3>
 <p>Upon instantiating a document object, the corresponding PDF document or TIFF facsimile is automatically split into the corresponding PDF or TIFF pages, utilizing Ghostscript (PDF) and Magick (TIFF). Each PDF/TIFF page will be stored separately in the storage path with the following naming convention:</p>
-<blockquote>
 <pre><code>&lt;document basename&gt;&lt;pageno&gt;.&lt;suffix&gt; , where &lt;suffix&gt; is either pdf or tif
 </code></pre>
-</blockquote>
 <p>The module automatically detects if a PDF document is a digital (text) or scanned PDF (image). For digital documents, the text is extracted directly from the PDF page using Ghostscript and stored separately in the storage path with the following naming convention:</p>
-<blockquote>
 <pre><code>&lt;document basename&gt;&lt;pageno&gt;.txt
 </code></pre>
-</blockquote>
-<h4 id="23-ocr">2.3  OCR</h4>
+<h3 id="23-ocr">2.3 OCR</h3>
 <p>If the document is a scanned PDF, each page image will be extracted using Ghostscript, then OCR using Tesseract to extract the text content from the page image. The page image and corresponding page text are stored separately in the storage path with the following naming convention:</p>
-<blockquote>
 <pre><code>&lt;document basename&gt;&lt;pageno&gt;.png
 &lt;document basename&gt;&lt;pageno&gt;.txt
 </code></pre>
-</blockquote>
 <p>If the document is a TIFF facsimile, each page image will be extracted using Magick, then OCR using Tesseract to extract the text content from the page image. The page image and corresponding page text are stored separately in the storage path with the following naming convention:</p>
-<blockquote>
 <pre><code>&lt;document basename&gt;&lt;pageno&gt;.tif
 &lt;document basename&gt;&lt;pageno&gt;.txt
 </code></pre>
-</blockquote>
 <p>If the document is an image capture (e.g., JPG), the image is OCR using Tesseract to extract the text content from the page image. The page image and corresponding page text are stored separately in the storage path with the following naming convention:</p>
-<blockquote>
 <pre><code>&lt;document basename&gt;&lt;pageno&gt;.&lt;suffix&gt; , where &lt;suffix&gt; is png or jpg
 &lt;document basename&gt;&lt;pageno&gt;.txt
 </code></pre>
-</blockquote>
-<h4 id="24-image-resolution-for-ocr">2.4  Image Resolution for OCR</h4>
-<p>The resolution of the image rendered by Ghostscript from a scanned PDF page will affect the OCR quality and processing time. By default the resolution is set to 300. The resolution can be set for a (or all) documents with the static member RESOLUTION of the Document class. This property only affects the rendering of scanned PDF; it does not affect TIFF facsimile or image capture.</p>
+<h3 id="24-image-resolution-for-ocr">2.4 Image Resolution for OCR</h3>
+<p>The resolution of the image rendered by Ghostscript from a scanned PDF page will affect the OCR quality and processing time. By default the resolution is set to 300. The resolution can be set for a (or all) documents with the static member <code>RESOLUTION</code> of the <code>Document</code> class. This property only affects the rendering of scanned PDF; it does not affect TIFF facsimile or image capture.</p>
 <pre><code class="python"># Set the Resolution of Image Extraction of all scanned PDF pages
 Document.RESOLUTION = 150
 
@@ -235,8 +227,8 @@ Document.RESOLUTION = 150
 document = Document(&quot;scanneddocument.pdf&quot;, &quot;storage_path&quot;)
 </code></pre>
 
-<h4 id="25-page-access">2.5  Page Access</h4>
-<p>Each page is represented by a Page (class) object. Access to the page object is obtained from the pages property member of the Document object. The number of pages in the document is returned by the <code>len()</code> builtin operator for the Document class.</p>
+<h3 id="25-page-access">2.5 Page Access</h3>
+<p>Each page is represented by a <code>Page</code> (class) object. Access to the page object is obtained from the pages property member of the Document object. The number of pages in the document is returned by the <code>len()</code> builtin operator for the <code>Document</code> class.</p>
 <pre><code class="python">document = Document(&quot;yourdocument.pdf&quot;, &quot;storage_path&quot;)
 
 # Get the number of pages in the PDF document
@@ -255,7 +247,7 @@ page1 = document[0]
 page1_path = page1.path
 </code></pre>
 
-<h4 id="26-adding-pages">2.6  Adding Pages</h4>
+<h3 id="26-adding-pages">2.6 Adding Pages</h3>
 <p>Additional pages can be added to the end of an existing Document object using the <code>+=</code> (overridden) operator, where the new page will be fully processed. </p>
 <pre><code class="python">document = Document(&quot;1page.pdf&quot;)
 
@@ -272,8 +264,8 @@ document += new_page
 print(len(document))
 </code></pre>
 
-<h4 id="27-text-extraction">2.7  Text Extraction</h4>
-<p>The raw text for the page is obtained by the text property of the page class. The byte size of the raw text is obtained from the <code>size()</code> method of the page class.</p>
+<h3 id="27-text-extraction">2.7 Text Extraction</h3>
+<p>The raw text for the page is obtained by the text property of the page class. The byte size of the raw text is obtained from the <code>size()</code> method of the <code>Page</code> class.</p>
 <pre><code class="python"># Get the page table
 pages = document.pages
 
@@ -287,13 +279,13 @@ bytes = page1.size()
 text = page1.text
 </code></pre>
 
-<p>The property scanned is set to True if the text was extracted using OCR; otherwise it is false (i.e., origin was digital text). The property additionally returns a second value which is the estimated quality of the scan as a percentage (between 0 and 1).</p>
+<p>The property <code>scanned</code> is set to True if the text was extracted using OCR; otherwise it is false (i.e., origin was digital text). The property additionally returns a second value which is the estimated quality of the scan as a percentage (between 0 and 1).</p>
 <pre><code class="python"># Determine if text extraction was obtained by OCR
 scanned, quality = document.scanned
 </code></pre>
 
-<h4 id="28-asynchronous-processing">2.8  Asynchronous Processing</h4>
-<p>To enhance concurrent execution between a main thread and worker activities, the Document class supports asynchronous processing of the document (i.e., Page Splitting, OCR and Text Extraction). Asynchronous processing will occur if the optional parameter ehandler is set when instantiating the Document object. Upon completion of the processing, the ehandler is called, where the Document object is passed as a parameter.</p>
+<h3 id="28-asynchronous-processing">2.8 Asynchronous Processing</h3>
+<p>To enhance concurrent execution between a main thread and worker activities, the <code>Document</code> class supports asynchronous processing of the document (i.e., Page Splitting, OCR and Text Extraction). Asynchronous processing will occur if the optional parameter ehandler is set when instantiating the Document object. Upon completion of the processing, the ehandler is called, where the <code>Document</code> object is passed as a parameter.</p>
 <pre><code class="python">def done(d):
     &quot;&quot;&quot; Event Handler for when processing of document is completed &quot;&quot;&quot;
     print(&quot;DONE&quot;, d.document)
@@ -302,8 +294,8 @@ scanned, quality = document.scanned
 document = Document(&quot;yourdocument.pdf&quot;, &quot;storage_path&quot;, ehandler=done)
 </code></pre>
 
-<h4 id="29-nlp-preprocessing-of-the-text">2.9  NLP Preprocessing of the Text</h4>
-<p>NLP preprocessing of the text requires the SYNTAX module. The processing of the raw text into NLP sequenced tokens (syntax) is deferred and is executed in a JIT (Just in Time) principle. If installed, the NLP sequenced tokens are access through the words property of the Page class. The first time the property is accessed for a page, the raw text is preprocessed, and then retained in memory for subsequent access.</p>
+<h3 id="29-nlp-preprocessing-of-the-text">2.9 NLP Preprocessing of the Text</h3>
+<p>NLP preprocessing of the text requires the <b style='class:saddlebrown'>SYNTAX</b> module. The processing of the raw text into NLP sequenced tokens (syntax) is deferred and is executed in a JIT (Just in Time) principle. If installed, the NLP sequenced tokens are access through the <code>words</code> property of the <code>Page</code> class. The first time the property is accessed for a page, the raw text is preprocessed, and then retained in memory for subsequent access.</p>
 <pre><code class="python"># Get the page table
 pages = document.pages
 
@@ -315,12 +307,10 @@ words = page1.words
 </code></pre>
 
 <p>The NLP preprocessed text is stored separately in the storage path with the following naming convention:</p>
-<blockquote>
-<pre><code> &lt;document basename&gt;&lt;pageno&gt;.json
+<pre><code>&lt;document basename&gt;&lt;pageno&gt;.json
 </code></pre>
-</blockquote>
-<h4 id="210-nlp-preprocessing-settings-config">2.10  NLP Preprocessing Settings (Config)</h4>
-<p>NLP Preprocessing of the text may be configured for several settings  when instantiating a Document object with the optional config parameter, which consists of a list of one or more predefined options.</p>
+<h3 id="210-nlp-preprocessing-settings-config">2.10 NLP Preprocessing Settings (Config)</h3>
+<p>NLP Preprocessing of the text may be configured for several settings  when instantiating a <code>Document</code> object with the optional <code>config</code> parameter, which consists of a list of one or more predefined options.</p>
 <pre><code class="python">document = Document(&quot;yourdocument.pdf&quot;, &quot;storage_path&quot;, config=[options])
 # options:
 bare                     # do bare tokenization
@@ -330,12 +320,12 @@ stem = internal     |    # use builtin stemmer
        lancaster    |    # use NLTK Lancaster stemmer
        lemma        |    # use NLTK WordNet lemmatizer
        nostem            # no stemming
-pos             # Tag each word with NLTK parts of speech
-roman           # Romanize latin-1 character encodings into ASCII
+pos                      # Tag each word with NLTK parts of speech
+roman                    # Romanize latin-1 character encodings into ASCII
 </code></pre>
 
-<h4 id="211-document-reloading">2.11  Document Reloading</h4>
-<p>Once a Document object has been stored, it can later be retrieved from storage, reconstructing the Page and corresponding Words objects. A document object is first instantiated, and then the <code>load()</code> method is called specifying the document name and corresponding storage path. The document name and storage path are used to identify and locate the corresponding stored pages.</p>
+<h3 id="211-document-reloading">2.11 Document Reloading</h3>
+<p>Once a <code>Document</code> object has been stored, it can later be retrieved from storage, reconstructing the <code>Page</code> and corresponding <code>Words</code> objects. A document object is first instantiated, and then the <code>load()</code> method is called specifying the document name and corresponding storage path. The document name and storage path are used to identify and locate the corresponding stored pages.</p>
 <pre><code class="python"># Instantiate a Document object
 document = Document()
 
@@ -343,75 +333,67 @@ document = Document()
 document.load( &quot;mydoc.pdf&quot;, &quot;mystorage&quot; )
 </code></pre>
 
-<p>This will reload pages whose filenames in the storage match the sequence:</p>
-<blockquote>
-<pre><code>mystorage/mydoc1.json
-mystorage/mydoc2.json
+<p>This will reload pages whose filenames in the storage match the sequence:  </p>
+<pre><code>mystorage/mydoc1.json  
+mystorage/mydoc2.json  
 ...
 </code></pre>
-</blockquote>
-<h4 id="213-word-frequency-distributions">2.13  Word Frequency Distributions</h4>
+<h3 id="212-word-frequency-distributions">2.12 Word Frequency Distributions</h3>
 <p>The distribution of word occurrences and percentage in a document and individual pages are obtained using the properties: <code>bagOfWords</code>, <code>freqDist</code>, and <code>termFreq</code>.</p>
-<p>The bagOfWords property returns an unordered dictionary of each unique word in the document (or page) as a key, and the number of occurrences as the value.</p>
+<p>The <code>bagOfWords</code> property returns an unordered dictionary of each unique word in the document (or page) as a key, and the number of occurrences as the value.</p>
 <pre><code class="python"># Get the bag of words for the document
 bow = document.bagOfWords
 print(bow)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>{ '&lt;word&gt;': &lt;no. of occurrences&gt;, '&lt;word&gt;':  &lt;no. of occurrences&gt;, … }
 e.g., { 'plan': 20, 'medical': 31, 'doctor': 2, … }
 </code></pre>
-</blockquote>
 <pre><code class="python"># Get the bag of words for each page in the document
 for page in document.pages:
     bow = page.bagOfWords
 </code></pre>
 
-<p>The freqDist property returns a sorted list of each unique word in the document (or page), as a tuple of the word and number of occurrences, sorted by the number of occurrences in descending order.</p>
+<p>The <code>freqDist</code> property returns a sorted list of each unique word in the document (or page), as a tuple of the word and number of occurrences, sorted by the number of occurrences in descending order.</p>
 <pre><code class="python"># Get the word frequency (count) distribution for the document
 count = document.freqDist
 print(count)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>[ ('&lt;word&gt;', &lt;no. of occurrences&gt;), ('&lt;word&gt;':  &lt;no. of occurrences&gt;), … ] 
 e.g., [ ('medical', 31), ('plan', 20), …, ('doctor', 2), … ]
 </code></pre>
-</blockquote>
 <pre><code class="python"># Get the word frequency distribution for each page in the document
 for page in document.pages:
     count = page.freqDist
 </code></pre>
 
-<p>The termFreq property returns a sorted list of each unique word in the document (or page), as a tuple of the word and the percentage it occurs in the document, sorted by the percentage in descending order. </p>
+<p>The <code>termFreq</code> property returns a sorted list of each unique word in the document (or page), as a tuple of the word and the percentage it occurs in the document, sorted by the percentage in descending order. </p>
 <pre><code class="python"># Get the term frequency (TF) distribution for the document
 tf = document.freqDist
 print(tf)
 </code></pre>
 
 <p>will output: </p>
-<blockquote>
 <pre><code>[ ('&lt;word&gt;', &lt;percent&gt;), ('&lt;word&gt;':  &lt;percent&gt;), … ] 
 e.g., [ ('medical', 0.02), ('plan', 0.015), … ]
 </code></pre>
-</blockquote>
-<h4 id="214-document-and-page-classification">2.14  Document and Page Classification</h4>
-<p>Semantic Classification (e.g., category) of the document and individual pages requires the CLASSIFICATION module. The classification is deferred and is executed in a JIT (Just in Time) principle. If installed, the classification is access through the classification property of the document and page classes, respectively. The first time the property is accessed for a document or page, the NLP sequenced tokens for each page are processed for classification of the content of individual pages and the first page is further processed for the classification of the content of the entire document.</p>
+<h3 id="213-document-and-page-classification">2.13 Document and Page Classification</h3>
+<p>Semantic Classification (e.g., category) of the document and individual pages requires the <b style='color:saddlebrown'>CLASSIFICATION</b> module. The classification is deferred and is executed in a JIT (Just in Time) principle. If installed, the classification is access through the classification property of the document and page classes, respectively. The first time the property is accessed for a document or page, the NLP sequenced tokens for each page are processed for classification of the content of individual pages and the first page is further processed for the classification of the content of the entire document.</p>
 <pre><code class="python"># Get the classification for the document
 document_classification = document.label
 # Get the classification for each page
-for page in document.pages:
+for gapml.page in document.pages:
     classification = page.label
 </code></pre>
 
 <hr />
-<h3 id="3-syntax-module">3  SYNTAX Module</h3>
-<h4 id="31-nlp-processing">3.1  NLP Processing</h4>
-<p>The Words (class) object does the NLP preprocessing of the extracted (raw) text. If the extracted text is from a Page object (see SPLITTER), the NLP preprocessing occurs the first time the words property of the Page object is accessed.</p>
-<pre><code class="python">from syntax import Words, Vocabulary
+<h2 id="3-syntax-module">3 SYNTAX Module</h2>
+<h3 id="31-nlp-processing">3.1 NLP Processing</h3>
+<p>The <code>Words</code> (class) object does the NLP preprocessing of the extracted (raw) text. If the extracted text is from a <code>Page</code> object (see <a href="#2-splitter-module">SPLITTER</a>), the NLP preprocessing occurs the first time the words property of the <code>Page</code> object is accessed.</p>
+<pre><code class="python">from gapml.syntax import Words, Vocabulary
 
 # Get the first page in the document
 page = document.pages[0]
@@ -426,32 +408,34 @@ words = page.words
 type(words)
 </code></pre>
 
-<h4 id="32-words-properties">3.2  Words Properties</h4>
-<p>The Words (class) object has four public properties: <code>text</code>, <code>words</code>, <code>bagOfWords</code>, and <code>freqDist</code>. The text property is used to access the raw text and the words property is used to access the NLP processed tokens from the raw text.   </p>
+<h3 id="32-words-properties">3.2 Words Properties</h3>
+<p>The <code>Words</code> (class) object has four public properties: <code>text</code>, <code>words</code>, <code>bagOfWords</code>, and <code>freqDist</code>. The <code>text</code> property is used to access the raw text and the words property is used to access the NLP processed tokens from the raw text.   </p>
 <pre><code class="python"># Get the NLP processed words (Words class) object from the page as a list.
 words = page.words
 
 # Get the original (raw) text as a string
 text = words.text
+</code></pre>
 
-# Get the NLP processed words from the original text as a Python list.
+<p>The <code>words</code> property is used to access NLP preprocessed list of words.</p>
+<pre><code class="python"># Get the NLP processed words from the original text as a Python list.
 words = words.words
 
 # Print the object type of words =&gt; &lt;class 'list'&gt;
 type(words)
 </code></pre>
 
-<p>The bagOfWords and freqDist properties are explained later in the guide.</p>
-<h4 id="33-vocabulary-dictionary">3.3  Vocabulary Dictionary</h4>
-<p>The words property returns a sequenced Python list of words as a dictionary from the Vocabulary class. Each word in the list is of the dictionary format:</p>
+<p>The <code>bagOfWords</code> and <code>freqDist</code> properties are explained later in the guide.</p>
+<h3 id="33-vocabulary-dictionary">3.3 Vocabulary Dictionary</h3>
+<p>The <code>words</code> property returns a sequenced Python list of words as a dictionary from the <code>Vocabulary</code> class. Each word in the list is of the dictionary format:</p>
 <pre><code class="python">{ 'word'  : word, # The stemmed version of the word
   'lemma' : word, # The lemma version of the word
   'tag'   : tag   # The word classification
 }
 </code></pre>
 
-<h4 id="34-traversing-the-nlp-processed-words">3.4   Traversing the NLP Processed Words</h4>
-<p>The NLP processed words returned from the words property are sequenced in the same order as the original text. All punctuation is removed, and except for detected Acronyms, all remaining words are lowercased. The sequenced list of words may be a subset of the original words, depending on the stopwords properties and may be stemmed, lemma, or replaced.</p>
+<h3 id="34-traversing-the-nlp-processed-words">3.4 Traversing the NLP Processed Words</h3>
+<p>The NLP processed words returned from the <code>words</code> property are sequenced in the same order as the original text. All punctuation is removed, and except for detected Acronyms, all remaining words are lowercased. The sequenced list of words may be a subset of the original words, depending on the stopwords properties and may be stemmed, lemma, or replaced.</p>
 <pre><code class="python"># Get the NLP processed words from the original text as a Python list.
 words = words.words
 
@@ -462,9 +446,9 @@ for word in words:
     lemma  = word.lemma # The lemma version of the word
 </code></pre>
 
-<h4 id="35-stopwords">3.5  Stopwords</h4>
-<p>The properties which determine which words are removed, stemmed, lemmatized, or replaced are set as keyword parameters in the constructor for the Words class. If no keyword parameters are specified, then all stopwords are removed after being stemmed/lemmatized. The list of stopwords is a superset of the Porter list and additionally includes removing additionally syntactical constructs such as numbers, dates, etc. For a complete list, see the reference manual.</p>
-<p>If the keyword parameter stopwords is set to False, then all word removal is disabled, while stemming/lemmatization/reducing are still enabled, along with the removal of punctuation. Note in the example below, while stopwords is disabled, the word jumping is replaced with its stem jump.</p>
+<h3 id="35-stopwords">3.5 Stopwords</h3>
+<p>The properties which determine which words are removed, stemmed, lemmatized, or replaced are set as keyword parameters in the constructor for the <code>Words</code> class. If no keyword parameters are specified, then all stopwords are removed after being stemmed/lemmatized. The list of stopwords is a superset of the Porter list and additionally includes removing additionally syntactical constructs such as numbers, dates, etc. For a complete list, see the reference manual.</p>
+<p>If the keyword parameter <code>stopwords</code> is set to <code>False</code>, then all word removal is disabled, while stemming/lemmatization/reducing are still enabled, along with the removal of punctuation. Note in the example below, while stopwords is disabled, the word jumping is replaced with its stem jump.</p>
 <pre><code class="python"># No stopword removal
 words = Words(&quot;The lazy brown fox jumped over the fence.&quot;, stopwords=False)
 # words =&gt; &quot;the&quot;, &quot;lazy&quot;, &quot;brown&quot;, &quot;fox&quot;, &quot;jump&quot;, &quot;over&quot;, &quot;the&quot;, &quot;fence&quot;
@@ -474,121 +458,107 @@ words = Words(&quot;The lazy brown fox jumped over the fence.&quot;, stopwords=T
 # words =&gt; &quot;lazy&quot;, &quot;brown&quot;, &quot;fox&quot;, &quot;jump&quot;, &quot;fence&quot;
 </code></pre>
 
-<h4 id="36-bare">3.6  Bare</h4>
-<p>When the keyword parameter bare is True, all stopword removal, stemming/lemmatization/reducing ad punctuation removal are disabled. </p>
+<h3 id="36-bare">3.6 Bare</h3>
+<p>When the keyword parameter <code>bare</code> is <code>True</code>, all stopword removal, stemming/lemmatization/reducing and punctuation removal are disabled. </p>
 <pre><code class="python"># Bare Mode
 words = Words(&quot;The lazy brown fox jumped over the fence.&quot;, bare=False)
 # words =&gt; &quot;the&quot;, &quot;lazy&quot;, &quot;brown&quot;, &quot;fox&quot;, &quot;jumped&quot;, &quot;over&quot;, &quot;the&quot;, &quot;fence&quot;, &quot;.&quot;
 </code></pre>
 
-<h4 id="37-numbers">3.7  Numbers</h4>
-<p>When the keyword parameter number is True, text and numeric version of numbers are preserved; otherwise they are removed. Numbers which are text based (e.g., one) are converted to their numeric representation (e.g., one =&gt; 1). The tag value for numbers is set to <code>Vocabulary.NUMBER</code>.</p>
+<h3 id="37-numbers">3.7 Numbers</h3>
+<p>When the keyword parameter <code>number</code> is <code>True</code>, text and numeric version of numbers are preserved; otherwise they are removed. Numbers which are text based (e.g., one) are converted to their numeric representation (e.g., one =&gt; 1). The tag value for numbers is set to <code>Vocabulary.NUMBER</code>.</p>
 <pre><code class="python"># keep/replace numbers
 words = Words(&quot;one twenty-one 33.7 1/4&quot;, number=True)
 print(words.words)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>[
 { 'word': '1',  tag: Vocabulary.NUMBER },
-{  'word': '21', tag: Vocabulary.NUMBER },
+{ 'word': '21', tag: Vocabulary.NUMBER },
 { 'word': '33.7', tag: tag: Vocabulary.NUMBER },
 { 'word': '0.25', tag: tag: Vocabulary.NUMBER },
 ]
 </code></pre>
-</blockquote>
 <p>If a number is followed by a text representation of a multiplier unit (i.e., million), the number and multiplier unit are replaced by the multiplied value.</p>
 <pre><code class="python">words = Words(&quot;two million&quot;, number=True)
 print(words.words)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>[
 { 'word': '2000000',  tag: Vocabulary.NUMBER}, 
 ]
 </code></pre>
-</blockquote>
-<h4 id="38-unit-of-measurement">3.8  Unit of Measurement</h4>
-<p>When the keyword parameter unit is True, US Standard and Metric units of measurement are preserved; otherwise they are removed. Both US and EU spelling of metric units are recognized (e.g., meter/metre, liter/litre). The tag value for units of measurement is set to <code>Vocabulary.UNIT</code>.</p>
+<h3 id="38-unit-of-measurement">3.8 Unit of Measurement</h3>
+<p>When the keyword parameter <code>unit</code> is <code>True</code>, US Standard and Metric units of measurement are preserved; otherwise they are removed. Both US and EU spelling of metric units are recognized (e.g., meter/metre, liter/litre). The tag value for units of measurement is set to <code>Vocabulary.UNIT</code>.</p>
 <pre><code class="python"># keep/replace unit
 words = Words(&quot;10 liters&quot;, number=True, unit=True) 
 print(words.words)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>[
 { 'word': '10',  tag: Vocabulary.NUMBER }, 
 { 'word': 'liter',  tag: Vocabulary.UNIT },
 ]
 </code></pre>
-</blockquote>
-<h4 id="39-standard-vs-metric">3.9  Standard vs. Metric</h4>
-<p>When the keyword parameter standard is True, Metric units of measurement are converted to US Standard. When the keyword parameter metric is True, Standard units of measurement are converted to Metric Standard.</p>
+<h3 id="39-standard-vs-metric">3.9 Standard vs. Metric</h3>
+<p>When the keyword parameter <code>standard</code> is <code>True</code>, Metric units of measurement are converted to US Standard. When the keyword parameter <code>metric</code> is <code>True</code>, Standard units of measurement are converted to Metric Standard.</p>
 <pre><code class="python"># keep/replace unit
 words = Words(&quot;10 liters&quot;, number=True, unit=True standard=True) 
 print(words.words)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>[
 { 'word': '2.64172',  tag: Vocabulary.NUMBER }, 
 { 'word': 'gallon',  tag: Vocabulary.UNIT },
 ]
 </code></pre>
-</blockquote>
-<h4 id="310-date">3.10 Date</h4>
-<p>When the keyword parameter date is True, USA and ISO standard date representation and text representation of dates are preserved; otherwise they are removed. Dates are converted to the ISO standard and the tag value is set to <code>Vocabulary.DATE</code>.</p>
+<h3 id="310-date">3.10 Date</h3>
+<p>When the keyword parameter <code>date</code> is <code>True</code>, USA and ISO standard date representation and text representation of dates are preserved; otherwise they are removed. Dates are converted to the ISO standard and the tag value is set to <code>Vocabulary.DATE</code>.</p>
 <pre><code class="python"># keep/replace dates
 words = Words(&quot;Jan 2, 2017 and 01/02/2017&quot;, date=True)
 print(words.words)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>[
 { 'word': '2017-01-02',  tag: Vocabulary.DATE }, 
 { 'word': '2017-01-02',  tag: Vocabulary.DATE },
 ]
 </code></pre>
-</blockquote>
-<h4 id="311-date-of-birth">3.11 Date of Birth</h4>
-<p>When the keyword parameter dob is True, date of births are preserved; otherwise they are removed. Date of births are converted to the ISO standard and the tag value is set to <code>Vocabulary.DOB</code>.</p>
+<h3 id="311-date-of-birth">3.11 Date of Birth</h3>
+<p>When the keyword parameter <code>dob</code> is <code>True</code>, date of births are preserved; otherwise they are removed. Date of births are converted to the ISO standard and the tag value is set to <code>Vocabulary.DOB</code>.</p>
 <pre><code class="python"># keep/replace dates
 words = Words(&quot;Date of Birth:  Jan. 2 2017   DOB:  01-02-2017&quot;, dob=True)
 print(words.words)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>[
 { 'word': '2017-01-02',  tag: Vocabulary.DOB }, 
 { 'word': '2017-01-02',  tag: Vocabulary.DOB },
 ]
 </code></pre>
-</blockquote>
-<p>If date is set to True without date of birth set to True, date of births will be removed while other dates will be preserved.
+<p>If <code>dat</code>e is set to <code>True</code> without <code>dob</code> (date of birth) set to <code>True</code>, date of births will be removed while other dates will be preserved.
  </p>
-<h4 id="312-social-security-number">3.12  Social Security Number</h4>
-<p>When the keyword parameter ssn is True, USA Social Security numbers are preserved; otherwise they are removed. Social Security numbers are detected from the prefix presence of text sequences indicating a Social Security number will follow, such as SSN, Soc. Sec., Social Security, etc. Social Security numbers are converted to their single 9 digit value and the tag value is set to <code>Vocabulary.SSN</code>.</p>
+<h3 id="312-social-security-number">3.12 Social Security Number</h3>
+<p>When the keyword parameter <code>ssn</code> is <code>True</code>, USA Social Security numbers are preserved; otherwise they are removed. Social Security numbers are detected from the prefix presence of text sequences indicating a Social Security number will follow, such as SSN, Soc. Sec., Social Security, etc. Social Security numbers are converted to their single 9 digit value and the tag value is set to <code>Vocabulary.SSN</code>.</p>
 <pre><code class="python"># keep/replace dates
 words = Words(&quot;SSN:  12-123-1234 Social Security 12 123 1234&quot;, ssn=True)
 print(words.words)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>[
 { 'word': '121231234',  tag: Vocabulary.SSN }, 
 { 'word': '121231234',  tag: Vocabulary.SSN },
 ]
 </code></pre>
-</blockquote>
-<h4 id="313-telephone-number">3.13  Telephone Number</h4>
-<p>When the keyword parameter telephone is True, USA/CA telephone numbers are preserved; otherwise they are removed. Telephone numbers are detected from the prefix presence of text sequences indicating a telephone number will follow, such Phone:, Mobile Number, etc. Telephone numbers are converted to their single 10 digit value, inclusive of area code, and the tag value is set to one of:</p>
+<h3 id="313-telephone-number">3.13 Telephone Number</h3>
+<p>When the keyword parameter <code>telephone</code> is <code>True</code>, USA/CA telephone numbers are preserved; otherwise they are removed. Telephone numbers are detected from the prefix presence of text sequences indicating a telephone number will follow, such Phone:, Mobile Number, etc. Telephone numbers are converted to their single 10 digit value, inclusive of area code, and the tag value is set to one of:</p>
 <pre><code class="python">Vocabulary.TELEPHONE
 Vocabulary.TELEPHONE_HOME
 Vocabulary.TELEPHONE_WORK
@@ -602,34 +572,30 @@ print(words.words)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>[
 { 'word': '3601231234',  tag: Vocabulary.TELEPHONE }, 
 { 'word': '3601231234',  tag: Vocabulary.TELEPHONE_WORK},
 ]
 </code></pre>
-</blockquote>
-<h4 id="314-address">3.14  Address</h4>
-<p>When the keyword parameter address is True, USA/CA street and postal addresses are preserved; otherwise they are removed. Each component in the address is tagged according to the above street/postal address component type, as follows:</p>
-<blockquote>
-<pre><code>•  Postal Box        (Vocabulary.POB)
-•  Street Number     (Vocabuary.STREET_NUM)
-•  Street Direction  (Vocabuary.STREET_DIR)
-•  Street Name       (Vocabuary.STREET_NAME)
-•  Street Type       (Vocabuary.STREET_TYPE)
-•  Secondary Address (Vocabuary.STREET_ADDR2)
-•  City              (Vocabulary.CITY)
-•  State             (Vocabulary.STATE)
-•  Postal            (Vocabulary.POSTAL)
-</code></pre>
-</blockquote>
+<h3 id="314-address">3.14 Address</h3>
+<p>When the keyword parameter <code>address</code> is <code>True</code>, USA/CA street and postal addresses are preserved; otherwise they are removed. Each component in the address is tagged according to the above street/postal address component type, as follows:</p>
+<ul>
+<li>Postal Box        (Vocabulary.POB)</li>
+<li>Street Number     (Vocabuary.STREET_NUM)</li>
+<li>Street Direction  (Vocabuary.STREET_DIR)</li>
+<li>Street Name       (Vocabuary.STREET_NAME)</li>
+<li>Street Type       (Vocabuary.STREET_TYPE)</li>
+<li>Secondary Address (Vocabuary.STREET_ADDR2)</li>
+<li>City              (Vocabulary.CITY)</li>
+<li>State             (Vocabulary.STATE)</li>
+<li>Postal            (Vocabulary.POSTAL)</li>
+</ul>
 <pre><code class="python"># keep/replace street addresses
 words = Words(&quot;12 S.E. Main Ave, Seattle, WA&quot;, gender=True) 
 print(words.words)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>[
 { 'word': '12',  tag: Vocabulary.STREET_NUM }, 
 { 'word': 'southeast',  tag: Vocabulary.STREET_DIR }, 
@@ -639,16 +605,14 @@ print(words.words)
 { 'word': 'ISO316-2:US-WA',  tag: Vocabulary.STATE }, 
 ]
 </code></pre>
-</blockquote>
-<h4 id="315-gender">3.15  Gender</h4>
-<p>When the keyword parameter gender is True, words indicating gender are preserved; otherwise they are removed. Transgender is inclusive in the recognition. The tag value is set to one of <code>Vocabulary.MALE</code>, <code>Vocabulary.FEMALE</code> or <code>Vocabulary.TRANSGENDER</code>.</p>
+<h3 id="315-gender">3.15 Gender</h3>
+<p>When the keyword parameter <code>gender</code> is <code>True</code>, words indicating gender are preserved; otherwise they are removed. Transgender is inclusive in the recognition. The tag value is set to one of <code>Vocabulary.MALE</code>, <code>Vocabulary.FEMALE</code> or <code>Vocabulary.TRANSGENDER</code>.</p>
 <pre><code class="python"># keep/replace gender indicating words
 words = Words(&quot;man uncle mother women tg&quot;, gender=True)
 print(words.words)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>[
 { 'word': 'man',  tag: Vocabulary.MALE }, 
 { 'word': 'uncle',  tag: Vocabulary.MALE }, 
@@ -657,66 +621,56 @@ print(words.words)
 { 'word': 'transgender',  tag: Vocabulary.TRANSGENDER },
 ]
 </code></pre>
-</blockquote>
-<h4 id="316-sentiment">3.16  Sentiment</h4>
-<p>When the keyword parameter sentiment is True, word and word phrases indicating sentiment are preserved; otherwise they are removed. Sentiment phrases are reduced to the single primary word indicating the sentiment and the tag value is set to either <code>Vocabulary.POSITIVE</code> or <code>Vocabulary.NEGATIVE</code>.</p>
+<h3 id="316-sentiment">3.16 Sentiment</h3>
+<p>When the keyword parameter <code>sentiment</code> is True, word and word phrases indicating sentiment are preserved; otherwise they are removed. Sentiment phrases are reduced to the single primary word indicating the sentiment and the tag value is set to either <code>Vocabulary.POSITIVE</code> or <code>Vocabulary.NEGATIVE</code>.</p>
 <pre><code class="python"># keep/replace sentiment indicating phrases
 words = Words(&quot;the food was not good&quot;, sentiment=True)
 print(words.words) 
 </code></pre>
 
-<p>will output: </p>
-<blockquote>
-<pre><code>[
-{ 'word': 'food',  tag: Vocabulary.UNTAG },
-{ 'word': 'not',  tag: Vocabulary.NEGATIVE},
-]
-</code></pre>
-</blockquote>
-<h4 id="317-spell-checking">3.17  Spell Checking</h4>
-<p>When the keyword parameter spell is True, each tokenized word is looked up in the pyaspeller word dictionary. If the word is not found (presumed misspelled) and the pyaspeller recommends a safe replacement, the word is replaced with the pyaspeller's safe replacement. The spell check/replacement occurs prior to stemming, lemmatizing, and stopword removal.</p>
+<p>will output: 
+    [
+    { 'word': 'food',  tag: Vocabulary.UNTAG },
+    { 'word': 'not',  tag: Vocabulary.NEGATIVE},
+    ]</p>
+<h3 id="317-spell-checking">3.17 Spell Checking</h3>
+<p>When the keyword parameter <code>spell</code> is set to one of 'en', 'es', 'fr', 'de', or 'it', each tokenized word is looked up in the builtin Norvig speller for the corresponding language (e.g., en = English). If the word is not found (presumed misspelled) and the Norvig recommends a replacement, the word is replaced with the Norvig replacement. The spell check/replacement occurs prior to stemming, lemmatizing, and stopword removal.</p>
 <pre><code class="python"># add parts of speech tagging
-words = Words(&quot;mispelled&quot;, spell=True) 
+words = Words(&quot;mispelled&quot;, spell='en') 
 print(words.words)
 </code></pre>
 
 <p>will output: </p>
-<blockquote>
 <pre><code>[
 { 'word': 'misspell',  'tag': Vocabulary.UNTAG},
 ]
 </code></pre>
-</blockquote>
-<h4 id="318-parts-of-speech">3.18  Parts of Speech</h4>
-<p>When the keyword parameter pos is True, each tokenized word is further annotated with it's corresponding NLTK parts of speech tag.</p>
+<h3 id="318-parts-of-speech">3.18 Parts of Speech</h3>
+<p>When the keyword parameter <code>pos</code> is <code>True</code>, each tokenized word is further annotated with it's corresponding NLTK parts of speech tag.</p>
 <pre><code class="python"># add parts of speech tagging
 words = Words(&quot;Jim Smith&quot;, pos=True) 
 print(words.words)
 </code></pre>
 
 <p>will output: </p>
-<blockquote>
 <pre><code>[
 { 'word': 'food',  'tag': Vocabulary.UNTAG, 'pos': NN },
 { 'word': 'not',  'tag': Vocabulary.NEGATIVE, 'pos': NN },
 ]
 </code></pre>
-</blockquote>
-<h4 id="319-romanization">3.19  Romanization</h4>
-<p>When the keyword parameter roman is True, the latin-1 character encoding of each tokenized is converted to ASCII.</p>
+<h3 id="319-romanization">3.19 Romanization</h3>
+<p>When the keyword parameter <code>roman</code> is <code>True</code>, the latin-1 character encoding of each tokenized is converted to ASCII.</p>
 <pre><code class="python"># Romanization of latin-1 character encodings
 words = Words(&quot;Québec&quot;, roman=True) 
 print(words.words)
 </code></pre>
 
 <p>will output: </p>
-<blockquote>
 <pre><code>[
 { 'word': 'quebec',  'tag': Vocabulary.UNTAG, 
 ]
 </code></pre>
-</blockquote>
-<h4 id="320-bag-of-words-and-word-frequency-distribution">3.20  Bag of Words and Word Frequency Distribution</h4>
+<h3 id="320-bag-of-words-and-word-frequency-distribution">3.20 Bag of Words and Word Frequency Distribution</h3>
 <p>The property <code>bagsOfWords</code> returns an unordered dictionary of each occurrence of a unique word in the tokenized sequence, where the word is the dictionary key, and the number of occurrences is the corresponding value.</p>
 <pre><code class="python"># Get the Bag of Words representation
 words = Words(&quot;Jack and Jill went up the hill to fetch a pail of water. Jack fell down and broke his crown and Jill came tumbling after.&quot;, stopwords=True)
@@ -724,11 +678,9 @@ print(words.bagOfWords)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
 <pre><code>{ 'pail': 1, 'the': 1, 'a': 1, 'water': 1, 'fetch': 1, 'went': 1, 'and': 2, 'jack': 2, 'jill': 2,
 'down': 1, 'come': 1, 'fell': 1, 'up': 1, 'of': 1, 'tumble': 1, 'to': 1, 'hill': 1, 'after': 1 }
 </code></pre>
-</blockquote>
 <p>The property <code>freqDist</code> returns a sorted list of tuples, in descending order, of word frequencies (i.e., the number of occurrences of the word in the tokenized sequence.</p>
 <pre><code class="python"># Get the Word Frequency Distribution
 words = Words(&quot;Jack and Jill went up the hill to fetch a pail of water. Jack fell down and broke his crown and Jill came tumbling after.&quot;, stopwords=True)
@@ -736,57 +688,49 @@ print(words.freqDist)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
-<pre><code>[ ('jack', 2), ('jill', 2), ('and', 2), ('water', 1), ('the', 1), …. ]
+<pre><code>[ ('jack', 2), ('jill', 2), ('and', 2), ('water', 1), ('the', 1), … ]
 </code></pre>
-</blockquote>
 <hr />
-<h3 id="4-vision-module">4  VISION Module</h3>
-<h4 id="41-image-processing">4.1  Image Processing</h4>
-<p>To preprocess an image for computer vision machine learning, you create an Image (class) object, passing as parameters the path to the image, the corresponding label and a path for storing the preprocessed image data, the original image and optionally a thumbnail. The label must be specified as an integer value. Below is a code example.</p>
-<pre><code class="python">from vision import Image
+<h2 id="4-vision-module">4 VISION Module</h2>
+<h3 id="41-image-processing">4.1 Image Processing</h3>
+<p>CV preprocessing of images requires the <b style='class:saddlebrown'>VISION</b> module.</p>
+<p>To preprocess an image for computer vision machine learning, you create an <code>Image</code> (class) object, passing as parameters the path to the image, the corresponding label and a path for storing the preprocessed image data, the original image, optionally a thumbnail, and metadata. The label must be specified as an integer value. Below is a code example.</p>
+<pre><code class="python">from gapml.vision import Image
 image = Image(&quot;yourimage.jpg&quot;, 101, &quot;storage_path&quot;)
 </code></pre>
 
 <p>The above will generate the following output files:</p>
-<blockquote>
 <pre><code>storage_path/yourimage.h5 # preprocessed image and raw data and optional thumbnail
 </code></pre>
-</blockquote>
 <p>Alternately, the image path may be an URL; in which case, an HTTP request is made to obtain the image data from the remote location. </p>
 <pre><code class="python">image = Image(&quot;http://yourimage.jpg&quot;, 101, &quot;storage_path&quot;)
 </code></pre>
 
-<p>The Image class supports processing of JPEG, PNG, TIF,  BMP and GIF images. Images maybe of any pixel size, and number of channels (i.e. Grayscale, RGB and RGBA).</p>
+<p>The <code>Image</code> class supports processing of JPEG, PNG, TIF,  BMP and GIF images. Images maybe of any pixel size, and number of channels (i.e. Grayscale, RGB and RGBA).</p>
 <p>Alternately, the input may be raw pixel data as a numpy array.</p>
-<blockquote>
 <pre><code>raw = [...], [...], […] ]
 image = Image(raw, 101, "storage_path")
 </code></pre>
-</blockquote>
-<h4 id="42-image-processing-settings-config">4.2  Image Processing Settings (Config)</h4>
-<p>CV Preprocessing of the image may be configured for several settings when instantiating an Image object with the optional config parameter, which consists of a list of one or more predefined options.</p>
+<h3 id="42-image-processing-settings-config">4.2 Image Processing Settings (Config)</h3>
+<p>CV Preprocessing of the image may be configured for several settings when instantiating an <code>Image</code> object with the optional <code>config</code> parameter, which consists of a list of one or more predefined options.</p>
 <pre><code class="python">image = Image(&quot;yourimage.jpg&quot;, 101, &quot;storage_path&quot;, config=[options])
 </code></pre>
 
-<p>options:</p>
-<blockquote>
-<pre><code>gray   | grayscale        # convert to grayscale (single channel)
-normal | normalize        # normalize the pixel data for values between 0 .. 1
-flat   | flatten          # flatten the pixel data into a 1D vector
-resize=(height,width)     # resize the image
-thumb=(height,width)      # generate a thumbnail
-nostore               # do not store the preprocessed image, raw and thumbnail data
-</code></pre>
-</blockquote>
+<p>options:
+    gray     | grayscale        # convert to grayscale (single channel)
+    normal   | normalize        # normalize the pixel data for values between 0 .. 1
+    flat     | flatten          # flatten the pixel data into a 1D vector
+    resize=(height,width)       # resize the image
+    thumb=(height,width)        # generate a thumbnail
+    nostore                     # do not store the preprocessed image, raw and thumbnail data</p>
 <p>Example</p>
 <pre><code class="python">image = Image(&quot;image.jpg&quot;, 101, &quot;path&quot;, config=['flatten', 'thumb=(16,16)'])
 # will preprocess the image.jpg into machine learning ready data as a 1D vector, and
 # store the raw (unprocessed) decompressed data, preprocessed data and 16 x 16 
 </code></pre>
 
-<h4 id="44-get-properties-of-preprocessed-image-data">4.4  Get Properties of Preprocessed Image Data</h4>
-<p>After an image has been preprocessed, several properties of the preprocessed image data can be obtained from the Image class properties:</p>
+<h3 id="43-get-properties-of-preprocessed-image-data">4.3 Get Properties of Preprocessed Image Data</h3>
+<p>After an image has been preprocessed, several properties of the preprocessed image data can be obtained from the <code>Image</code> class properties:</p>
 <pre><code class="python">name    - The root name of the image.
 type    - The image format (e.g., png).
 shape   - The shape of the preprocessed image data (e.g., (100, 100,3) ).
@@ -801,12 +745,10 @@ print(image.shape)
 </code></pre>
 
 <p>Will output something like:</p>
-<blockquote>
 <pre><code>(100,100,3)
 </code></pre>
-</blockquote>
-<h4 id="45-asynchronous-processing">4.5  Asynchronous Processing</h4>
-<p>To enhance concurrent execution between a main thread and worker activities, the Image class supports asynchronous processing of the image. Asynchronous processing will occur if the optional parameter ehandler is set when instantiating the Image object. Upon completion of the processing, the ehandler is called, where the Image object is passed as a parameter.</p>
+<h3 id="44-asynchronous-processing">4.4 Asynchronous Processing</h3>
+<p>To enhance concurrent execution between a main thread and worker activities, the <code>Image</code> class supports asynchronous processing of the image. Asynchronous processing will occur if the optional parameter <code>ehandler</code> is set when instantiating the <code>Image</code> object. Upon completion of the processing, the <code>ehandler</code> is called, where the <code>Image</code> object is passed as a parameter.</p>
 <pre><code class="python">def done(i):
     &quot;&quot;&quot; Event Handler for when processing of image is completed &quot;&quot;&quot;
     print(&quot;DONE&quot;, i.image)
@@ -814,26 +756,24 @@ print(image.shape)
 image = Image(&quot;yourimage.png&quot;, &quot;storage_path&quot;, 101, ehandler=done)
 </code></pre>
 
-<h4 id="46-image-reloading">4.6  Image Reloading</h4>
-<p>Once an Image object has been stored, it can later be retrieved from storage, reconstructing the Image object. An Image object is first instantiated, and then the <code>load()</code> method is called specifying the image name and corresponding storage path. The image name and storage path are used to identify and locate the corresponding stored image data.</p>
+<h3 id="45-image-reloading">4.5 Image Reloading</h3>
+<p>Once an <code>Image</code> object has been stored, it can later be retrieved from storage, reconstructing the <code>Image</code> object. An <code>Image</code> object is first instantiated, and then the <code>load()</code> method is called specifying the image name and corresponding storage path. The image name and storage path are used to identify and locate the corresponding stored image data.</p>
 <pre><code class="python"># Instantiate an Image object
 image = Image()
 # Reload the image's data from storage
 image.load( &quot;myimage.png&quot;, &quot;mystorage&quot; )
 </code></pre>
 
-<h4 id="47-image-collection-processing">4.7  Image Collection Processing</h4>
-<p>To preprocess a collection of images for computer vision machine learning, you create an Images (class) object, passing as parameters a list of the paths to the images, a list of the corresponding label and a path for storing the collection of preprocessed image data, the original images and optionally thumbnails. Each label must be specified as an integer value. Below is a code example.</p>
-<pre><code class="python">from images import Images
+<h3 id="46-image-collection-processing">4.6 Image Collection Processing</h3>
+<p>To preprocess a collection of images for computer vision machine learning, you create an <code>Images</code> (class) object, passing as parameters a list of the paths to the images, a list of the corresponding label and a path for storing the collection of preprocessed image data, the original images and optionally thumbnails. Each label must be specified as an integer value. Below is a code example.</p>
+<pre><code class="python">from gapml.images import Images
 images = Images([&quot;image1.jpg&quot;, &quot;image2.jpg&quot;], labels=[101, 102], name=' c1')
 </code></pre>
 
 <p>The above will generate the following output files: </p>
-<blockquote>
 <pre><code>train/c1.h5 # preprocessed image data
 </code></pre>
-</blockquote>
-<p>The Images object will implicitly add the 'nostore' setting to the configuration parameter of each Image object created. This will direct each of the Image objects to not store the corresponding image data in an HD5 file. </p>
+<p>The <code>Images</code> object will implicitly add the 'nostore' setting to the configuration parameter of each <code>Image</code> object created. This will direct each of the <code>Image</code> objects to not store the corresponding image data in an HD5 file. </p>
 <p>Instead, upon completion of the preprocessing of the collection of image data, the entire collection of preprocessed data is stored in a single HD5 file.</p>
 <p>Alternately, the list of image paths parameter may be a list of directories containing images. </p>
 <pre><code class="python">images = Images([&quot;subfolder1&quot;, &quot;subfolder2&quot;], labels=[101, 102], name=' c1')
@@ -843,14 +783,14 @@ images = Images([&quot;image1.jpg&quot;, &quot;image2.jpg&quot;], labels=[101, 1
 <pre><code class="python">images = Images([&quot;image1.jpg&quot;, &quot;image2.jpg&quot;], labels=101, name=' c1') 
 </code></pre>
 
-<h4 id="48-image-collection-processing-settings-config">4.8 Image Collection Processing Settings (Config)</h4>
-<p>Configuration settings supported by the Image class may be specified as an optional parameter to the Images object, which are then passed down to each Image object generated for the collection. </p>
+<h3 id="47-image-collection-processing-settings-config">4.7 Image Collection Processing Settings (Config)</h3>
+<p>Configuration settings supported by the <code>Image</code> class may be specified as the optional <code>config</code> parameter to the <code>Images</code> object, which are then passed down to each <code>Image</code> object generated for the collection. </p>
 <pre><code class="python"># Preprocess each image by normalizing the pixel data and then flatten into a 1D vector
 images = Images([&quot;image1.jpg&quot;, &quot;image2.jpg&quot;], &quot;train&quot;, labels=[101, 102], config=['normal', 'flatten'])
 </code></pre>
 
-<h4 id="49-get-properties-of-a-collection">4.9  Get Properties of a Collection</h4>
-<p>After a collection of images has been preprocessed, several properties of the preprocessed image data can be obtained from the Images class properties:</p>
+<h3 id="48-get-properties-of-a-collection">4.8 Get Properties of a Collection</h3>
+<p>After a collection of images has been preprocessed, several properties of the preprocessed image data can be obtained from the <code>Images</code> class properties:</p>
 <pre><code class="python">name – The name of the collection file.
 time – The time to preprocess the image.
 data – List of Image objects in the collection.
@@ -863,9 +803,9 @@ for ix in range(len(images)):
     image = images[ix]
 </code></pre>
 
-<h4 id="410-splitting-a-collection-into-training-and-test-data">4.10  Splitting a Collection into Training and Test Data</h4>
-<p>Batch, mini-batch and stochastic feed modes are supported. The percentage of data that is test (vs. training) is set by the split property, where the default is 0.2. Optionally, a mini-batch size is set by the minibatch property. Prior to the split, the data is randomized.</p>
-<p>The <code>split()</code> property when called as a getter will return the training data, training labels, test data, and test labels.</p>
+<h3 id="49-splitting-a-collection-into-training-and-test-data">4.9 Splitting a Collection into Training and Test Data</h3>
+<p>Batch, mini-batch and stochastic feed modes are supported. The percentage of data that is test (vs. training) is set by the <code>split</code> property, where the default is 0.2. Optionally, a mini-batch size is set by the <code>minibatch</code> property. Prior to the split, the data is randomized.</p>
+<p>The <code>split</code> property when called as a getter will return the training data, training labels, test data, and test labels, where the data and labels are returned as numpy lists, and the labels have been one-hot encoded.</p>
 <pre><code class="python"># Set 30% of the images in the collection to be test data
 images.split = 0.3
 
@@ -882,7 +822,7 @@ while ( data, label = next(images) ) is not None:
     pass
 </code></pre>
 
-<p>Training data can also be fetched in minibatches. The mini batch size is set using the minibatch property. The minibatch property when called as a getter will return a generator. The generator will iterate through each image, and corresponding label, of the generated mini-batch.  Successive calls to the minibatch property will iterate through the training data.</p>
+<p>Training data can also be fetched in minibatches. The mini batch size is set using the <code>minibatch</code> property. The <code>minibatch</code> property when called as a getter will return a generator. The generator will iterate through each image, and corresponding label, of the generated mini-batch. Successive calls to the <code>minibatch</code> property will iterate through the training data.</p>
 <pre><code class="python"># Set 30% of the images in the collection to be test data
 images.split = 0.3
 
@@ -905,8 +845,8 @@ for data, label in g:
 images.split = 0.3, 42
 </code></pre>
 
-<h4 id="411-image-augmentation">4.11  Image Augmentation</h4>
-<p>Image augmentation is supported. By default, images are not augmented. If the property augment is set to True, then for each image generated for feeding (see <code>next()</code> and minibatch) an additional image will be generated. The additional image will be a randomized rotation between -90 and 90 degrees of the corresponding image. For example, if a training set has a 1000 images, then 2000 images will be feed when the property augment is set to True, where 1000 of the images are the original images, and another 1000 are the generated augmented images.</p>
+<h3 id="410-image-augmentation">4.10 Image Augmentation</h3>
+<p>Image augmentation is supported. By default, images are not augmented. If the property <code>augment</code> is set to <code>True</code>, then for each image generated for feeding (see <code>next()</code> and minibatch) an additional image will be generated. The additional image will be a randomized rotation between -90 and 90 degrees of the corresponding image. For example, if a training set has a 1000 images, then 2000 images will be feed when the property augment is set to True, where 1000 of the images are the original images, and another 1000 are the generated augmented images.</p>
 <pre><code class="python">images.split = 0.3, 42
 
 # Enable image augmentation
@@ -917,8 +857,8 @@ while ( data, label = next(images) ) is not None:
    pass
 </code></pre>
 
-<h4 id="412-asynchronous-collection-processing">4.12  Asynchronous Collection Processing</h4>
-<p>To enhance concurrent execution between a main thread and worker activities, the Images class supports asynchronous processing of the collection of images. Asynchronous processing will occur if the optional parameter ehandler is set when instantiating the Images object. Upon completion of the processing, the ehandler is called, where the Images object is passed as a parameter.</p>
+<h3 id="411-asynchronous-collection-processing">4.11 Asynchronous Collection Processing</h3>
+<p>To enhance concurrent execution between a main thread and worker activities, the <code>Images</code> class supports asynchronous processing of the collection of images. Asynchronous processing will occur if the optional parameter <code>ehandler</code> is set when instantiating the Images object. Upon completion of the processing, the ehandler is called, where the <code>Images</code> object is passed as a parameter.</p>
 <pre><code class="python">def done(i):
     &quot;&quot;&quot; Event Handler for when processing of collection of images is completed &quot;&quot;&quot;
     print(&quot;DONE&quot;, i.images)
@@ -927,8 +867,8 @@ while ( data, label = next(images) ) is not None:
 images = Images([&quot;img1.png&quot;, &quot;img2.png&quot;], &quot;train&quot;, labels=[0,1], ehandler=done)
 </code></pre>
 
-<h4 id="413-collection-reloading">4.13  Collection Reloading</h4>
-<p>Once an Images object has been stored, it can later be retrieved from storage, reconstructing the Images object, and corresponding list of Image objects. An Images object is first instantiated, and then the <code>load()</code> method is called specifying the collection name and corresponding storage path. The collection name and storage path are used to identify and locate the corresponding stored image data.</p>
+<h3 id="412-collection-reloading">4.12 Collection Reloading</h3>
+<p>Once an <code>Images</code> object has been stored, it can later be retrieved from storage, reconstructing the <code>Images</code> object, and corresponding list of <code>Image</code> objects. An <code>Image</code>s object is first instantiated, and then the <code>load()</code> method is called specifying the collection name and corresponding storage path. The collection name and storage path are used to identify and locate the corresponding stored image data.</p>
 <pre><code class="python"># Instantiate an Images object
 images = Images()
 
@@ -937,25 +877,24 @@ images.load( &quot;mycollection&quot;, &quot;mystorage&quot; )
 </code></pre>
 
 <hr />
-<h3 id="5-segmentation-module">5   SEGMENTATION Module</h3>
-<p>The segmentation module is newly introduced in Gap v0.9 prelaunch. It is in the early stage, and should be considered experimental, and not for commercial-product-ready yet. The segmentation module analyzes the whitespace layout of the text to identify the 'human' perceived grouping/purpose of text, such as paragraphs, headings, columns, page numbering, letterhead, etc., and the associated context.
-In this mode, the text is separated into segments, corresponding to identified layout, where each segment is then NLP preprocessed. The resulting NLP output is then hierarchical, where at the top level is the segment identification, and it's child is the NLP preprocessed text.</p>
-<h4 id="51-text-segmentation">5.1  Text Segmentation</h4>
-<p>When the config option 'segment' is specified on a Document object, the corresponding text per page is segmented. </p>
+<h2 id="5-segmentation-module">5 SEGMENTATION Module</h2>
+<p>The segmentation module is newly introduced in Gap v0.9 prelaunch. It is in the early stage, and should be considered experimental, and not for commercial-product-ready yet. The segmentation module analyzes the whitespace layout of the text to identify the 'human' perceived grouping/purpose of text, such as paragraphs, headings, columns, page numbering, letterhead, etc., and the associated context.</p>
+<p>In this mode, the text is separated into segments, corresponding to identified layout, where each segment is then NLP preprocessed. The resulting NLP output is then hierarchical, where at the top level is the segment identification, and it's child is the NLP preprocessed text.</p>
+<h3 id="51-text-segmentation">5.1 Text Segmentation</h3>
+<p>When the config option 'segment' is specified on a <code>Document</code> object, the corresponding text per page is segmented. </p>
 <pre><code class="python"># import the segmentation module
-from segment import Segment
+from gapml.segment import Segment
 segment = Segment(&quot;para 1\n\npara 2&quot;)
 print(segment.segments)
 </code></pre>
 
 <p>will output:</p>
-<blockquote>
-<pre><code>[ { 'tag': 1002, words: [ { 'word': 'para', 'tag': 0}, {'word': 1, 'tag': 1}]},
+<pre><code>[
+{ 'tag': 1002, words: [ { 'word': 'para', 'tag': 0}, {'word': 1, 'tag': 1}]},
 { 'tag': 1002, words: [ { 'word': 'para', 'tag': 0}, {'word': 2, 'tag': 1}]}
 ]
 </code></pre>
-</blockquote>
-<p>Proprietary Information
+<p>Proprietary Information<br />
 Copyright ©2018, Epipog, All Rights Reserved</p>
               
             </div>
@@ -967,7 +906,7 @@ Copyright ©2018, Epipog, All Rights Reserved</p>
         <a href="../tutorials/computer_vision/" class="btn btn-neutral float-right" title="Computer Vision">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../about/" class="btn btn-neutral" title="About"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../org-os/" class="btn btn-neutral" title="Organization"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -995,7 +934,7 @@ Copyright ©2018, Epipog, All Rights Reserved</p>
           <a href="https://github.com/andrewferlitsch/Gap/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../about/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../org-os/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../tutorials/computer_vision/" style="color: #fcfcfc">Next &raquo;</a></span>

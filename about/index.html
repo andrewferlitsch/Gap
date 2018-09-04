@@ -33,7 +33,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-124105572-1', 'https://andrewferlitsch.github.io/Gap/');
+      ga('create', 'UA-124527631-1', 'https://andrewferlitsch.github.io/Gap/');
       ga('send', 'pageview');
   </script>
   
@@ -89,6 +89,11 @@
     
 
     </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../org-os/">Organization</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -199,14 +204,14 @@
 <p>The framework provides the following pipeline of modules to support your data and knowledge extraction from both digital and scanned PDF documents, TIFF facsimiles and image captured documents, and for preparing and storing image data for computer vision.</p>
 <p>This framework is ideal for any organization planning to do data extraction from their repository of documents into an RDBMS system for CART analysis or generating word vectors for natural language deep learning (DeepNLP), and/or computer vision with convolutional neural networks (CNN).</p>
 <h2 id="splitter">SPLITTER</h2>
-<p>The splitter module is the entry point into the pipeline. It consists of a Document and Page class. The Document class handles the splitting of PDF documents into PDF pages, TIFF facsimiles into TIFF pages, OCR and raw text extraction. PDF splitting and image extraction is handled by the open source Artifex’s Ghostscript ©, and TIFF splitting by open source Image Magic’s Magick ©. OCR is handled by the open source Google’s Tesseract ©. The Document object stores the individual PDF/TIFF/image pages and corresponding raw text and optionally page images (when scanned PDF, TIFF or images) in the specified storage path. The splitting process can be done synchronously or asynchronously, where in the latter case an event handler signals when the splitting/OCR has been completed and the page table is accessible.</p>
+<p>The splitter module is the entry point into the pipeline. It consists of a <code>Document</code> and <code>Page</code> class. The <code>Document</code> class handles the splitting of PDF documents into PDF pages, TIFF facsimiles into TIFF pages, OCR and raw text extraction. PDF splitting and image extraction is handled by the open source Artifex’s Ghostscript ©, and TIFF splitting by open source Image Magic’s Magick ©. OCR is handled by the open source Google’s Tesseract ©. The Document object stores the individual PDF/TIFF/image pages and corresponding raw text and optionally page images (when scanned PDF, TIFF or images) in the specified storage path. The splitting process can be done synchronously or asynchronously, where in the latter case an event handler signals when the splitting/OCR has been completed and the page table is accessible.</p>
 <p>For OCR, the resolution of the image extraction is settable, which will affect the quality of the OCR, and corresponding processing time. If the resolution of the original scanned page is lower than the setting, it will be up-sampled, and conversely if it is higher it will be down-sampled.</p>
-<p>The Page class handles access to the individual pages, via the page table of the document class. Access is provided to the individual PDF, TIFF or image page, the scanned image (when scanned PDF, TIFF or images), raw text and the Natural Language Processing (NLP) processed tokens (when SYNTAX module is installed).</p>
-<p>NLP processing of the raw text is deferred until first access (JIT), and then preserved in memory as long as the corresponding page object is referenced. The NLP processed tokens may be further segmented into regions, consisting of tables, paragraphs, columns, etc. when the SEGMENTATION module is installed.
-The document and corresponding pages may be classified (i.e., category of the content) when the CLASSIFICATION module is installed.</p>
+<p>The Page class handles access to the individual pages, via the page table of the document class. Access is provided to the individual PDF, TIFF or image page, the scanned image (when scanned PDF, TIFF or images), raw text and the Natural Language Processing (NLP) processed tokens (when <code>SYNTAX</code> module is installed).</p>
+<p>NLP processing of the raw text is deferred until first access (JIT), and then preserved in memory as long as the corresponding page object is referenced. The NLP processed tokens may be further segmented into regions, consisting of tables, paragraphs, columns, etc. when the <code>SEGMENTATION</code> module is installed.
+The document and corresponding pages may be classified (i.e., category of the content) when the <code>CLASSIFICATION</code> module is installed.</p>
 <h2 id="syntax">SYNTAX</h2>
-<p>The syntax module follows the splitter module in the pipeline. It consists of the Words and Vocabulary classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support. 
-The word classifier recognizes:</p>
+<p>The syntax module follows the splitter module in the pipeline. It consists of the Words and <code>Vocabulary</code> classes. The Words class handles natural language processing (NLP) of the extracted text. The NLP processing can be configured for tokenization, stemming, lemmatizing, stop word removal, syntax analysis and word classification, with Unicode support.</p>
+<p>The word classifier recognizes:</p>
 <ul>
 <li>Syntax Units: Articles, Demonstratives, Prepositions, Pronouns, Conjunctions, Quantifiers, Questions  </li>
 <li>Abbreviations  </li>
@@ -221,7 +226,7 @@ The word classifier recognizes:</p>
 <li>Geographic Locations  </li>
 <li>Sentiment</li>
 </ul>
-<p>Dates, numbers and units of measure can be converted to either USA Standard or ISO Standard.  USA and Canadian postal addresses are converted to the USPO standard for address matching.</p>
+<p>Dates, numbers and units of measure can be converted to either USA Standard or ISO Standard. USA and Canadian postal addresses are converted to the USPO standard for address matching.</p>
 <p>Along with the builtin stemmer and lemmatizer, the module can optionally be configured to use the NLTK (open source) stemmers, lemmatizer and parts of speech annotations.</p>
 <h2 id="vision">VISION</h2>
 <p>The vision module provides preprocessing and storage of images into machine learning ready data. The module supports a wide variety of formats: JPG, PNG, BMP, and TIF, and number of channels (grayscale, RGB, RGBA).</p>
@@ -232,7 +237,7 @@ The word classifier recognizes:</p>
  </p>
 <h2 id="modules">MODULES</h2>
 <p><img alt="modules" src="../img/modules.png" /></p>
-<p>Proprietary and Confidential Information
+<p>Proprietary and Confidential Information<br />
 Copyright ©2018, Epipog, All Rights Reserved</p>
               
             </div>
@@ -241,7 +246,7 @@ Copyright ©2018, Epipog, All Rights Reserved</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../quick-start-guide/" class="btn btn-neutral float-right" title="Quick Start Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../org-os/" class="btn btn-neutral float-right" title="Organization">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -275,7 +280,7 @@ Copyright ©2018, Epipog, All Rights Reserved</p>
         <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../quick-start-guide/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../org-os/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

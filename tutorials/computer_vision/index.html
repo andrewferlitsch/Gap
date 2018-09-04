@@ -33,7 +33,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-124105572-1', 'https://andrewferlitsch.github.io/Gap/');
+      ga('create', 'UA-124527631-1', 'https://andrewferlitsch.github.io/Gap/');
       ga('send', 'pageview');
   </script>
   
@@ -66,6 +66,11 @@
             <li class="toctree-l1">
 		
     <a class="" href="../../about/">About</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../org-os/">Organization</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -195,7 +200,7 @@ neural network, and the target application.</p>
 </ul>
 <h3 id="importing-vision-module">Importing Vision module</h3>
 <p>The <strong>Vision</strong> module of the <strong>Gap</strong> framework implements the classes and methods for computer vision. Within the <a href="https://github.com/andrewferlitsch/Gap/blob/master/vision.py">Vision</a> module are two primary class objects for data management of images. The <code>Image</code> class manages individual images, while the <code>Images</code> class manages collections of images. As a first step, in your Python script or program you want to import from the <code>Vision</code> module the <code>Image</code> and <code>Images</code> class objects.</p>
-<pre><code class="python">from vision import Image, Images
+<pre><code class="python">from gapml.vision import Image, Images
 </code></pre>
 
 <h3 id="preprocessing-preparing-an-image-with-gap">Preprocessing (Preparing) an image with Gap</h3>
@@ -245,7 +250,8 @@ print(data[0][80])  # outputs machine learning ready data values (e.g., [0.98039
 </code></pre>
 
 <p>When processing of the image is completed, the raw pixel data, machine learning ready data, and attributes are stored in a HDF5 (Hierarchical Data Format) formatted file. By default, the file is stored in the current local directory, where the rootname of the file is the rootname of the image. Storage provides the means to latter retrieval the machine learning ready data for feeding into a neural network, and/or retransforming the machine learning ready data. In the above example, the file would be stored as:</p>
-<p><code>./1_100.hd5</code></p>
+<pre><code>./1_100.hd5
+</code></pre>
 <p>The path location of the stored HDF5 can be specified with the keyword parameter <code>dir</code>.</p>
 <pre><code class="python">image = Image(&quot;../tests/files/1_100.jpg&quot;, 1, dir=&quot;tmp&quot;)
 </code></pre>
@@ -276,14 +282,12 @@ def next_step(step):
 
 <h3 id="preprocessing-transformations-resizing-reshaping-flattening">Preprocessing Transformations: Resizing, Reshaping, Flattening</h3>
 <p>The keyword parameter <code>config</code> has a number of settings for specifying how the raw pixel data is preprocessed. The <strong>Gap</strong> framework is designed to eliminate the use of large numbers of keyword parameters, and instead uses a modern convention of passing in a configuration parameter. Here are some of the configuration settings:</p>
-<blockquote>
 <pre><code>nostore                 # do not store in a HDF5 file
 grayscale | gray        # convert to a grayscale image with a single channel (i.e., color plane)
 flatten   | flat        # flatten the machine learning ready data into a 1D vector
 resize=(height, width)  # resize the raw pixel data
 thumb=(height, width)   # create (and store) a thumbnail of the raw pixel data
 </code></pre>
-</blockquote>
 <p>Let's look how you can use these settings for something like neural network's equivalent of the hello world example ~ <a href="https://www.tensorflow.org/versions/r1.0/get_started/mnist/beginners">training the MNIST dataset</a>. The MNIST dataset consists of 28x28 grayscale images. Do to its size, grayscale and simplicity, it can be trained with just a ANN (vs. CNN). Since ANN take as input a 1D vector, the machine learning ready data would need to be reshaped (i.e., flatten) into a 1D vector.</p>
 <pre><code class="python"># An example of how one might use the Image object to preprocess an image from the MNIST dataset for a ANN
 image = Image(&quot;mnist_example.jpg&quot;, digit, config=[&quot;gray&quot;, &quot;flatten&quot;])
@@ -367,7 +371,7 @@ data = image.data
 </code></pre>
 
 <h3 id="image-reference">Image Reference</h3>
-<p>For a complete reference on all methods and properties for the <code>Image</code> class, see <a href="https://virtualdvid.github.io/Gap/modules/vision_spec/">reference</a>.</p>
+<p>For a complete reference on all methods and properties for the <code>Image</code> class, see <a href="../../specs/vision_spec/">reference</a>.</p>
 <h3 id="image-collections">Image Collections</h3>
 <p>The <code>Images</code> class provides preprocessing of a collections of images (vs. a single image). The parameters and emulated polymorphism are identical to the <code>Image</code> class, except the images and labels parameter refer to a plurality of images, which comprise the collection. The positional parameter <code>images</code> can be specified as:</p>
 <ul>
@@ -395,7 +399,6 @@ for image in images.images:
 2_100 2
 3_100 3
 </code></pre>
-
 <p>The builtin operators <code>len()</code> and <code>[]</code> are overridden in the <code>Images</code> class. The <code>len()</code> operator will return the number of images, and the list (array) index operator <code>[]</code> will return the <code>Image</code> object at the corresponding index. Using the builtin operators, the above example can be alternately coded as:</p>
 <pre><code class="python">        for i in range(len(images)):
             print(images[i].name, images[i].label)
@@ -403,13 +406,15 @@ for image in images.images:
 
 <h3 id="collection-storage-retrieval">Collection Storage &amp; Retrieval</h3>
 <p>The <code>Images</code> class, disables the <code>Image</code> objects from storing the machine learning ready data as individual HDF5 files per image, and insteads stores a single HDF5 for the entire collection. By default, the file name combines the prefix <code>collection.</code> with the root name of the first image in the collection, and is stored in the current working directory. In the above example, the machine learning ready data for the entire collection would be stored as:</p>
-<p><code>./collection.1_100.h5</code></p>
+<pre><code>./collection.1_100.h5
+</code></pre>
 <p>The directory where the HDF5 file is stored can be changed with the keyword paramater <code>dir</code>, and the root name of the file can be set with the keyword parameter <code>name</code>.</p>
 <pre><code class="python">images = Images(['1_100.jpg', '2_100.jpg', '3_100.jpg'], [1, 2, 3], dir='tmp', name='apples')
 </code></pre>
 
 <p>In the above example, the machine learning ready data is stored as:</p>
-<p><code>./tmp/apples.h5</code></p>
+<pre><code>./tmp/apples.h5
+</code></pre>
 <p>A stored collection can the be subsequently retrieved from storage by instantiating an empty <code>Images</code> object and invoking the <code>load()</code> method with the corresponding collection name. For the above example, the apples collection would be retrieved and <code>Images</code> and corresponding <code>Image</code> objects reconstructed in memory:</p>
 <pre><code class="python"># Instantiate an empty Images object
 images = Images()
@@ -434,9 +439,9 @@ images.load('apples')
 <li>The shape of the preprocessed machine learning data will be (50, 50, 3) for input to a CNN.</li>
 </ol>
 <p>In the example below, a separate collection is created for each type of fruit:</p>
-<pre><code class="python">        apples   = Images( 'apple',  1, name='apples',  config=['resize=(50,50)'] )
-        pears    = Images( 'pear' ,  2, name='pears',   config=['resize=(50,50)'] )
-        bananas  = Images( 'banana', 3, name='bananas', config=['resize=(50,50)'] )
+<pre><code class="python">apples   = Images( 'apple',  1, name='apples',  config=['resize=(50,50)'] )
+pears    = Images( 'pear' ,  2, name='pears',   config=['resize=(50,50)'] )
+bananas  = Images( 'banana', 3, name='bananas', config=['resize=(50,50)'] )
 </code></pre>
 
 <p>In the above example, the machine learning ready data is stored as:</p>
@@ -473,7 +478,8 @@ processed in the collection, the time (in seconds) to process the collection, an
 </code></pre>
 
 <p>In the above example, the machine learning ready data is stored as:</p>
-<p><code>./fruits.h5</code></p>
+<pre><code>./fruits.h5
+</code></pre>
 <p>Can we improve on the above? We got the benefit of a combined collection, but lost the benefit of concurrently preprocessing each collection. That's not overlooked. The <code>+=</code> operator for the <code>Images</code> collection is overridden to combine collections. Let's update the earlier example to preprocess each collection asynchronously and combine them into a single collection.</p>
 <pre><code class="python">dataset = None
 accumulated = 0
@@ -499,7 +505,18 @@ def collectionHandler(images):
 
 <p>In the above example, we used the variable dataset for the combined collection. After the first collection is preprocessed, we set the variable dataset to the first <code>Images</code> object, and afterwards we combine it with subsequent collections using the <code>+=</code> operator.</p>
 <p>Because the processing and invoking the event handler happen concurrently, there are possible problems including a race condition (i.e., two threads access dataset at the same time), and trashing the internal data (i.e., two threads are combining data at the same time). We solve this by making this operation atomic using Python's thread lock mechanism.</p>
-<p>*Above feature anticipated for v0.9.5 (beta)</p>
+<h3 id="size-of-preprocessed-machine-learning-ready-data">Size of Preprocessed Machine Learning Ready Data</h3>
+<p>When preprocessing image data into machine learning ready data, there can be a significant expansion in size. For example, the average size of an (compressed) JPEG flowers sample set (not shown) image is 30K bytes. The compression ratio on these image is as much as 90%. When read in by openCV and decompressed into a raw pixel image, the size typically is 250K bytes. In the raw pixel data, the byte size per pixel is 1 (i.e., 8bits per pixel). When the data is normalized (e.g., divided by 255.0), each pixel becomes represented by a floating point value. By default, the data type is np.float32, which is a 4 byte per pixel representation. Thus, a 250K byte raw pixel image will expand to 1Mb in memory.</p>
+<p>The <code>config</code> parameter setting <code>float=</code> overrides the size of the floating point representation after normalization. We generally recommend maintaining the 32-bit representation (np.float32). A smaller representation, such as a half floating point (np.float16) may expose the model to a vanishing gradient during training, while half the memory size. Some hardware, such as newer NVIDIA GPUs doing 16bit matrix multiplicaiton, have specialized hardware using stochastic rounding to eliminate the vanishing gradient problem. If you have this type of hardware, you can utilize the float16 representation to decrease the memory footprint by 50% and reduce instruction execution by appropriametly 75%. The following are the <code>float</code> settings for the <code>config</code> parameter:</p>
+<pre><code>float16
+float32
+float64
+</code></pre>
+<p>The following is an example usage:</p>
+<pre><code class="python"># Use 16-bit floating point representation per pixel
+images = Images(['flowers_photo/roses'], 1, config=['float16'])
+</code></pre>
+
 <h3 id="splitting-the-collection-into-training-and-test-data">Splitting the Collection into Training and Test Data</h3>
 <p>The first step to training a neural network is to split the collection into training and test data. We will cover some basic cases here.</p>
 <p>One uses the property <code>split</code> as a setter to split the collection into training and test data. This property will randomized the order of the <code>Image</code> objects in the collection, create a partition between the train and test data and create a corresponding internal index. The <code>split</code> property is implemented using emulated polymorphism, whereby the property can be given a single value or a tuple. The first value (parameter) is the percentage of the collection that will be set aside as testing data, and must be between 0 and 1. Below is an example:</p>
@@ -515,7 +532,8 @@ test.split  = 0
 </code></pre>
 
 <p>The random number generation by default will start at a different seed each time. If you need (desire) consistency between training on the results for comparison or demo'ing, then one specifies a seed value for the random number generation. The seed value is an integer value and is specified as a second parameter (i.e., tuple) to the <code>split</code> property. In the example below, the split is set to 20% test, and the random seed set to 42.</p>
-<p><code>images.split = 0.2, 42</code></p>
+<pre><code>images.split = 0.2, 42
+</code></pre>
 <p>One can see the index of the randomized distribution by displaying the internal member <code>_train</code>. This member is a list of integers which correspond to the index in the <code>images</code> list. While Python does not support the OOP concept of data encapsulation using private members, the <strong>Gap</strong> framework follows the convention that any member beginning with an underscore should be treated by developers as private. While not enforced by Python, members like <code>_train</code> should only be read and not written. The example below accesses (read) the randomized index for the training data and then prints it.</p>
 <pre><code class="python">indexes = images._train
 print(indexes)
@@ -525,16 +543,16 @@ print(indexes)
 <p>The <code>Images</code> class provides methods for batch, stochastic and mini-batch feeding for training and evaluating a neural network. The feeders produce full batch samples, single samples and mini-batch samples as numpy matrixes, which are compatible for input with all Python machine learning frameworks that support numpy arrays, such as Tensorflow, Keras and Pytorch, for example. Forward feeding is randomized, and the entire collection(s) can be continuously re-feed (i.e., epoch), where each time they are re-randomized.</p>
 <p>The <code>split</code>, <code>minibatch</code>, and overriden <code>next()</code> operator support forward feeding. </p>
 <h4 id="batch-feeding">Batch Feeding</h4>
-<p>In batch mode, the entire training set can be ran through the neural network as a single pass, prior to backward probagation and updating the weights using gradient descent. This is known as 'batch gradient descent'.</p>
-<p>When the <code>split</code> property is used as a getter, it returns the image data and corresponding labels for the training and test set similar to using sci-learn's train_test_split() function. In the example below:</p>
+<p>In batch mode, the entire training set can be ran through the neural network as a single pass, prior to backward propagation and updating the weights using gradient descent. This is known as 'batch gradient descent'.</p>
+<p>When the <code>split</code> property is used as a getter, it returns the image data and corresponding labels for the training and test set similar to using sci-learn's <code>train_test_split()</code> function, as numpy arrays, and the labels are one hot encoded. In the example below:</p>
 <ul>
 <li>The dataset is split into 20% test and 80% training.</li>
-<li>The X_train and X_test is the list of machine learning ready data, as numpy arrays, of the corresponding training and test images.</li>
-<li>The Y_train and Y_test is the list of the corresponding labels.</li>
-<li>The variable epochs is the number of times the X_train dataset will be forward feed through the neural network.</li>
+<li>The <code>X_train</code> and <code>X_test</code> is the list of machine learning ready data, as numpy arrays, of the corresponding training and test images.</li>
+<li>The <code>Y_train</code> and <code>Y_test</code> is the list of the corresponding labels.</li>
+<li>The variable epochs is the number of times the <code>X_train</code> dataset will be forward feed through the neural network.</li>
 <li>The optimizer performs backward probagation to update the weights.</li>
 <li>At the end of each epoch, The training data is re-randomized by calling the <code>split</code> method again as a getter.</li>
-<li>When training is done, the X_test and corresponding Y_test are forward feed to evaluate the accuracy of the trained model.</li>
+<li>When training is done, the <code>X_test</code> and corresponding <code>Y_test</code> are forward feed to evaluate the accuracy of the trained model.</li>
 </ul>
 <pre><code class="python"># Get the first randomized split of the dataset
 images.split = 0.2, 42
@@ -579,7 +597,6 @@ for _ in range(epochs):
 
       # Run the optimizer (backward probagation) to update the weights
       pass
-
 
 # Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
 pass
@@ -634,7 +651,7 @@ pass
 
 <h3 id="image-data-augmentation">Image (Data) Augmentation</h3>
 <p>Image Augmentation is the process of generating (synthesizing) new images from existing images, which can then be used to augment the training process. Synthesis can include, rotation, skew, sharpending and blur of existing images. These new images are then feed into the neural network during training to augment the training set. Rotating and skew aid in recognizing images from different angles, and sharpening and blur help generalize recognition (offset overfitting), as well as recognition under different lightening and time of day conditions.</p>
-<p>When the <code>augment</code> property is used as a setter, it will either enable or disable image augmentation when forward feeding the neural network when used in conjunction with the <code>split</code> property, <code>minibatch</code> property or <code>next()</code> operator. The <code>augment</code> property uses emulated polymorphism for the paramters. When the parameter is True, the feed forward process (e.g., <code>next()</code>) will generate an additional augmented image for each image in the training set, where the augmented image is a random rotation between -90 and 90 degress of the original image. The augmentation process adjusts the height and width of the image prior to rotation, as to prevent cropping, and then resizes back to the target size.</p>
+<p>When the <code>augment</code> property is used as a setter, it will either enable or disable image augmentation when forward feeding the neural network when used in conjunction with the <code>split</code> property, <code>minibatch</code> property or <code>next()</code> operator. The <code>augment</code> property uses emulated polymorphism for the paramters. When the parameter is <code>True</code>, the feed forward process (e.g., <code>next()</code>) will generate an additional augmented image for each image in the training set, where the augmented image is a random rotation between -90 and 90 degress of the original image. The augmentation process adjusts the height and width of the image prior to rotation, as to prevent cropping, and then resizes back to the target size.</p>
 <pre><code class="python"># Split the data into test and training datasets
 images.split = 0.2, 42
 
@@ -658,7 +675,6 @@ for _ in range(epochs):
       # Run the optimizer (backward probagation) to update the weights
       pass
 
-
 # Forward feed the entire training data and calculate training accuracy (i.e., X_train, Y_train)
 pass
 
@@ -666,20 +682,72 @@ pass
 pass
 </code></pre>
 
-<p>If parameter to the <code>augment</code> property may also be a tuple. The tuple specifies the rotation range and optionally the number of agumented images to generate per image; otherwise defaults to one. In the example below:</p>
+<p>The parameter to the <code>augment</code> property may also be a tuple. The tuple specifies the rotation range and optionally the number of agumented images to generate per image; otherwise defaults to one. In the example below:</p>
 <ul>
-<li>Augmented images will be a random rotation between -45 and 120.</li>
-<li>For each image, three augmented images will be generated.</li>
+<li>Augmented images will be a random rotation between -45 and 120.  </li>
+<li>For each image, three augmented images will be generated.  </li>
 <li>The mini-batch size is set to 100, so with the augmentation each mini-batch will produce 400 images.</li>
 </ul>
 <pre><code class="python">images.augment = -45, 120, 3
 images.minibatch = 100
 </code></pre>
 
-<p><em>Specifying the parameter as a tuple is anticipated for v0.9.5 (beta)</em></p>
 <h3 id="transformation">Transformation</h3>
 <p>The transformation methods provide the ability to transform the existing stored machine learning ready data into another shape without reprocessing the image data. This feature is particularly useful if the existing machine learning ready data is repurposed for another neural network whose input is a different shape.</p>
-<p><em>The above feature is anticipated for v0.9.5 (beta)</em></p>
+<p>The property <code>flatten</code> when used as a setter will flatten and unflatten the preprocessed machine learning ready data. When set to True, the preprocessed machine learning ready data will be transformed from 2D/3D matrixes to a 1D vector, such as repurposing the data from a CNN to an ANN. Below is an example:</p>
+<pre><code class="python"># Process images as shape (60, 60, 3)
+images =  Images(['apple', 'pear', 'banana'], [1,2,3], name='fruit', config=['resize=(60,60)'])
+
+# Retrieve the preprocess collection of images from storage
+images = Images()
+images.load('fruit')
+
+# Display the existing shape: will output (60, 60, 3)
+print(images[0].datas.shape)
+
+# Convert to 1D vector
+images.flatten = True
+# Display the existing shape: will output (10800,)
+print(images[0].datas.shape)
+</code></pre>
+
+<p>When set to False, the preprocessed machine learning ready data will be transformed from a 1D vector to a 3D matrix, such as repurposing from an ANN to a CNN. Below is an example:</p>
+<pre><code class="python"># Process images as shape (10800,)
+images =  Images(['apple', 'pear', 'banana'], [1,2,3], name='fruit', config=['resize=(60,60)', 'flatten'])
+
+# Retrieve the preprocess collection of images from storage
+images = Images()
+images.load('fruit')
+
+# Display the existing shape: will output (10800,)
+print(images[0].datas.shape)
+
+# Convert to 3D vector
+images.flatten = False
+# Display the existing shape: will output (60, 60, 3)
+print(images[0].datas.shape)
+</code></pre>
+
+<p>The property resize when used as a setter will resize the preprocessed machine learning ready data.</p>
+<pre><code class="python"># Process images as shape (60, 60, 3)
+images =  Images(['apple', 'pear', 'banana'], [1,2,3], name='fruit', config=['resize=(60,60)']) 
+
+# Retrieve the preprocess collection of images from storage
+images = Images()
+images.load('fruit')
+
+# Display the existing shape: will output (60, 60, 3)
+print(images[0].datas.shape)
+
+# resize to (50, 50)
+images.resize = (50, 50)
+
+# Display the existing shape: will output (50, 50, 3)
+print(images[0].datas.shape)
+</code></pre>
+
+<h3 id="images-reference">Images Reference</h3>
+<p>For a complete reference on all methods and properties for the <code>Images</code> class, see <a href="../../specs/vision_spec/">reference</a>.</p>
               
             </div>
           </div>

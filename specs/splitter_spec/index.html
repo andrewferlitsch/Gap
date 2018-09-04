@@ -33,7 +33,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-124105572-1', 'https://andrewferlitsch.github.io/Gap/');
+      ga('create', 'UA-124527631-1', 'https://andrewferlitsch.github.io/Gap/');
       ga('send', 'pageview');
   </script>
   
@@ -66,6 +66,11 @@
             <li class="toctree-l1">
 		
     <a class="" href="../../about/">About</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../org-os/">Organization</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -103,9 +108,9 @@
         
             <li><a class="toctree-l4" href="#splitter-module">SPLITTER Module</a></li>
         
-            <li><a class="toctree-l4" href="#1-document">1.  Document</a></li>
+            <li><a class="toctree-l4" href="#1-document">1 Document</a></li>
         
-            <li><a class="toctree-l4" href="#2-page">2.  Page</a></li>
+            <li><a class="toctree-l4" href="#2-page">2 Page</a></li>
         
             <li><a class="toctree-l4" href="#appendix-i-updates">APPENDIX I: Updates</a></li>
         
@@ -172,13 +177,13 @@
               
                 <h1 id="gap-framework-natural-language-processing-for-pdftiffimage-documents"><span style='color:saddlebrown'>Gap</span> Framework - Natural Language Processing for PDF/TIFF/Image Documents</h1>
 <h2 id="splitter-module">SPLITTER Module</h2>
-<p>High Precision PDF Page Splitting/OCR/Text Extraction
+<p>High Precision PDF Page Splitting/OCR/Text Extraction<br />
 Technical Specification, Gap v0.9.2</p>
-<h2 id="1-document">1.  Document</h2>
-<h3 id="11-document-overview">1.1  Document Overview</h3>
+<h2 id="1-document">1 Document</h2>
+<h3 id="11-document-overview">1.1 Document Overview</h3>
 <p>The document classifier contains the following primary classes, and their relationships:</p>
 <ul>
-<li><strong>Document</strong> – This is the base class for the representation of a stored document.  The constructor for the class object takes as parameters the stored path to the document, optionally a directory path for storing extracted pages and text, and optionally an event completion handler when processing the document asynchronously, and optionally a config parameter for configuring the NLP preprocessing.</li>
+<li><strong>Document</strong> – This is the base class for the representation of a stored document. The constructor for the class object takes as parameters the stored path to the document, optionally a directory path for storing extracted pages and text, and optionally an event completion handler when processing the document asynchronously, and optionally a config parameter for configuring the NLP preprocessing.</li>
 </ul>
 <pre><code class="python">document = Document(“/somedir/mydocument.pdf”, “/mypages/mydocument”)
 </code></pre>
@@ -189,35 +194,32 @@ Technical Specification, Gap v0.9.2</p>
 </ul>
 <p><img alt="document_relationships" src="../../img/specs/document_relationships.png" /></p>
 <p>Fig. 1a High Level view of <code>Document</code> Class Object Relationships</p>
-<h3 id="12-initializer-constructor">1.2  Initializer (Constructor)</h3>
-<h6 id="synopsis">Synopsis</h6>
+<h3 id="12-initializer-constructor">1.2 Initializer (Constructor)</h3>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">Document( document=None, dir=’./’, ehandler=None,  config=None)
 </code></pre>
 
-<h6 id="parameters">Parameters</h6>
-<p><strong>document:</strong>   If not None, a string that is either:</p>
-<blockquote>
-<pre><code>1. local path to document
-2. remote path to document ((i.e., http[s]://….)
+<p><strong>Parameters</strong></p>
+<p><strong>document:</strong> If not None, a string that is either:</p>
+<pre><code>1. local path to document  
+2. remote path to document ((i.e., http[s]://…)
 The document must be one of the following types: PDF. JPG, PNG, BMP or TIF
 </code></pre>
-</blockquote>
-<p><strong>dir:</strong>    The directory where to store the machine learning ready data.</p>
-<p><strong>ehandler:</strong>   If not None, the processing of the images into machine learning ready data will be asynchronous, and the value of the parameter is the function (or method) that is the event handler when processing is complete. The event handler takes the form:</p>
+<p><strong>dir:</strong> The directory where to store the machine learning ready data.</p>
+<p><strong>ehandler:</strong> If not None, the processing of the images into machine learning ready data will be asynchronous, and the value of the parameter is the function (or method) that is the event handler when processing is complete.</p>
+<p>The event handler takes the form:</p>
 <pre><code class="python">def myHandler(images): 
     # where images is the Images object that was preprocessed.
 </code></pre>
 
 <p><strong>config:</strong> If not None, a list of one or more configuration settings as strings:</p>
-<blockquote>
 <pre><code>bare
 pos
 roman
 segment
 stem=gap|porter|Lancaster|snowball|lemma
 </code></pre>
-</blockquote>
-<h6 id="usage">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When specified with no parameters, an empty <code>Document</code> object is created. The <code>Document</code> object may then be used to subsequent load (retrieve) previously stored preprocessed machine learning ready data (see <code>load()</code>).</p>
 <p>Otherwise, the document parameter must be specified.</p>
 <p>The document specified by the document parameter will be preprocessed according to the optional parameters and configuration settings.</p>
@@ -228,27 +230,26 @@ stem=gap|porter|Lancaster|snowball|lemma
 <li>If the document (or page) is an image (e.g., scanned PDF), it will be OCR’d.</li>
 <li>The digital text will be extracted from each page and stored in the <code>Page</code> object.</li>
 <li>The text will be optionally segmented into regions if the configuration setting segment is specified.</li>
-<li>The text from each page object will be preprocessed into machine learning ready data (see syntax module specification), according to the optional parameters and configuration settings.</li>
+<li>The text from each page object will be preprocessed into machine learning ready data (see <a href="../syntax_spec/"><strong>syntax</strong></a> module specification), according to the optional parameters and configuration settings.</li>
 <li>If the document was a scanned or image document, the quality of the scan will be estimated, unless <code>Document.SCANCHECK</code> is set to zero.</li>
 </ol>
-<p>The machine learning ready data will be stored on a per page basis in the directory specified by the parameter dir. The following files are created and stored:</p>
-<blockquote>
+<p>The machine learning ready data will be stored on a per page basis in the directory specified by the parameter dir.</p>
+<p>The following files are created and stored:</p>
 <pre><code>&lt;document&gt;&lt;pageno&gt;.&lt;suffix&gt;
 &lt;document&gt;&lt;pageno&gt;.txt
 &lt;document&gt;.&lt;pageno&gt;.json
 </code></pre>
-</blockquote>
 <p>The <code>&lt;document&gt;</code> is the root name of the document, and <code>&lt;pageno&gt;</code> is the corresponding page number starting at page 1. The file ending in the original file suffix <code>&lt;suffix&gt;</code> is the split page. The file ending in the file suffix <code>.txt</code> is the extracted text. The file ending in the file suffix <code>.json</code> is the NLP preprocessed machine learning data stored in a JSON format.</p>
 <p>If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the <code>Document</code> object passed as a parameter.</p>
 <p>If the path to the document file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.</p>
-<h6 id="exceptions">Exceptions</h6>
+<p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>AttributeError</code> is raised if an invalid configuration setting is specified.<br />
 A <code>FileNotFoundError</code> is raised if the document file does not exist.<br />
 A <code>IOError</code> is raised if an error occurs reading in the document file.</p>
-<h3 id="13-document-properties">1.3  Document Properties</h3>
-<h4 id="131-document">1.3.1  document</h4>
-<h6 id="synopsis_1">Synopsis</h6>
+<h3 id="13-document-properties">1.3 Document Properties</h3>
+<h4 id="131-document">1.3.1 document</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 path = document.document
 
@@ -256,39 +257,39 @@ path = document.document
 document.document = path    
 </code></pre>
 
-<h6 id="usage_1">Usage</h6>
-<p>When used as a getter the property returns the path to the document file.<br />
-When used as a setter the property specifies the path of the document file to preprocess into machine learning ready data (see initializer).</p>
-<h6 id="exceptions_1">Exceptions</h6>
+<p><strong>Usage</strong></p>
+<p>When used as a getter the property returns the path to the document file.</p>
+<p>When used as a setter the property specifies the path of the document file to preprocess into machine learning ready data (see <a href="#1.2-initializer-(constructor)">initializer</a>).</p>
+<p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>FileNotFoundError</code> is raised if the document file does not exist.<br />
 A <code>IOError</code> is raised if an error occurs reading in the document file.</p>
-<h4 id="132-name">1.3.2  name</h4>
-<h6 id="synopsis_2">Synopsis</h6>
+<h4 id="132-name">1.3.2 name</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 root = document.name
 </code></pre>
 
-<h6 id="usage_2">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the root name of the document file (e.g., /mydir/mydocument.pdf -&gt; mydocument).</p>
-<h4 id="133-type">1.3.3  type</h4>
-<h6 id="synopsis_3">Synopsis</h6>
+<h4 id="133-type">1.3.3 type</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 suffix = document.type
 </code></pre>
 
-<h6 id="usage_3">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the file suffix of the document file (e.g., pdf).</p>
-<h4 id="134-size">1.3.4  size</h4>
-<h6 id="synopsis_4">Synopsis</h6>
+<h4 id="134-size">1.3.4 size</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 size = document.size
 </code></pre>
 
-<h6 id="usage_4">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the file size of the document file in bytes.</p>
-<h4 id="135-dir">1.3.5  dir</h4>
-<h6 id="synopsis_5">Synopsis</h6>
+<h4 id="135-dir">1.3.5 dir</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 subfolder = document.dir
 
@@ -296,14 +297,14 @@ subfolder = document.dir
 document.dir = subfolder    
 </code></pre>
 
-<h6 id="usage_5">Usage</h6>
-<p>When used as a getter the property returns the directory path where the corresponding files of the associated page objects are stored.
-When used as a setter, it is only applicable when used in conjunction with the <code>load()</code> method, indicating where the path where the files associated with the page objects are stored. Otherwise, it is ignored.</p>
-<h6 id="exceptions_2">Exceptions</h6>
+<p><strong>Usage</strong></p>
+<p>When used as a getter the property returns the directory path where the corresponding files of the associated page objects are stored.</p>
+<p>When used as a setter, it is only applicable when used in conjunction with the <code>load()</code> method, indicating where the path where the files associated with the page objects are stored. Otherwise, it is ignored.</p>
+<p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>FileNotFoundError</code> is raised if the directory does not exist.</p>
-<h4 id="136-label">1.3.6  label</h4>
-<h6 id="synopsis_6">Synopsis</h6>
+<h4 id="136-label">1.3.6 label</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 label = document.label
 
@@ -311,156 +312,150 @@ label = document.label
 document.label = label  
 </code></pre>
 
-<h6 id="usage_6">Usage</h6>
-<p>When used as a getter the property returns the <code>integer</code> label specified for the document.
-When used as a setter the property sets the label of the document to the specified integer value.</p>
-<h6 id="exceptions_3">Exceptions</h6>
+<p><strong>Usage</strong></p>
+<p>When used as a getter the property returns the <code>integer</code> label specified for the document.</p>
+<p>When used as a setter the property sets the label of the document to the specified integer value.</p>
+<p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.</p>
 <h4 id="137-lang">1.3.7 lang</h4>
-<h6 id="synopsis_7">Synopsis</h6>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 lang = document.lang
 </code></pre>
 
-<h6 id="usage_7">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns whether the language of the document, which may be either 'en' (English), 'es' (Spanish) or 'fr' (French).</p>
-<h4 id="138-scanned">1.3.8  scanned</h4>
-<h6 id="synopsis_8">Synopsis</h6>
+<h4 id="138-scanned">1.3.8 scanned</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 scanned, quality = document.scanned
 </code></pre>
 
-<h6 id="usage_8">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns whether the document is a scanned image <code>True</code> or digital text <code>False</code> document, and the estimated quality of the scan as a percentage (between 0 and 1).</p>
-<h4 id="139-time">1.3.9  time</h4>
-<h6 id="synopsis_9">Synopsis</h6>
+<h4 id="139-time">1.3.9 time</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 secs = document.time
 </code></pre>
 
-<h6 id="usage_9">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the amount of time (in seconds) it took to preprocess the document into machine learning ready data.</p>
-<h4 id="1310-text">1.3.10  text</h4>
-<h6 id="synopsis_10">Synopsis</h6>
+<h4 id="1310-text">1.3.10 text</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 text = document.text
 </code></pre>
 
-<h6 id="usage_10">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns a list, one entry per page, of the extracted text from the document in its original Unicode format.</p>
-<h4 id="1311-pages">1.3.11  pages</h4>
-<h6 id="synopsis_11">Synopsis</h6>
+<h4 id="1311-pages">1.3.11 pages</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 pages = document.pages
 </code></pre>
 
-<h4 id="1312-bagofwords">1.3.12  bagOfWords</h4>
-<h6 id="synopsis_12">Synopsis</h6>
+<h4 id="1312-bagofwords">1.3.12 bagOfWords</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 bag = document.bagOfWords   
 </code></pre>
 
-<h6 id="usage_11">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the document’s word sequences as a Bag of Words, represented as an unordered dictionary, where the key is the word and the value is the number of occurrences:</p>
-<blockquote>
 <pre><code>{ ‘&lt;word’&gt; : &lt;no. of occurrences&gt;, … }
 </code></pre>
-</blockquote>
-<h4 id="1313-freqdist">1.3.13  freqDist</h4>
-<h6 id="synopsis_13">Synopsis</h6>
+<h4 id="1313-freqdist">1.3.13 freqDist</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 freq = document.freqDist    
 </code></pre>
 
-<h6 id="usage_12">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the sorted tuples of a frequency distribution of words (from bag of words), in descending order (i.e., highest first)</p>
-<blockquote>
-<pre><code>[ ( ‘&lt;word’&gt;: &lt;no.  of occurrences&gt; ), …. ]
+<pre><code>[ ( ‘&lt;word’&gt;: &lt;no.  of occurrences&gt; ), … ]
 </code></pre>
-</blockquote>
-<h4 id="1314-termfreq">1.3.14  termFreq</h4>
-<h6 id="synopsis_14">Synopsis</h6>
+<h4 id="1314-termfreq">1.3.14 termFreq</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 tf = document.termFreq
 </code></pre>
 
-<h6 id="usage_13">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the sorted tuples of a term frequency distribution (percent that term occurs), in descending order (i.e., highest first)</p>
-<blockquote>
 <pre><code>[ ( ‘&lt;word’&gt;: &lt;percentage  of occurrences&gt; ), …. ]
 </code></pre>
-</blockquote>
-<h4 id="1315-static-variables">1.3.15  Static Variables</h4>
+<h4 id="1315-static-variables">1.3.15 Static Variables</h4>
 <p>The Document class contains the following static variables:</p>
 <ul>
 <li><strong>RESOLUTION</strong> – The image resolution when converting <code>PDF</code> to <code>PNG</code> for <code>OCR</code> (default <code>300</code>).  </li>
 <li><strong>SCANCHECK</strong>  – The number of <code>OCR</code> words to check to estimate the quality of the scan.  </li>
 <li><strong>WORDDICT</strong>   - The word dictionary to use for scan spell check (default to <code>norvig</code>).</li>
 </ul>
-<h3 id="14-document-overridden-operators">1.4  Document Overridden Operators</h3>
-<h4 id="141-len">1.4.1  len()</h4>
-<h6 id="synopsis_15">Synopsis</h6>
+<h3 id="14-document-overridden-operators">1.4 Document Overridden Operators</h3>
+<h4 id="141-len">1.4.1 len()</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">npages = len(document)
 </code></pre>
 
-<h6 id="usage_14">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>The <code>len()</code> <code>(__len__)</code> operator is overridden to return the number of pages in the document.</p>
-<h4 id="142">1.4.2  +=</h4>
-<h6 id="synopsis_16">Synopsis</h6>
+<h4 id="142">1.4.2 +=</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">document += page
 </code></pre>
 
-<h6 id="usage_15">Usage</h6>
-<p>The <code>+=</code> <code>(__iadd__)</code> method is overridden to append a Page object to the document.</p>
-<h4 id="143">1.4.3  []</h4>
-<h6 id="synopsis_17">Synopsis</h6>
+<p><strong>Usage</strong></p>
+<p>The <code>+=</code> <code>(__iadd__)</code> method is overridden to append a <code>Page</code> object to the document.</p>
+<h4 id="143">1.4.3 []</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">page= documents[n] 
 document[n] = page
 </code></pre>
 
-<h6 id="usage_16">Usage</h6>
-<p>The <code>[]</code> <code>(__getitem__)</code> operator is overridden to return the Page object at the specified index.<br />
-The <code>__setitem__()</code> method is overridden to replace the Page object at the specified index (i.e., page number – 1).</p>
-<h6 id="exceptions_4">Exceptions</h6>
+<p><strong>Usage</strong></p>
+<p>The <code>[]</code> <code>(__getitem__)</code> operator is overridden to return the <code>Page</code> object at the specified index.</p>
+<p>The <code>__setitem__()</code> method is overridden to replace the <code>Page</code> object at the specified index (i.e., page number – 1).</p>
+<p><strong>Exceptions</strong></p>
 <p>A <code>IndexError</code> is raised if the index is out of range.</p>
-<h4 id="144-str">1.4.4  str()</h4>
-<h6 id="synopsis_18">Synopsis</h6>
+<h4 id="144-str">1.4.4 str()</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">label = str(image)
 </code></pre>
 
-<h6 id="usage_17">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>The <code>str()</code> <code>(__str__)</code> operator is overridden to return the label of the document as a string.</p>
-<h3 id="15-document-public-methods">1.5  Document Public Methods</h3>
-<h4 id="151-load">1.5.1  load()</h4>
-<h6 id="synopsis_19">Synopsis</h6>
+<h3 id="15-document-public-methods">1.5 Document Public Methods</h3>
+<h4 id="151-load">1.5.1 load()</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">document.load(name, dir=None) 
 </code></pre>
 
-<h6 id="parameters_1">Parameters</h6>
+<p><strong>Parameters</strong></p>
 <p><strong>name:</strong> The name of the document. </p>
-<h6 id="usage_18">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>This method will load into memory a preprocessed machine learning ready data from the corresponding JSON files specified by the document (root) name. The method will load the JSON files by the filename <code>&lt;name&gt;&lt;pageno&gt;.json</code>. If <code>dir</code> is <code>None</code>, then it will look for the files where the current value for dir is defined (either locally or reset by the dir property). Otherwise, it will look for the files under the directory specified by the dir parameter.</p>
 <p>Once loaded, the <code>Document</code> object will have the same characteristics as when the <code>Document</code> object was created.</p>
-<h6 id="exceptions_5">Exceptions</h6>
+<p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>ValueError</code> is raised if the name parameter is <code>None</code>.</p>
-<h3 id="16-document-private-methods">1.6  Document Private Methods</h3>
+<h3 id="16-document-private-methods">1.6 Document Private Methods</h3>
 <p>The <code>Document</code> class contains the following private methods:</p>
 <ul>
+<li><code>_exists()</code> – This method checks if the document exists at the specified stored path. If not, a <code>FileNotFound</code> exception is thrown.
+<br/><br/></li>
+<li><code>_collate()</code> – This method performs the collation task, which includes:
+<br/><br/></li>
+<li>Determines the number of pages in the document.
+<br/><br/></li>
 <li>
-<p><code>_exists()</code> – This method checks if the document exists at the specified stored path. If not, a <code>FileNotFound</code> exception is thrown.</p>
-</li>
-<li>
-<p><code>_collate()</code> – This method performs the collation task, which includes:</p>
-</li>
-<li>
-<p>Determines the number of pages in the document.</p>
-</li>
-<li>
-<p>Splits the document into individual pages, where each page is individually stored in the same format as the document. The pages are named as follows:</p>
-<p><code>&lt;name&gt;&lt;pageno&gt;.&lt;suffix&gt;</code></p>
-<p>Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.
-- If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.</p>
+<p>Splits the document into individual pages, where each page is individually stored in the same format as the document. The pages are named as follows:
+<br/><br/>
+       <code>&lt;name&gt;&lt;pageno&gt;.&lt;suffix&gt;</code></p>
+<p>Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.</p>
+<ul>
+<li>If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.</li>
+</ul>
 <p><code>&lt;name&gt;&lt;pageno&gt;.png</code></p>
 <ul>
 <li>If the page is a TIFF facsimile, the TIFF image is then OCR’d to convert to text.</li>
@@ -480,33 +475,28 @@ A <code>ValueError</code> is raised if the name parameter is <code>None</code>.<
 <p>Create a Page object for each page and adds them to the pages index property.</p>
 </li>
 <li>
-<p>If the document format is raw text, then:  </p>
+<p>If the document format is raw text, then:</p>
 <ul>
 <li>Treats as a single page.  </li>
-<li>Stores only a single page text file.</li>
+<li>Stores only a single page text file.
+<br/><br/></li>
 </ul>
 </li>
-<li>
-<p>If the document format is PDF, then page splitting and extraction of the raw text per page is done with the open source version of Ghostscript. If the document is a scanned PDF, the image is extracted and converted to PNG using Ghostscript and then OCR’d using open source Tesseract.</p>
-</li>
+<li>If the document format is PDF, then page splitting and extraction of the raw text per page is done with the open source version of Ghostscript. If the document is a scanned PDF, the image is extracted and converted to PNG using Ghostscript and then OCR’d using open source Tesseract.
+<br/><br/></li>
+<li>If the document format is TIFF, then page splitting is done with the open source Magick and then OCR’d using open source Tesseract.
+<br/><br/></li>
+<li><code>_langcheck()</code> – This method is called after NLP preprocessing of the document has been completed. The method will sample upto ten words to probabilistically determine the language of the document. The detected languages are English, French, German, Italian, and Spanish.
+<br/><br/></li>
+<li><code>_scancheck()</code> – This method is called after NLP preprocessing of the document has been completed, and the document was a scanned image. The method will sample upto <code>SCANCHECK</code> number of words for recognition in the detected language dictionary (i.e., English, French, German, Italian, or Spanish). The method will check the words on either page 1 or page 2, depending on which page has a greater number of words. Punctuation, symbols, acronyms or single letter words are excluded. The method then sets the internal variable <code>_quality</code> to the percentage of the words that were recognized (between 0 and 1).
+<br/><br/></li>
+<li><code>_async()</code> – This method performs asynchronous processing of the <code>_collate()</code> function, when the optional ehandler parameter to the constructor is not <code>None</code>. When processing is completed, the <code>ehandler</code> parameter value is called as a function to signal completion of the processing, and the document object is passed as a parameter.</li>
 </ul>
-</li>
-<li>
-<p>If the document format is TIFF, then page splitting is done with the open source Magick and then OCR’d using open source Tesseract.</p>
-</li>
-<li>
-<p><code>_langcheck()</code> - This method is called after NLP preprocessing of the document has been completed. The method will sample upto ten words to probabilistically determine the language of the document. The detected languages are English, French and Spanish.</p>
-</li>
-<li>
-<p><code>_scancheck()</code> – This method is called after NLP preprocessing of the document has been completed, and the document was a scanned image. The method will sample upto <code>SCANCHECK</code> number of words for recognition in the detected language dictionary (i.e., English, Spanish or French). The method will check the words on either page 1 or page 2, depending on which page has a greater number of words. Punctuation, symbols, acronyms or single letter words are excluded. The method then sets the internal variable _quality to the percentage of the words that were recognized (between 0 and 1).</p>
-</li>
-<li>
-<p><code>_async()</code> – This method performs asynchronous processing of the <code>_collate()</code> function, when the optional ehandler parameter to the constructor is not <code>None</code>. When processing is completed, the ehandler parameter value is called as a function to signal completion of the processing, and the document object is passed as a parameter.</p>
 </li>
 </ul>
 <hr />
-<h2 id="2-page">2.  Page</h2>
-<h3 id="21-page-overview">2.1  Page Overview</h3>
+<h2 id="2-page">2 Page</h2>
+<h3 id="21-page-overview">2.1 Page Overview</h3>
 <p>The page classifier contains the following primary classes, and their relationships:</p>
 <ul>
 <li><code>Page</code> – This is a base class for the representation of an extracted page from a document.  The constructor for the class object takes optionally as parameters the stored path to the page, and the extracted raw text. </li>
@@ -518,28 +508,28 @@ A <code>ValueError</code> is raised if the name parameter is <code>None</code>.<
 <li><code>Words</code> – This is a base class for representation of the text as NLP preprocessed list of words.</li>
 </ul>
 <p><img alt="page_relationships" src="../../img/specs/page_relationships.png" /></p>
-<p>Fig. 2a High Level view of Page Class Object Relationships</p>
-<h3 id="22-page-initializer-constructor">2.2  Page Initializer (Constructor)</h3>
-<h6 id="synopsis_20">Synopsis</h6>
+<p>Fig. 2a High Level view of <code>Page</code> Class Object Relationships</p>
+<h3 id="22-page-initializer-constructor">2.2 Page Initializer (Constructor)</h3>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">Page( page=None, text=None,  pageno=None)
 </code></pre>
 
-<h6 id="parameters_2">Parameters</h6>
+<p><strong>Parameters</strong></p>
 <p><strong>page:</strong>   If not None, the local path to the page.<br />
 <strong>text:</strong>   If not None, the text corresponding to the page.<br />
-<strong>pageno:</strong> If not None, the page number in the corresponding Document object.</p>
-<h6 id="usage_19">Usage</h6>
-<p>If the text parameter is not None, a <code>Words</code> object is created and instantiated with the corresponding text. The text is then NLP preprocessed according to the configuration settings stored as static members in the Page class (i.e., set by the parent Document object):</p>
-<p><code>BARE</code>  : If True, then the bare configuration setting is passed to the Words object.<br />
-<code>STEM</code>  : If not None, then the stem configuration setting is passed to the Words object.<br />
-<code>ROMAN</code>: If True, then the roman configuration setting is passed to the Words object.<br />
-<code>POS</code>   : If True, then the pos configuration setting is passed to the Words object.</p>
-<h6 id="exceptions_6">Exceptions</h6>
+<strong>pageno:</strong> If not None, the page number in the corresponding <code>Document</code> object.</p>
+<p><strong>Usage</strong></p>
+<p>If the text parameter is not None, a <code>Words</code> object is created and instantiated with the corresponding text. The text is then NLP preprocessed according to the configuration settings stored as static members in the <code>Page</code> class (i.e., set by the parent <code>Document</code> object):</p>
+<p><code>BARE</code>  : If True, then the bare configuration setting is passed to the <code>Words</code> object.<br />
+<code>STEM</code>  : If not None, then the stem configuration setting is passed to the <code>Words</code> object.<br />
+<code>ROMAN</code> : If True, then the roman configuration setting is passed to the <code>Words</code> object.<br />
+<code>POS</code>   : If True, then the pos configuration setting is passed to the <code>Words</code> object.</p>
+<p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>FileNotFoundError</code> is raised if the file specified by page parameter does not exist.</p>
-<h3 id="23-page-properties">2.3  Page Properties</h3>
-<h4 id="231-path">2.3.1  path</h4>
-<h6 id="synopsis_21">Synopsis</h6>
+<h3 id="23-page-properties">2.3 Page Properties</h3>
+<h4 id="231-path">2.3.1 path</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 path = page.path
 
@@ -547,30 +537,30 @@ path = page.path
 page.path= path 
 </code></pre>
 
-<h6 id="usage_20">Usage</h6>
-<p>When used as a getter the property returns the path of the corresponding page (i.e., split by Document object) in its native format.</p>
+<p><strong>Usage</strong></p>
+<p>When used as a getter the property returns the path of the corresponding page (i.e., split by <code>Document</code> object) in its native format.</p>
 <p>When used as a setter the property sets the path of the corresponding split page.</p>
-<h6 id="exceptions_7">Exceptions</h6>
+<p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>FileNotFoundError</code> is raised if the file specified by path does not exist.</p>
-<h4 id="232-pageno">2.3.2  pageno</h4>
-<h6 id="synopsis_22">Synopsis</h6>
+<h4 id="232-pageno">2.3.2 pageno</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 pageno = page.pageno
 </code></pre>
 
-<h6 id="usage_21">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the pageno set for the <code>Page</code> object in the corresponding parent <code>Document</code> object.</p>
-<h4 id="233-size">2.3.3  size</h4>
-<h6 id="synopsis_23">Synopsis</h6>
+<h4 id="233-size">2.3.3 size</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 nbytes = page.size
 </code></pre>
 
-<h6 id="usage_22">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the byte size of the text parameter.</p>
-<h4 id="234-label">2.3.4  label</h4>
-<h5 id="synopsis_24">Synopsis</h5>
+<h4 id="234-label">2.3.4 label</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 label = page.label
 
@@ -578,143 +568,139 @@ label = page.label
 page.label = label
 </code></pre>
 
-<h6 id="usage_23">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the <code>integer</code> label that has been assigned to the page.</p>
 <p>When used as a setter the property assigns <code>sets</code> a label to the page.</p>
-<h6 id="exceptions_8">Exceptions</h6>
+<p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.</p>
-<h4 id="235-words">2.3.5  words</h4>
+<h4 id="235-words">2.3.5 words</h4>
 <p>Synopsis</p>
 <pre><code class="python"># Getter
 words = page.words
 </code></pre>
 
-<h6 id="usage_24">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the Words object of the corresponding NLP preprocessed text.</p>
-<h4 id="236-bagofwords">2.3.6  bagOfWords</h4>
-<h6 id="synopsis_25">Synopsis</h6>
+<h4 id="236-bagofwords">2.3.6 bagOfWords</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 bag = page.bagOfWords   
 </code></pre>
 
-<h6 id="usage_25">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the page’s word sequences as a Bag of Words, represented as an unordered dictionary, where the key is the word and the value is the number of occurrences:</p>
-<blockquote>
 <pre><code>{ ‘&lt;word’&gt; : &lt;no. of occurrences&gt;, … }
 </code></pre>
-</blockquote>
-<h4 id="237-freqdist">2.3.7  freqDist</h4>
-<h6 id="synopsis_26">Synopsis</h6>
+<h4 id="237-freqdist">2.3.7 freqDist</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 freq = page.freqDist    
 </code></pre>
 
-<h6 id="usage_26">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the sorted tuples of a frequency distribution of words (from bag of words), in descending order (i.e., highest first)</p>
-<blockquote>
 <pre><code>[ ( ‘&lt;word’&gt;: &lt;no.  of occurrences&gt; ), …. ]
 </code></pre>
-</blockquote>
-<h4 id="238-termfreq">2.3.8  termFreq</h4>
-<h6 id="synopsis_27">Synopsis</h6>
+<h4 id="238-termfreq">2.3.8 termFreq</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
 tf = page.termFreq
 </code></pre>
 
-<h6 id="usage_27">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>When used as a getter the property returns the sorted tuples of a term frequency distribution (percent that term occurs), in descending order (i.e., highest first)</p>
-<blockquote>
 <pre><code>[ ( ‘&lt;word’&gt;: &lt;percentage  of occurrences&gt; ), …. ]
 </code></pre>
-</blockquote>
-<h4 id="239-static-variables">2.3.9  Static Variables</h4>
-<p>The Page class contains the following static variables:</p>
-<p><code>BARE</code>  : If True, then the bare configuration setting is passed to the Words object.<br />
-<code>STEM</code>  : If not None, then the stem configuration setting is passed to the Words object.<br />
-<code>ROMAN</code> : If True, then the roman configuration setting is passed to the Words object.<br />
-<code>POS</code>     : If True, then the pos configuration setting is passed to the Words object.</p>
-<h3 id="24-page-overwritten-operators">2.4  Page Overwritten Operators</h3>
-<h4 id="241-len">2.4.1  len()</h4>
-<h6 id="synopsis_28">Synopsis</h6>
+<h4 id="239-static-variables">2.3.9 Static Variables</h4>
+<p>The <code>Page</code> class contains the following static variables:</p>
+<p><code>BARE</code>  : If True, then the bare configuration setting is passed to the <code>Words</code> object.<br />
+<code>STEM</code>  : If not None, then the stem configuration setting is passed to the <code>Words</code> object.<br />
+<code>ROMAN</code> : If True, then the roman configuration setting is passed to the <code>Words</code> object.<br />
+<code>POS</code>     : If True, then the pos configuration setting is passed to the <code>Words</code> object.</p>
+<h3 id="24-page-overwritten-operators">2.4 Page Overwritten Operators</h3>
+<h4 id="241-len">2.4.1 len()</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">nwords = len(pages)
 </code></pre>
 
-<h6 id="usage_28">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>The <code>len()</code> <code>(__len__)</code> operator is overridden to return  the number of NLP tokenized words in the page.</p>
-<h4 id="242">2.4.2  +=</h4>
-<h6 id="synopsis_29">Synopsis</h6>
+<h4 id="242">2.4.2 +=</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">page += text
 </code></pre>
 
-<h6 id="usage_29">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>The <code>+=</code> <code>(__iadd__)</code> method is overridden to append text to the page, which is then NLP preprocessed.</p>
-<h6 id="exceptions_9">Exceptions</h6>
+<p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.</p>
-<h4 id="243-str">2.4.3  str()</h4>
-<h6 id="synopsis_30">Synopsis</h6>
+<h4 id="243-str">2.4.3 str()</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">label = str(image)
 </code></pre>
 
-<h6 id="usage_30">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>The <code>str()</code> <code>(__str__)</code> operator is overridden to return the label of the page as a string.</p>
-<h3 id="25-page-private-methods">2.5  Page Private Methods</h3>
+<h3 id="25-page-private-methods">2.5 Page Private Methods</h3>
 <p>The Page class contains no private methods.
  </p>
-<h3 id="26-page-public-methods">2.6  Page Public Methods</h3>
+<h3 id="26-page-public-methods">2.6 Page Public Methods</h3>
 <h4 id="261-store">2.6.1 <code>store()</code></h4>
-<h6 id="synopsis_31">Synopsis</h6>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">image.store(path)
 </code></pre>
 
-<h6 id="parameters_3">Parameters</h6>
+<p><strong>Parameters</strong></p>
 <p><strong>path:</strong> the file path to write to.</p>
-<h6 id="usage_31">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>The <code>store()</code> method writes the NLP tokenized sequence as a JSON object to the specified file.</p>
 <p>Exceptions</p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>FileNotFoundError</code> is raised if the file path is invalid.</p>
-<h4 id="262-load">2.6.2  load()</h4>
-<h6 id="synopsis_32">Synopsis</h6>
+<h4 id="262-load">2.6.2 load()</h4>
+<p><strong>Synopsis</strong></p>
 <pre><code class="python">image.load(path) 
 </code></pre>
 
-<h6 id="parameters_4">Parameters</h6>
+<p><strong>Parameters</strong></p>
 <p><strong>path:</strong> the file path to read from.</p>
-<h6 id="usage_32">Usage</h6>
+<p><strong>Usage</strong></p>
 <p>The <code>load()</code> method writes the NLP tokenized sequence as a JSON object from the specified file.</p>
-<h6 id="exceptions_10">Exceptions</h6>
+<p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
 A <code>FileNotFoundError</code> is raised if the file path is invalid.</p>
 <hr />
 <h2 id="appendix-i-updates">APPENDIX I: Updates</h2>
-<p><strong>Pre-Gap (Epipog) v1.1</strong>
-1.  Added time property.
-2.  Added scanned property.
+<p><strong>Pre-Gap (Epipog) v1.1</strong><br />
+1.  Added time property.<br />
+2.  Added scanned property.<br />
 3.  Added support for TIFF and JPG/PNG.</p>
-<p><strong>Pre-Gap (Epipog) v1.3</strong>
-1.  Add direct read of PDF resource element to determine if scanned page.
+<p><strong>Pre-Gap (Epipog) v1.3</strong><br />
+1.  Add direct read of PDF resource element to determine if scanned page.<br />
 2.  Fix not detecting scanned PDF if text extraction produced noise.</p>
-<p><strong>Pre-Gap (Epipog) v1.4</strong>
-1.  Added pageno property to <code>Page</code> class.
-2.  Added methods <code>store()</code> and <code>load()</code> to Page class to store/load NLP tokenized words to file.
-3.  Added method <code>load()</code> to <code>Document</code> class to reload NLP tokenized words from storage.
+<p><strong>Pre-Gap (Epipog) v1.4</strong><br />
+1.  Added pageno property to <code>Page</code> class.<br />
+2.  Added methods <code>store()</code> and <code>load()</code> to Page class to store/load NLP tokenized words to file.<br />
+3.  Added method <code>load()</code> to <code>Document</code> class to reload NLP tokenized words from storage.<br />
 4.  Added config keyword arguent to <code>Document</code> initializer to configure NLP preprocessing.</p>
-<p><strong>Pre-Gap (Epipog) v1.5</strong> 
+<p><strong>Pre-Gap (Epipog) v1.5</strong><br />
 1.  Added <code>bagOfWords</code>, <code>freqDist</code>, and <code>termFreq</code> properties to <code>Document</code> and <code>Page</code> class.</p>
-<p><strong>Gap v0.9.1 (alpha)</strong>
-1.  Rewrote Specification
-2.  Add <code>OCR</code> quality estimate</p>
-<p><strong>Gap v0.9.2 (alpha)</strong>
+<p><strong>Gap v0.9.1 (alpha)</strong><br />
+1.  Rewrote Specification.<br />
+2.  Add <code>OCR</code> quality estimate.</p>
+<p><strong>Gap v0.9.2 (alpha)</strong><br />
 1. Add language detection for English, Spanish and French.</p>
 <h2 id="appendix-ii-anticipated-engineering">APPENDIX II: Anticipated Engineering</h2>
-<p>The following has been identified as enhancement/issues to be addressed in subsequent update:
-1.  What does it mean to add text to a document.<br />
-2.  Break raw text into pages for &gt; 50 lines<br />
-3.  Refactor page counting for faster performance
-4.  Add page split endpoint for streaming interface and URL
-5.  Add more pdf test files
-6.  Fix bug of not handling Cryllic characters in page <code>load()</code> method.</p>
-<p>Proprietary Information
+<p>The following has been identified as enhancement/issues to be addressed in subsequent update:</p>
+<ol>
+<li>What does it mean to add text to a document.  </li>
+<li>Break raw text into pages for &gt; 50 lines.  </li>
+<li>Refactor page counting for faster performance.  </li>
+<li>Add page split endpoint for streaming interface and URL.  </li>
+<li>Add more pdf test files.  </li>
+<li>Fix bug of not handling Cryllic characters in page <code>load()</code> method.</li>
+</ol>
+<p>Proprietary Information<br />
 Copyright ©2018, Epipog, All Rights Reserved</p>
               
             </div>
