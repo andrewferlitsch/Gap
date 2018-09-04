@@ -1251,6 +1251,21 @@ class MyTest(unittest.TestCase):
         with pytest.raises(AttributeError):
             image = Image("files/0_100.jpg", 2, config=['float24'])
         
+    def test_129(self):
+        """ Images - config not a list """
+        with pytest.raises(TypeError):
+            image = Image("files/0_100.jpg", 2, config='float24')
+        
+    def test_130(self):
+        """ Images - config setting resize is invalid """
+        with pytest.raises(AttributeError):
+            image = Image("files/0_100.jpg", 2, config=['resize=(10,20)='])
+        
+    def test_131(self):
+        """ Images - config setting thumb is invalid """
+        with pytest.raises(AttributeError):
+            image = Image("files/0_100.jpg", 2, config=['thumb=(10,20)='])
+        
     def done(self, image):
         self.isdone = True
         os.remove(image)
