@@ -36,25 +36,25 @@ class Image(object):
     
     def __init__(self, image=None, label=0, dir='./', ehandler=None, config=None):
         """ """
-        self._image     = image     # image path
-        self._name      = None      # name of image (no path or suffix)
-        self._size      = 0         # byte size of the image on disk
-        self._type      = None      # image type of the image
-        self._dir       = None      # image storage
-        self._shape     = None      # shape of the image
-        self._ehandler  = ehandler  # event handler for asynchronous processing 
-        self._thumbnail = None      # thumbnail size
-        self._label     = label     # image label
-        self._grayscale = False     # convert to grayscale
-        self._flatten   = False     # flatten the data (into 1D vector)
-        self._resize    = None      # resize the image
-        self._hd5       = True      # store processed image data to hd5 filesystem
-        self._noraw     = True      # config setting for storing raw ata
-        self._imgdata   = None      # processed image data in memory
-        self._raw       = None      # unprocessed image data in memory
-        self._thumb     = None      # thumb image data in memory
-        self._time      = 0         # elapse time to do processing
-        self._float     = np.float32    # data type after normalization
+        self._image     = image      # image path
+        self._name      = None       # name of image (no path or suffix)
+        self._size      = 0          # byte size of the image on disk
+        self._type      = None       # image type of the image
+        self._dir       = None       # image storage
+        self._shape     = None       # shape of the image
+        self._ehandler  = ehandler   # event handler for asynchronous processing 
+        self._thumbnail = None       # thumbnail size
+        self._label     = label      # image label
+        self._grayscale = False      # convert to grayscale
+        self._flatten   = False      # flatten the data (into 1D vector)
+        self._resize    = None       # resize the image
+        self._hd5       = True       # store processed image data to hd5 filesystem
+        self._noraw     = True       # config setting for storing raw data
+        self._imgdata   = None       # processed image data in memory
+        self._raw       = None       # unprocessed image data in memory
+        self._thumb     = None       # thumb image data in memory
+        self._time      = 0          # elapse time to do processing
+        self._float     = np.float32 # data type after normalization
         
         if self._debug: print(config)
         

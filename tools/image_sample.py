@@ -7,7 +7,7 @@ import os, sys
 import random 
 import shutil
 
-def image_sample(main, sample)
+def image_sample(main, sample):
     labels = os.listdir(main)
     os.makedirs('{}_spl'.format(main), exist_ok=True)
 
