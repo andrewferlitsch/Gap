@@ -7,3 +7,10 @@ tests/__pycache__
 train/.ipynb_checkpoints/
 site/
 templates/
+
+.ipynb_checkpoints/
+flower_photos/
+flower_photos_spl/
+flower.h5
+move_files.ipynb
+report.ipynb
