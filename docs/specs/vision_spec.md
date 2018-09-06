@@ -352,6 +352,8 @@ images += images2
 **Usage**
 
 The `[]` `(__iadd__)` operator is overridden to either add a single `Image` object or a `Images` object (i.e., collection) to an existing `Images` object. If the configuration setting 'nostore' is set for the parent `Images` object, the updated Images object is not stored to the corresponding HDF5 file, in which case one must explicity issue the `store()` method; otherwise ('nostore' is not set), the updated `Images` object is stored to the corresponding HDF5 file.
+
+The accumaltive time (see propeties `time` and `elapsed`) will be the time of the pre-existing `Images` and the add `Images` collection.
  
 **Exceptions**
 
@@ -763,6 +765,8 @@ A `ValueError` is raised if the degree is not between 0 and 360.
 2.	Added raw setting to config parameter.
 3. 	Added float setting to config parameter.
 4.	Added transformation property flatten.
+5.	Added support for numpy arrays as image collections to Images.
+6.	Added support for 16-bit pixels.
 
 Proprietary Information  
 Copyright ©2018, Epipog, All Rights Reserved
