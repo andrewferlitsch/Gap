@@ -100,16 +100,27 @@ If the `ehandler` parameter is not `None`, then the above will occur asynchronou
 
 ```python
 # invoke without arguments
-func done(images):
+def done(images):
 	print(images.time)
 
 images = Images(list, labels, ehandler=done)
 
 # invoke with arguments
-func done2(images, val):
+def done2(images, val):
 	print(images.time, val)
 
 images = Images(list, labels, ehandler=(done, 10))
+```
+If an exception is raised during aysnchronous processing of the image, then the exception is passed to the event handler instead of an `Image` object.
+
+```python
+def done(image):
+	# An exception occurred
+	if isinstance(image, Exception):
+		pass
+	# Processing was successful
+	else:
+		pass
 ```
 
 If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
@@ -470,13 +481,13 @@ Image(image=None, label=0, dir=’./’, ehandler=None, config=None)
 
 ```python
 # invoke without arguments
-func done(image):
+def done(image):
 	print(image.time)
 
 image = Image(path, label, ehandler=done)
 
 # invoke with arguments
-func done2(image, val):
+def done2(image, val):
 	print(image.time, val)
 
 image = Images(path, label, ehandler=(done, 10))
