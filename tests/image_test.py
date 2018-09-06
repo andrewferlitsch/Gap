@@ -1326,6 +1326,16 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[0].data[0], 1.0) 
         self.assertEquals(images[0].name, 'untitled')
         self.assertEquals(images[0].image, 'untitled')
+        
+    def test_139(self):
+        """ Image - async, not a valid image """
+        f = open("tmp.jpg", "w")
+        f.write("foobar")
+        f.close()
+        image = Image('tmp.jpg', 2, ehandler=self.baddone)
+        time.sleep(5)
+        self.assertEquals(self.bad, True)
+        os.remove('tmp.jpg')
             
 
     def done(self, image):
@@ -1335,3 +1345,9 @@ class MyTest(unittest.TestCase):
     def done2(self, image, args):
         self.isdone = True
         self.args = args
+        
+    def baddone(self, image):
+        if isinstance(image, Exception):
+            self.bad = True
+        else:
+            self.bad = False
