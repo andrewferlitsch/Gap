@@ -211,18 +211,18 @@ Information on the percent of code that is covered (and what source lines not co
 
 Testing with code coverage is executed as follows:
 
-    pytest --cov=splitter document_test.py page_test.py
+    pytest --cov=gapml.splitter document_test.py page_test.py
 
         Statements=456, Missed=60, Percent Covered: 87%
 
-    pytest --cov=syntax words_test.py
+    pytest --cov=gampml.syntax words_test.py
 
         Statements=456, Missed=60, Percent Covered: 93%
 
-    pytest --cov=address words_test.py
+    pytest --cov=gampml.address words_test.py
 
         Statements=456, Missed=60, Percent Covered: 90%
 
-    pytest --cov=vision image_test.py
+    pytest --cov=gampml.vision image_test.py
 
-        Statements=456, Missed=60, Percent Covered: 89%
+        Statements=652, Missed=56, Percent Covered: 91%

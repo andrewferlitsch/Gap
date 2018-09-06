@@ -1266,6 +1266,68 @@ class MyTest(unittest.TestCase):
         with pytest.raises(AttributeError):
             image = Image("files/0_100.jpg", 2, config=['thumb=(10,20)='])
         
+    def test_132(self):
+        """ Images - invalid type for images """
+        with pytest.raises(TypeError):
+            images = Images(1,1)
+            
+    def test_133(self):
+        """ Images - 1d numpy array is invalid """
+        arr = np.array( [ 1, 2, 3 ] )
+        with pytest.raises(TypeError):
+            images = Images(arr,1)
+            
+    def test_134(self):
+        """ Images - 1d numpy array is uint8 """
+        arr = np.array( [ [255,2], [3,4], [5,6] ], dtype=np.uint8 )
+        images = Images(arr,1)
+        self.assertEquals(len(images), 3)     
+        self.assertEquals(type(images[0].data[0]), np.float32)   
+        self.assertEquals(images[0].data[0], 1.0) 
+        self.assertEquals(images[0].name, 'untitled')
+        self.assertEquals(images[0].image, 'untitled')
+            
+    def test_135(self):
+        """ Images - 1d numpy array is uint16 """
+        arr = np.array( [ [65535,2], [3,4], [5,6] ], dtype=np.uint16 )
+        images = Images(arr,1)
+        self.assertEquals(len(images), 3)     
+        self.assertEquals(type(images[0].data[0]), np.float32)   
+        self.assertEquals(images[0].data[0], 1.0) 
+        self.assertEquals(images[0].name, 'untitled')
+        self.assertEquals(images[0].image, 'untitled')
+            
+    def test_136(self):
+        """ Images - 1d numpy array is float16 """
+        arr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float16 )
+        images = Images(arr,1)
+        self.assertEquals(len(images), 3)     
+        self.assertEquals(type(images[0].data[0]), np.float32)   
+        self.assertEquals(images[0].data[0], 1.0) 
+        self.assertEquals(images[0].name, 'untitled')
+        self.assertEquals(images[0].image, 'untitled')
+            
+    def test_137(self):
+        """ Images - 1d numpy array is float32 """
+        arr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        images = Images(arr,1)
+        self.assertEquals(len(images), 3)     
+        self.assertEquals(type(images[0].data[0]), np.float32)   
+        self.assertEquals(images[0].data[0], 1.0) 
+        self.assertEquals(images[0].name, 'untitled')
+        self.assertEquals(images[0].image, 'untitled')
+            
+    def test_138(self):
+        """ Images - 1d numpy array is float64 """
+        arr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float64 )
+        images = Images(arr,1)
+        self.assertEquals(len(images), 3)     
+        self.assertEquals(type(images[0].data[0]), np.float32)   
+        self.assertEquals(images[0].data[0], 1.0) 
+        self.assertEquals(images[0].name, 'untitled')
+        self.assertEquals(images[0].image, 'untitled')
+        
+        
     def done(self, image):
         self.isdone = True
         os.remove(image)
