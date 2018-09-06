@@ -157,7 +157,11 @@ class Image(object):
                 
     def _async(self, dir):
         """ Asynchronous processing of the image """
-        self._collate(dir)
+        try:
+            self._collate(dir)
+        except Exception as e:
+            self._ehandler(e)
+            
         # signal user defined event handler when processing is done
         if isinstance(self._ehandler, tuple):
             self._ehandler[0](self, self._ehandler[1:])
@@ -224,7 +228,8 @@ class Image(object):
         elif self._image.startswith("http"):
             try:
                 response = requests.get(self._image, timeout=10)
-            except: return None
+            except:
+                raise TimeoutError('Unable to get remote image')
             
             # Read in the image data
             data = np.fromstring(response.content, np.uint8)
@@ -252,7 +257,7 @@ class Image(object):
             
         # if bad image, skip
         if np.any(image == None):
-            return None
+            raise EOFError('Not an Image')
         
         # Get the raw shape of the array
         self._rawshape = image.shape

@@ -664,16 +664,16 @@ class MyTest(unittest.TestCase):
         
     def test_071(self):
         """ Image - nonexistent remote image """
-        image = Image('https://cdn.cnn.com/cnnnext/dam/assets/18ch-economy-072718-exlarge-tease.jpg', 2)
-        self.assertEqual(image.data, None)
+        with pytest.raises(EOFError):
+            image = Image('https://cdn.cnn.com/cnnnext/dam/assets/18ch-economy-072718-exlarge-tease.jpg', 2)
         
     def test_072(self):
         """ Image - bad image """
         f = open("tmp.jpg", "w")
         f.write("foobar")
         f.close()
-        image = Image('tmp.jpg', 2)
-        self.assertEqual(image.data, None)
+        with pytest.raises(EOFError):
+            image = Image('tmp.jpg', 2)
         os.remove('tmp.jpg')
         
     def test_073(self):
@@ -1326,8 +1326,8 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[0].data[0], 1.0) 
         self.assertEquals(images[0].name, 'untitled')
         self.assertEquals(images[0].image, 'untitled')
-        
-        
+            
+
     def done(self, image):
         self.isdone = True
         os.remove(image)
