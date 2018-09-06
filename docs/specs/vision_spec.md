@@ -16,6 +16,7 @@ images = Images([<list of images>], [<list_of_labels>], flags …)
 ```
     Alternately, the list of images can be a list of directories which contain images.
     Alternately, the list of images can be a list of URLs of remotely stored images.
+    Alternately, the list of images can be a multi-dimensional numpy array.
     Alternately, the list of labels maybe a single value; in which case, the label applies to all the images.
 
 + **Image** – This is the base class for the representation of a single Computer Vision (CV). The constructor optionally takes as parameters an image (path), corresponding label, and flags for CV preprocessing the image.
