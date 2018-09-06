@@ -32,25 +32,28 @@ Fig. 1a High Level view of `Images` Class Object Relationships
 **Synopsis**
 
 ```python
-Images(images=None, labels= None, dir=’./’, name=None, ehandler=None,  config=None)
+Images(images=None, labels= None, dir=’./’, name=None, ehandler=None, config=None)
 ```
 
 **Parameters**
 
-**images:** If not None, a list of either:  
-1.	local image files  
-2.	remote image files (i.e., http[s]://….)  
+**images:** If not `None`, a list of either:  
+1.	local image files.
+2.	remote image files (i.e., http[s]://….).
 3.	directories of local image files.
+4.	or a multi-dimensional numpy array
 
-**labels:** If not None, either:  
+For multi-dimensional numpy arrays, the first dimension are the individual images. For example, the Tensorflow training set for MNIST data is a numpy array of shape (55000, 784). When passed as the `images` parameter it would be treated as 55,000 images of a 1D vector size 784 pixels.
+
+**labels:** If not `None`, either:  
 1.	A single integer value (i.e., label) which corresponds to all the images.  
-2.	A list of the same size as images parameter list of integer values; where the index of each value is the label for the corresponding index in the images parameter.
+2.	A list of the same size as `images` parameter list of integer values; where the index of each value is the label for the corresponding index in the `images` parameter.
 
-**dir:** The directory where to store the machine learning ready data.
+**dir:** If not `./`, the directory where to store the machine learning ready data.
 
-**name:** If not None, a name (string) for the collection.
+**name:** If not `None`, a name (string) for the collection.
 
-**ehandler:** If not None, the processing of the images into machine learning ready data will be asynchronous, and the value of the parameter is the function (or method) that is the event handler when processing is complete.
+**ehandler:** If not `None`, the processing of the images into machine learning ready data will be asynchronous, and the value of the parameter is the function (or method) that is the event handler when processing is complete.
 
 The event handler takes the form:
 
@@ -59,13 +62,13 @@ def myHandler(images):
  	 	# Where images is the Images object that was preprocessed.
 ```
 
-**config:** If not None, a list of one or more configuration settings as strings:
+**config:** If not `None`, a list of one or more configuration settings as strings:
 
         grayscale               | gray  
         flatten                 | flat  
         resize=(height,width)   | resize=height,width  
         thumb=(height,width)    | thumb=height,width  
-        float=float16           | float32 | float64
+        float16           	| float32 | float64
         nostore
         raw
 			
@@ -78,8 +81,8 @@ Otherwise, both `images` and `labels` parameters must be specified. The `labels`
 By default, the images will be preprocessed as follows:
 
 1.	An `Image` object is created for each image.
-2.	The `config` parameter passed to the `Image` initializer (constructor) will have the ‘nostore’ setting, which instructs each `Image` object to not separately store the generated preprocessed machine learning ready data.
-3.	Upon completion, the preprocessed machine learning data for each image is stored as a single HDF5 file in the current working directory, unless the `config` parameter 'nostore' was specified. The root name of the file will be the root name of the first image, preprended with 'collection'. For example, if the first image was `cat.jpg`, then the root name of the HDF5 will be:
+2.	The `config` parameter passed to the `Image` initializer (constructor) will have the `‘nostore’` setting implicitly added, which instructs each `Image` object to not separately store the generated preprocessed machine learning ready data.
+3.	Upon completion, the preprocessed machine learning data for each image is stored as a single HDF5 file in the current working directory, unless the `config` parameter `'nostore'` was specified. If either the `'raw'` or `'thumb'` configuration settings are specified, the corresponding raw pixel and thumbnail data for each image are stored in the HDF5 file. The root name of the file will be the root name of the first image, preprended with 'collection'. For example, if the first image was `cat.jpg`, then the root name of the HDF5 will be:
 
 ```
 collection.cat.h5
@@ -87,9 +90,27 @@ collection.cat.h5
 
 If either or both the `dir` and `config` options are not `None`, they are passed down to each `Image` object.
 
-If the `name` parameter is specified, the value will be the root name of the HDF5 stored file.
+If the `name` parameter is specified, the value will be the root name of the HDF5 stored file (overriding the above described default behavior. For example, if the parameter `name` is set to 'foobar', then the root name of the HDF5 will be:
+
+```python
+foobar.h5
+```
 
 If the `ehandler` parameter is not `None`, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the `Images` object passed as a parameter. The `ehandler` parameter may also be specified as a tuple, where the first item in the tuple is the event handler and the remaining items are arguments to pass to the event handler.
+
+```python
+# invoke without arguments
+func done(images):
+	print(images.time)
+
+images = Images(list, labels, ehandler=done)
+
+# invoke with arguments
+func done2(images, val):
+	print(images.time, val)
+
+images = Images(list, labels, ehandler=(done, 10))
+```
 
 If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
 
