@@ -109,14 +109,14 @@ print(type(data))   # outputs <class 'numpy.ndarry'>
 print(data.shape)   # outputs the shape of the machine learning data (e.g., (100, 100, 3))
 ```
 
-By default, the shape and number of channels of the source image are maintained in the preprocessed machine learning ready data, and the pixel values are normalized to values between 0 and 1. 
+By default, the shape and number of channels of the source image are maintained in the preprocessed machine learning ready data, and the pixel values are normalized to values between 0.0 and 1.0. 
 
 ```python
 print(raw[0][80])   # outputs pixel values (e.g., [250, 255, 255])
 print(data[0][80])  # outputs machine learning ready data values (e.g., [0.98039216, 1.0, 1.0])
 ```
 
-When processing of the image is completed, the raw pixel data, machine learning ready data, and attributes are stored in a HDF5 (Hierarchical Data Format) formatted file. By default, the file is stored in the current local directory, where the rootname of the file is the rootname of the image. Storage provides the means to latter retrieval the machine learning ready data for feeding into a neural network, and/or retransforming the machine learning ready data. In the above example, the file would be stored as:
+When processing of the image is completed, the machine learning ready data, and attributes are stored in a HDF5 (Hierarchical Data Format) formatted file. By default, the file is stored in the current local directory, where the rootname of the file is the rootname of the image. Storage provides the means to latter retrieval the machine learning ready data for feeding into a neural network, and/or retransforming the machine learning ready data. In the above example, the file would be stored as:
 
     ./1_100.hd5
 
@@ -126,12 +126,18 @@ The path location of the stored HDF5 can be specified with the keyword parameter
 image = Image("../tests/files/1_100.jpg", 1, dir="tmp")
 ```
 
-In the above example, the HDF5 file will be stored under the subdirectory `tmp`. If the subdirectory path does not exist, the `Image` object will attempt to create the folder.
+In the above example, the HDF5 file will be stored under the subdirectory `tmp`. If the subdirectory path does not exist, the `Image` object will attempt to create the subdirectory.
 
-The `Image` class optionally takes the keyword parameter `config`. This parameter takes a list of one or more settings, which alter how the image is preprocessed. For example, one can choose to use disable storing the HDF5 file using the keyword parameter `config` with the setting `nostore`.
+The `Image` class optionally takes the keyword parameter `config`. This parameter takes a list of one or more settings, which alter how the image is preprocessed. For example, one can choose to disable storing to the HDF5 file using the keyword parameter `config` with the setting `nostore`.
 
 ```python
 image = Image("../tests/files/1_100.jpg", 1, config=['nostore'])
+```
+
+Alternately, one could choose to additionally store the raw pixel data to the HDF5 file using the keyword parameter `config` with the setting `raw`.
+
+```python
+image = Image("../tests/files/1_100.jpg", 1, config=['raw'])
 ```
 
 ### Example: Cloud-based Image Processing Pipeline
@@ -151,7 +157,7 @@ def first_step(uploaded_image, label):
     """
     image = Image(uploaded_image, label, ehandler=next_step, config=['nostore'])
 
-def next_step(step):
+def next_step(image):
     """ Do something with the Image object as the next step in the data pipeline """
     data = image.data
 ```
@@ -160,11 +166,13 @@ def next_step(step):
 
 The keyword parameter `config` has a number of settings for specifying how the raw pixel data is preprocessed. The **Gap** framework is designed to eliminate the use of large numbers of keyword parameters, and instead uses a modern convention of passing in a configuration parameter. Here are some of the configuration settings:
 
-    nostore                 # do not store in a HDF5 file
-    grayscale | gray        # convert to a grayscale image with a single channel (i.e., color plane)
-    flatten   | flat        # flatten the machine learning ready data into a 1D vector
-    resize=(height, width)  # resize the raw pixel data
-    thumb=(height, width)   # create (and store) a thumbnail of the raw pixel data
+    nostore                     # do not store in a HDF5 file
+    grayscale | gray            # convert to a grayscale image with a single channel (i.e., color plane)
+    flatten   | flat            # flatten the machine learning ready data into a 1D vector
+    resize=(height, width)      # resize the raw pixel data
+    thumb=(height, width)       # create (and store) a thumbnail of the raw pixel data
+    raw                         # store the raw pixel data
+    float16 | float32 | float64 # data type of normalized pixel data (e.g., float32 is default)
         
 Let's look how you can use these settings for something like neural network's equivalent of the hello world example ~ [training the MNIST dataset](https://www.tensorflow.org/versions/r1.0/get_started/mnist/beginners). The MNIST dataset consists of 28x28 grayscale images. Do to its size, grayscale and simplicity, it can be trained with just a ANN (vs. CNN). Since ANN take as input a 1D vector, the machine learning ready data would need to be reshaped (i.e., flatten) into a 1D vector.
 
@@ -272,6 +280,7 @@ The `Images` class provides preprocessing of a collections of images (vs. a sing
  + A list of local or remote images (e.g., [ '1_100.jpg', '2_100.jpg', '3_100.jpg'])
  + A single directory path of images  (e.g., 'apple')
  + A list of directory paths of images (e.g., ['apple', 'pear', 'banana'])
+ + A numpy multi-dimensional array
   
 The corresponding positional parameter `labels` must match the number of images as follows:
 
