@@ -121,6 +121,7 @@ A `AttributeError` is raised if an invalid configuration setting is specified.
 A `IndexError` is raised if the size of the labels list does not match the size of the images list.
 A `FileNotFoundError` is raised if a local image is not found.
 A `TimeoutError` is raised if a remote image is not retrieved.
+A `EOFError` is raised if the image is not a valid image.
 
 ### 1.3 Images Properties
 
