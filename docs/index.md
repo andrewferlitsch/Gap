@@ -1,4 +1,4 @@
-# Gap : NLP/CV Data Engineering Framework, v0.9.2 (Pre-launch: alpha)
+# Gap : NLP/CV Data Engineering Framework, v0.9.3 (Pre-launch: alpha)
 
 ## Natural Language Processing for PDF, TIFF, and Camera Captured Documents, and
 ## Computer Vision Processing for Images
@@ -72,7 +72,7 @@ The Gap framework extensively uses a number of open source applications/modules.
   9. imutils - image manipulation for computer vision
   10. pyaspeller - spelling dictionary for text
   
-## Installation: 
+## Pip Installation: 
 
 The Gap framework is supported on Windows, MacOS, and Linux. It has been packaged for distribution via PyPi on launch.
 
@@ -96,29 +96,15 @@ The Gap framework is supported on Windows, MacOS, and Linux. It has been package
       + Imagemagick:  https://www.imagemagick.org/script/download.php  
       + Tesseract:    https://github.com/UB-Mannheim/tesseract/wiki
 
-For pre-launch, after you have clone the source code, from the root of the source tree do the following to complete the install:
+## Setup.py Installation:
 
-    python setup.py install
+To install GapML via setup.py:
 
-#### PyPi Dependencies
+  1. clone from the Github repo.  
+      + `git clone git@github.com:andrewferlitsch/Gap.git`
 
-The dependencies for python packages distributed at PyPi are automatically checked for and installed by the setup.py script. These include:
-
-  - nltk : http://www.nltk.org/
-  - numpy : http://www.numpy.org/
-  - h5py : https://www.h5py.org/
-  - unidecode : https://pypi.org/project/Unidecode/
-  - openCV : https://www.opencv.org/
-  - imultils : https://github.com/jrosebr1/imutils
-  - pyaspeller : https://pypi.org/project/pyaspeller/
-  
-#### 3rd Party Dependencies
- 
- The dependencies for non-python packages are automatically checked for and installed by the setup.py script. These include:
- 
-  - Ghostscript : https://www.ghostscript.com
-  - Tesseract : https://github.com/tesseract-ocr/tesseract/wiki
-  - Imagik :  https://www.imagemagick.org
+  2. install the GapML setup file. 
+      + `python setup.py install`
 
 ## Modules
 

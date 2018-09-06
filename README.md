@@ -1,4 +1,4 @@
-# Gap : NLP/CV Data Engineering Framework, v0.9.2 (Pre-launch: alpha)
+# Gap : NLP/CV Data Engineering Framework, v0.9.3 (Pre-launch: alpha)
 
 ## Natural Language Processing for PDF, TIFF, and Camera Captured Documents, and
 ## Computer Vision Processing for Images
