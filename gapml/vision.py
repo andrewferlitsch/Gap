@@ -290,11 +290,11 @@ class Image(object):
                 image = (image / 255.0).astype(np.float32)
         elif data_type == np.uint16:
             if self._float == np.float16:
-                image = (image / (255 * 255) ).astype(np.float16)
+                image = (image / 65535.0 ).astype(np.float16)
             elif self._float == np.float64:
-                image = (image / (255 * 255) ).astype(np.float64)
+                image = (image / 65535.0 ).astype(np.float64)
             else:
-                image = (image / (255 * 255) ).astype(np.float32)
+                image = (image / 65535.0 ).astype(np.float32)
         # assume pixel data is normalized
         elif data_type == np.float16 or data_type is np.float32 or data_type is np.float64:
             if self._float == np.float16:

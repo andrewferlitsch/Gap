@@ -1289,7 +1289,7 @@ class MyTest(unittest.TestCase):
             
     def test_135(self):
         """ Images - 1d numpy array is uint16 """
-        arr = np.array( [ [255*255,2], [3,4], [5,6] ], dtype=np.uint16 )
+        arr = np.array( [ [65535,2], [3,4], [5,6] ], dtype=np.uint16 )
         images = Images(arr,1)
         self.assertEquals(len(images), 3)     
         self.assertEquals(type(images[0].data[0]), np.float32)   
