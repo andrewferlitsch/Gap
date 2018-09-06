@@ -119,6 +119,8 @@ If the path to an image file is remote (i.e., starts with http), an HTTP request
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `AttributeError` is raised if an invalid configuration setting is specified.  
 A `IndexError` is raised if the size of the labels list does not match the size of the images list.
+A `FileNotFoundError` is raised if a local image is not found.
+A `TimeoutError` is raised if a remote image is not retrieved.
 
 ### 1.3 Images Properties
 
