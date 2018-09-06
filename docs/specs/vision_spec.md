@@ -63,10 +63,10 @@ def myHandler(images):
         grayscale               | gray  
         flatten                 | flat  
         resize=(height,width)   | resize=height,width  
-	thumb=(height,width)    | thumb=height,width  
-	float=float16		| float32 | float64
+        thumb=(height,width)    | thumb=height,width  
+        float=float16		| float32 | float64
     	nostore
-	raw
+        raw
 			
 **Usage**
 
