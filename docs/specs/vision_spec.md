@@ -68,7 +68,7 @@ def myHandler(images):
         flatten                 | flat  
         resize=(height,width)   | resize=height,width  
         thumb=(height,width)    | thumb=height,width  
-        float16           	| float32 | float64
+        float16                 | float32 | float64
         nostore
         raw
 			
@@ -196,8 +196,21 @@ secs = images.time
 **Usage**
 
 When used as a getter the property returns the amount of time (in seconds) it took to preprocess the collection into machine learning ready data.
+
+#### 1.3.6 elapsed
+
+**Synopsis**
+
+```python
+# Getter
+elapsed = images.elapsed
+```
+
+**Usage**
+
+When used as a getter the property returns the amount of time it took to preprocess the collection into machine learning ready data, in the form HH:MM:SS.
  
-#### 1.3.6 split
+#### 1.3.7 split
 
 **Synopsis**
 
@@ -225,7 +238,7 @@ A `TypeError` is raised if the type of the parameter is not the expected type.
 A `ValueError` is raised if a parameter is out of range.  
 A `AttributeError` is raised if the number of parameters passed to the setter property is incorrect.
 
-#### 1.3.7 minibatch
+#### 1.3.8 minibatch
 
 **Synopsis**
 
@@ -250,7 +263,7 @@ If the `augment` property is set to True, for each image in the training set, an
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `ValueError` is raised if the batch_size is out of range.
 
-#### 1.3.8 augment
+#### 1.3.9 augment
 
 **Synopsis**
 
@@ -278,7 +291,7 @@ The parameter to the `augment` property may also be a tuple. The tuple specifies
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
 
-#### 1.3.9 flatten
+#### 1.3.10 flatten
 
 ```python
 images.flatten = True | False
@@ -294,7 +307,7 @@ When used as a setter and set to `False`, the machine learning ready data is unf
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
 
-#### 1.3.10 resize
+#### 1.3.11 resize
 
 ```python
 images.resize = (height, width)
