@@ -36,25 +36,26 @@ class Image(object):
     
     def __init__(self, image=None, label=0, dir='./', ehandler=None, config=None):
         """ """
-        self._image     = image     # image path
-        self._name      = None      # name of image (no path or suffix)
-        self._size      = 0         # byte size of the image on disk
-        self._type      = None      # image type of the image
-        self._dir       = None      # image storage
-        self._shape     = None      # shape of the image
-        self._ehandler  = ehandler  # event handler for asynchronous processing 
-        self._thumbnail = None      # thumbnail size
-        self._label     = label     # image label
-        self._grayscale = False     # convert to grayscale
-        self._flatten   = False     # flatten the data (into 1D vector)
-        self._resize    = None      # resize the image
-        self._hd5       = True      # store processed image data to hd5 filesystem
-        self._noraw     = True      # config setting for storing raw ata
-        self._imgdata   = None      # processed image data in memory
-        self._raw       = None      # unprocessed image data in memory
-        self._thumb     = None      # thumb image data in memory
-        self._time      = 0         # elapse time to do processing
-        self._float     = np.float32    # data type after normalization
+        self._image     = image      # image path
+        self._name      = None       # name of image (no path or suffix)
+        self._size      = 0          # byte size of the image on disk
+        self._type      = None       # image type of the image
+        self._dir       = None       # image storage
+        self._shape     = None       # shape of the image
+        self._ehandler  = ehandler   # event handler for asynchronous processing 
+        self._thumbnail = None       # thumbnail size
+        self._label     = label      # image label
+        self._grayscale = False      # convert to grayscale
+        self._flatten   = False      # flatten the data (into 1D vector)
+        self._resize    = None       # resize the image
+        self._hd5       = True       # store processed image data to hd5 filesystem
+        self._noraw     = True       # config setting for storing raw data
+        self._imgdata   = None       # processed image data in memory
+        self._raw       = None       # unprocessed image data in memory
+        self._rawshape  = None       # raw shape of the image
+        self._thumb     = None       # thumb image data in memory
+        self._time      = 0          # elapse time to do processing
+        self._float     = np.float32 # data type after normalization
         
         if self._debug: print(config)
         
@@ -252,7 +253,10 @@ class Image(object):
         # if bad image, skip
         if np.any(image == None):
             return None
-            
+        
+        # Get the raw shape of the array
+        self._rawshape = image.shape
+
         if self._noraw == False:
             self._raw = image   
 
@@ -327,6 +331,7 @@ class Image(object):
         with h5py.File(self._dir + "/" + self._name + '.h5', 'w') as hf:
             imgset = hf.create_dataset("images",  data=[self._imgdata])
             labset = hf.create_dataset("labels",  data=[self._label])
+            imgset.attrs['rawshape'] = self._rawshape
             imgset.attrs['shape'] = self._shape
             imgset.attrs['name']  = self._name
             imgset.attrs['type']  = self._type
@@ -395,6 +400,7 @@ class Image(object):
             except: pass  
             self._type  = imgset.attrs["type"]  
             self._size  = imgset.attrs["size"]
+            self._rawshape = imgset.attrs["rawshape"]
         self._shape = self._imgdata.shape  
       
     @property
@@ -425,7 +431,7 @@ class Image(object):
     def shape(self):
         """ Getter for the image shape (height, width [,planes]) """
         return self._shape
-        
+
     @property 
     def data(self):
         """ Getter for the processed image data """
@@ -481,7 +487,12 @@ class Image(object):
     @property
     def raw(self):
         """ Getter for the raw unprocessed data """
-        return self._raw    
+        return self._raw
+
+    @property
+    def rawshape(self):
+        """ Getter for the image raw shape (height, width [,planes]) """
+        return self._rawshape
         
     def __str__(self):
         """ Override the str() operator - return the document classification """
@@ -636,19 +647,21 @@ class Images(object):
     def store(self):
         """ """
         # Store the images as a collection in an HD5 filesystem
-        imgdata = []
-        clsdata = []
-        rawdata = []
-        sizdata = []
-        thmdata = []
-        names   = []
-        types   = []
-        paths   = []
+        imgdata  = []
+        clsdata  = []
+        rawdata  = []
+        sizdata  = []
+        thmdata  = []
+        rawshape = []
+        names    = []
+        types    = []
+        paths    = []
         for img in self._data:
             imgdata.append( img.data )
             clsdata.append( img.label )
             if img.raw is not None:
                 rawdata.append( img.raw )
+            rawshape.append( img.rawshape )
             sizdata.append( img.size )
             if img.thumb is not None:
                 thmdata.append( img.thumb )
@@ -662,23 +675,18 @@ class Images(object):
             
         # Write the images and labels to disk as HD5 file
         with h5py.File(self._dir + self._name + '.h5', 'w') as hf:      
-            hf.create_dataset("images",  data=imgdata)
-            hf.create_dataset("labels",  data=clsdata)
+            hf.create_dataset("images", data=imgdata)
+            hf.create_dataset("labels", data=clsdata)
             # use separate datasets to handle raw images of different size/shape
             for _ in range(len(rawdata)):
-                 hf.create_dataset("raw" + str(_), data=rawdata[_])
+                hf.create_dataset("raw" + str(_), data=rawdata[_])
+            hf.create_dataset("rawshape", data=rawshape)
             if len(thmdata) > 0:
-                hf.create_dataset("thumb",   data=thmdata)
-            hf.create_dataset("size",    data=sizdata)
-            try:
-                hf.attrs.create("names", names)
-            except Exception as e: print("Warning: metadata names too long to store")
-            try:
-                hf.attrs.create("types", types)
-            except Exception as e: print("Warning: metadata types too long to store")
-            try:
-                hf.attrs.create("paths", paths)
-            except Exception as e: print("Warning: metadata paths too long to store")
+                hf.create_dataset("thumb", data=thmdata)
+            hf.create_dataset("size",  data=sizdata)
+            hf.create_dataset("names", data=names)
+            hf.create_dataset("types", data=types)
+            hf.create_dataset("paths", data=paths)
             
     @property
     def dir(self):
@@ -751,20 +759,15 @@ class Images(object):
                 try:
                     image._raw = hf["raw" + str(i)][:]
                 except: pass
+                image._rawshape = hf["rawshape"][i]
                 image._size = hf["size"][i]
                 image._label = hf["labels"][i]
                 try:
                     image._thumb = hf["thumb"][i]
                 except: pass
-                try:
-                    image._name  = hf.attrs["names"][i].decode()
-                except: pass
-                try:
-                    image._type  = hf.attrs["types"][i].decode()
-                except: pass
-                try:
-                    image._image = hf.attrs["paths"][i].decode()
-                except: pass
+                image._name  = hf["names"][i].decode()
+                image._type  = hf["types"][i].decode()
+                image._image = hf["paths"][i].decode()
                 image._shape = image._imgdata.shape
                 image._dir   = self._dir
                 self._data.append( image )
@@ -982,4 +985,3 @@ class Images(object):
         if self._nostore == False:
             self.store()
         return self
-        
