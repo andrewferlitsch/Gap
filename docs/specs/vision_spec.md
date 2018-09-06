@@ -64,8 +64,8 @@ def myHandler(images):
         flatten                 | flat  
         resize=(height,width)   | resize=height,width  
         thumb=(height,width)    | thumb=height,width  
-        float=float16		| float32 | float64
-    	nostore
+        float=float16           | float32 | float64
+        nostore
         raw
 			
 **Usage**
