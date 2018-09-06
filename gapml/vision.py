@@ -268,13 +268,37 @@ class Image(object):
         # Get the shape of the array
         self._shape = image.shape
             
-        # Normalize the image (convert pixel values from int range 0 .. 255 to float range 0 .. 1)
-        if self._float == np.float16:
-            image = (image / 255.0).astype(np.float16)
-        elif self._float == np.float64:
-            image = (image / 255.0).astype(np.float64)
+        # Get the data type of the pixel data
+        if len(image.shape) == 1:
+            data_type = type(image[0])
+        elif len(image.shape) == 2:
+            data_type = type(image[0][0])
         else:
-            image = (image / 255.0).astype(np.float32)
+            data_type = type(image[0][0][0])
+        
+        # Normalize the image (convert pixel values from int range 0 .. 255 to float range 0 .. 1)
+        if data_type == np.uint8:
+            if self._float == np.float16:
+                image = (image / 255.0).astype(np.float16)
+            elif self._float == np.float64:
+                image = (image / 255.0).astype(np.float64)
+            else:
+                image = (image / 255.0).astype(np.float32)
+        elif data_type == np.uint16:
+            if self._float == np.float16:
+                image = (image / (255 * 255) ).astype(np.float16)
+            elif self._float == np.float64:
+                image = (image / (255 * 255) ).astype(np.float64)
+            else:
+                image = (image / (255 * 255) ).astype(np.float32)
+        # assume pixel data is normalized
+        elif data_type == np.float16 or data_type is np.float32 or data_type is np.float64:
+            if self._float == np.float16:
+                image = image.astype(np.float16)
+            elif self._float == np.float64:
+                image = image.astype(np.float64)
+            else:
+                image = image.astype(np.float32)
             
         # Flatten the image into a 1D vector
         if self._flatten:
@@ -284,6 +308,9 @@ class Image(object):
         self._shape = image.shape
         
         self._imgdata = image
+        
+        if isinstance(self._image, np.ndarray):
+            self._image = "untitled"
         
         if self._hd5:
             self._store() 
@@ -490,15 +517,21 @@ class Images(object):
         if images is None:
             return
         
-        if isinstance(images, list) is False:
-            if isinstance(images, str) is False and not os.path.isdir(images):
-                raise TypeError("List or Directory expected for image paths")
-            # parameter is a directory, convert to list of images in the directory
-            self._images = [images + '/' + image for image in os.listdir(images)]
-        else:
+        if isinstance(images, list):
             for ele in images:
                 if not isinstance(ele, str):
                     raise TypeError("String expected for image paths")
+        elif isinstance(images, str):
+            if not os.path.isdir(images):
+                raise TypeError("List or Directory expected for image paths")
+            # parameter is a directory, convert to list of images in the directory
+            self._images = [images + '/' + image for image in os.listdir(images)]
+        elif isinstance(images, np.ndarray):
+            if len(images.shape) < 2:
+                raise TypeError("2D or greater numpy array expected for images")
+        else:
+            raise TypeError("List or Directory expected for image paths")
+        
         
         # if labels is a single value, then all the images share the same label
         if isinstance(labels, int):
@@ -586,7 +619,7 @@ class Images(object):
         self._data = []
         for ix in range(len(self._images)):
             # directory of files
-            if os.path.isdir(self._images[ix]):
+            if isinstance(self._images[ix], str) and os.path.isdir(self._images[ix]):
                 for image in [ self._images[ix] + '/' + file for file in os.listdir(self._images[ix])]:
                     self._data.append( Image(image, dir=self._dir, label=self._labels[ix], config=self._config) )
             # single file
