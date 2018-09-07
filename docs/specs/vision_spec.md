@@ -125,14 +125,15 @@ def done(image):
 
 If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
 
+**Preprocessing Errors**
+
+During preprocessing of each individual image, if the preprocessing of the image fails, its corresponding `Image` object in the `Images` collection will be `None`, and are not written to HDF5 storage. For example, if ten images are to be preprocessed and two failed, then only eight `Image` objects are written to the HDF5 storage. The number of images that failed to be preprocessed is obtainable from the property `fail`. 
+
 **Exceptions**
 
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `AttributeError` is raised if an invalid configuration setting is specified.  
 A `IndexError` is raised if the size of the labels list does not match the size of the images list.
-A `FileNotFoundError` is raised if a local image is not found.
-A `TimeoutError` is raised if a remote image is not retrieved.
-A `EOFError` is raised if the image is not a valid image.
 
 ### 1.3 Images Properties
 
@@ -334,6 +335,16 @@ When used as a setter, the machine learning ready data is resized to the specifi
 **Exceptions**
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
+
+#### 1.3.12 fail
+
+```python
+nfailed = images.fail
+```
+
+**Usage**
+
+When used as a getter, the property returns the number of images in the collection that failed to be preprocessed into machine learning ready data.
 
 ### 1.4 Images Overridden Operators
 
@@ -546,8 +557,10 @@ If the configuration setting `nostore` is specified, then the image data and cor
 
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `AttributeError` is raised if an invalid configuration setting is specified.  
-A `FileNotFoundError` is raised if the image file does not exist.  
-A `IOError` is raised if an error occurs reading in the image file.
+A `IOError` is raised if an error occurs reading in the image file. 
+A `FileNotFoundError` is raised if a local image is not found. 
+A `TimeoutError` is raised if a remote image is not retrieved. 
+A `EOFError` is raised if the image is not a valid image. 
 
 ### 2.3 Image Properties
 
