@@ -536,8 +536,10 @@ class Images(object):
         
         if isinstance(images, list):
             for ele in images:
-                if not isinstance(ele, str):
-                    raise TypeError("String expected for image paths")
+                if isinstance(ele, str) or isinstance(ele, np.ndarray):
+                    pass
+                else:
+                    raise TypeError("String or Raw Pixel data expected for image paths")
         elif isinstance(images, str):
             if not os.path.isdir(images):
                 raise TypeError("List or Directory expected for image paths")

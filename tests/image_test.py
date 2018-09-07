@@ -1344,6 +1344,26 @@ class MyTest(unittest.TestCase):
         images.load('foobar')
         self.assertEquals(len(images), 2)
         os.remove('foobar.h5')
+            
+    def test_141(self):
+        """ Images - images and no labels """
+        with pytest.raises(TypeError):
+            images = Images([])
+        with pytest.raises(TypeError):
+            images = Images(['a'])
+        arr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        with pytest.raises(TypeError):
+            images = Images(arr)
+            
+    def test_142(self):
+        """ Images - list of numpy arrays """
+        n1 = np.array([1.0, 0.5], dtype=np.float32)
+        n2 = np.array([0.25, 0.75], dtype=np.float32)
+        n3 = np.array([0.2, 0.4], dtype=np.float32)
+        images = Images([ n1, n2, n3 ], [0, 1, 2], name='foobar')
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[0].shape, (2,))
+        os.remove('foobar.h5')
         
     def bug_139(self):
         """ Image - async, not a valid image """
