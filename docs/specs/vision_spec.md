@@ -16,7 +16,8 @@ images = Images([<list of images>], [<list_of_labels>], flags …)
 ```
     Alternately, the list of images can be a list of directories which contain images.
     Alternately, the list of images can be a list of URLs of remotely stored images.
-    Alternately, the list of images can be a multi-dimensional numpy array.
+    Alternately, the list of images can be a multi-dimensional numpy array (where the first dimension is the number of images).
+    Alternately, the list of images can be a list of multi-dimensional numpy arrays.
     Alternately, the list of labels maybe a single value; in which case, the label applies to all the images.
 
 + **Image** – This is the base class for the representation of a single Computer Vision (CV). The constructor optionally takes as parameters an image (path), corresponding label, and flags for CV preprocessing the image.
@@ -41,9 +42,10 @@ Images(images=None, labels= None, dir=’./’, name=None, ehandler=None, config
 1.	local image files.
 2.	remote image files (i.e., http[s]://….).
 3.	directories of local image files.
-4.	or a multi-dimensional numpy array
+4.	or a multi-dimensional numpy array.
+5. 	or a list of multi-dimensional numpy arrays.
 
-For multi-dimensional numpy arrays, the first dimension are the individual images. For example, the Tensorflow training set for MNIST data is a numpy array of shape (55000, 784). When passed as the `images` parameter it would be treated as 55,000 images of a 1D vector size 784 pixels.
+For a single multi-dimensional numpy array, the first dimension are the individual images. For example, the Tensorflow training set for MNIST data is a numpy array of shape (55000, 784). When passed as the `images` parameter it would be treated as 55,000 images of a 1D vector size 784 pixels.
 
 **labels:** If not `None`, either:  
 1.	A single integer value (i.e., label) which corresponds to all the images.  
@@ -100,19 +102,34 @@ If the `ehandler` parameter is not `None`, then the above will occur asynchronou
 
 ```python
 # invoke without arguments
-func done(images):
+def done(images):
 	print(images.time)
 
 images = Images(list, labels, ehandler=done)
 
 # invoke with arguments
-func done2(images, val):
+def done2(images, val):
 	print(images.time, val)
 
 images = Images(list, labels, ehandler=(done, 10))
 ```
+If an exception is raised during aysnchronous processing of the image, then the exception is passed to the event handler instead of an `Image` object.
+
+```python
+def done(image):
+	# An exception occurred
+	if isinstance(image, Exception):
+		pass
+	# Processing was successful
+	else:
+		pass
+```
 
 If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
+
+**Preprocessing Errors**
+
+During preprocessing of each individual image, if the preprocessing of the image fails, its corresponding `Image` object in the `Images` collection will be `None`, and are not written to HDF5 storage. For example, if ten images are to be preprocessed and two failed, then only eight `Image` objects are written to the HDF5 storage. The number of images that failed to be preprocessed is obtainable from the property `fail`. 
 
 **Exceptions**
 
@@ -321,6 +338,16 @@ When used as a setter, the machine learning ready data is resized to the specifi
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
 
+#### 1.3.12 fail
+
+```python
+nfailed = images.fail
+```
+
+**Usage**
+
+When used as a getter, the property returns the number of images in the collection that failed to be preprocessed into machine learning ready data.
+
 ### 1.4 Images Overridden Operators
 
 #### 1.4.1 len()
@@ -467,13 +494,13 @@ Image(image=None, label=0, dir=’./’, ehandler=None, config=None)
 
 ```python
 # invoke without arguments
-func done(image):
+def done(image):
 	print(image.time)
 
 image = Image(path, label, ehandler=done)
 
 # invoke with arguments
-func done2(image, val):
+def done2(image, val):
 	print(image.time, val)
 
 image = Images(path, label, ehandler=(done, 10))
@@ -532,8 +559,10 @@ If the configuration setting `nostore` is specified, then the image data and cor
 
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `AttributeError` is raised if an invalid configuration setting is specified.  
-A `FileNotFoundError` is raised if the image file does not exist.  
-A `IOError` is raised if an error occurs reading in the image file.
+A `IOError` is raised if an error occurs reading in the image file.  
+A `FileNotFoundError` is raised if a local image is not found.  
+A `TimeoutError` is raised if a remote image is not retrieved.  
+A `EOFError` is raised if the image is not a valid image. 
 
 ### 2.3 Image Properties
 

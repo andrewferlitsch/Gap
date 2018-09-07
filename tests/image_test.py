@@ -15,6 +15,7 @@ class MyTest(unittest.TestCase):
         
     def setup_class(self):
         self.isdone = False
+        self.isbad  = False
             
     def teardown_class(self):
         pass
@@ -371,8 +372,9 @@ class MyTest(unittest.TestCase):
         
     def test_040(self):
         """ Images Constructor - images = image not exist """
-        with pytest.raises(FileNotFoundError):
-            images = Images(["files/nonexist.jpg"], [0])
+        images = Images(["files/nonexist.jpg"], [0], name='foobar')
+        self.assertEqual(len(images), 1)
+        os.remove('foobar.h5')
         
     def test_041(self):
         """ Images Constructor - labels not a string """
@@ -664,16 +666,16 @@ class MyTest(unittest.TestCase):
         
     def test_071(self):
         """ Image - nonexistent remote image """
-        image = Image('https://cdn.cnn.com/cnnnext/dam/assets/18ch-economy-072718-exlarge-tease.jpg', 2)
-        self.assertEqual(image.data, None)
+        with pytest.raises(EOFError):
+            image = Image('https://cdn.cnn.com/cnnnext/dam/assets/18ch-economy-072718-exlarge-tease.jpg', 2)
         
     def test_072(self):
         """ Image - bad image """
         f = open("tmp.jpg", "w")
         f.write("foobar")
         f.close()
-        image = Image('tmp.jpg', 2)
-        self.assertEqual(image.data, None)
+        with pytest.raises(EOFError):
+            image = Image('tmp.jpg', 2)
         os.remove('tmp.jpg')
         
     def test_073(self):
@@ -1326,8 +1328,54 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[0].data[0], 1.0) 
         self.assertEquals(images[0].name, 'untitled')
         self.assertEquals(images[0].image, 'untitled')
+            
+    def test_139(self):
+        """ Images - file not found """
+        images = Images(["nofile.jpg"], 2, config=['nostore'])
+        self.assertEquals(len(images), 1)
+        self.assertEquals(images[0], None)
+            
+    def test_140(self):
+        """ Images - mix good and bad """
+        images = Images(["files/0_100.jpg", "nofile.jpg", "files/1_100.jpg"], [0,1,2], name='foobar')
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images.fail, 1)
+        images = Images()
+        images.load('foobar')
+        self.assertEquals(len(images), 2)
+        os.remove('foobar.h5')
+            
+    def test_141(self):
+        """ Images - images and no labels """
+        with pytest.raises(TypeError):
+            images = Images([])
+        with pytest.raises(TypeError):
+            images = Images(['a'])
+        arr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        with pytest.raises(TypeError):
+            images = Images(arr)
+            
+    def test_142(self):
+        """ Images - list of numpy arrays """
+        n1 = np.array([1.0, 0.5], dtype=np.float32)
+        n2 = np.array([0.25, 0.75], dtype=np.float32)
+        n3 = np.array([0.2, 0.4], dtype=np.float32)
+        images = Images([ n1, n2, n3 ], [0, 1, 2], name='foobar')
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[0].shape, (2,))
+        os.remove('foobar.h5')
         
-        
+    def bug_139(self):
+        """ Image - async, not a valid image """
+        f = open("tmp.jpg", "w")
+        f.write("foobar")
+        f.close()
+        image = Image('tmp.jpg', 2, ehandler=self.baddone)
+        time.sleep(3)
+        self.assertEquals(self.isbad, True)
+        os.remove('tmp.jpg')
+            
+
     def done(self, image):
         self.isdone = True
         os.remove(image)
@@ -1335,3 +1383,9 @@ class MyTest(unittest.TestCase):
     def done2(self, image, args):
         self.isdone = True
         self.args = args
+        
+    def baddone(self, image):
+        if isinstance(image, Exception):
+            self.isbad = True
+        else:
+            self.isbad = False

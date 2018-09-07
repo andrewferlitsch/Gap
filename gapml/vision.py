@@ -158,7 +158,11 @@ class Image(object):
                 
     def _async(self, dir):
         """ Asynchronous processing of the image """
-        self._collate(dir)
+        try:
+            self._collate(dir)
+        except Exception as e:
+            self._ehandler(e)
+            
         # signal user defined event handler when processing is done
         if isinstance(self._ehandler, tuple):
             self._ehandler[0](self, self._ehandler[1:])
@@ -225,7 +229,8 @@ class Image(object):
         elif self._image.startswith("http"):
             try:
                 response = requests.get(self._image, timeout=10)
-            except: return None
+            except:
+                raise TimeoutError('Unable to get remote image')
             
             # Read in the image data
             data = np.fromstring(response.content, np.uint8)
@@ -253,7 +258,7 @@ class Image(object):
             
         # if bad image, skip
         if np.any(image == None):
-            return None
+            raise EOFError('Not an Image')
         
         # Get the raw shape of the array
         self._rawshape = image.shape
@@ -531,14 +536,17 @@ class Images(object):
         self._resize   = None       # config setting for resize
         self._noraw    = True       # config setting for not storing raw data
         self._time     = 0          # processing time
+        self._fail     = 0          # how many images that failed to process
         
         if images is None:
             return
         
         if isinstance(images, list):
             for ele in images:
-                if not isinstance(ele, str):
-                    raise TypeError("String expected for image paths")
+                if isinstance(ele, str) or isinstance(ele, np.ndarray):
+                    pass
+                else:
+                    raise TypeError("String or Raw Pixel data expected for image paths")
         elif isinstance(images, str):
             if not os.path.isdir(images):
                 raise TypeError("List or Directory expected for image paths")
@@ -638,11 +646,18 @@ class Images(object):
             # directory of files
             if isinstance(self._images[ix], str) and os.path.isdir(self._images[ix]):
                 for image in [ self._images[ix] + '/' + file for file in os.listdir(self._images[ix])]:
-                    self._data.append( Image(image, dir=self._dir, label=self._labels[ix], config=self._config) )
+                    try:
+                        self._data.append( Image(image, dir=self._dir, label=self._labels[ix], config=self._config) )
+                    except: 
+                        self._data.append(None)
+                        self._fail += 1
             # single file
             else:
-                image = Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config)
-                self._data.append( image )
+                try:
+                    self._data.append( Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config) )
+                except:
+                    self._data.append(None)
+                    self._fail += 1
                 
         # Store machine learning ready data
         if self._nostore is False:
@@ -663,21 +678,28 @@ class Images(object):
         types    = []
         paths    = []
         for img in self._data:
-            imgdata.append( img.data )
-            clsdata.append( img.label )
-            if img.raw is not None:
-                rawdata.append( img.raw )
-            rawshape.append( img.rawshape )
-            sizdata.append( img.size )
-            if img.thumb is not None:
-                thmdata.append( img.thumb )
-            names.append( bytes(img.name, 'utf-8') )
-            types.append( bytes(img.type, 'utf-8') )
-            paths.append( bytes(img.image, 'utf-8') )
+            # unprocessed image
+            if not img:
+                pass
+            else:
+                imgdata.append( img.data )
+                clsdata.append( img.label )
+                if img.raw is not None:
+                    rawdata.append( img.raw )
+                rawshape.append( img.rawshape )
+                sizdata.append( img.size )
+                if img.thumb is not None:
+                    thmdata.append( img.thumb )
+                names.append( bytes(img.name, 'utf-8') )
+                types.append( bytes(img.type, 'utf-8') )
+                paths.append( bytes(img.image, 'utf-8') )
 
         # if no collection name specified, use root of first test file.
         if self._name is None:
-            self._name = "collection." + self._data[0].name
+            if self._data[0] is not None:
+                self._name = "collection." + self._data[0].name
+            else:
+                self._name = "collection.untitled"
             
         # Write the images and labels to disk as HD5 file
         with h5py.File(self._dir + self._name + '.h5', 'w') as hf:
@@ -744,6 +766,11 @@ class Images(object):
     def elapsed(self):
         """ Elapsed time in hh:mm:ss format for the processing time """
         return time.strftime("%H:%M:%S", time.gmtime(self._time))
+        
+    @property
+    def fail(self):
+        """ Number of images that failed processing """
+        return self._fail
         
     def load(self, name, dir=None):
         """ Load a Collection of Images """
