@@ -397,12 +397,12 @@ class Image(object):
             except: pass
             try:
                 self._thumb =  hf['thumb'][0]
-            except: pass  
+            except: pass
             self._type  = imgset.attrs["type"]  
             self._size  = imgset.attrs["size"]
             self._rawshape = imgset.attrs["rawshape"]
-        self._shape = self._imgdata.shape  
-      
+        self._shape = self._imgdata.shape
+
     @property
     def image(self):
         """ Getter for the image name (path) """
@@ -674,8 +674,12 @@ class Images(object):
             self._name = "collection." + self._data[0].name
             
         # Write the images and labels to disk as HD5 file
-        with h5py.File(self._dir + self._name + '.h5', 'w') as hf:      
-            hf.create_dataset("images", data=imgdata)
+        with h5py.File(self._dir + self._name + '.h5', 'w') as hf:
+            try:
+                hf.create_dataset("images", data=imgdata)
+            except:
+                for _ in range(len(imgdata)):
+                    hf.create_dataset("imgdata" + str(_), data=imgdata[_])
             hf.create_dataset("labels", data=clsdata)
             # use separate datasets to handle raw images of different size/shape
             for _ in range(len(rawdata)):
@@ -752,10 +756,13 @@ class Images(object):
         # Read the images and labels from disk as HD5 file
         with h5py.File(self._dir + self._name + '.h5', 'r') as hf:
             self._data = []
-            length = len(hf["images"])
+            length = len(hf["names"])
             for i in range(length):
                 image = Image()
-                image._imgdata = hf["images"][i]
+                try:
+                    image._imgdata = hf["images"][i]
+                except:
+                    image._imgdata = hf["imgdata" + str(i)][:]
                 try:
                     image._raw = hf["raw" + str(i)][:]
                 except: pass
