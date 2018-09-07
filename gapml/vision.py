@@ -627,7 +627,6 @@ class Images(object):
         else:
             self._ehandler(self)
             
-            
     def _process(self):
         """ Process a collection of images """
        
