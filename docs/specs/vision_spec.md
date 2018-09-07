@@ -557,9 +557,9 @@ If the configuration setting `nostore` is specified, then the image data and cor
 
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `AttributeError` is raised if an invalid configuration setting is specified.  
-A `IOError` is raised if an error occurs reading in the image file. 
-A `FileNotFoundError` is raised if a local image is not found. 
-A `TimeoutError` is raised if a remote image is not retrieved. 
+A `IOError` is raised if an error occurs reading in the image file.  
+A `FileNotFoundError` is raised if a local image is not found.  
+A `TimeoutError` is raised if a remote image is not retrieved.  
 A `EOFError` is raised if the image is not a valid image. 
 
 ### 2.3 Image Properties
