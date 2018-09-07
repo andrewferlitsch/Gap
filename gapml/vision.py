@@ -949,7 +949,7 @@ class Images(object):
             for image in self._data:
                 image._imgdata = image._imgdata.flatten()
         else:
-            # Already not Flattened
+            # Not Flattened
             if len(self._data[0].shape) != 1:
                 return
             if self._resize != None:
@@ -958,6 +958,36 @@ class Images(object):
                 resize = self._data[0]._raw.shape
             for image in self._data:
                 image._imgdata = image._imgdata.reshape( resize )
+                
+    @property
+    def resize(self):
+        """ dummy property """
+        return None
+        
+    @resize.setter
+    def resize(self, resize):
+        """ Resize the Image Data """
+        if not isinstance(resize, tuple):
+            raise TypeError("Tuple expected for resize")
+        
+        if len(resize) != 2:
+            raise AttributeError("Tuple for resize must be in form (height, width)")
+            
+        # there are no images
+        if len(self) == 0:
+            return
+            
+        # openCV uses width, height
+        resize = ( resize[1], resize[0] )
+        
+        # Data is flatten, so let's unflatten it first
+        if len(self._data[0].shape) == 1:
+            self.flatten = False
+        
+        for image in self._data:
+            image._imgdata = cv2.resize(image._imgdata, resize, interpolation=cv2.INTER_AREA)
+            image._shape   = image._imgdata.shape
+         
       
     def __next__(self):
         """ Iterate through the training set (single image at a time) """
