@@ -6,6 +6,7 @@ Copyright 2018(c), Andrew Ferlitsch
 version = '0.9.3'
 
 import os
+import io
 import threading
 import time
 import copy
@@ -268,6 +269,12 @@ class Image(object):
             
         if self._resize:
             image = cv2.resize(image, self._resize)
+            #get new image size
+            img_file = io.BytesIO()
+            image2 = PILImage.fromarray(image)
+            image2.save(img_file, self._type)
+            self._size = img_file.tell()
+            del image2
         
         # Get the shape of the array
         self._shape = image.shape
