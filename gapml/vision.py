@@ -75,9 +75,14 @@ class Image(object):
         elif dir == None:
             self._dir = "./"
         
-        # value must be a string
-        if label is None or isinstance(label, int) == False:
-            raise TypeError("Integer expected for image label")
+        # label must be an int or a list of floats (one-hot encoded)
+        if isinstance(label, int):
+            pass
+        # one-hot encoded
+        elif isinstance(label, list) or isinstance(label, np.ndarray):
+            pass
+        else:
+            raise TypeError("Integer or 1D vector (one-hot encoded) expected for image label")
             
         if ehandler:
             if isinstance(ehandler, tuple):
@@ -560,16 +565,19 @@ class Images(object):
             if len(images) != len(labels):
                 raise IndexError("Number of images and labels do not match")
         elif isinstance(labels, np.ndarray):
-            if len(labels.shape) != 1:
-                raise TypeError("1D numpy array expected for labels")
-  
-            if type(labels[0]) not in [ np.uint8, np.uint16, np.uint32]:
-                raise TypeError("Integer values expected for labels")
+            if len(labels.shape) == 1:
+                if type(labels[0]) not in [ np.uint8, np.uint16, np.uint32, np.int8, np.int16, np.int32 ]:
+                    raise TypeError("Integer values expected for labels") 
+                self._labels = [ int(label) for label in labels ]
+            elif len(labels.shape) == 2:
+                if type(labels[0][0]) not in [ np.float16, np.float32, np.float64]:
+                    raise TypeError("Floating point values expected for one-hot encoded labels") 
+                self._labels = [ label for label in labels ]
+            else:
+                raise TypeError("1D or 2D numpy array expected for labels")
                 
             if len(images) != len(labels):
-                raise IndexError("Number of images and labels do not match") 
-                
-            self._labels = [ int(label) for label in labels ]
+                raise IndexError("Number of images and labels do not match")
         else:
             raise TypeError("List expected for image labels")
             
@@ -838,13 +846,19 @@ class Images(object):
             ix = self._test[_]
             X_test.append( self._data[ix]._imgdata )
             Y_test.append( self._data[ix]._label )
-            
-        # Calculate the number of labels as a sequence starting from 0
-        nlabels = np.max(Y_train) + 1
         
         if self._testsz > 0:    
-            return np.asarray(X_train), np.asarray(X_test), self._one_hot(np.asarray(Y_train), nlabels), self._one_hot(np.asarray(Y_test), nlabels)
+            # labels already one-hot encoded
+            if isinstance(Y_train[0], np.ndarray):
+                return np.asarray(X_train), np.asarray(X_test), np.asarray(Y_train), np.asarray(Y_test)
+            # one-hot encode the labels
+            else:
+                # Calculate the number of labels as a sequence starting from 0
+                nlabels = np.max(Y_train) + 1
+                return np.asarray(X_train), np.asarray(X_test), self._one_hot(np.asarray(Y_train), nlabels), self._one_hot(np.asarray(Y_test), nlabels)
         else:
+            # Calculate the number of labels as a sequence starting from 0
+            nlabels = np.max(Y_train) + 1
             return np.asarray(X_train), None, self._one_hot(np.asarray(Y_train), nlabels), None
         
     @split.setter

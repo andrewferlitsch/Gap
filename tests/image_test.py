@@ -1422,6 +1422,26 @@ class MyTest(unittest.TestCase):
         images = Images(iarr, larr, config=['nostore'])
         self.assertEquals(len(images), 3)
         self.assertEquals(images[1].label, 1)
+        larr = np.array( [0, 1, 2], dtype=np.uint16)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
+        larr = np.array( [0, 1, 2], dtype=np.uint32)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
+        larr = np.array( [0, 1, 2], dtype=np.int8)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
+        larr = np.array( [0, 1, 2], dtype=np.int16)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
+        larr = np.array( [0, 1, 2], dtype=np.int32)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
            
     def test_150(self):
         """ Images - numpy array as labels, incorrect number of labels """
@@ -1433,7 +1453,7 @@ class MyTest(unittest.TestCase):
     def test_151(self):
         """ Images - numpy array as labels, not an int """
         iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
-        larr = np.array( [0, 1, 2, 3])
+        larr = np.array( [0, 1, 2], dtype=np.float32)
         with pytest.raises(TypeError):
             images = Images(iarr, larr, config=['nostore'])
             
@@ -1447,6 +1467,49 @@ class MyTest(unittest.TestCase):
         self.assertEquals(len(y1), 4)
         self.assertEquals(y2, None)
         os.remove('collection.0_100.h5')
+            
+    def test_153(self):
+        """ Images - invalid dimension for numpy labels """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [[[0]], [[1]], [[2]] ])
+        with pytest.raises(TypeError):
+            images = Images(iarr, larr, config=['nostore'])
+            
+    def test_154(self):
+        """ Images - 2D numpy labels, not a float """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [[0,1], [1,0], [0,1]], dtype=np.uint16)
+        with pytest.raises(TypeError):
+            images = Images(iarr, larr, config=['nostore'])
+            
+    def test_155(self):
+        """ Images - 2D numpy labels valid """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [[0,1], [1,0], [0,1]], dtype=np.float16)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label[0], 1.0)
+        larr = np.array( [[0,1], [1,0], [0,1]], dtype=np.float32)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label[0], 1.0)
+        larr = np.array( [[0,1], [1,0], [0,1]], dtype=np.float64)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label[0], 1.0)
+            
+    def test_156(self):
+        """ Images - split, non-zero, normalized numpy labels """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4], [0.6, 0.8] ], dtype=np.float32 )
+        larr = np.array( [[0,1], [1,0], [0,1], [0,1]], dtype=np.float16)
+        images = Images(iarr, larr, config=['nostore'])
+        images.split = 0.5
+        x1, x2, y1, y2 = images.split
+        self.assertEquals(len(x1), 2)
+        self.assertEquals(len(x2), 2)
+        self.assertEquals(len(y1), 2)
+        self.assertEquals(len(y2), 2)
+        self.assertEquals(x1[0].shape, (2,))
         
         
     def bug_1(self):
