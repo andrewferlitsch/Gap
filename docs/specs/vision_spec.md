@@ -337,6 +337,7 @@ When used as a setter, the machine learning ready data is resized to the specifi
 **Exceptions**
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
+A `AttributeError` is raised if the parameter is not a tuple of length 2.
 
 #### 1.3.12 fail
 

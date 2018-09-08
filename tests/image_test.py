@@ -1365,6 +1365,34 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[0].shape, (2,))
         os.remove('foobar.h5')
         
+    def test_143(self):
+        """ Images = resize """
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'resize=(60,60)'])
+        images.resize = (20,30)
+        self.assertEquals(images[0].shape, (20, 30, 3))
+        self.assertEquals(images[1].shape, (20, 30, 3))
+        
+    def test_144(self):
+        """ Images = resize after flatten """
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flatten', 'resize=(60,60)'])
+        images.resize = (20,30)
+        self.assertEquals(images[0].shape, (20, 30, 3))
+        self.assertEquals(images[1].shape, (20, 30, 3))
+            
+    def test_145(self):
+        """ Images - invalid arg for resize """
+        images =  Images(['files/0_100.jpg', 'files/1_100.jpg'], [1,2], config=['nostore', 'flatten', 'resize=(60,60)'])
+        with pytest.raises(TypeError):
+            images.resize = 'a'
+        with pytest.raises(AttributeError):
+            images.resize = (1,2,3)
+            
+    def test_146(self):
+        """ Images - resize ignored for zero images """
+        images = Images()
+        images.resize = (20,30)
+        
+        
     def bug_139(self):
         """ Image - async, not a valid image """
         f = open("tmp.jpg", "w")
