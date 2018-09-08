@@ -3,7 +3,8 @@ Copyright, 2018(c), Andrew Ferlitsch
 Autor: David Molina @virtualdvid
 """
 
-import os, sys
+import os
+import sys
 import random 
 import shutil
 
@@ -23,9 +24,11 @@ class img_utils:
 
         #list of labels into main folder
         self.labels_org = ['{}/{}'.format(main, lb) for lb in self.labels]
+        print(self.labels_org)
 
         #list of labels into sample folder
         self.labels_spl = ['{}_spl/{}'.format(main, lb) for lb in self.labels]
+        print(self.labels_spl)
 
     def clean(self, source='org'):
         """
@@ -86,13 +89,16 @@ class img_utils:
         elif source == 'spl':
             src_list = self.labels_spl
         else:
-            print('please chose a source between "org" or "spl"')
+            print('please choose a source between "org" or "spl"')
         for lb in src_list:
             list_img = os.listdir(lb)
+            text_lb = lb.split('/')[-1]
             #list of images per label
             for i, img in enumerate(list_img):
                 dtype = img.split('.')[-1]
-                if text != None:
+                if text == True:
+                    os.rename('{}/{}'.format(lb, img), '{}/{}_{}.{}'.format(lb, text_lb, i, dtype))
+                elif text != None:
                     os.rename('{}/{}'.format(lb, img), '{}/{}_{}.{}'.format(lb, text, i, dtype))
                 else:
                     os.rename('{}/{}'.format(lb, img), '{}/{}.{}'.format(lb, i, dtype))
@@ -100,9 +106,9 @@ class img_utils:
     def img_replace(self, old=None, new=None, img_id=False, source='src'):
         """
         Rename Images
-        :param old:    
-        :param new:    
-        :param img_id: 
+        :param old:    Required. The text you want to replace.
+        :param new:    Required. The text you want to replace "old" with.
+        :param img_id: True to enumerate by id name_id
         :param source: give the option of folder to rename
                        between folder origin "org" or sample "spl"
         """
@@ -118,7 +124,7 @@ class img_utils:
             for i, img in enumerate(list_img):
                 if img_id:
                     os.rename('{}/{}'.format(lb,img),
-                          '{}/{}'.format(lb, img.replace(old,'{}_{}'.format(new, i))))
+                              '{}/{}'.format(lb, img.replace(old,'{}_{}'.format(new, i))))
                 else:
                     os.rename('{}/{}'.format(lb, img),
                               '{}/{}'.format(lb, img.replace(old,new)))

@@ -40,6 +40,7 @@ class Image(object):
         self._image     = image      # image path
         self._name      = None       # name of image (no path or suffix)
         self._size      = 0          # byte size of the image on disk
+        self._ressize   = 0          # byte size of the image on memory after resize
         self._type      = None       # image type of the image
         self._dir       = None       # image storage
         self._shape     = None       # shape of the image
@@ -271,14 +272,18 @@ class Image(object):
             try:
                 self._thumb = cv2.resize(image, self._thumbnail,interpolation=cv2.INTER_AREA)
             except Exception as e: print(e)
-            
+        
         if self._resize:
             image = cv2.resize(image, self._resize)
             #get new image size
             img_file = io.BytesIO()
             image2 = PILImage.fromarray(image)
-            image2.save(img_file, self._type)
-            self._size = img_file.tell()
+            if self._type == 'jpg':
+                imgtype = 'jpeg'
+            else:
+                imgtype = self._type
+            image2.save(img_file, imgtype)
+            self._ressize = img_file.tell()
             del image2
         
         # Get the shape of the array
@@ -348,6 +353,7 @@ class Image(object):
             imgset.attrs['name']  = self._name
             imgset.attrs['type']  = self._type
             imgset.attrs['size']  = self._size
+            imgset.attrs['ressize']  = self._ressize
             imgset.attrs['type']  = self._type
             if not self._noraw:
                 hf.create_dataset("raw", data=[self._raw])
@@ -412,6 +418,7 @@ class Image(object):
             except: pass
             self._type  = imgset.attrs["type"]  
             self._size  = imgset.attrs["size"]
+            self._ressize  = imgset.attrs["ressize"]
             self._rawshape = imgset.attrs["rawshape"]
         self._shape = self._imgdata.shape
 
@@ -481,6 +488,11 @@ class Image(object):
         """ Return the byte size of the image """
         return self._size    
         
+    @property
+    def ressize(self):
+        """ Return the byte size of the image after resize """
+        return self._ressize
+
     @property
     def time(self):
         """ Return the elapse time to do collation """
@@ -668,15 +680,16 @@ class Images(object):
     def store(self):
         """ """
         # Store the images as a collection in an HD5 filesystem
-        imgdata  = []
-        clsdata  = []
-        rawdata  = []
-        sizdata  = []
-        thmdata  = []
-        rawshape = []
-        names    = []
-        types    = []
-        paths    = []
+        imgdata   = []
+        clsdata   = []
+        rawdata   = []
+        sizdata   = []
+        thmdata   = []
+        rawshape  = []
+        ressizedt = []
+        names     = []
+        types     = []
+        paths     = []
         for img in self._data:
             # unprocessed image
             if not img:
@@ -688,6 +701,7 @@ class Images(object):
                     rawdata.append( img.raw )
                 rawshape.append( img.rawshape )
                 sizdata.append( img.size )
+                ressizedt.append( img.ressize )
                 if img.thumb is not None:
                     thmdata.append( img.thumb )
                 names.append( bytes(img.name, 'utf-8') )
@@ -716,6 +730,7 @@ class Images(object):
             if len(thmdata) > 0:
                 hf.create_dataset("thumb", data=thmdata)
             hf.create_dataset("size",  data=sizdata)
+            hf.create_dataset("ressize",  data=ressizedt)
             hf.create_dataset("names", data=names)
             hf.create_dataset("types", data=types)
             hf.create_dataset("paths", data=paths)
@@ -800,8 +815,9 @@ class Images(object):
                     image._raw = hf["raw" + str(i)][:]
                 except: pass
                 image._rawshape = hf["rawshape"][i]
-                image._size = hf["size"][i]
-                image._label = hf["labels"][i]
+                image._size     = hf["size"][i]
+                image._ressize  = hf['ressize'][i]
+                image._label    = hf["labels"][i]
                 try:
                     image._thumb = hf["thumb"][i]
                 except: pass
