@@ -439,6 +439,26 @@ In the above example, we used the variable dataset for the combined collection. 
 
 Because the processing and invoking the event handler happen concurrently, there are possible problems including a race condition (i.e., two threads access dataset at the same time), and trashing the internal data (i.e., two threads are combining data at the same time). We solve this by making this operation atomic using Python's thread lock mechanism.
 
+### Example: Image Data is Already Numpy Preprocessed
+
+**Gap** can handle datasets that have been prior preprocessed into numpy arrays, where the image data has been normalized and the label data has been one-hot encoded. For example, the Tensorflow MNIST example dataset, all the images have been flatten and normalized into a numpy array, and all the labels have been one-hot encoded into a 2D numpy matrix. Below is an example demonstrating importing the datasets into an `Images` collection.
+
+```python
+# Import the MNIST input_data function from the tutorials.mnist package
+from tensorflow.examples.tutorials.mnist import input_data
+
+# Read in the data
+# The paramter one_hot=True refers to the label which is categorical (1-10). 
+# The paramter causes the label to be re-encoded as a 10 column vector.
+mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+
+# Create the images collection for the Training Set
+train = Images(mnist.train.images, mnist.train.labels)
+
+# Create the images collection for the Test Set
+test = Images(mnist.test.images, mnist.test.labels)
+```
+
 ### Size of Preprocessed Machine Learning Ready Data
 
 When preprocessing image data into machine learning ready data, there can be a significant expansion in size. For example, the average size of an (compressed) JPEG flowers sample set (not shown) image is 30K bytes. The compression ratio on these image is as much as 90%. When read in by openCV and decompressed into a raw pixel image, the size typically is 250K bytes. In the raw pixel data, the byte size per pixel is 1 (i.e., 8bits per pixel). When the data is normalized (e.g., divided by 255.0), each pixel becomes represented by a floating point value. By default, the data type is np.float32, which is a 4 byte per pixel representation. Thus, a 250K byte raw pixel image will expand to 1Mb in memory.
