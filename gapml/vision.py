@@ -178,9 +178,6 @@ class Image(object):
             self._size = self._image.size
             return
             
-        if isinstance(self._image, str) == False:
-            raise TypeError("String expected for image path")
-            
         # File is at a remote (Internet) location
         if self._image.startswith("http"):
             pass

@@ -1292,12 +1292,20 @@ class MyTest(unittest.TestCase):
     def test_135(self):
         """ Images - 1d numpy array is uint16 """
         arr = np.array( [ [65535,2], [3,4], [5,6] ], dtype=np.uint16 )
-        images = Images(arr,1)
+        images = Images(arr,1, config=['nostore'])
         self.assertEquals(len(images), 3)     
         self.assertEquals(type(images[0].data[0]), np.float32)   
         self.assertEquals(images[0].data[0], 1.0) 
         self.assertEquals(images[0].name, 'untitled')
         self.assertEquals(images[0].image, 'untitled')
+        arr = np.array( [ [65535,2], [3,4], [5,6] ], dtype=np.uint16 )
+        images = Images(arr,1, config=['nostore', 'float16'])
+        self.assertEquals(len(images), 3)     
+        self.assertEquals(type(images[0].data[0]), np.float16)  
+        arr = np.array( [ [65535,2], [3,4], [5,6] ], dtype=np.uint16 )
+        images = Images(arr,1, config=['nostore', 'float64'])
+        self.assertEquals(len(images), 3)     
+        self.assertEquals(type(images[0].data[0]), np.float64)   
             
     def test_136(self):
         """ Images - 1d numpy array is float16 """
@@ -1392,8 +1400,23 @@ class MyTest(unittest.TestCase):
         images = Images()
         images.resize = (20,30)
         
+    def test_147(self):
+        """ async processing with args """
+        image = Image("files/0_100.jpg", ehandler=(self.done2,2))
+        time.sleep(3)
+        self.assertTrue(self.isdone)
+        self.assertEquals(self.args, (2,))
+        os.remove("0_100.h5")
+        self._isdone = False
+           
+    def test_148(self):
+        """ Image - make directory """
+        image = Image('files/1_100.jpg', 1, dir='tmpdir')
+        os.remove('tmpdir/1_100.h5')
+        os.rmdir('tmpdir')
         
-    def bug_139(self):
+        
+    def bug_1(self):
         """ Image - async, not a valid image """
         f = open("tmp.jpg", "w")
         f.write("foobar")
@@ -1402,6 +1425,13 @@ class MyTest(unittest.TestCase):
         time.sleep(3)
         self.assertEquals(self.isbad, True)
         os.remove('tmp.jpg')
+        
+        
+    def bug_2(self):
+        """ Image - async, non-exist remote image """
+        image = Image("http://foogoozoo.com/sam.jpg", ehandler=self.baddone)
+        time.sleep(3)
+        self.assertEquals(self.isbad, True)
             
 
     def done(self, image):
