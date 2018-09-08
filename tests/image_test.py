@@ -1414,6 +1414,39 @@ class MyTest(unittest.TestCase):
         image = Image('files/1_100.jpg', 1, dir='tmpdir')
         os.remove('tmpdir/1_100.h5')
         os.rmdir('tmpdir')
+           
+    def test_149(self):
+        """ Images - numpy array as labels """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [0, 1, 2], dtype=np.uint8)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
+           
+    def test_150(self):
+        """ Images - numpy array as labels, incorrect number of labels """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [0, 1, 2, 3], dtype=np.uint8)
+        with pytest.raises(IndexError):
+            images = Images(iarr, larr, config=['nostore'])
+           
+    def test_151(self):
+        """ Images - numpy array as labels, not an int """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [0, 1, 2, 3])
+        with pytest.raises(TypeError):
+            images = Images(iarr, larr, config=['nostore'])
+            
+    def test_152(self):
+        """ Images - split = 0 """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
+        images.split = 0.0
+        x1, x2, y1, y2 = images.split
+        self.assertEquals(len(x1), 4)
+        self.assertEquals(x2, None)
+        self.assertEquals(len(y1), 4)
+        self.assertEquals(y2, None)
+        os.remove('collection.0_100.h5')
         
         
     def bug_1(self):

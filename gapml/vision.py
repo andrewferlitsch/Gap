@@ -552,15 +552,26 @@ class Images(object):
         # if labels is a single value, then all the images share the same label
         if isinstance(labels, int):
             self._labels = [ labels for _ in range(len(self._images)) ]
-        elif not isinstance(labels, list):
-            raise TypeError("List expected for image labels")
-        else:
+        elif isinstance(labels, list):
             for ele in labels:
                 if not isinstance(ele, int):
                     raise TypeError("Integer expected for image labels")
             
             if len(images) != len(labels):
                 raise IndexError("Number of images and labels do not match")
+        elif isinstance(labels, np.ndarray):
+            if len(labels.shape) != 1:
+                raise TypeError("1D numpy array expected for labels")
+  
+            if type(labels[0]) not in [ np.uint8, np.uint16, np.uint32]:
+                raise TypeError("Integer values expected for labels")
+                
+            if len(images) != len(labels):
+                raise IndexError("Number of images and labels do not match") 
+                
+            self._labels = [ int(label) for label in labels ]
+        else:
+            raise TypeError("List expected for image labels")
             
         if dir is not None:
             if isinstance(dir, str) == False:
@@ -830,8 +841,11 @@ class Images(object):
             
         # Calculate the number of labels as a sequence starting from 0
         nlabels = np.max(Y_train) + 1
-            
-        return np.asarray(X_train), np.asarray(X_test), self._one_hot(np.asarray(Y_train), nlabels), self._one_hot(np.asarray(Y_test), nlabels)
+        
+        if self._testsz > 0:    
+            return np.asarray(X_train), np.asarray(X_test), self._one_hot(np.asarray(Y_train), nlabels), self._one_hot(np.asarray(Y_test), nlabels)
+        else:
+            return np.asarray(X_train), None, self._one_hot(np.asarray(Y_train), nlabels), None
         
     @split.setter
     def split(self, percent):
