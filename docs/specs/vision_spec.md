@@ -76,6 +76,7 @@ def myHandler(images):
         float16                 | float32 | float64
         nostore
         raw
+	nlabels=(n)
 			
 **Usage**
 
@@ -129,6 +130,8 @@ def done(image):
 ```
 
 If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
+
+By default, when one-hot encoding of the labels, the `Images` object uses np.max() to calculate the total number of labels in the collection. The `nlabels=n`, where n is the number of labels, configuration setting will override the internal calculation.
 
 **Preprocessing Errors**
 
