@@ -143,6 +143,8 @@ class Image(object):
                         self._float = np.float64
                     else:
                         raise AttributeError("Float values must be float16, float32 or float64")
+                elif setting.startswith('nlabels='):
+                    pass # ignore
                 else:
                     raise AttributeError("Setting is not recognized: " + setting)
         
@@ -532,6 +534,7 @@ class Images(object):
         self._noraw    = True       # config setting for not storing raw data
         self._time     = 0          # processing time
         self._fail     = 0          # how many images that failed to process
+        self._nlabels  = None       # number of labels in the collection
         
         if images is None:
             return
@@ -616,7 +619,16 @@ class Images(object):
                     if toks[0][0] == '(':
                         toks[0] = toks[0][1:]
                         toks[1] = toks[1][:-1]
-                    self._resize = ( int(toks[0]), int(toks[1]), 3)
+                    try:
+                        self._resize = ( int(toks[0]), int(toks[1]), 3)
+                    except:
+                        raise AttributeError("Tuple(int,int) expected for resize")
+                elif setting.startswith("nlabels="):
+                    param = setting.split('=')[1]
+                    try:
+                        self._nlabels = int(param)
+                    except:
+                        raise AttributeError("Integer expected for nlabels")                
                     
         # Tell downstream Image objects not to separately store the data
         if self._nostore == False:
@@ -846,7 +858,11 @@ class Images(object):
             ix = self._test[_]
             X_test.append( self._data[ix]._imgdata )
             Y_test.append( self._data[ix]._label )
-        
+          
+        # calculate the number of labels in the training set
+        if self._nlabels == None:
+            self._nlabels = np.max(Y_train) + 1
+            
         if self._testsz > 0:    
             # labels already one-hot encoded
             if isinstance(Y_train[0], np.ndarray):
@@ -855,11 +871,10 @@ class Images(object):
             else:
                 # Calculate the number of labels as a sequence starting from 0
                 nlabels = np.max(Y_train) + 1
-                return np.asarray(X_train), np.asarray(X_test), self._one_hot(np.asarray(Y_train), nlabels), self._one_hot(np.asarray(Y_test), nlabels)
+                return np.asarray(X_train), np.asarray(X_test), self._one_hot(np.asarray(Y_train), self._nlabels), self._one_hot(np.asarray(Y_test), self._nlabels)
         else:
             # Calculate the number of labels as a sequence starting from 0
-            nlabels = np.max(Y_train) + 1
-            return np.asarray(X_train), None, self._one_hot(np.asarray(Y_train), nlabels), None
+            return np.asarray(X_train), None, self._one_hot(np.asarray(Y_train), self._nlabels), None
         
     @split.setter
     def split(self, percent):

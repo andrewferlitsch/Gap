@@ -1510,6 +1510,30 @@ class MyTest(unittest.TestCase):
         self.assertEquals(len(y1), 2)
         self.assertEquals(len(y2), 2)
         self.assertEquals(x1[0].shape, (2,))
+            
+    def test_157(self):
+        """ Images - list of images """
+        pixels = cv2.imread('files/1_100.jpg')
+        images = Images([pixels], 1, config=['nostore'])
+        self.assertEquals(len(images), 1)
+        self.assertEquals(images[0].shape, (100, 100, 3))
+            
+    def test_158(self):
+        """ Images - config resize not an int """
+        with pytest.raises(AttributeError):
+            images = Images(['files/1_100.jpg'], 1, config=['resize=(a,a)'])
+            
+    def test_159(self):
+        """ Images - config nlabels not an int """
+        with pytest.raises(AttributeError):
+            images = Images(['files/1_100.jpg'], 1, config=['nlabels=a'])
+            
+    def test_160(self):
+        """ Images - config, nlabels """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4], config=['nostore', 'nlabels=6'])
+        images.split = 0.0
+        x1, x2, y1, y2 = images.split
+        self.assertEquals(len(y1[0]), 6)
         
         
     def bug_1(self):
