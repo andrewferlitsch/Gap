@@ -70,7 +70,7 @@ Images can be processed incrementally, or in batches.  Preprocessing options inc
 
 The HD5 storage provides fast and random access to the machine ready image data and corresponding labels.
 
-Preprocessing can be done either synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing has been completed and the machine ready datta is accessible.
+Preprocessing can be done either synchronously or asynchronously, where in the latter case an event handler signals when the preprocessing has been completed and the machine ready data is accessible.
 
 Further disclosure requires an Non-Disclosure Agreement.
  
