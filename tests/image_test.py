@@ -1534,7 +1534,11 @@ class MyTest(unittest.TestCase):
         images.split = 0.0
         x1, x2, y1, y2 = images.split
         self.assertEquals(len(y1[0]), 6)
-        
+            
+    def test_161(self):
+        """ Image - JP2K image """
+        image = Image('files/relax.j2k', 1, config=['nostore'])
+        self.assertEquals(image.shape, (300, 400, 3))
         
     def bug_1(self):
         """ Image - async, not a valid image """
