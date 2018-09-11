@@ -1,4 +1,4 @@
-# Gap : NLP/CV Data Engineering Framework, v0.9.3 (Pre-launch: alpha)
+# Gap : NLP/CV Data Engineering Framework
 
 ## Natural Language Processing for PDF, TIFF, and Camera Captured Documents, and
 ## Computer Vision Processing for Images
@@ -7,7 +7,7 @@
 
 The Gap NLP/CV data engineering framework provides an easy to get started into the world of machine learning for your unstructured data in PDF documents, scanned documents, TIFF facsimiles and camera captured documents, and your image data in image files and image repositories.
 
-*NLP*
+*NLP , v0.9.3 (Pre-launch: alpha)*
 
   - Automatic OCR of scanned PDF and camera captured images.
   - Automatic Text Extraction from documents.
@@ -27,7 +27,7 @@ The Gap NLP/CV data engineering framework provides an easy to get started into t
   - Asynchronous processing of documents.
   - Automatic generation of NLP machine learning ready data.
 
-*CV*
+*CV , v0.9.4 (Pre-launch: beta)*
 
   - Automatic storage and retrieval with high performance HDF5 files.
   - Automatic handling of mixed channels (grayscale, RGB and RGBA) and pixel size.

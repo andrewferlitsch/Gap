@@ -1292,12 +1292,20 @@ class MyTest(unittest.TestCase):
     def test_135(self):
         """ Images - 1d numpy array is uint16 """
         arr = np.array( [ [65535,2], [3,4], [5,6] ], dtype=np.uint16 )
-        images = Images(arr,1)
+        images = Images(arr,1, config=['nostore'])
         self.assertEquals(len(images), 3)     
         self.assertEquals(type(images[0].data[0]), np.float32)   
         self.assertEquals(images[0].data[0], 1.0) 
         self.assertEquals(images[0].name, 'untitled')
         self.assertEquals(images[0].image, 'untitled')
+        arr = np.array( [ [65535,2], [3,4], [5,6] ], dtype=np.uint16 )
+        images = Images(arr,1, config=['nostore', 'float16'])
+        self.assertEquals(len(images), 3)     
+        self.assertEquals(type(images[0].data[0]), np.float16)  
+        arr = np.array( [ [65535,2], [3,4], [5,6] ], dtype=np.uint16 )
+        images = Images(arr,1, config=['nostore', 'float64'])
+        self.assertEquals(len(images), 3)     
+        self.assertEquals(type(images[0].data[0]), np.float64)   
             
     def test_136(self):
         """ Images - 1d numpy array is float16 """
@@ -1392,8 +1400,143 @@ class MyTest(unittest.TestCase):
         images = Images()
         images.resize = (20,30)
         
+    def test_147(self):
+        """ async processing with args """
+        image = Image("files/0_100.jpg", ehandler=(self.done2,2))
+        time.sleep(3)
+        self.assertTrue(self.isdone)
+        self.assertEquals(self.args, (2,))
+        os.remove("0_100.h5")
+        self._isdone = False
+           
+    def test_148(self):
+        """ Image - make directory """
+        image = Image('files/1_100.jpg', 1, dir='tmpdir')
+        os.remove('tmpdir/1_100.h5')
+        os.rmdir('tmpdir')
+           
+    def test_149(self):
+        """ Images - numpy array as labels """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [0, 1, 2], dtype=np.uint8)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
+        larr = np.array( [0, 1, 2], dtype=np.uint16)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
+        larr = np.array( [0, 1, 2], dtype=np.uint32)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
+        larr = np.array( [0, 1, 2], dtype=np.int8)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
+        larr = np.array( [0, 1, 2], dtype=np.int16)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
+        larr = np.array( [0, 1, 2], dtype=np.int32)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label, 1)
+           
+    def test_150(self):
+        """ Images - numpy array as labels, incorrect number of labels """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [0, 1, 2, 3], dtype=np.uint8)
+        with pytest.raises(IndexError):
+            images = Images(iarr, larr, config=['nostore'])
+           
+    def test_151(self):
+        """ Images - numpy array as labels, not an int """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [0, 1, 2], dtype=np.float32)
+        with pytest.raises(TypeError):
+            images = Images(iarr, larr, config=['nostore'])
+            
+    def test_152(self):
+        """ Images - split = 0 """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4])
+        images.split = 0.0
+        x1, x2, y1, y2 = images.split
+        self.assertEquals(len(x1), 4)
+        self.assertEquals(x2, None)
+        self.assertEquals(len(y1), 4)
+        self.assertEquals(y2, None)
+        os.remove('collection.0_100.h5')
+            
+    def test_153(self):
+        """ Images - invalid dimension for numpy labels """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [[[0]], [[1]], [[2]] ])
+        with pytest.raises(TypeError):
+            images = Images(iarr, larr, config=['nostore'])
+            
+    def test_154(self):
+        """ Images - 2D numpy labels, not a float """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [[0,1], [1,0], [0,1]], dtype=np.uint16)
+        with pytest.raises(TypeError):
+            images = Images(iarr, larr, config=['nostore'])
+            
+    def test_155(self):
+        """ Images - 2D numpy labels valid """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4] ], dtype=np.float32 )
+        larr = np.array( [[0,1], [1,0], [0,1]], dtype=np.float16)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label[0], 1.0)
+        larr = np.array( [[0,1], [1,0], [0,1]], dtype=np.float32)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label[0], 1.0)
+        larr = np.array( [[0,1], [1,0], [0,1]], dtype=np.float64)
+        images = Images(iarr, larr, config=['nostore'])
+        self.assertEquals(len(images), 3)
+        self.assertEquals(images[1].label[0], 1.0)
+            
+    def test_156(self):
+        """ Images - split, non-zero, normalized numpy labels """
+        iarr = np.array( [ [1.0, 0.5], [0.25, 0.75], [0.2, 0.4], [0.6, 0.8] ], dtype=np.float32 )
+        larr = np.array( [[0,1], [1,0], [0,1], [0,1]], dtype=np.float16)
+        images = Images(iarr, larr, config=['nostore'])
+        images.split = 0.5
+        x1, x2, y1, y2 = images.split
+        self.assertEquals(len(x1), 2)
+        self.assertEquals(len(x2), 2)
+        self.assertEquals(len(y1), 2)
+        self.assertEquals(len(y2), 2)
+        self.assertEquals(x1[0].shape, (2,))
+            
+    def test_157(self):
+        """ Images - list of images """
+        pixels = cv2.imread('files/1_100.jpg')
+        images = Images([pixels], 1, config=['nostore'])
+        self.assertEquals(len(images), 1)
+        self.assertEquals(images[0].shape, (100, 100, 3))
+            
+    def test_158(self):
+        """ Images - config resize not an int """
+        with pytest.raises(AttributeError):
+            images = Images(['files/1_100.jpg'], 1, config=['resize=(a,a)'])
+            
+    def test_159(self):
+        """ Images - config nlabels not an int """
+        with pytest.raises(AttributeError):
+            images = Images(['files/1_100.jpg'], 1, config=['nlabels=a'])
+            
+    def test_160(self):
+        """ Images - config, nlabels """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/0_100g.jpg'], [1,2,3,4], config=['nostore', 'nlabels=6'])
+        images.split = 0.0
+        x1, x2, y1, y2 = images.split
+        self.assertEquals(len(y1[0]), 6)
         
-    def bug_139(self):
+        
+    def bug_1(self):
         """ Image - async, not a valid image """
         f = open("tmp.jpg", "w")
         f.write("foobar")
@@ -1402,6 +1545,13 @@ class MyTest(unittest.TestCase):
         time.sleep(3)
         self.assertEquals(self.isbad, True)
         os.remove('tmp.jpg')
+        
+        
+    def bug_2(self):
+        """ Image - async, non-exist remote image """
+        image = Image("http://foogoozoo.com/sam.jpg", ehandler=self.baddone)
+        time.sleep(3)
+        self.assertEquals(self.isbad, True)
             
 
     def done(self, image):

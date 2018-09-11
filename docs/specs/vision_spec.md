@@ -2,7 +2,7 @@
 
 ## VISION MODULE
 High Precision Image Processing  
-Technical Specification, Gap v0.9.3
+Technical Specification, Gap v0.9.4
 
 ## 1 Images
 ### 1.1 Images Overview
@@ -19,6 +19,7 @@ images = Images([<list of images>], [<list_of_labels>], flags …)
     Alternately, the list of images can be a multi-dimensional numpy array (where the first dimension is the number of images).
     Alternately, the list of images can be a list of multi-dimensional numpy arrays.
     Alternately, the list of labels maybe a single value; in which case, the label applies to all the images.
+    Alternately, the list of labels maybe a numpy 1D (not one-hot encoded) vector or 2D (one-hot encoded) matrix.
 
 + **Image** – This is the base class for the representation of a single Computer Vision (CV). The constructor optionally takes as parameters an image (path), corresponding label, and flags for CV preprocessing the image.
 
@@ -50,6 +51,8 @@ For a single multi-dimensional numpy array, the first dimension are the individu
 **labels:** If not `None`, either:  
 1.	A single integer value (i.e., label) which corresponds to all the images.  
 2.	A list of the same size as `images` parameter list of integer values; where the index of each value is the label for the corresponding index in the `images` parameter.
+3.	A numpy 1D vector of the same size as `images` parameter list of integer values; where the index of each value is the label for the corresponding index in the `images` parameter.
+4.	A numpy 2D vector where the first dimension is of the same size as `images` parameter list, and the second dimension is a one-hot encoded 1D vector.
 
 **dir:** If not `./`, the directory where to store the machine learning ready data.
 
@@ -73,6 +76,7 @@ def myHandler(images):
         float16                 | float32 | float64
         nostore
         raw
+	nlabels=(n)
 			
 **Usage**
 
@@ -126,6 +130,8 @@ def done(image):
 ```
 
 If the path to an image file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
+
+By default, when one-hot encoding of the labels, the `Images` object uses np.max() to calculate the total number of labels in the collection. The `nlabels=n`, where n is the number of labels, configuration setting will override the internal calculation.
 
 **Preprocessing Errors**
 
@@ -245,7 +251,7 @@ When used as a setter, a training and test dataset is generated. The `percent` p
 
 When repeated, the property will re-split the data and re-randomize it.  
 
-When used as a getter, the split training, test, and corresponding labels are returned as lists converted to numpy arrays, and the labels are one-hot encoded. This is typically used in conjunction with `next()` operator or `minibatch` property.  
+When used as a getter, the split training, test, and corresponding labels are returned as lists converted to numpy arrays, and the labels are one-hot encoded (if not already). This is typically used in conjunction with `next()` operator or `minibatch` property.  
 
 When the percent is `0`, the data is not split. All the data will be returned in `x_train` and `y_train`, but will still be randomized; `x_test` and `y_test` will be `None`.
 
@@ -487,7 +493,7 @@ Image(image=None, label=0, dir=’./’, ehandler=None, config=None)
 2.	remote location of an image file (i.e., http[s]://….).
 3.	or raw pixel data as a numpy array.
 
-**label:** An integer value which is the label corresponding to the image.
+**label:** An integer value which is the label corresponding to the image, or a numpy 1D vector which is one-hot encoded.
 
 **dir:** If not `'./'`, the directory where to store the machine learning ready data.
 

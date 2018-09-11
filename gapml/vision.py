@@ -77,9 +77,14 @@ class Image(object):
         elif dir == None:
             self._dir = "./"
         
-        # value must be a string
-        if label is None or isinstance(label, int) == False:
-            raise TypeError("Integer expected for image label")
+        # label must be an int or a list of floats (one-hot encoded)
+        if isinstance(label, int):
+            pass
+        # one-hot encoded
+        elif isinstance(label, list) or isinstance(label, np.ndarray):
+            pass
+        else:
+            raise TypeError("Integer or 1D vector (one-hot encoded) expected for image label")
             
         if ehandler:
             if isinstance(ehandler, tuple):
@@ -140,6 +145,8 @@ class Image(object):
                         self._float = np.float64
                     else:
                         raise AttributeError("Float values must be float16, float32 or float64")
+                elif setting.startswith('nlabels='):
+                    pass # ignore
                 else:
                     raise AttributeError("Setting is not recognized: " + setting)
         
@@ -180,9 +187,6 @@ class Image(object):
             self._size = self._image.size
             return
             
-        if isinstance(self._image, str) == False:
-            raise TypeError("String expected for image path")
-            
         # File is at a remote (Internet) location
         if self._image.startswith("http"):
             pass
@@ -195,7 +199,7 @@ class Image(object):
         self._name = basename[0]
         self._type = basename[1][1:].lower()
         
-        if self._type not in [ 'png', 'jpg', 'bmp', 'tif', 'tiff', 'gif']:
+        if self._type not in [ 'png', 'jpg', 'jpeg', 'bmp', 'tif', 'tiff', 'gif']:
             raise TypeError("Not an image file:", self._image)
         
         # Get the size of the image 
@@ -549,6 +553,7 @@ class Images(object):
         self._noraw    = True       # config setting for not storing raw data
         self._time     = 0          # processing time
         self._fail     = 0          # how many images that failed to process
+        self._nlabels  = None       # number of labels in the collection
         
         if images is None:
             return
@@ -574,15 +579,29 @@ class Images(object):
         # if labels is a single value, then all the images share the same label
         if isinstance(labels, int):
             self._labels = [ labels for _ in range(len(self._images)) ]
-        elif not isinstance(labels, list):
-            raise TypeError("List expected for image labels")
-        else:
+        elif isinstance(labels, list):
             for ele in labels:
                 if not isinstance(ele, int):
                     raise TypeError("Integer expected for image labels")
             
             if len(images) != len(labels):
                 raise IndexError("Number of images and labels do not match")
+        elif isinstance(labels, np.ndarray):
+            if len(labels.shape) == 1:
+                if type(labels[0]) not in [ np.uint8, np.uint16, np.uint32, np.int8, np.int16, np.int32 ]:
+                    raise TypeError("Integer values expected for labels") 
+                self._labels = [ int(label) for label in labels ]
+            elif len(labels.shape) == 2:
+                if type(labels[0][0]) not in [ np.float16, np.float32, np.float64]:
+                    raise TypeError("Floating point values expected for one-hot encoded labels") 
+                self._labels = [ label for label in labels ]
+            else:
+                raise TypeError("1D or 2D numpy array expected for labels")
+                
+            if len(images) != len(labels):
+                raise IndexError("Number of images and labels do not match")
+        else:
+            raise TypeError("List expected for image labels")
             
         if dir is not None:
             if isinstance(dir, str) == False:
@@ -619,7 +638,16 @@ class Images(object):
                     if toks[0][0] == '(':
                         toks[0] = toks[0][1:]
                         toks[1] = toks[1][:-1]
-                    self._resize = ( int(toks[0]), int(toks[1]), 3)
+                    try:
+                        self._resize = ( int(toks[0]), int(toks[1]), 3)
+                    except:
+                        raise AttributeError("Tuple(int,int) expected for resize")
+                elif setting.startswith("nlabels="):
+                    param = setting.split('=')[1]
+                    try:
+                        self._nlabels = int(param)
+                    except:
+                        raise AttributeError("Integer expected for nlabels")                
                     
         # Tell downstream Image objects not to separately store the data
         if self._nostore == False:
@@ -654,22 +682,30 @@ class Images(object):
  
         # Process each image
         self._data = []
+        error = []
         for ix in range(len(self._images)):
             # directory of files
             if isinstance(self._images[ix], str) and os.path.isdir(self._images[ix]):
                 for image in [ self._images[ix] + '/' + file for file in os.listdir(self._images[ix])]:
                     try:
                         self._data.append( Image(image, dir=self._dir, label=self._labels[ix], config=self._config) )
-                    except: 
+                    except Exception as e: 
                         self._data.append(None)
                         self._fail += 1
+                        if e not in error:
+                            error.append(e)
             # single file
             else:
                 try:
                     self._data.append( Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config) )
-                except:
+                except Exception as e:
                     self._data.append(None)
                     self._fail += 1
+                    if e not in error:
+                        error.append(e)
+        
+        if error:
+            print(error)
                 
         # Store machine learning ready data
         if self._nostore is False:
@@ -720,12 +756,12 @@ class Images(object):
             try:
                 hf.create_dataset("images", data=imgdata)
             except:
-                for _ in range(len(imgdata)):
-                    hf.create_dataset("imgdata" + str(_), data=imgdata[_])
+                for i, img in enumerate(imgdata):
+                    hf.create_dataset("imgdata" + str(i), data=img)
             hf.create_dataset("labels", data=clsdata)
             # use separate datasets to handle raw images of different size/shape
-            for _ in range(len(rawdata)):
-                hf.create_dataset("raw" + str(_), data=rawdata[_])
+            for i, img in enumerate(rawdata):
+                hf.create_dataset("raw" + str(i), data=img)
             hf.create_dataset("rawshape", data=rawshape)
             if len(thmdata) > 0:
                 hf.create_dataset("thumb", data=thmdata)
@@ -852,11 +888,23 @@ class Images(object):
             ix = self._test[_]
             X_test.append( self._data[ix]._imgdata )
             Y_test.append( self._data[ix]._label )
+          
+        # calculate the number of labels in the training set
+        if self._nlabels == None:
+            self._nlabels = np.max(Y_train) + 1
             
-        # Calculate the number of labels as a sequence starting from 0
-        nlabels = np.max(Y_train) + 1
-            
-        return np.asarray(X_train), np.asarray(X_test), self._one_hot(np.asarray(Y_train), nlabels), self._one_hot(np.asarray(Y_test), nlabels)
+        if self._testsz > 0:    
+            # labels already one-hot encoded
+            if isinstance(Y_train[0], np.ndarray):
+                return np.asarray(X_train), np.asarray(X_test), np.asarray(Y_train), np.asarray(Y_test)
+            # one-hot encode the labels
+            else:
+                # Calculate the number of labels as a sequence starting from 0
+                nlabels = np.max(Y_train) + 1
+                return np.asarray(X_train), np.asarray(X_test), self._one_hot(np.asarray(Y_train), self._nlabels), self._one_hot(np.asarray(Y_test), self._nlabels)
+        else:
+            # Calculate the number of labels as a sequence starting from 0
+            return np.asarray(X_train), None, self._one_hot(np.asarray(Y_train), self._nlabels), None
         
     @split.setter
     def split(self, percent):
