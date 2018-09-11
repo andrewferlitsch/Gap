@@ -3,7 +3,7 @@ Image Data Processing
 Copyright 2018(c), Andrew Ferlitsch
 """
 
-version = '0.9.3'
+version = '0.9.4'
 
 import os
 import threading
