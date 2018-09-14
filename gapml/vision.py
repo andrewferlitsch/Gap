@@ -197,7 +197,7 @@ class Image(object):
         self._name = basename[0]
         self._type = basename[1][1:].lower()
         
-        if self._type not in [ 'png', 'jpg', 'j2k', 'bmp', 'tif', 'tiff', 'gif']:
+        if self._type not in [ 'png', 'jpg', 'jpeg', 'j2k', 'bmp', 'tif', 'tiff', 'gif']:
             raise TypeError("Not an image file:", self._image)
         
         # Get the size of the image 
