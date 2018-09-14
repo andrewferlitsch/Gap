@@ -209,7 +209,22 @@ class Image(object):
             # Size sanity check
             if self._size == 0:
                 raise IOError("The image is an empty file")
-            
+
+    def _sizeof(self):
+        """ Returns the byte size of the processed image """
+        size = 1
+        for dim in self.shape:
+            size *= dim
+        if self._float == np.uint8:
+            size * 1
+        elif self._float == np.float16:
+            size * 2
+        elif self._float == np.float32:
+            size * 4
+        elif self._float == np.float64:
+            size * 8
+        return size / 8
+
     def _collate(self, dir='./'):
         """ Process the image """   
         
@@ -280,15 +295,7 @@ class Image(object):
         if self._resize:
             image = cv2.resize(image, self._resize)
             #get new image size
-            img_file = io.BytesIO()
-            image2 = PILImage.fromarray(image)
-            if self._type == 'jpg':
-                imgtype = 'jpeg'
-            else:
-                imgtype = self._type
-            image2.save(img_file, imgtype)
-            self._ressize = img_file.tell()
-            del image2
+            self._ressize = self._sizeof(image)
         
         # Get the shape of the array
         self._shape = image.shape
@@ -554,6 +561,7 @@ class Images(object):
         self._time     = 0          # processing time
         self._fail     = 0          # how many images that failed to process
         self._nlabels  = None       # number of labels in the collection
+        self._errors   = None       # list of errors reporting
         
         if images is None:
             return
@@ -682,7 +690,7 @@ class Images(object):
  
         # Process each image
         self._data = []
-        error = []
+        self._errors = []
         for ix in range(len(self._images)):
             # directory of files
             if isinstance(self._images[ix], str) and os.path.isdir(self._images[ix]):
@@ -692,8 +700,9 @@ class Images(object):
                     except Exception as e: 
                         self._data.append(None)
                         self._fail += 1
-                        if e not in error:
-                            error.append(e)
+                        error = (image, e)
+                        if e not in self._errors:
+                            self._errors.append( error )
             # single file
             else:
                 try:
@@ -701,12 +710,10 @@ class Images(object):
                 except Exception as e:
                     self._data.append(None)
                     self._fail += 1
-                    if e not in error:
-                        error.append(e)
+                    error = (self._images[ix] , e)
+                    if e not in self._errors:
+                        self._errors.append( error )
         
-        if error:
-            print(error)
-                
         # Store machine learning ready data
         if self._nostore is False:
             self.store()
@@ -822,6 +829,11 @@ class Images(object):
     def fail(self):
         """ Number of images that failed processing """
         return self._fail
+
+    @property
+    def errors(self):
+        """ list errors reporting """
+        return self._errors
         
     def load(self, name, dir=None):
         """ Load a Collection of Images """

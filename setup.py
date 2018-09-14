@@ -52,7 +52,7 @@ classifiers=[
 
 setup(
     name='gapml',
-    version='0.9.3',
+    version='0.9.4',
     description='NLP and CV Data Engineering Framework',
     author='Andrew Ferlitsch',
     author_email='aferlitsch@gmail.com',
