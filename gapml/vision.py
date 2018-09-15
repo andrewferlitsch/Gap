@@ -3,7 +3,7 @@ Image Data Processing
 Copyright 2018(c), Andrew Ferlitsch
 """
 
-version = '0.9.3'
+version = '0.9.4'
 
 import os
 import threading
@@ -197,7 +197,7 @@ class Image(object):
         self._name = basename[0]
         self._type = basename[1][1:].lower()
         
-        if self._type not in [ 'png', 'jpg', 'bmp', 'tif', 'tiff', 'gif']:
+        if self._type not in [ 'png', 'jpg', 'j2k', 'bmp', 'tif', 'tiff', 'gif']:
             raise TypeError("Not an image file:", self._image)
         
         # Get the size of the image 
@@ -244,8 +244,8 @@ class Image(object):
             else:
                 image = cv2.imdecode(data, cv2.IMREAD_COLOR)
         else:
-            # GIF files
-            if self._image.endswith("gif"):
+            # GIF / JP2000 files
+            if self._image.endswith('gif') or self._image.endswith('j2k'):
                 image = PILImage.open(self._image)
                 if self._grayscale:
                     image = image.convert('L')
@@ -475,7 +475,7 @@ class Image(object):
              
     @property
     def size(self):
-        """ Return the byte size of the image """
+        """ Return the byte size of the original image """
         return self._size    
         
     @property
