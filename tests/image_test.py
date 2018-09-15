@@ -1540,6 +1540,23 @@ class MyTest(unittest.TestCase):
         """ Image - JP2K image """
         image = Image('files/relax.j2k', 1, config=['nostore'])
         self.assertEquals(image.shape, (300, 400, 3))
+            
+    def test_162(self):
+        """ Image - uint8 setting """
+        image = Image('files/1_100.jpg', 1, config=['nostore', 'uint8'])
+        self.assertEquals(image.data[0][0][0], 255)
+        self.assertEquals(type(image.data[0][0][0]), np.uint8)
+            
+    def test_163(self):
+        """ Images - uint8 setting """
+        image = Images(['files/1_100.jpg'], 1, config=['nostore', 'uint8'])
+        self.assertEquals(image[0].data[0][0][0], 255)
+        self.assertEquals(type(image[0].data[0][0][0]), np.uint8)
+            
+    def test_164(self):
+        """ Image - uint setting invalid """
+        with pytest.raises(AttributeError):
+            image = Image('files/1_100.jpg', 1, config=['uint12'])
         
     def bug_1(self):
         """ Image - async, not a valid image """
