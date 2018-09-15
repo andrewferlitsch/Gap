@@ -10,6 +10,8 @@ import shutil
 
 class img_utils:
     """
+    Image Utils:
+
     Type of Folder Tree
 
     ## tree = 1 ##
@@ -50,9 +52,10 @@ class img_utils:
                     continue
             if warning == 'y':
                 shutil.rmtree(self.root_path)
-                print('Your files were deleted!')
+                print('Your files were deleted')
         
     def _list_labels_org(self):
+        """ List Labels Origin """
         # list of labels into root_path folder
         if self.transf == '1to2':
             self.labels_org = ['{}/{}'.format(self.root_path, lb) for lb in self.labels]
@@ -63,6 +66,7 @@ class img_utils:
             self.labels_org = train_tr + train_val
     
     def _src_list(self):
+        """ Source List """
         # list of labels for folders that will be renamed
         if self.tree == 1:
             self.src_list = ['{}/{}'.format(self.root_path, lb) for lb in self.labels]
@@ -72,7 +76,7 @@ class img_utils:
             self.src_list = train_tr + train_val
             
     def _makedirs(self):
-        """ Make Directories"""
+        """ Make Directories """
         #creates folders structure
         if self.tree == 1:
             for lb in self.labels:
@@ -223,6 +227,9 @@ class img_utils:
             # extract label name
             text_lb = lb.split('/')[-1]
             for i, img in enumerate(list_img):
+                if os.path.isdir('{}/{}'.format(lb, img)):
+                    print('There is not images to rename')
+                    break
                 dtype = img.split('.')[-1]
                 if text == True:
                     os.rename('{}/{}'.format(lb, img), '{}/{}_{}.{}'.format(lb, text_lb, i, dtype))
@@ -245,6 +252,9 @@ class img_utils:
             # list of images per label
             list_img = os.listdir(lb)
             for i, img in enumerate(list_img):
+                if os.path.isdir('{}/{}'.format(lb, img)):
+                    print('There is not images to replace')
+                    break
                 if img_id:
                     os.rename('{}/{}'.format(lb, img),
                               '{}/{}'.format(lb, img.replace(old,'{}_{}'.format(new, i))))

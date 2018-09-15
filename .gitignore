@@ -11,6 +11,13 @@ templates/
 .ipynb_checkpoints/
 flower_photos/
 flower_photos_spl/
+flower_photos_spt/
 flower.h5
+flower2.h5
+flower.jpg
+flower2.jpg
 move_files.ipynb
 report.ipynb
+
+sessionHeck.ipynb
+train/tut_files/

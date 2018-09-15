@@ -6,6 +6,7 @@ Copyright 2018(c), Andrew Ferlitsch
 version = '0.9.4'
 
 import os
+import io
 import threading
 import time
 import copy
@@ -39,6 +40,7 @@ class Image(object):
         self._image     = image      # image path
         self._name      = None       # name of image (no path or suffix)
         self._size      = 0          # byte size of the image on disk
+        self._ressize   = 0          # byte size of the image on memory after resize
         self._type      = None       # image type of the image
         self._dir       = None       # image storage
         self._shape     = None       # shape of the image
@@ -197,7 +199,7 @@ class Image(object):
         self._name = basename[0]
         self._type = basename[1][1:].lower()
         
-        if self._type not in [ 'png', 'jpg', 'j2k', 'bmp', 'tif', 'tiff', 'gif']:
+        if self._type not in ['png', 'jpg', 'jpeg', 'j2k', 'bmp', 'tif', 'tiff', 'gif']:
             raise TypeError("Not an image file:", self._image)
         
         # Get the size of the image 
@@ -207,7 +209,22 @@ class Image(object):
             # Size sanity check
             if self._size == 0:
                 raise IOError("The image is an empty file")
-            
+
+    def _sizeof(self):
+        """ Returns the byte size of the processed image """
+        size = 1
+        for dim in self.shape:
+            size *= dim
+        if self._float == np.uint8:
+            size * 1
+        elif self._float == np.float16:
+            size * 2
+        elif self._float == np.float32:
+            size * 4
+        elif self._float == np.float64:
+            size * 8
+        return size / 8
+
     def _collate(self, dir='./'):
         """ Process the image """   
         
@@ -274,9 +291,11 @@ class Image(object):
             try:
                 self._thumb = cv2.resize(image, self._thumbnail,interpolation=cv2.INTER_AREA)
             except Exception as e: print(e)
-            
+        
         if self._resize:
             image = cv2.resize(image, self._resize)
+            #get new image size
+            self._ressize = self._sizeof(image)
         
         # Get the shape of the array
         self._shape = image.shape
@@ -345,6 +364,7 @@ class Image(object):
             imgset.attrs['name']  = self._name
             imgset.attrs['type']  = self._type
             imgset.attrs['size']  = self._size
+            imgset.attrs['ressize']  = self._ressize
             imgset.attrs['type']  = self._type
             if not self._noraw:
                 hf.create_dataset("raw", data=[self._raw])
@@ -409,6 +429,7 @@ class Image(object):
             except: pass
             self._type  = imgset.attrs["type"]  
             self._size  = imgset.attrs["size"]
+            self._ressize  = imgset.attrs["ressize"]
             self._rawshape = imgset.attrs["rawshape"]
         self._shape = self._imgdata.shape
 
@@ -479,6 +500,11 @@ class Image(object):
         return self._size    
         
     @property
+    def ressize(self):
+        """ Return the byte size of the image after resize """
+        return self._ressize
+
+    @property
     def time(self):
         """ Return the elapse time to do collation """
         return self._time
@@ -535,6 +561,7 @@ class Images(object):
         self._time     = 0          # processing time
         self._fail     = 0          # how many images that failed to process
         self._nlabels  = None       # number of labels in the collection
+        self._errors   = None       # list of errors reporting
         
         if images is None:
             return
@@ -656,7 +683,6 @@ class Images(object):
         else:
             self._ehandler(self)
             
-            
     def _process(self):
         """ Process a collection of images """
        
@@ -664,23 +690,30 @@ class Images(object):
  
         # Process each image
         self._data = []
+        self._errors = []
         for ix in range(len(self._images)):
             # directory of files
             if isinstance(self._images[ix], str) and os.path.isdir(self._images[ix]):
                 for image in [ self._images[ix] + '/' + file for file in os.listdir(self._images[ix])]:
                     try:
                         self._data.append( Image(image, dir=self._dir, label=self._labels[ix], config=self._config) )
-                    except: 
+                    except Exception as e: 
                         self._data.append(None)
                         self._fail += 1
+                        error = (image, e)
+                        if e not in self._errors:
+                            self._errors.append( error )
             # single file
             else:
                 try:
                     self._data.append( Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config) )
-                except:
+                except Exception as e:
                     self._data.append(None)
                     self._fail += 1
-                
+                    error = (self._images[ix] , e)
+                    if e not in self._errors:
+                        self._errors.append( error )
+        
         # Store machine learning ready data
         if self._nostore is False:
             self.store()
@@ -690,15 +723,16 @@ class Images(object):
     def store(self):
         """ """
         # Store the images as a collection in an HD5 filesystem
-        imgdata  = []
-        clsdata  = []
-        rawdata  = []
-        sizdata  = []
-        thmdata  = []
-        rawshape = []
-        names    = []
-        types    = []
-        paths    = []
+        imgdata   = []
+        clsdata   = []
+        rawdata   = []
+        sizdata   = []
+        thmdata   = []
+        rawshape  = []
+        ressizedt = []
+        names     = []
+        types     = []
+        paths     = []
         for img in self._data:
             # unprocessed image
             if not img:
@@ -710,6 +744,7 @@ class Images(object):
                     rawdata.append( img.raw )
                 rawshape.append( img.rawshape )
                 sizdata.append( img.size )
+                ressizedt.append( img.ressize )
                 if img.thumb is not None:
                     thmdata.append( img.thumb )
                 names.append( bytes(img.name, 'utf-8') )
@@ -728,16 +763,17 @@ class Images(object):
             try:
                 hf.create_dataset("images", data=imgdata)
             except:
-                for _ in range(len(imgdata)):
-                    hf.create_dataset("imgdata" + str(_), data=imgdata[_])
+                for i, img in enumerate(imgdata):
+                    hf.create_dataset("imgdata" + str(i), data=img)
             hf.create_dataset("labels", data=clsdata)
             # use separate datasets to handle raw images of different size/shape
-            for _ in range(len(rawdata)):
-                hf.create_dataset("raw" + str(_), data=rawdata[_])
+            for i, img in enumerate(rawdata):
+                hf.create_dataset("raw" + str(i), data=img)
             hf.create_dataset("rawshape", data=rawshape)
             if len(thmdata) > 0:
                 hf.create_dataset("thumb", data=thmdata)
             hf.create_dataset("size",  data=sizdata)
+            hf.create_dataset("ressize",  data=ressizedt)
             hf.create_dataset("names", data=names)
             hf.create_dataset("types", data=types)
             hf.create_dataset("paths", data=paths)
@@ -793,6 +829,11 @@ class Images(object):
     def fail(self):
         """ Number of images that failed processing """
         return self._fail
+
+    @property
+    def errors(self):
+        """ list errors reporting """
+        return self._errors
         
     def load(self, name, dir=None):
         """ Load a Collection of Images """
@@ -822,8 +863,9 @@ class Images(object):
                     image._raw = hf["raw" + str(i)][:]
                 except: pass
                 image._rawshape = hf["rawshape"][i]
-                image._size = hf["size"][i]
-                image._label = hf["labels"][i]
+                image._size     = hf["size"][i]
+                image._ressize  = hf['ressize'][i]
+                image._label    = hf["labels"][i]
                 try:
                     image._thumb = hf["thumb"][i]
                 except: pass
