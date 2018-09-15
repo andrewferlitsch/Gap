@@ -92,22 +92,23 @@ class img_utils:
         else:
             print('select between tree=1 or tree=2')
 
-    def _copy_move(self, ppath, action, lb, list_img, index):
+    def _copy_move(self, ppath, action, lb, img_list, index):
         """
         Copy or Move images
         :param ppath:     Required. Partial path
         :param action:    Required. Select between 'copy' or 'move'
         :param lb:        Required. Label name
-        :param list_img:  Required. List of images per class
+        :param img_list:  Required. List of images per class
         :param index:     Required. Index image in the list
         """
         # verify type of tree to transform
+        label = lb.split('/')[-1]
         if self.transf == '1to2':
-            org_file = f'{lb}/{list_img[index]}'
-            dst_file = f'{self.root_path}{ppath}/{lb.split('/')[-1]}/{list_img[index]}'
+            org_file = f'{lb}/{img_list[index]}'
+            dst_file = f'{self.root_path}{ppath}/{label}/{img_list[index]}'
         elif self.transf == '2to1':
-            org_file = f'{lb}/{list_img}'
-            dst_file = f'{self.root_path}/{lb.split('/')[-1]}/{list_img}'
+            org_file = f'{lb}/{img_list}'
+            dst_file = f'{self.root_path}/{label}/{img_list}'
         
         # move or copy images into new tree structure
         if action == 'copy':
@@ -144,28 +145,28 @@ class img_utils:
         
         for lb in self.labels_org:
             # list of images per label
-            list_img = os.listdir(lb)
+            img_list = os.listdir(lb)
             # total of images per class 
-            len_list_img = len(list_img)
+            len_img_list = len(img_list)
             
             # sets a sample number or total of images per class to move or copy 
             if action == 'copy':
                 spl = spl
             elif action == 'move':
-                spl = len_list_img
+                spl = len_img_list
             else:
                 print('select copy or move')
             
             if shufle:
                 #get a random image sample
-                list_index = random.sample(range(len_list_img), spl)
+                list_index = random.sample(range(len_img_list), spl)
             else:
                 #get the first images on folder
                 list_index = list(range(spl))
             
             # move images from tree 2 to tree 1
             if self.transf == '2to1':
-                for img in list_img:
+                for img in img_list:
                     ppath = None
                     action = 'move'
                     index = None
@@ -175,7 +176,7 @@ class img_utils:
             # copy or move selected images into the sample labels depending of the selected tree
             if self.tree == 1:
                 for index in list_index:
-                    self._copy_move('_spl', action, lb, list_img, index)
+                    self._copy_move('_spl', action, lb, img_list, index)
           
             elif self.tree == 2:
                 img_tr = int(len(list_index) * (1 - img_split))
@@ -183,10 +184,10 @@ class img_utils:
                 for index in list_index:
                     if count <= img_tr:
                         # move or copy images in the train folder
-                        self._copy_move(f'{self.end2}/train_tr', action, lb, list_img, index)
+                        self._copy_move(f'{self.end2}/train_tr', action, lb, img_list, index)
                     else:
                         # move or copy images in the validation folder
-                        self._copy_move(f'{self.end2}/train_val', action, lb, list_img, index)
+                        self._copy_move(f'{self.end2}/train_val', action, lb, img_list, index)
                     count += 1
             elif self.tree == None:
                 pass
@@ -223,20 +224,21 @@ class img_utils:
                 
         for lb in self.src_list:
             # list of images per label
-            list_img = os.listdir(lb)
+            img_list = os.listdir(lb)
             # extract label name
             text_lb = lb.split('/')[-1]
-            for i, img in enumerate(list_img):
+            for i, img in enumerate(img_list):
                 if os.path.isdir(f'{lb}/{img}'):
                     print('There is not images to rename')
                     break
                 dtype = img.split('.')[-1]
                 if text == True:
-                    os.rename(f'{lb}/{img}', f'{lb}/{text_lb}_{i}.{dtype}')
+                    img_name = f'{text_lb}_{i}'
                 elif text != None:
-                    os.rename(f'{lb}/{img}', f'{lb}/{text}_{i}.{dtype}')
+                    img_name = f'{text}_{i}'
                 else:
-                    os.rename(f'{lb}/{img}', f'{lb}/{i}.{dtype}')
+                    img_name = f'{i}'
+                os.rename(f'{lb}/{img}', f'{lb}/{img_name}.{dtype}')
                     
     def img_replace(self, old, new, img_id=False):
         """
@@ -250,12 +252,13 @@ class img_utils:
         
         for lb in self.src_list:
             # list of images per label
-            list_img = os.listdir(lb)
-            for i, img in enumerate(list_img):
+            img_list = os.listdir(lb)
+            for i, img in enumerate(img_list):
                 if os.path.isdir(f'{lb}/{img}'):
                     print('There is not images to replace')
                     break
                 if img_id:
-                    os.rename(f'{lb}/{img}', f'{lb}/{img.replace(old,f'{new}_{i}')}')
+                    new2 = f'{new}_{i}'
+                    os.rename(f'{lb}/{img}', f'{lb}/{img.replace(old,new2)}')
                 else:
                     os.rename(f'{lb}/{img}', f'{lb}/{img.replace(old,new)}')
