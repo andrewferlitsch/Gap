@@ -143,6 +143,11 @@ class Image(object):
                         self._float = np.float64
                     else:
                         raise AttributeError("Float values must be float16, float32 or float64")
+                elif setting.startswith('uint8'):
+                    if setting == 'uint8':
+                        self._float = np.uint8
+                    else:
+                        raise AttributeError("Integer values must be uint8")
                 elif setting.startswith('nlabels='):
                     pass # ignore
                 else:
@@ -295,15 +300,19 @@ class Image(object):
                 image = (image / 255.0).astype(np.float16)
             elif self._float == np.float64:
                 image = (image / 255.0).astype(np.float64)
-            else:
+            elif self._float == np.float32:
                 image = (image / 255.0).astype(np.float32)
+            elif self._float == np.uint8:
+                pass    # do not normalize
         elif data_type == np.uint16:
             if self._float == np.float16:
                 image = (image / 65535.0 ).astype(np.float16)
             elif self._float == np.float64:
                 image = (image / 65535.0 ).astype(np.float64)
-            else:
+            elif self._float == np.float32:
                 image = (image / 65535.0 ).astype(np.float32)
+            elif self._float == np.uint8:
+                pass    # do not normalize
         # assume pixel data is normalized
         elif data_type == np.float16 or data_type is np.float32 or data_type is np.float64:
             if self._float == np.float16:
