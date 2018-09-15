@@ -1336,6 +1336,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[0].data[0], 1.0) 
         self.assertEquals(images[0].name, 'untitled')
         self.assertEquals(images[0].image, 'untitled')
+        os.remove("collection.untitled.h5")
             
     def test_139(self):
         """ Images - file not found """
