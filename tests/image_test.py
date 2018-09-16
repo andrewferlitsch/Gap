@@ -1549,14 +1549,91 @@ class MyTest(unittest.TestCase):
             
     def test_163(self):
         """ Images - uint8 setting """
-        image = Images(['files/1_100.jpg'], 1, config=['nostore', 'uint8'])
-        self.assertEquals(image[0].data[0][0][0], 255)
-        self.assertEquals(type(image[0].data[0][0][0]), np.uint8)
+        images = Images(['files/1_100.jpg'], 1, config=['nostore', 'uint8'])
+        self.assertEquals(images[0].data[0][0][0], 255)
+        self.assertEquals(type(images[0].data[0][0][0]), np.uint8)
             
     def test_164(self):
         """ Image - uint setting invalid """
         with pytest.raises(AttributeError):
             image = Image('files/1_100.jpg', 1, config=['uint12'])
+            
+    def test_165(self):
+        """ Images - uint8 setting/next() """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore'])
+        images.split = 0.5
+        image, label = next(images)
+        self.assertEquals(type(image[0][0][0]), np.float32)
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore', 'uint8'])
+        self.assertEquals(type(images[0].data[0][0][0]), np.uint8)
+        images.split = 0.5
+        image, label = next(images)
+        self.assertEquals(type(image[0][0][0]), np.float32)
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore', 'grayscale', 'uint8'])
+        self.assertEquals(type(images[0].data[0][0]), np.uint8)
+        images.split = 0.5
+        image, label = next(images)
+        self.assertEquals(type(image[0][0]), np.float32)
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore', 'flatten', 'uint8'])
+        self.assertEquals(type(images[0].data[0]), np.uint8)
+        images.split = 0.5
+        image, label = next(images)
+        self.assertEquals(type(image[0]), np.float32)
+            
+    def test_166(self):
+        """ Images - uint8 setting/augment/next() """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore', 'uint8'])
+        images.split = 0.5
+        images.augment = True
+        image, label = next(images)
+        self.assertEquals(type(image[0][0][0]), np.float32)
+        image, label = next(images)
+        self.assertEquals(type(image[0][0][0]), np.float32)
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore', 'grayscale', 'uint8'])
+        images.split = 0.5
+        images.augment = True
+        image, label = next(images)
+        self.assertEquals(type(image[0][0]), np.float32)
+        image, label = next(images)
+        self.assertEquals(type(image[0][0]), np.float32)
+            
+    def test_167(self):
+        """ Images - uint8 setting/minibatch """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore', 'uint8'])
+        images.split = 0.0
+        images.minibatch = 2
+        g = images.minibatch
+        for image, label in g:
+            self.assertEquals(type(image[0][0][0]), np.float32)
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore', 'uint8', 'grayscale'])
+        images.split = 0.0
+        images.minibatch = 2
+        g = images.minibatch
+        for image, label in g:
+            self.assertEquals(type(image[0][0]), np.float32)
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore', 'uint8', 'flatten'])
+        images.split = 0.0
+        images.minibatch = 2
+        g = images.minibatch
+        for image, label in g:
+            self.assertEquals(type(image[0]), np.float32)
+            
+    def test_168(self):
+        """ Images - uint8 setting/minibatch/augment """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore', 'uint8'])
+        images.split = 0.0
+        images.augment = True
+        images.minibatch = 2
+        g = images.minibatch
+        for image, label in g:
+            self.assertEquals(type(image[0][0][0]), np.float32)
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore', 'uint8', 'grayscale'])
+        images.split = 0.0
+        images.augment = True
+        images.minibatch = 2
+        g = images.minibatch
+        for image, label in g:
+            self.assertEquals(type(image[0][0]), np.float32)
         
     def bug_1(self):
         """ Image - async, not a valid image """
@@ -1574,6 +1651,16 @@ class MyTest(unittest.TestCase):
         image = Image("http://foogoozoo.com/sam.jpg", ehandler=self.baddone)
         time.sleep(3)
         self.assertEquals(self.isbad, True)
+        
+    def bug_3(self):
+        """ """
+        images = Images(['files/0_100.jpg', 'files/1_100.jpg', 'files/2_100.jpg', 'files/3_100.jpg'], 1, config=['nostore', 'flatten', 'uint8'])
+        images.split = 0.5
+        images.augment = True
+        image, label = next(images)
+        self.assertEquals(type(image[0]), np.float32)
+        image, label = next(images)
+        self.assertEquals(type(image[0]), np.float32)
             
 
     def done(self, image):
