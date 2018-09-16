@@ -73,7 +73,7 @@ def myHandler(images):
         flatten                 | flat  
         resize=(height,width)   | resize=height,width  
         thumb=(height,width)    | thumb=height,width  
-        float16                 | float32 | float64
+        float16                 | float32 | float64 | uint8
         nostore
         raw
 	nlabels=(n)
@@ -345,7 +345,17 @@ When used as a setter, the machine learning ready data is resized to the specifi
 A `TypeError` is raised if the type of the parameter is not the expected type.
 A `AttributeError` is raised if the parameter is not a tuple of length 2.
 
-#### 1.3.12 fail
+#### 1.3.12 pixeltype
+
+```python
+ptype = images.pixeltype
+```
+
+**Usage**
+
+When used as a getter, the property returns the data type of the pixel data of the preprocessed machine learning ready data.
+
+#### 1.3.13 fail
 
 ```python
 nfailed = images.fail
@@ -518,8 +528,8 @@ image = Images(path, label, ehandler=(done, 10))
             flatten                 | flat  
             resize=(height,width)   | resize=height,width  
             thumb=(height,width)    | thumb=height,width  
-	    float16	            | float32 | float64
-            nostore
+	    float16	            | float32 | float64 | uint8  
+            nostore  
 	    raw
 
 **Usage**
@@ -542,7 +552,9 @@ If the parameter `image` is raw pixel data as a numpy array, the image is proces
 
 If the raw pixel data is a uint8 (8-bit pixels), the pixel data will be normalized by dividing it by 255.0 to convert to floating point values between 0.0 and 1.0. If the raw pixel data is a uint16 (i.e., 16-bit pixels), the pixel data will be normalized by dividing it by 65535.0 to convert to floating point values between 0.0 and 1.0.
 
-By default, the normalized pixels will be of np.float32 data type (single precision float). If the `config` setting `'float16'` or `'float64'` are specified, the normalized pixels will be of np.float16 (half float) or np.float64 (double precision float) data type, respectively.
+By default, the normalized pixels will be of np.float32 data type (single precision float). If the `config` setting `'float16'` or `'float64'` are specified, the normalized pixels will be of np.float16 (half float) or np.float64 (double precision float) data type, respectively. 
+
+Alternately, if the `config` setting `uint8` is specified, the preprocessed machine learning ready data is unnormalized while stored in memory or in HDF5 file. Instead, the preprocessed machine learning ready data is then normalized in place by the feed methods (see `next()` and `minibatch`).
 
 If the data type of the raw pixel data is already a float, the raw pixel data is assumed to be already normalized.
 
