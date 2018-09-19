@@ -12,6 +12,7 @@ import time
 class MyTest(unittest.TestCase):
         
     def setup_class(self):
+        os.chdir("./tests")
         self.isdone = False
         with open("test.txt", "w") as f:
             f.write("foo")
@@ -21,6 +22,7 @@ class MyTest(unittest.TestCase):
             f.write("foo")
             
     def teardown_class(self):
+        os.chdir("..")
         os.remove("test.txt")
         os.remove("empty.txt")
         os.remove("toosmall.pdf")

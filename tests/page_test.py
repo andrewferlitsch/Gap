@@ -12,12 +12,15 @@ import sys
 
 class MyTest(unittest.TestCase):
     def setup_class(self):
+        os.chdir("./tests") 
         with open("files/test.txt", "w") as f:
             f.write("foo")
+
             
     def teardown_class(self):
+        os.chdir("..") 
         os.remove("files/test.txt")
-
+ 
     def test_001(self):
         """ Page constructor - no parameters """
         page = Page()
