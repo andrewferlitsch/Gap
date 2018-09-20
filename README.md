@@ -77,23 +77,24 @@ The Gap framework is supported on Windows, MacOS, and Linux. It has been package
 
   1. install [miniconda](https://conda.io/miniconda.html)
 
-  2. (optional)  
-      + Create an environment with: `conda create -n gap python==3.7 jupyter`  
+  2. install conda virtual environment and required packages
+      + Create an environment with: `conda create -n gap python==3.7 jupyter pip`  
       + Activate: `source activate gap`
-      + Deactivate: `source deactivate`
-
-  3. install GapML:  
       + `pip install gapml`
 
-      Dependecies if you are on **Linux** or **Mac**:  
+      Dependencies for **Linux** or **Mac**:  
       + Tesseract:    `conda install -c conda-forge tesseract`  
       + Ghostscript:  `conda install -c conda-forge ghostscript`  
       + Imagemagick:  `conda install -c conda-forge imagemagick`
 
-      for **Windows** get the executables in the following links:  
+      Dependencies for **Windows** executables in the following links:  
       + Ghostscript:  https://www.ghostscript.com/download/gsdnld.html  
       + Imagemagick:  https://www.imagemagick.org/script/download.php  
       + Tesseract:    https://github.com/UB-Mannheim/tesseract/wiki
+
+  3. exiting conda virtual environment:
+      + Windows: `deactivate`
+      + Linux/macOS: `source deactivate`
 
 ## Setup.py Installation:
 
@@ -196,6 +197,10 @@ The following are the pre-built automated unit tests, which are located under th
     image_test.py       # Tests the Image and Images Class in the Vision Module
 
 The automated tests are executed as follows:
+  
+  1. From directory root enter `cd tests`
+
+  2. Tests can be run by:
 
     pytest -v document_test.py
     pytest -v page_test.py
@@ -209,7 +214,9 @@ Information on the percent of code that is covered (and what source lines not co
 
     pip install pytest-cov
 
-Testing with code coverage is executed as follows:
+  1. From directory root enter `cd tests`
+
+  2. To run tests with coverage: 
 
     pytest --cov=gapml.splitter document_test.py page_test.py
 
