@@ -145,6 +145,11 @@ class Image(object):
                         self._float = np.float64
                     else:
                         raise AttributeError("Float values must be float16, float32 or float64")
+                elif setting.startswith('uint8'):
+                    if setting == 'uint8':
+                        self._float = np.uint8
+                    else:
+                        raise AttributeError("Integer values must be uint8")
                 elif setting.startswith('nlabels='):
                     pass # ignore
                 else:
@@ -223,7 +228,7 @@ class Image(object):
             size * 4
         elif self._float == np.float64:
             size * 8
-        return size / 8
+        self._ressize = size / 8
 
     def _collate(self, dir='./'):
         """ Process the image """   
@@ -314,15 +319,19 @@ class Image(object):
                 image = (image / 255.0).astype(np.float16)
             elif self._float == np.float64:
                 image = (image / 255.0).astype(np.float64)
-            else:
+            elif self._float == np.float32:
                 image = (image / 255.0).astype(np.float32)
+            elif self._float == np.uint8:
+                pass    # do not normalize
         elif data_type == np.uint16:
             if self._float == np.float16:
                 image = (image / 65535.0 ).astype(np.float16)
             elif self._float == np.float64:
                 image = (image / 65535.0 ).astype(np.float64)
-            else:
+            elif self._float == np.float32:
                 image = (image / 65535.0 ).astype(np.float32)
+            elif self._float == np.uint8:
+                pass    # do not normalize
         # assume pixel data is normalized
         elif data_type == np.float16 or data_type is np.float32 or data_type is np.float64:
             if self._float == np.float16:
@@ -773,7 +782,7 @@ class Images(object):
             if len(thmdata) > 0:
                 hf.create_dataset("thumb", data=thmdata)
             hf.create_dataset("size",  data=sizdata)
-            hf.create_dataset("ressize",  data=ressizedt)
+            hf.create_dataset("ressize", data=ressizedt)
             hf.create_dataset("names", data=names)
             hf.create_dataset("types", data=types)
             hf.create_dataset("paths", data=paths)
@@ -963,11 +972,21 @@ class Images(object):
         for _ in range(self._next, min(self._next + self._minisz, self._trainsz)): 
             ix = self._train[_]
             self._next += 1 
-            yield self._data[ix]._imgdata , self._data[ix]._label
+            # pre-normalized: normalize as being feed
+            if self.pixeltype == np.uint8:
+                yield (self._data[ix]._imgdata / 255.0).astype(np.float32), self._data[ix]._label
+            # already normalized
+            else:
+                yield self._data[ix]._imgdata, self._data[ix]._label
             if self._augment:
                 for _ in range(self._rotate[2]):
                     degree = random.randint(self._rotate[0], self._rotate[1])
-                    yield self._data[ix].rotate(degree), self._data[ix]._label
+                    # pre-normalized: normalize as being feed
+                    if self.pixeltype == np.uint8:
+                        yield (self._data[ix].rotate(degree) / 255.0).astype(np.float32), self._data[ix]._label
+                    # already normalized
+                    else:
+                        yield self._data[ix].rotate(degree), self._data[ix]._label
         
     @minibatch.setter
     def minibatch(self, batch_size):
@@ -1069,6 +1088,17 @@ class Images(object):
         for image in self._data:
             image._imgdata = cv2.resize(image._imgdata, resize, interpolation=cv2.INTER_AREA)
             image._shape   = image._imgdata.shape
+            
+    @property
+    def pixeltype(self):
+        """ Return the datatype of pixel data """
+        dim = len(self._data[0]._imgdata.shape)
+        if dim == 1:
+            return type(self._data[0]._imgdata[0])
+        elif dim == 2:
+            return type(self._data[0]._imgdata[0][0])
+        else:
+            return type(self._data[0]._imgdata[0][0][0])
          
       
     def __next__(self):
@@ -1090,12 +1120,23 @@ class Images(object):
             if self._rotate[3] > 0:
                 self._rotate[3] -= 1
                 degree = random.randint(self._rotate[0], self._rotate[1])
-                return self._data[ix].rotate(degree) , self._data[ix]._label
+                # pre-normalize: normalize as being feed
+                if self.pixeltype == np.uint8:
+                    return (self._data[ix].rotate(degree) / 255.0).astype(np.float32), self._data[ix]._label
+                # already normalized
+                else:
+                    return self._data[ix].rotate(degree), self._data[ix]._label
             else:
                 self._rotate[3] = self._rotate[2]
             
         self._next += 1
-        return self._data[ix]._imgdata , self._data[ix]._label
+        
+        # pre-normalize: normalize as being feed
+        if self.pixeltype == np.uint8:
+            return (self._data[ix]._imgdata / 255.0).astype(np.float32), self._data[ix]._label
+        # already normalized
+        else:
+            return self._data[ix]._imgdata, self._data[ix]._label
                 
 
     def __len__(self):

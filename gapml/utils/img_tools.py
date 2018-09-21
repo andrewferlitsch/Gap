@@ -32,12 +32,11 @@ class img_utils:
         [subfolder] errors/..
     """
 
-    def __init__(self, root_path='./', tree=1, transf='1to2', rm=False):
+    def __init__(self, root_path='./', tree=1, rm=False):
         """Make directories"""
         self.labels = os.listdir(root_path)      # list of images labels
         self.root_path = root_path.split('/')[0] # root folder where labels are located
         self.tree = tree                         # folder structure to the end sample
-        self.transf = transf                     # type of folder tree to tranform '1to2' or '2to1'
         self.rm = rm                             # warning! remove folder from directory
         
         if rm:
@@ -127,6 +126,11 @@ class img_utils:
         :param img_split: percentage of split between train / val
         """
         
+        try:
+            self.transf
+        except:
+            self.transf='1to2'
+        
         # specifies the name for the root_path
         if action == 'copy':
             self.end  = '_spl'
@@ -194,12 +198,16 @@ class img_utils:
             else:
                 print('select 1 or 2')
                 
-    def transform(self, shufle=False, img_split=0.2):
+    def transform(self, shufle=False, img_split=0.2, transf='1to2'):
         """
         Transform
         :param shufle:    select ramdom images per label or the first images on the list
         :param img_split: percentage of split between train / val
+        :param transf:    type of folder tree to tranform '1to2' or '2to1'
         """
+        
+        self.transf = transf
+        
         # move the files between tree structures
         action = 'move'
         if self.transf == '1to2':

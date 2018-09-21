@@ -10,19 +10,18 @@ with open('README.md', 'r', encoding="utf-8") as f:
     long_description = f.read()
 
 install_requires=[
-    'bs4',
-    'numpy',
-    'h5py',
-    'imutils',
-    'unidecode',
-    'nltk',
-    'pandas',
-    'requests',
-    'opencv-python',
-    'pillow',
-    'matplotlib'
-    ]
-		  
+    'beautifulsoup4==4.6.3',
+    'numpy==1.14.5',
+    'h5py==2.8.0',
+    'imutils==0.5.1',
+    'Unidecode==1.0.22',
+    'nltk==3.3',
+    'pandas==0.23.4',
+    'requests==2.19.1',
+    'opencv-python==3.4.3.18',
+    'Pillow==5.2.0',
+    'matplotlib==2.2.3']
+
 tests_require=[
     'pytest',
     'pytest-cov']
@@ -52,7 +51,7 @@ classifiers=[
 
 setup(
     name='gapml',
-    version='0.9.4',
+    version='0.9.3',
     description='NLP and CV Data Engineering Framework',
     author='Andrew Ferlitsch',
     author_email='aferlitsch@gmail.com',
