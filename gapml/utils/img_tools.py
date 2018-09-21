@@ -10,7 +10,8 @@ import shutil
 
 class img_utils:
     """
-    Image Utils:
+    Image Utils: The img_utils module alows users to manage images datasets 
+                 (folders and images files) directly on disk.
 
     Type of Folder Tree
 
