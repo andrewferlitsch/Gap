@@ -11,7 +11,7 @@ with open('README.md', 'r', encoding="utf-8") as f:
 
 install_requires=[
     'beautifulsoup4==4.6.3',
-    'numpy==1.14.5',
+    'numpy==1.15.1',
     'h5py==2.8.0',
     'imutils==0.5.1',
     'Unidecode==1.0.22',
@@ -51,7 +51,7 @@ classifiers=[
 
 setup(
     name='gapml',
-    version='0.9.3',
+    version='0.9.4',
     description='NLP and CV Data Engineering Framework',
     author='Andrew Ferlitsch',
     author_email='aferlitsch@gmail.com',

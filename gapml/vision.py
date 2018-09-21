@@ -6,6 +6,7 @@ Copyright 2018(c), Andrew Ferlitsch
 version = '0.9.4'
 
 import os
+import sys
 import io
 import threading
 import time
@@ -24,7 +25,7 @@ import h5py
 # Performance Testing note:
 #   cv2 loaded grayscale images 25% faster than PIL, and 10% faster for color images
 
-# Import cv2 for Python image manipulation library. 
+# Import cv2 for Python image manipulation library.
 import cv2
 
 # Import pillow for Python image manipulation for GIF
@@ -32,9 +33,9 @@ from PIL import Image as PILImage
 
 class Image(object):
     """ Base (super) Class for Classifying an Image """
-    
+
     _debug = False
-    
+
     def __init__(self, image=None, label=0, dir='./', ehandler=None, config=None):
         """ """
         self._image     = image      # image path
@@ -58,25 +59,25 @@ class Image(object):
         self._thumb     = None       # thumb image data in memory
         self._time      = 0          # elapse time to do processing
         self._float     = np.float32 # data type after normalization
-        
+
         if self._debug: print(config)
-        
+
         # value must be a string
         if image is not None and not isinstance(image, str) and not isinstance(image, np.ndarray):
             raise TypeError("String expected for image path")
-        
+
         if dir is not None:
             if isinstance(dir, str) == False:
                 raise TypeError("String expected for image storage path")
             if dir.endswith("/") == False:
-                    dir += "/"  
+                dir += "/"
             # Create Directory if it does not exist  
             if not os.path.isdir(dir):
-               os.mkdir(dir)
+                os.mkdir(dir)
             self._dir = dir
         elif dir == None:
             self._dir = "./"
-        
+
         # label must be an int or a list of floats (one-hot encoded)
         if isinstance(label, int):
             pass
@@ -85,21 +86,21 @@ class Image(object):
             pass
         else:
             raise TypeError("Integer or 1D vector (one-hot encoded) expected for image label")
-            
+
         if ehandler:
             if isinstance(ehandler, tuple):
                 if not callable(ehandler[0]):
                     raise TypeError("Function expected for ehandler")
             elif not callable(ehandler):
                 raise TypeError("Function expected for ehandler")
-            
+
         if config is not None and isinstance(config, list) == False:
             raise TypeError("List expected for config settings")
-        
+
         if config is not None:
             for setting in config:
                 if isinstance(setting, str) == False:
-                     raise TypeError("String expected for each config setting")
+                    raise TypeError("String expected for each config setting")
                 if setting in ['gray', 'grayscale']:
                     self._grayscale = True
                 elif setting in ['flat', 'flatten']:
@@ -154,7 +155,7 @@ class Image(object):
                     pass # ignore
                 else:
                     raise AttributeError("Setting is not recognized: " + setting)
-        
+
         if self._image is not None:
             self._exist()
             # Process image synchronously
@@ -168,54 +169,54 @@ class Image(object):
                 else:
                     t = threading.Thread(target=self._async, args=(dir, ehandler[1:], ))
                 t.start()   
-                
+
     def _async(self, dir):
         """ Asynchronous processing of the image """
         try:
             self._collate(dir)
         except Exception as e:
             self._ehandler(e)
-            
+
         # signal user defined event handler when processing is done
         if isinstance(self._ehandler, tuple):
             self._ehandler[0](self, self._ehandler[1:])
         else:
             self._ehandler(self)
-                
+
     def _exist(self):
         """ Check if image exists """
-        
+
         # Image data was directly inputted as an argument
         if isinstance(self._image, np.ndarray):
             self._name = 'untitled'
             self._type = 'raw'
             self._size = self._image.size
             return
-            
+
         # File is at a remote (Internet) location
         if self._image.startswith("http"):
             pass
         # Check that image exists
         elif os.path.isfile(self._image) == False:
             raise FileNotFoundError(self._image)
-        
+
         # Get the file name and file type of the image without the extension 
         basename = os.path.splitext(os.path.basename(self._image))
         self._name = basename[0]
         self._type = basename[1][1:].lower()
-        
+
         if self._type not in ['png', 'jpg', 'jpeg', 'j2k', 'bmp', 'tif', 'tiff', 'gif']:
             raise TypeError("Not an image file:", self._image)
-        
-        # Get the size of the image 
+
+        # Get the size of the image
         if not self._image.startswith("http"):
             self._size = os.path.getsize(self._image)
-        
+
             # Size sanity check
             if self._size == 0:
                 raise IOError("The image is an empty file")
 
-    def _sizeof(self):
+    def __sizeof__(self):
         """ Returns the byte size of the processed image """
         size = 1
         for dim in self.shape:
@@ -228,17 +229,17 @@ class Image(object):
             size * 4
         elif self._float == np.float64:
             size * 8
-        self._ressize = size / 8
+        return size / 8
 
     def _collate(self, dir='./'):
-        """ Process the image """   
-        
+        """ Process the image """
+
         start = time.time()
-        
+
         # If directory does not exist, create it
         if dir != "./" and os.path.isdir(dir) == False:
             os.mkdir(dir)
-    
+
         # Image data was directly inputted
         if isinstance(self._image, np.ndarray):
             if self._grayscale:
@@ -256,7 +257,7 @@ class Image(object):
                 response = requests.get(self._image, timeout=10)
             except:
                 raise TimeoutError('Unable to get remote image')
-            
+
             # Read in the image data
             data = np.fromstring(response.content, np.uint8)
             self._size = len(data)
@@ -280,11 +281,11 @@ class Image(object):
             # Load RGB image (dropping any alpha channel)
             else:
                 image = cv2.imread(self._image, cv2.IMREAD_COLOR)
-            
+
         # if bad image, skip
         if np.any(image == None):
             raise EOFError('Not an Image')
-        
+
         # Get the raw shape of the array
         self._rawshape = image.shape
 
@@ -296,15 +297,15 @@ class Image(object):
             try:
                 self._thumb = cv2.resize(image, self._thumbnail,interpolation=cv2.INTER_AREA)
             except Exception as e: print(e)
-        
+
         if self._resize:
             image = cv2.resize(image, self._resize)
             #get new image size
-            self._ressize = self._sizeof(image)
-        
+            self._ressize = sys.getsizeof(image)
+
         # Get the shape of the array
         self._shape = image.shape
-            
+
         # Get the data type of the pixel data
         if len(image.shape) == 1:
             data_type = type(image[0])
@@ -312,7 +313,7 @@ class Image(object):
             data_type = type(image[0][0])
         else:
             data_type = type(image[0][0][0])
-        
+
         # Normalize the image (convert pixel values from int range 0 .. 255 to float range 0 .. 1)
         if data_type == np.uint8:
             if self._float == np.float16:
@@ -340,30 +341,30 @@ class Image(object):
                 image = image.astype(np.float64)
             else:
                 image = image.astype(np.float32)
-            
+
         # Flatten the image into a 1D vector
         if self._flatten:
             image = image.flatten()
-        
+
         # Get the shape of the array
         self._shape = image.shape
-        
+
         self._imgdata = image
-        
+
         if isinstance(self._image, np.ndarray):
             self._image = "untitled"
-        
+
         if self._hd5:
             self._store() 
-            
+
         # Total time to do collation
         self._time = time.time() - start
-        
+
     def _store(self):
         """ Store the processed image data in a HD5 file """
-        
+
         if self._debug: print("STORE")
-            
+
         # Write the image to disk as HD5 file
         with h5py.File(self._dir + "/" + self._name + '.h5', 'w') as hf:
             imgset = hf.create_dataset("images",  data=[self._imgdata])
@@ -380,31 +381,31 @@ class Image(object):
             try:
                 hf.create_dataset("thumb", data=[self._thumb])
             except: pass
-            
+
     def rotate(self, degree):
         """ rotate the image """
         if not isinstance(degree, int):
             raise ValueError("Degree must be an integer")
-            
+
         if degree <= -360 or degree >= 360:
             raise ValueError("Degree must be between -360 and 360")
-            
+
         # rotate the image
         rotated = imutils.rotate_bound(self._imgdata, degree)
-        
+
         # resize back to expected dimensions
         if degree not in [ 0, 90, 180, 270, -90, -180, -270 ]:
             # resize takes only height x width
             shape = (self._imgdata.shape[0], self._imgdata.shape[1])
             rotated = cv2.resize(rotated, shape, interpolation=cv2.INTER_AREA)
         return rotated
-        
+
     def edge(self):
         """ """
         gray = cv2.GaussianBlur(self._imgdata, (3, 3), 0)
         edged = cv2.Canny(gray, 20, 100)
         return edged
-            
+
     def load(self, image, dir='./'):
         """ Load an image from storage """
         # value must be a string
@@ -412,19 +413,19 @@ class Image(object):
             if isinstance(dir, str) == False:
                 raise TypeError("String expected for image storage path")
             if dir.endswith("/") == False:
-                    dir += "/"  
+                dir += "/"
             self._dir = dir
-        self._dir = dir 
-        
+        self._dir = dir
+
         # value must be a string
         if image is not None and isinstance(image, str) == False:
             raise TypeError("String expected for image path")
         self._image = image
-        
+
         basename = os.path.splitext(os.path.basename(self._image))
         self._name = basename[0]
         self._type = basename[1][1:].lower()
-            
+
         # Read the image from disk as HD5 file
         with h5py.File(self._dir + "/" + self._name + '.h5', 'r') as hf:
             imgset = hf['images']
@@ -475,12 +476,12 @@ class Image(object):
     def data(self):
         """ Getter for the processed image data """
         return self._imgdata
-        
+  
     @property
     def dir(self):
         """ Getter for the image directory """
         return self._dir
-        
+
     @dir.setter
     def dir(self, dir):
         """ Setter for image directory """
@@ -489,10 +490,10 @@ class Image(object):
             if isinstance(dir, str) == False:
                 raise TypeError("String expected for image storage path")
             if dir.endswith("/") == False:
-                    dir += "/"  
+                dir += "/"
             self._dir = dir
-        self._dir = dir 
-        
+        self._dir = dir
+
     @property
     def label(self):
         """ Getter for image label (classification) """
@@ -706,7 +707,7 @@ class Images(object):
                 for image in [ self._images[ix] + '/' + file for file in os.listdir(self._images[ix])]:
                     try:
                         self._data.append( Image(image, dir=self._dir, label=self._labels[ix], config=self._config) )
-                    except Exception as e: 
+                    except Exception as e:
                         self._data.append(None)
                         self._fail += 1
                         error = (image, e)
