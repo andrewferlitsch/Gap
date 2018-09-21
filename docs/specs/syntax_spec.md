@@ -51,7 +51,7 @@ Words( text, flags … )
 
 **pos:** Annotate `True` or not annotate `False` NLP preprocessed tokens with parts of speech using NLTK `pos_tag()`.
 
-**spell:** Spell check and replace misspelled words using the *Norvig* speller. The parameter may be set to one of en (English), es (Spanish) or fr (French).
+**spell:** Spell check and replace misspelled words using the *Norvig* speller. The parameter may be set to one of `en` (English), `es` (Spanish), `fr` (French), `de` (German) or `it` (Italian).
 
 **roman:** Romanize `True` or not Romanize `False` latin-1 encodings of NLP preprocessed tokens into ASCII encoding.
 
@@ -470,7 +470,7 @@ The `Words` class contains no public methods.
 + Added UK to US spelling correction.
 
 **Gap v0.9.2 (alpha)**  
-+ Extend Spell Checking to Spanish and French.
++ Extend Spell Checking to Spanish, French, German and Italian.
 
 ## APPENDIX II: Anticipated Engineering
 
