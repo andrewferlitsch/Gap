@@ -868,5 +868,4 @@ A `ValueError` is raised if the degree is not between 0 and 360.
 5.	Added support for numpy arrays as image collections to Images.
 6.	Added support for 16-bit pixels.
 
-Proprietary Information  
 Copyright ©2018, Epipog, All Rights Reserved
