@@ -118,5 +118,5 @@ The following has been identified as enhancement/issues to be addressed in subse
 
 1.  Add support for splitting dual column pages.
 
-Proprietary Information  
+
 Copyright ©2018, Epipog, All Rights Reserved
