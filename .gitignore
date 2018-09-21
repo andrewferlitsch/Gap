@@ -14,3 +14,16 @@ flower_photos_spl/
 flower.h5
 move_files.ipynb
 report.ipynb
+*.model
+*.stackdump
+*.h5
+*.sqlite
+*.suo
+/.vs/ProjectSettings.json
+/.vs/VSWorkspaceState.json
+/.vs/config/applicationhost.config
+/sample_submission.csv
+/tests
+/.vscode
+/imagenet/.vscode
+/imagenet

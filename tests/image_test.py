@@ -16,9 +16,11 @@ class MyTest(unittest.TestCase):
     def setup_class(self):
         self.isdone = False
         self.isbad  = False
+        os.chdir("./tests") 
             
     def teardown_class(self):
-        pass
+        os.chdir("..") 
+#        pass
         
     ### Image
     

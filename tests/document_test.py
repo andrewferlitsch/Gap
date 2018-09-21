@@ -12,6 +12,7 @@ import time
 class MyTest(unittest.TestCase):
         
     def setup_class(self):
+        os.chdir("./tests")
         self.isdone = False
         with open("test.txt", "w") as f:
             f.write("foo")
@@ -21,6 +22,7 @@ class MyTest(unittest.TestCase):
             f.write("foo")
             
     def teardown_class(self):
+        os.chdir("..")
         os.remove("test.txt")
         os.remove("empty.txt")
         os.remove("toosmall.pdf")
@@ -465,7 +467,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(os.path.isfile("text1.png"))
         self.assertTrue(document.scanned)
         l = len(document.pages[0])
-        self.assertTrue(l >= 25 and l <= 30)
+        self.assertTrue(l >= 24 and l <= 30)
         self.assertTrue(document[0].pageno, 1)
         os.remove("text1.txt")
         os.remove("text1.png")
@@ -480,7 +482,7 @@ class MyTest(unittest.TestCase):
         self.assertTrue(os.path.isfile("text1.jpg"))
         self.assertTrue(os.path.isfile("text1.json"))
         l = len(document.pages[0])
-        self.assertTrue(l >= 14 and l <= 30)
+        self.assertTrue(l >= 12 and l <= 30)
         os.remove("text1.txt")
         os.remove("text1.jpg")
         os.remove("text1.json")
