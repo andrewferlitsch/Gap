@@ -15,7 +15,7 @@ The words NLP preprocessor contains the following primary classes, and their rel
 words = Words("some text", flags …)
 ```
 
-The constructor calls the private methods `_split()`, `_stem()`, and `_stopwords()`.
+The constructor calls the private methods `_split()`, `_preprocess()`, `_stem()`, `_stopwords()`, `_conversion()` and `_partsofspeech()`.
 
 + Word – A single NLP preprocessed word (token).
 
@@ -43,7 +43,7 @@ Words( text, flags … )
 
 **punct:** Keep/classify `True` or remove ``False`` punctuation.
 
-**stopwords:** Keep `True` all stop words or remove `False`. If True, it supersedes all other flags. If False, other flags may be used to include specific categories. The stop words are a superset of the Porter list.
+**stopwords:** Keep `True` all stop words or remove `False`. If `True`, it supersedes all other flags. If `False`, other flags may be used to include specific categories. The stop words are a superset of the *Porter* list.
 
 **stem:** Value indicating which stemmer to use:  
     - builtin: gap  
@@ -51,7 +51,7 @@ Words( text, flags … )
 
 **pos:** Annotate `True` or not annotate `False` NLP preprocessed tokens with parts of speech using NLTK `pos_tag()`.
 
-**spell:** Spell check and replace misspelled words using norvig. The parameter may be set to one of en (English), es (Spanish) or fr (French).
+**spell:** Spell check and replace misspelled words using the *Norvig* speller. The parameter may be set to one of `en` (English), `es` (Spanish), `fr` (French), `de` (German) or `it` (Italian).
 
 **roman:** Romanize `True` or not Romanize `False` latin-1 encodings of NLP preprocessed tokens into ASCII encoding.
 
@@ -198,7 +198,7 @@ bag = images.bagOfWords
 
 **Usage**
 
-When used as a getter the property returns the word sequence as a Bag of Words, represented as a unordered dictionary, where the key is the word and the value is the number of occurrences:
+When used as a getter the property returns the word sequence as a *Bag of Words*, represented as a unordered dictionary, where the key is the word and the value is the number of occurrences:
 
     { '<word'> : <no. of occurrences>, … }
 
@@ -213,7 +213,7 @@ freq = images.freqDist
 
 **Usage**
 
-When used as a getter the property returns the sorted tuples of a frequency distribution of words (from bag of words), in descending order (i.e., highest first)
+When used as a getter the property returns the sorted tuples of a frequency distribution of words (from property `BagOfWords`), in descending order (i.e., highest first)
 
     [ ( '<word'>: <no.  of occurrences> ), … ]
 
@@ -228,7 +228,7 @@ tf = images.termFreq
 
 **Usage**
 
-When used as a getter the property returns the sorted tuples of a term frequency distribution (percent that term occurs), in descending order (i.e., highest first)
+When used as a getter the property returns the sorted tuples of a term frequency distribution (i.e., percent that term occurs), in descending order (i.e., highest first)
 
     [ ( '<word'>: <percentage  of occurrences> ), … ]
  
@@ -250,7 +250,7 @@ nwords = len(words)
 
 **Usage**
 
-The `len()` `(__len__)` operator is overridden to return  the number of NLP tokenized words.
+The `len()` `(__len__)` operator is overridden to return the number of NLP tokenized words.
 
 #### 1.4.2  +=
 
@@ -417,9 +417,9 @@ City[,](Full-State|Abbr-State)
 (Sex|Gender)[:] (M|F|Male|Female)
 ```
 
-+ `_conversion()` – This method performs the fifth phase of NLP preprocessing of the tokenized words of converting Standard to Metric (standard=True) and vice-versa (metric=True).
++ `_conversion()` – This method performs the fifth phase of NLP preprocessing of the tokenized words of converting Standard to Metric (`standard=True`) and vice-versa (`metric=True`).
 <br/><br/>
-+ `_partsofspeech()` – This method performs the sixth phase of NLP preprocessing of the tokenized words of tagging words with their parts of speech tag (using NLTK).
++ `_partsofspeech()` – This method performs the sixth phase of NLP preprocessing of the tokenized words of tagging words with their parts of speech tag (using *NLTK*).
 
 ### 1.5 Words Public Methods
 
@@ -470,7 +470,7 @@ The `Words` class contains no public methods.
 + Added UK to US spelling correction.
 
 **Gap v0.9.2 (alpha)**  
-+ Extend Spell Checking to Spanish and French.
++ Extend Spell Checking to Spanish, French, German and Italian.
 
 ## APPENDIX II: Anticipated Engineering
 
@@ -483,5 +483,4 @@ The following has been identified as enhancement/issues to be addressed in subse
 5. Add <SOS> and <EOS> annotation.  
 6. Fix lose next word after street/postal address.
 
-Proprietary Information  
 Copyright ©2018, Epipog, All Rights Reserved

@@ -37,7 +37,7 @@ Document( document=None, dir=’./’, ehandler=None,  config=None)
 
     1. local path to document  
     2. remote path to document ((i.e., http[s]://…)
-    The document must be one of the following types: PDF. JPG, PNG, BMP or TIF
+    The document must be one of the following types: PDF, JPG (JPEG, J2K), PNG, BMP or TIF (TIFF)
 
 **dir:** The directory where to store the machine learning ready data.
 
@@ -76,7 +76,7 @@ By default, the document will be preprocessed as follows:
 6.	The text from each page object will be preprocessed into machine learning ready data (see [**syntax**](syntax_spec.md) module specification), according to the optional parameters and configuration settings.
 7.	If the document was a scanned or image document, the quality of the scan will be estimated, unless `Document.SCANCHECK` is set to zero.
 
-The machine learning ready data will be stored on a per page basis in the directory specified by the parameter dir.
+The machine learning ready data will be stored on a per page basis in the directory specified by the parameter `dir`.
 
 The following files are created and stored:
 
@@ -86,7 +86,7 @@ The following files are created and stored:
 
 The `<document>` is the root name of the document, and `<pageno>` is the corresponding page number starting at page 1. The file ending in the original file suffix `<suffix>` is the split page. The file ending in the file suffix `.txt` is the extracted text. The file ending in the file suffix `.json` is the NLP preprocessed machine learning data stored in a JSON format.
 
-If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the `Document` object passed as a parameter.
+If the ehandler parameter is not `None`, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the `Document` object passed as a parameter.
 
 If the path to the document file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.
 
@@ -198,9 +198,9 @@ document.label = label
 
 **Usage**
 
-When used as a getter the property returns the `integer` label specified for the document.
+When used as a getter the property returns the integer `label` specified for the document.
 
-When used as a setter the property sets the label of the document to the specified integer value.
+When used as a setter the property sets the `label` of the document to the specified integer value.
 
 **Exceptions**
 
@@ -217,7 +217,7 @@ lang = document.lang
 
 **Usage**
 
-When used as a getter the property returns whether the language of the document, which may be either 'en' (English), 'es' (Spanish) or 'fr' (French).
+When used as a getter the property returns the language of the document, which may be either 'en' (English), 'es' (Spanish), 'fr' (French), 'de' (German), or 'it' (Italian).
 
 #### 1.3.8 scanned
 
@@ -278,7 +278,7 @@ bag = document.bagOfWords
 
 **Usage**
 
-When used as a getter the property returns the document’s word sequences as a Bag of Words, represented as an unordered dictionary, where the key is the word and the value is the number of occurrences:
+When used as a getter the property returns the document’s word sequences as a *Bag of Words*, represented as an unordered dictionary, where the key is the word and the value is the number of occurrences:
 
     { ‘<word’> : <no. of occurrences>, … }
 
@@ -293,7 +293,7 @@ freq = document.freqDist
 
 **Usage**
 
-When used as a getter the property returns the sorted tuples of a frequency distribution of words (from bag of words), in descending order (i.e., highest first)
+When used as a getter the property returns the sorted tuples of a frequency distribution of words (from `BagOfWords`), in descending order (i.e., highest first)
 
     [ ( ‘<word’>: <no.  of occurrences> ), … ]
 
@@ -308,13 +308,13 @@ tf = document.termFreq
 
 **Usage**
 
-When used as a getter the property returns the sorted tuples of a term frequency distribution (percent that term occurs), in descending order (i.e., highest first)
+When used as a getter the property returns the sorted tuples of a term frequency distribution (i.e., percent that term occurs), in descending order (i.e., highest first)
 
     [ ( ‘<word’>: <percentage  of occurrences> ), …. ]
 
 #### 1.3.15 Static Variables
 
-The Document class contains the following static variables:
+The `Document` class contains the following static variables:
 
 +	**RESOLUTION** – The image resolution when converting `PDF` to `PNG` for `OCR` (default `300`).  
 +	**SCANCHECK**  – The number of `OCR` words to check to estimate the quality of the scan.  
@@ -391,7 +391,7 @@ document.load(name, dir=None)
 
 **Usage**
 
-This method will load into memory a preprocessed machine learning ready data from the corresponding JSON files specified by the document (root) name. The method will load the JSON files by the filename `<name><pageno>.json`. If `dir` is `None`, then it will look for the files where the current value for dir is defined (either locally or reset by the dir property). Otherwise, it will look for the files under the directory specified by the dir parameter.
+This method will load into memory a preprocessed machine learning ready data from the corresponding JSON files specified by the document (root) name. The method will load the JSON files by the filename `<name><pageno>.json`. If `dir` is `None`, then it will look for the files where the current value for `dir` is defined (either locally or reset by the dir property). Otherwise, it will look for the files under the directory specified by the `dir` parameter.
 
 Once loaded, the `Document` object will have the same characteristics as when the `Document` object was created.
 
@@ -414,7 +414,7 @@ The `Document` class contains the following private methods:
 <br/><br/>
        `<name><pageno>.<suffix>`
    
-       Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.
+       Each page is stored in the subdirectory specified by the property dir. If `dir` is `None`, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.
 
     - If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.
     
@@ -432,9 +432,9 @@ The `Document` class contains the following private methods:
     
        `<name><pageno>.txt`
    
-       Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran.
+       Each page is stored in the subdirectory specified by the property `dir`. If `dir` is `None`, then the page is stored in the same directory where program is ran.
    
-    - Create a Page object for each page and adds them to the pages index property.
+    - Create a `Page` object for each page and adds them to the pages index property.
     
     - If the document format is raw text, then:
         * Treats as a single page.  
@@ -444,11 +444,11 @@ The `Document` class contains the following private methods:
 <br/><br/>
    - If the document format is TIFF, then page splitting is done with the open source Magick and then OCR’d using open source Tesseract.
 <br/><br/>
-+ `_langcheck()` – This method is called after NLP preprocessing of the document has been completed. The method will sample upto ten words to probabilistically determine the language of the document. The detected languages are English, French, German, Italian, and Spanish.
++ `_langcheck()` – This method is called after NLP preprocessing of the document has been completed. The method will sample upto twenty words to probabilistically determine the language of the document. The detected languages are English, French, German, Italian, and Spanish.
 <br/><br/>
 + `_scancheck()` – This method is called after NLP preprocessing of the document has been completed, and the document was a scanned image. The method will sample upto `SCANCHECK` number of words for recognition in the detected language dictionary (i.e., English, French, German, Italian, or Spanish). The method will check the words on either page 1 or page 2, depending on which page has a greater number of words. Punctuation, symbols, acronyms or single letter words are excluded. The method then sets the internal variable `_quality` to the percentage of the words that were recognized (between 0 and 1).
 <br/><br/>
-+ `_async()` – This method performs asynchronous processing of the `_collate()` function, when the optional ehandler parameter to the constructor is not `None`. When processing is completed, the `ehandler` parameter value is called as a function to signal completion of the processing, and the document object is passed as a parameter.
++ `_async()` – This method performs asynchronous processing of the `_collate()` function, when the optional ehandler parameter to the constructor is not `None`. When processing is completed, the `ehandler` parameter value is called as a function to signal completion of the processing, and the `Document` object is passed as a parameter.
 
 ---
 
@@ -484,7 +484,7 @@ Page( page=None, text=None,  pageno=None)
 
 **Usage**
 
-If the text parameter is not None, a `Words` object is created and instantiated with the corresponding text. The text is then NLP preprocessed according to the configuration settings stored as static members in the `Page` class (i.e., set by the parent `Document` object):
+If the text parameter is not `None`, a `Words` object is created and instantiated with the corresponding text. The text is then NLP preprocessed according to the configuration settings stored as static members in the `Page` class (i.e., set by the parent `Document` object):
 
 `BARE`  : If True, then the bare configuration setting is passed to the `Words` object.  
 `STEM`  : If not None, then the stem configuration setting is passed to the `Words` object.  
@@ -560,9 +560,9 @@ page.label = label
 
 **Usage**
 
-When used as a getter the property returns the `integer` label that has been assigned to the page.
+When used as a getter the property returns the integer `label` that has been assigned to the page.
 
-When used as a setter the property assigns `sets` a label to the page.
+When used as a setter the property assigns a `label` to the page.
 
 **Exceptions**
 
@@ -579,7 +579,7 @@ words = page.words
 
 **Usage**
 
-When used as a getter the property returns the Words object of the corresponding NLP preprocessed text.
+When used as a getter the property returns the `Words` object of the corresponding NLP preprocessed text.
 
 #### 2.3.6 bagOfWords
 
@@ -591,7 +591,7 @@ bag = page.bagOfWords
 
 **Usage**
 
-When used as a getter the property returns the page’s word sequences as a Bag of Words, represented as an unordered dictionary, where the key is the word and the value is the number of occurrences:
+When used as a getter the property returns the page’s word sequences as a *Bag of Words*, represented as an unordered dictionary, where the key is the word and the value is the number of occurrences:
 
     { ‘<word’> : <no. of occurrences>, … }
 
@@ -606,7 +606,7 @@ freq = page.freqDist
 
 **Usage**
 
-When used as a getter the property returns the sorted tuples of a frequency distribution of words (from bag of words), in descending order (i.e., highest first)
+When used as a getter the property returns the sorted tuples of a frequency distribution of words (from `BagOfWords`), in descending order (i.e., highest first)
 
     [ ( ‘<word’>: <no.  of occurrences> ), …. ]
 
@@ -621,7 +621,7 @@ tf = page.termFreq
 
 **Usage**
 
-When used as a getter the property returns the sorted tuples of a term frequency distribution (percent that term occurs), in descending order (i.e., highest first)
+When used as a getter the property returns the sorted tuples of a term frequency distribution (i.e., percent that term occurs), in descending order (i.e., highest first)
 
     [ ( ‘<word’>: <percentage  of occurrences> ), …. ]
 
@@ -629,10 +629,10 @@ When used as a getter the property returns the sorted tuples of a term frequency
 
 The `Page` class contains the following static variables:
 
-`BARE`	: If True, then the bare configuration setting is passed to the `Words` object.  
-`STEM`	: If not None, then the stem configuration setting is passed to the `Words` object.  
-`ROMAN` : If True, then the roman configuration setting is passed to the `Words` object.  
-`POS`	  : If True, then the pos configuration setting is passed to the `Words` object.
+`BARE`	: If `True`, then the bare configuration setting is passed to the `Words` object.  
+`STEM`	: If not `None`, then the stem configuration setting is passed to the `Words` object.  
+`ROMAN` : If `True`, then the roman configuration setting is passed to the `Words` object.  
+`POS`	  : If `True`, then the pos configuration setting is passed to the `Words` object.
 
 ### 2.4 Page Overwritten Operators
 
@@ -750,7 +750,7 @@ A `FileNotFoundError` is raised if the file path is invalid.
 2.	Add `OCR` quality estimate.
 
 **Gap v0.9.2 (alpha)**  
-1. Add language detection for English, Spanish and French.
+1. Add language detection for English, Spanish, French, German and Italian.
 
 ## APPENDIX II: Anticipated Engineering
 
@@ -763,5 +763,4 @@ The following has been identified as enhancement/issues to be addressed in subse
 5.	Add more pdf test files.  
 6.	Fix bug of not handling Cryllic characters in page `load()` method.
 
-Proprietary Information  
 Copyright ©2018, Epipog, All Rights Reserved

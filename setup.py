@@ -5,24 +5,14 @@ Autor: David Molina @virtualdvid
 
 from setuptools import setup, find_packages
 
-#setup components
-with open('README.md', 'r', encoding="utf-8") as f:
-    long_description = f.read()
+try: # for pip >= 10
+        from pip._internal.req import parse_requirements
+except ImportError: # for pip <= 9.0.3
+        from pip.req import parse_requirements
 
-install_requires=[
-    'bs4',
-    'numpy',
-    'h5py',
-    'imutils',
-    'unidecode',
-    'nltk',
-    'pandas',
-    'requests',
-    'opencv-python',
-    'pillow',
-    'matplotlib'
-    ]
-		  
+install_reqs = parse_requirements(
+    'requirements/requirements.txt', session='hack')
+
 tests_require=[
     'pytest',
     'pytest-cov']
@@ -59,9 +49,9 @@ setup(
     license='Apache 2.0',
     url='https://github.com/andrewferlitsch/Gap',
     project_urls=project_urls,
-    long_description=long_description,
+    long_description=open('README.md').read()
     packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
-    install_requires=install_requires,
+    install_requires=[str(ir.req) for ir in install_reqs],
     tests_require=tests_require,
     package_data=package_data,
     classifiers=classifiers
