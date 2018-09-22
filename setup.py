@@ -11,7 +11,7 @@ except ImportError: # for pip <= 9.0.3
         from pip.req import parse_requirements
 
 install_reqs = parse_requirements(
-    'requirements/requirements.txt', session='hack')
+    'requirements.txt', session='hack')
 
 tests_require=[
     'pytest',
@@ -49,7 +49,7 @@ setup(
     license='Apache 2.0',
     url='https://github.com/andrewferlitsch/Gap',
     project_urls=project_urls,
-    long_description=open('README.md').read()
+    long_description=open('README.md').read(),
     packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     install_requires=[str(ir.req) for ir in install_reqs],
     tests_require=tests_require,
