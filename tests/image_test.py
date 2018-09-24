@@ -1634,6 +1634,12 @@ class MyTest(unittest.TestCase):
         g = images.minibatch
         for image, label in g:
             self.assertEquals(type(image[0][0]), np.float32)
+            
+    def test_169(self):
+        """ Images - images argument is a directory """
+        images = Images('files/imtest1', 1, config=['nostore'])
+        self.assertEquals(len(images), 2)
+        self.assertEquals(images[0].label, 1)
         
     def bug_1(self):
         """ Image - async, not a valid image """

@@ -558,7 +558,21 @@ class Images(object):
             if not os.path.isdir(images):
                 raise TypeError("List or Directory expected for image paths")
             # parameter is a directory, convert to list of images in the directory
-            self._images = [images + '/' + image for image in os.listdir(images)]
+            files = [images + '/' + image for image in os.listdir(images)]
+
+            # check if this is a directory of subdirectories (classes)
+            is_dirs = True
+            for file in files:
+                if not os.path.isdir(file):
+                    is_dirs = False
+                    break
+            if is_dirs:
+                #self._nlabels = len(files)
+                labels = [label for label in range(len(files))]
+            else:
+                labels = [labels for _ in files]
+                    
+            self._images = files
         elif isinstance(images, np.ndarray):
             if len(images.shape) < 2:
                 raise TypeError("2D or greater numpy array expected for images")
@@ -574,8 +588,10 @@ class Images(object):
                 if not isinstance(ele, int):
                     raise TypeError("Integer expected for image labels")
             
-            if len(images) != len(labels):
+            if len(self._images) != len(labels):
                 raise IndexError("Number of images and labels do not match")
+                
+            self._labels = labels
         elif isinstance(labels, np.ndarray):
             if len(labels.shape) == 1:
                 if type(labels[0]) not in [ np.uint8, np.uint16, np.uint32, np.int8, np.int16, np.int32 ]:
