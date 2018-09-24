@@ -746,3 +746,25 @@ print(images[0].datas.shape)
 ### Images Reference
 
 For a complete reference on all methods and properties for the `Images` class, see [reference](../specs/vision_spec.md).
+
+## ADVANCED TOPICS
+
+This section discusses more advanced topics in uses the **Gap** computer vision module.
+
+### Processing Errors
+
+The `Images` class tracks images that fail to be preprocessed. Examples for failure are: image does not exist, not an image, etc. The property `fail` will return the number of images that failed to preprocess and the property `errors` will return a list of tuples, where each tuple is the corresponding image argument that failed to preprocess, and the reason it failed.
+
+```
+# assume that nonexist.jpg does not exist
+images = Images(['good_image.jpg', 'nonexist.jpg'], 1)
+
+# The length of the collection will be only one image (i.e., output from print is 1)
+print(len(images))
+
+# Will output 1 for the one failed image (i.e., nonexist.jpg)
+print(images.fail)
+
+# Will output: [ ('nonexist.jpg', 'FileNotFoundError') ]
+```
+print(images.errors)
