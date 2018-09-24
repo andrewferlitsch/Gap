@@ -19,7 +19,7 @@ for file in test_files:
                 func_dupl.append(func)
 
         if not func_dupl:
-            print('Checked module {} not duplicate functions were found'.format(file))
+            print(f'Checked module {file} not duplicate functions were found')
         else:
             f = open(file, 'r')
             f_name=file.split('.')
@@ -32,6 +32,6 @@ for file in test_files:
                     i+=1
                 else:
                     f2.write(line)
-            print('Checked module {} this functions were duplicates {} and fixed on {}'.format(file,func_dupl,cp))
+            print(f'Checked module {file} this functions were duplicates {func_dupl} and fixed on {cp}')
             f2.close()
         f.close()
