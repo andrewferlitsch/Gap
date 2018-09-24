@@ -9,7 +9,6 @@ site/
 templates/
 
 .ipynb_checkpoints/
-flower_photos/
 flower_photos_spl/
 flower_photos_spt/
 flower.h5

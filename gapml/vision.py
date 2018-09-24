@@ -45,7 +45,7 @@ class Image(object):
         self._type      = None       # image type of the image
         self._dir       = None       # image storage
         self._shape     = None       # shape of the image
-        self._ehandler  = ehandler   # event handler for asynchronous processing 
+        self._ehandler  = ehandler   # event handler for asynchronous processing
         self._thumbnail = None       # thumbnail size
         self._label     = label      # image label
         self._grayscale = False      # convert to grayscale
@@ -71,7 +71,7 @@ class Image(object):
                 raise TypeError("String expected for image storage path")
             if dir.endswith("/") == False:
                 dir += "/"
-            # Create Directory if it does not exist  
+            # Create Directory if it does not exist
             if not os.path.isdir(dir):
                 os.mkdir(dir)
             self._dir = dir
@@ -168,7 +168,7 @@ class Image(object):
                     t = threading.Thread(target=self._async, args=(dir, ))
                 else:
                     t = threading.Thread(target=self._async, args=(dir, ehandler[1:], ))
-                t.start()   
+                t.start()
 
     def _async(self, dir):
         """ Asynchronous processing of the image """
@@ -200,7 +200,7 @@ class Image(object):
         elif os.path.isfile(self._image) == False:
             raise FileNotFoundError(self._image)
 
-        # Get the file name and file type of the image without the extension 
+        # Get the file name and file type of the image without the extension
         basename = os.path.splitext(os.path.basename(self._image))
         self._name = basename[0]
         self._type = basename[1][1:].lower()
@@ -290,7 +290,7 @@ class Image(object):
         self._rawshape = image.shape
 
         if self._noraw == False:
-            self._raw = image   
+            self._raw = image
 
         # Create the thumbnail
         if self._thumbnail:
@@ -355,7 +355,7 @@ class Image(object):
             self._image = "untitled"
 
         if self._hd5:
-            self._store() 
+            self._store()
 
         # Total time to do collation
         self._time = time.time() - start
@@ -367,15 +367,15 @@ class Image(object):
 
         # Write the image to disk as HD5 file
         with h5py.File(self._dir + "/" + self._name + '.h5', 'w') as hf:
-            imgset = hf.create_dataset("images",  data=[self._imgdata])
-            labset = hf.create_dataset("labels",  data=[self._label])
+            imgset = hf.create_dataset("images", data=[self._imgdata])
+            labset = hf.create_dataset("labels", data=[self._label])
             imgset.attrs['rawshape'] = self._rawshape
-            imgset.attrs['shape'] = self._shape
-            imgset.attrs['name']  = self._name
-            imgset.attrs['type']  = self._type
-            imgset.attrs['size']  = self._size
+            imgset.attrs['shape']    = self._shape
+            imgset.attrs['name']     = self._name
+            imgset.attrs['type']     = self._type
+            imgset.attrs['size']     = self._size
             imgset.attrs['ressize']  = self._ressize
-            imgset.attrs['type']  = self._type
+            imgset.attrs['type']     = self._type
             if not self._noraw:
                 hf.create_dataset("raw", data=[self._raw])
             try:
@@ -437,7 +437,7 @@ class Image(object):
             try:
                 self._thumb =  hf['thumb'][0]
             except: pass
-            self._type  = imgset.attrs["type"]  
+            self._type  = imgset.attrs["type"]
             self._size  = imgset.attrs["size"]
             self._ressize  = imgset.attrs["ressize"]
             self._rawshape = imgset.attrs["rawshape"]
@@ -447,13 +447,13 @@ class Image(object):
     def image(self):
         """ Getter for the image name (path) """
         return self._image
-        
+
     @image.setter
     def image(self, image):
-        """ Setter for the image name (path) 
+        """ Setter for the image name (path)
        image - path to the image
         """
-        self._image = image 
+        self._image = image
         self._exist()
         self._collate(self._dir)
 
@@ -472,11 +472,11 @@ class Image(object):
         """ Getter for the image shape (height, width [,planes]) """
         return self._shape
 
-    @property 
+    @property
     def data(self):
         """ Getter for the processed image data """
         return self._imgdata
-  
+
     @property
     def dir(self):
         """ Getter for the image directory """
@@ -498,17 +498,17 @@ class Image(object):
     def label(self):
         """ Getter for image label (classification) """
         return self._label
-        
+
     @label.setter
     def label(self, label):
         """ Setter for image label (classification) """
         self._label = label
-             
+
     @property
     def size(self):
         """ Return the byte size of the original image """
-        return self._size    
-        
+        return self._size
+
     @property
     def ressize(self):
         """ Return the byte size of the image after resize """
@@ -527,7 +527,7 @@ class Image(object):
     @property
     def thumb(self):
         """ Getter for the thumbnail data """
-        return self._thumb    
+        return self._thumb
 
     @property
     def raw(self):
@@ -538,11 +538,11 @@ class Image(object):
     def rawshape(self):
         """ Getter for the image raw shape (height, width [,planes]) """
         return self._rawshape
-        
+
     def __str__(self):
         """ Override the str() operator - return the document classification """
         return str(self._label)
-        
+
 class Images(object):
     """ Base (super) for classifying a group of images """
     def __init__(self, images=None, labels=None, dir='./', name=None, ehandler=None, config=None):
@@ -572,10 +572,10 @@ class Images(object):
         self._fail     = 0          # how many images that failed to process
         self._nlabels  = None       # number of labels in the collection
         self._errors   = None       # list of errors reporting
-        
+
         if images is None:
             return
-        
+
         if isinstance(images, list):
             for ele in images:
                 if isinstance(ele, str) or isinstance(ele, np.ndarray):
@@ -592,8 +592,7 @@ class Images(object):
                 raise TypeError("2D or greater numpy array expected for images")
         else:
             raise TypeError("List or Directory expected for image paths")
-        
-        
+
         # if labels is a single value, then all the images share the same label
         if isinstance(labels, int):
             self._labels = [ labels for _ in range(len(self._images)) ]
@@ -601,37 +600,37 @@ class Images(object):
             for ele in labels:
                 if not isinstance(ele, int):
                     raise TypeError("Integer expected for image labels")
-            
+
             if len(images) != len(labels):
                 raise IndexError("Number of images and labels do not match")
         elif isinstance(labels, np.ndarray):
             if len(labels.shape) == 1:
                 if type(labels[0]) not in [ np.uint8, np.uint16, np.uint32, np.int8, np.int16, np.int32 ]:
-                    raise TypeError("Integer values expected for labels") 
+                    raise TypeError("Integer values expected for labels")
                 self._labels = [ int(label) for label in labels ]
             elif len(labels.shape) == 2:
                 if type(labels[0][0]) not in [ np.float16, np.float32, np.float64]:
-                    raise TypeError("Floating point values expected for one-hot encoded labels") 
+                    raise TypeError("Floating point values expected for one-hot encoded labels")
                 self._labels = [ label for label in labels ]
             else:
                 raise TypeError("1D or 2D numpy array expected for labels")
-                
+
             if len(images) != len(labels):
                 raise IndexError("Number of images and labels do not match")
         else:
             raise TypeError("List expected for image labels")
-            
+
         if dir is not None:
             if isinstance(dir, str) == False:
                 raise TypeError("String expected for image storage path")
             if dir.endswith("/") == False:
-                    dir += "/"  
-        self._dir = dir 
-        
+                dir += "/"  
+        self._dir = dir
+
         if name is not None:
             if isinstance(name, str) == False:
                 raise TypeError("String expected for collection name")
-            
+
         if ehandler:
             if isinstance(ehandler, tuple):
                 if not callable(ehandler[0]):

@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 with open('README.md', 'r', encoding="utf-8") as f:
     long_description = f.read()
 
-install_requires=[
+install_requires = [
     'beautifulsoup4==4.6.3',
     'numpy==1.15.1',
     'h5py==2.8.0',
