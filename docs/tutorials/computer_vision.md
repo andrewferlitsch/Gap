@@ -755,7 +755,7 @@ This section discusses more advanced topics in uses the **Gap** computer vision 
 
 The `Images` class tracks images that fail to be preprocessed. Examples for failure are: image does not exist, not an image, etc. The property `fail` will return the number of images that failed to preprocess and the property `errors` will return a list of tuples, where each tuple is the corresponding image argument that failed to preprocess, and the reason it failed.
 
-```
+```python
 # assume that nonexist.jpg does not exist
 images = Images(['good_image.jpg', 'nonexist.jpg'], 1)
 
@@ -768,3 +768,32 @@ print(images.fail)
 # Will output: [ ('nonexist.jpg', 'FileNotFoundError') ]
 ```
 print(images.errors)
+
+### Processing Images as a Preloaded in Memory Dataset in Numpy Multi-Dimensional Array Format
+
+Many of the machine learning frameworks come with prepared training sets for their tutorials, such as the MNIST, CIFAR, IRIS, etc. In some cases, the training set may already be in a numpy multi-dimensional format:
+
+  Dimension 1: Number of Images
+  Dimension 2: Image Height
+  Dimension 3: Image Width
+  Dimension 4: Number of Channels
+  
+This format of a training set can be passed into the Images class as the `images` parameter. If the data type of the pixel data is `uint8` or `uint16`, the pixel data will be normalized; otherwise, data type is float, the pixel data is assumed to be already normalized.
+
+```python
+# Let's assume that the image data is already available in memory, such as being read in from file by openCV
+import cv2
+raw = []
+raw.append(cv2.imread('image1.jpg'))  # assume shape is (100, 100, 3)
+raw.append(cv2.imread('image2.jpg'))  # assume shape is (100, 100, 3)
+
+# Let's assume now that the list of raw pixel images has been converted to a multi-dimensional numpy array
+import numpy as np
+dataset = np.asarray(raw)
+
+print(dataset.shape)  # would print: (2, 100, 100, 3)
+
+images = Images(dataset, labels)
+print(len(images))      # will output 2
+print(images[0].shape)  # will output (100, 100, 3)
+```
