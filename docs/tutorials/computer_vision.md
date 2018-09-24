@@ -773,10 +773,20 @@ print(images.errors)
 
 Many of the machine learning frameworks come with prepared training sets for their tutorials, such as the MNIST, CIFAR, IRIS, etc. In some cases, the training set may already be in a numpy multi-dimensional format:
 
+  *Color RGB*
   Dimension 1: Number of Images
   Dimension 2: Image Height
   Dimension 3: Image Width
   Dimension 4: Number of Channels
+  
+  *Grayscale*
+  Dimension 1: Number of Images
+  Dimension 2: Image Height
+  Dimension 3: Image Width
+  
+  *Flatten*
+  Dimension 1: Number of Images
+  Dimension 2: Flatten Pixel Data
   
 This format of a training set can be passed into the Images class as the `images` parameter. If the data type of the pixel data is `uint8` or `uint16`, the pixel data will be normalized; otherwise, data type is float, the pixel data is assumed to be already normalized.
 
