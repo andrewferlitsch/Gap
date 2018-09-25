@@ -1634,6 +1634,23 @@ class MyTest(unittest.TestCase):
         g = images.minibatch
         for image, label in g:
             self.assertEquals(type(image[0][0]), np.float32)
+            
+    def test_169(self):
+        """ Images - images argument is a directory of images """
+        images = Images('files/imtest1', 1, config=['nostore'])
+        self.assertEquals(len(images), 2)
+        self.assertEquals(images[0].label, 1)
+            
+    def test_170(self):
+        """ Images - error property """
+        images = Images('files/imtest1', 1, config=['nostore'])
+        self.assertEquals(images.fail, 0)
+        self.assertEquals(images.errors, [])
+        images = Images(['files/0_100.jpg', 'nonexist.jpg', 'bad.jpg', 'files/1_100.jpg'], 1, config=['nostore'])
+        self.assertEquals(images.fail, 2)
+        self.assertEquals(len(images.errors), 2)
+        self.assertEquals(images.errors[0][0], "nonexist.jpg")
+        
         
     def bug_1(self):
         """ Image - async, not a valid image """

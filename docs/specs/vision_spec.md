@@ -135,7 +135,7 @@ By default, when one-hot encoding of the labels, the `Images` object uses np.max
 
 **Preprocessing Errors**
 
-During preprocessing of each individual image, if the preprocessing of the image fails, its corresponding `Image` object in the `Images` collection will be `None`, and are not written to HDF5 storage. For example, if ten images are to be preprocessed and two failed, then only eight `Image` objects are written to the HDF5 storage. The number of images that failed to be preprocessed is obtainable from the property `fail`. 
+During preprocessing of each individual image, if the preprocessing of the image fails, its corresponding `Image` object in the `Images` collection will be `None`, and are not written to HDF5 storage. For example, if ten images are to be preprocessed and two failed, then only eight `Image` objects are written to the HDF5 storage. The number of images that failed to be preprocessed is obtainable from the property `fail`, and a list of the image paths and reason for failure is obtainable from the property `errors`.
 
 **Exceptions**
 
@@ -364,6 +364,18 @@ nfailed = images.fail
 **Usage**
 
 When used as a getter, the property returns the number of images in the collection that failed to be preprocessed into machine learning ready data.
+
+#### 1.3.14 errors
+
+```python
+errors = images.errors
+```
+
+**Usage**
+
+When used as a getter, the property returns a list of tuples, one per image that failed processing. The tuple is of the format:
+
+	(image_path, reason_for_failure)
 
 ### 1.4 Images Overridden Operators
 
