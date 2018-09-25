@@ -1,3 +1,5 @@
+# Script comes from here: https://github.com/mttk/STL10
+
 from __future__ import print_function
 
 import sys
