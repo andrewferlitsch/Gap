@@ -575,7 +575,7 @@ class Images(object):
         self._fail     = 0          # how many images that failed to process
         self._nlabels  = None       # number of labels in the collection
         self._errors   = None       # list of errors reporting
-        self.num_proc  = num_proc   # number of processes
+        self._num_proc  = num_proc   # number of processes
 
         if images is None:
             return
@@ -694,7 +694,7 @@ class Images(object):
 
         if num_proc is not None:
             if num_proc == 'all' or num_proc >= mp.cpu_count():
-                self.num_proc = mp.cpu_count()
+                self._num_proc = mp.cpu_count()
             elif isinstance(num_proc, int) == False:
                 raise AttributeError("Integer expected for number of processes")
 
@@ -723,7 +723,7 @@ class Images(object):
 
         start = time.time()
 
-        pool = mp.Pool(self.num_proc)
+        pool = mp.Pool(self._num_proc)
 
         # Process each image
         self._data = []
@@ -858,7 +858,7 @@ class Images(object):
     @property
     def num_proc(self):
         """ Getter for the number of processors """
-        return self.num_proc
+        return self._num_proc
 
     @property
     def time(self):
