@@ -31,6 +31,9 @@ import cv2
 # Import pillow for Python image manipulation for GIF
 from PIL import Image as PILImage
 
+# import multiprocessing
+import multiprocessing as mp
+
 class Image(object):
     """ Base (super) Class for Classifying an Image """
 
@@ -295,7 +298,7 @@ class Image(object):
         # Create the thumbnail
         if self._thumbnail:
             try:
-                self._thumb = cv2.resize(image, self._thumbnail,interpolation=cv2.INTER_AREA)
+                self._thumb = cv2.resize(image, self._thumbnail, interpolation=cv2.INTER_AREA)
             except Exception as e: print(e)
 
         if self._resize:
@@ -545,7 +548,7 @@ class Image(object):
 
 class Images(object):
     """ Base (super) for classifying a group of images """
-    def __init__(self, images=None, labels=None, dir='./', name=None, ehandler=None, config=None):
+    def __init__(self, images=None, labels=None, dir='./', name=None, ehandler=None, config=None, num_proc=1):
         self._images   = images     # collection of images to process
         self._dir      = dir        # storage directory for processed images
         self._labels   = labels     # labels corresponding to collection of images
@@ -572,6 +575,7 @@ class Images(object):
         self._fail     = 0          # how many images that failed to process
         self._nlabels  = None       # number of labels in the collection
         self._errors   = None       # list of errors reporting
+        self.num_proc  = num_proc   # number of processes
 
         if images is None:
             return
@@ -609,7 +613,7 @@ class Images(object):
 
         # if labels is a single value, then all the images share the same label
         if isinstance(labels, int):
-            self._labels = [ labels for _ in range(len(self._images)) ]
+            self._labels = [labels for _ in range(len(self._images))]
         elif isinstance(labels, list):
             for ele in labels:
                 if not isinstance(ele, int):
@@ -640,7 +644,7 @@ class Images(object):
             if isinstance(dir, str) == False:
                 raise TypeError("String expected for image storage path")
             if dir.endswith("/") == False:
-                dir += "/"  
+                dir += "/"
         self._dir = dir
 
         if name is not None:
@@ -680,13 +684,19 @@ class Images(object):
                     try:
                         self._nlabels = int(param)
                     except:
-                        raise AttributeError("Integer expected for nlabels")                
-                    
+                        raise AttributeError("Integer expected for nlabels")
+                   
         # Tell downstream Image objects not to separately store the data
         if self._nostore == False:
             self._config.append("nostore")
         if self._noraw == False:
             self._config.append('raw')
+
+        if num_proc is not None:
+            if num_proc == 'all' or num_proc >= mp.cpu_count():
+                self.num_proc = mp.cpu_count()
+            elif isinstance(num_proc, int) == False:
+                raise AttributeError("Integer expected for number of processes")
         
         # Process collection synchronously
         if ehandler is None:
@@ -697,8 +707,8 @@ class Images(object):
                 t = threading.Thread(target=self._async, args=())
             else:
                 t = threading.Thread(target=self._async, args=(ehandler[1:], ))
-            t.start()   
- 
+            t.start()
+        
     def _async(self):
         """ Asynchronous processing of the collection """
         self._process()
@@ -707,38 +717,43 @@ class Images(object):
             self._ehandler[0](self, self._ehandler[1:])
         else:
             self._ehandler(self)
-            
+
     def _process(self):
         """ Process a collection of images """
-       
+
         start = time.time()
- 
+
+        pool = mp.Pool(self.num_proc)
+
         # Process each image
         self._data = []
         self._errors = []
         for ix in range(len(self._images)):
             # directory of files
             if isinstance(self._images[ix], str) and os.path.isdir(self._images[ix]):
-                for image in [ self._images[ix] + '/' + file for file in os.listdir(self._images[ix])]:
+                for image in [self._images[ix] + '/' + file for file in os.listdir(self._images[ix])]:
                     try:
-                        self._data.append( Image(image, dir=self._dir, label=self._labels[ix], config=self._config) )
+                        pool.apply_async(Image, (image, self._labels[ix], self._dir, None, self._config), callback=self._data.append)
                     except Exception as e:
                         self._data.append(None)
                         self._fail += 1
                         error = (image, e)
                         if e not in self._errors:
-                            self._errors.append( error )
+                            self._errors.append(error)
             # single file
             else:
                 try:
-                    self._data.append( Image(self._images[ix], dir=self._dir, label=self._labels[ix], config=self._config) )
+                    pool.apply_async(Image, (self._images[ix], self._labels[ix], self._dir, None, self._config), callback=self._data.append)
                 except Exception as e:
                     self._data.append(None)
                     self._fail += 1
-                    error = (self._images[ix] , e)
+                    error = (self._images[ix], e)
                     if e not in self._errors:
-                        self._errors.append( error )
-        
+                        self._errors.append(error)
+
+        pool.close()
+        pool.join()
+
         # Store machine learning ready data
         if self._nostore is False:
             self.store()
