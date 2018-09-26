@@ -1659,6 +1659,18 @@ class MyTest(unittest.TestCase):
         """ Images - single bad image """
         images = Images(['bad.jpg'], 1, config=['nostore'])
         self.assertEquals(images.fail, 1)
+            
+    def test_172(self):
+        """ Images - directory of subfolders of images """
+        images = Images('files/imtest3', None, config=['nostore'])
+        self.assertEquals(len(images), 6)
+        self.assertEquals(images[0].label, 0)
+        self.assertEquals(images[1].label, 0)
+        self.assertEquals(images[2].label, 0)
+        self.assertEquals(images[3].label, 1)
+        self.assertEquals(images[4].label, 1)
+        self.assertEquals(images[5].label, 1)
+        self.assertEquals(images.classes, [('daisy', 0), ('dandelion', 1)])
         
     ###
         

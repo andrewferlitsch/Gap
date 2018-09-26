@@ -575,6 +575,7 @@ class Images(object):
         self._fail     = 0          # how many images that failed to process
         self._nlabels  = None       # number of labels in the collection
         self._errors   = None       # list of errors reporting
+        self._classes  = None       # mapping of classes to labels
         self._num_proc  = num_proc   # number of processes
 
         if images is None:
@@ -598,9 +599,13 @@ class Images(object):
                 if not os.path.isdir(file):
                     is_dirs = False
                     break
+            # parameter is a directory of subdirectories of images
             if is_dirs:
-                #self._nlabels = len(files)
                 labels = [label for label in range(len(files))]
+                # each subdirectory is a label
+                self._nlabels = len(files)
+                # maintain a mapping of classes to labels
+                self._classes = [(os.path.basename(files[label]), label) for label in range(len(files))]
             else:
                 labels = [labels for _ in files]
             self._images = files
@@ -884,8 +889,13 @@ class Images(object):
 
     @property
     def errors(self):
-        """ list errors reporting """
+        """ list of errors reported """
         return self._errors
+        
+    @property
+    def classes(self):
+        """ list of mapping of class names to labels (integers) """
+        return self._classes
         
     def load(self, name, dir=None):
         """ Load a Collection of Images """
