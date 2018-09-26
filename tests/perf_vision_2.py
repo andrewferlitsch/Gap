@@ -7,7 +7,7 @@ import os
 import time
 import numpy as np
 
-print("TEST W/O FLATTENING")
+print("TEST W/O NORMALIZING")
 
 # Gap
 #
@@ -57,7 +57,7 @@ print(st.st_size // (1024*1024), "MB, No. Images ", len(images), " Shape ", imag
 images = None
 os.remove('flower.h5')
 
-print("TEST WITH FLATTENING")
+print("TEST WITH NORMALIZING")
 
 # Gap
 #
