@@ -1654,6 +1654,11 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images.fail, 2)
         self.assertEquals(len(images.errors), 2)
         self.assertEquals(images.errors[0][0], "nonexist.jpg")
+            
+    def test_171(self):
+        """ Images - single bad image """
+        images = Images('bad.jpg', 1, config=['nostore'])
+        self.assertEquals(images.fail, 1)
         
     ###
         
