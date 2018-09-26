@@ -33,7 +33,6 @@ class ImgUtils:
     """
 
     def __init__(self, root_path='./', tree=1, rm=False):
-        """ Make directories """
         self.labels     = os.listdir(root_path)   # list of images labels
         self.root_path  = root_path.split('/')[0] # root folder where labels are located
         self.tree       = tree                    # folder structure to the end sample
