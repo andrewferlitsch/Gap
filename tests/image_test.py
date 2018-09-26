@@ -1657,7 +1657,7 @@ class MyTest(unittest.TestCase):
             
     def test_171(self):
         """ Images - single bad image """
-        images = Images('bad.jpg', 1, config=['nostore'])
+        images = Images(['bad.jpg'], 1, config=['nostore'])
         self.assertEquals(images.fail, 1)
         
     ###

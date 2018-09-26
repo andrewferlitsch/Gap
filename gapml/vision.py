@@ -723,7 +723,9 @@ class Images(object):
 
         start = time.time()
 
-        pool = mp.Pool(self._num_proc)
+        pool = None
+        if self._num_proc > 1:
+            pool = mp.Pool(self._num_proc)
 
         # Process each image
         self._data = []
@@ -733,9 +735,11 @@ class Images(object):
             if isinstance(self._images[ix], str) and os.path.isdir(self._images[ix]):
                 for image in [self._images[ix] + '/' + file for file in os.listdir(self._images[ix])]:
                     try:
-                        pool.apply_async(Image, (image, self._labels[ix], self._dir, None, self._config), callback=self._data.append)
+                        if pool:
+                            pool.apply_async(Image, (image, self._labels[ix], self._dir, None, self._config), callback=self._data.append)
+                        else:
+                            self._data.append(Image(image, self._labels[ix], self._dir, None, self._config))
                     except Exception as e:
-                        self._data.append(None)
                         self._fail += 1
                         error = (image, e)
                         if e not in self._errors:
@@ -743,16 +747,19 @@ class Images(object):
             # single file
             else:
                 try:
-                    pool.apply_async(Image, (self._images[ix], self._labels[ix], self._dir, None, self._config), callback=self._data.append)
+                    if pool:
+                        pool.apply_async(Image, (self._images[ix], self._labels[ix], self._dir, None, self._config), callback=self._data.append)
+                    else:
+                        self._data.append(Image(self._images[ix], self._labels[ix], self._dir, None, self._config))
                 except Exception as e:
-                    self._data.append(None)
                     self._fail += 1
                     error = (self._images[ix], e)
                     if e not in self._errors:
                         self._errors.append(error)
 
-        pool.close()
-        pool.join()
+        if pool:
+            pool.close()
+            pool.join()
 
         # Store machine learning ready data
         if self._nostore is False:
