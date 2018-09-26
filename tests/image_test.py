@@ -1662,7 +1662,7 @@ class MyTest(unittest.TestCase):
             
     def test_172(self):
         """ Images - directory of subfolders of images """
-        images = Images('files/imtest3', None, config=['nostore'])
+        images = Images('files/imtest3', None, config=['nostore', 'resize=(50,50)'])
         self.assertEquals(len(images), 6)
         self.assertEquals(images[0].label, 0)
         self.assertEquals(images[1].label, 0)
@@ -1671,6 +1671,10 @@ class MyTest(unittest.TestCase):
         self.assertEquals(images[4].label, 1)
         self.assertEquals(images[5].label, 1)
         self.assertEquals(images.classes, [('daisy', 0), ('dandelion', 1)])
+        images.split = 0.5
+        image, label = next(images)
+        self.assertEquals(image.shape, (50, 50, 3))
+        
         
     ###
         
