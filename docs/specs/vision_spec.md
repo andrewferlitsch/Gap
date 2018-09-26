@@ -14,12 +14,14 @@ The Images CV preprocessor contains the following primary classes, and their rel
 ```python
 images = Images([<list of images>], [<list_of_labels>], flags …)
 ```
-    Alternately, the list of images can be a list of directories which contain images.
-    Alternately, the list of images can be a list of URLs of remotely stored images.
-    Alternately, the list of images can be a multi-dimensional numpy array (where the first dimension is the number of images).
-    Alternately, the list of images can be a list of multi-dimensional numpy arrays.
-    Alternately, the list of labels maybe a single value; in which case, the label applies to all the images.
-    Alternately, the list of labels maybe a numpy 1D (not one-hot encoded) vector or 2D (one-hot encoded) matrix.
+    Alternately, the images parameter can be a list of directories which contain images.
+    Alternately, the images parameter can be a list of URLs of remotely stored images.
+    Alternately, the images paramter can be a multi-dimensional numpy array (where the first dimension is the number of images).
+    Alternately, the images parameter can be a list of multi-dimensional numpy arrays.
+    Alternately, the images parameter maybe a string which is a directory of images.
+    Alternately, the images parameter maybe a string which is a directory of subdirectories, containing images.
+    Alternately, the labels parameter maybe a single value; in which case, the label applies to all the images.
+    Alternately, the labels parameter maybe a numpy 1D (not one-hot encoded) vector or 2D (one-hot encoded) matrix.
 
 + **Image** – This is the base class for the representation of a single Computer Vision (CV). The constructor optionally takes as parameters an image (path), corresponding label, and flags for CV preprocessing the image.
 
@@ -34,7 +36,7 @@ Fig. 1a High Level view of `Images` Class Object Relationships
 **Synopsis**
 
 ```python
-Images(images=None, labels= None, dir=’./’, name=None, ehandler=None, config=None)
+Images(images=None, labels=None, dir=’./’, name=None, ehandler=None, config=None)
 ```
 
 **Parameters**
@@ -43,10 +45,18 @@ Images(images=None, labels= None, dir=’./’, name=None, ehandler=None, config
 1.	local image files.
 2.	remote image files (i.e., http[s]://….).
 3.	directories of local image files.
-4.	or a multi-dimensional numpy array.
-5. 	or a list of multi-dimensional numpy arrays.
+4.	a multi-dimensional numpy array.
+5. 	a list of multi-dimensional numpy arrays.
 
 For a single multi-dimensional numpy array, the first dimension are the individual images. For example, the Tensorflow training set for MNIST data is a numpy array of shape (55000, 784). When passed as the `images` parameter it would be treated as 55,000 images of a 1D vector size 784 pixels.
+
+If a single directory is specified as the images parameter, it may alternately be specified as a string, vs. a string with a list:
+
+```python
+Images('birds', 1)
+# is the same as:
+Images(['birds'], 1)
+```
 
 **labels:** If not `None`, either:  
 1.	A single integer value (i.e., label) which corresponds to all the images.  
@@ -877,7 +887,9 @@ A `ValueError` is raised if the degree is not between 0 and 360.
 2.	Added raw setting to config parameter.
 3. 	Added float setting to config parameter.
 4.	Added transformation property flatten.
-5.	Added support for numpy arrays as image collections to Images.
-6.	Added support for 16-bit pixels.
+
+**Gap v0.9.4 (beta)**
+1.	Added support for numpy arrays as image collections to Images.
+2.	Added support for 16-bit pixels.
 
 Copyright ©2018, Epipog, All Rights Reserved

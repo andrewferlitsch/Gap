@@ -769,7 +769,7 @@ print(images.fail)
 print(images.errors)
 ```
 
-### Processing Images as a Preloaded in Memory Dataset in Numpy Multi-Dimensional Array Format
+### Image Dataset as Numpy Multi-Dimensional Array
 
 Many of the machine learning frameworks come with prepared training sets for their tutorials, such as the MNIST, CIFAR, IRIS, etc. In some cases, the training set may already be in a numpy multi-dimensional format:
 
@@ -806,4 +806,26 @@ print(dataset.shape)  # would print: (2, 100, 100, 3)
 images = Images(dataset, labels)
 print(len(images))      # will output 2
 print(images[0].shape)  # will output (100, 100, 3)
+```
+
+### Reducing Storage by Deferring Normalization
+
+In some cases, you may want to reduce your overall storage of the machine learning ready data. By default, each normalized pixel is stored as a float32, which consists of 4 bytes of storage. If the `config` setting `uint8` is specified, then normalization of the image is deferred. Instead, each pixel is kept unchanged (non-normalized) and stored as a uint8, which consists of a single byte of storage. For example, if a dataset of 200,000 images of shape (100,100,3) which has been normalized will require 24GB of storage. If stored unnormalized, the data will only require 1/4 the space, or 6GB of storage.
+
+When the dataset is subsequently feed (i.e., properties `split`, `next()` and `minibatch`), the pixel data per image will be normalized in-place each time the image is feed.
+
+```python
+# Create the machine learning ready data without normalizing the image data
+images = Images(dataset, labels, config=['uint8'])
+
+# set 20% of the dataset as test and 80% as training
+images.split = 0.2
+
+# Run 100 epochs of the entire training set through the model
+epochs = 100
+for _ in range(epochs):
+  # get the next image - which will be normalized in-place
+  x, y = next(images)
+  
+  # send image through the neural network ....
 ```
