@@ -373,7 +373,8 @@ class MyTest(unittest.TestCase):
     def test_040(self):
         """ Images Constructor - images = image not exist """
         images = Images(["files/nonexist.jpg"], [0], name='foobar')
-        self.assertEqual(len(images), 1)
+        self.assertEqual(len(images), 0)
+        self.assertEqual(images.fail, 1)
         os.remove('foobar.h5')
         
     def test_041(self):
@@ -1341,13 +1342,13 @@ class MyTest(unittest.TestCase):
     def test_139(self):
         """ Images - file not found """
         images = Images(["nofile.jpg"], 2, config=['nostore'])
-        self.assertEquals(len(images), 1)
-        self.assertEquals(images[0], None)
+        self.assertEquals(len(images), 0)
+        self.assertEquals(images.fail, 1)
             
     def test_140(self):
         """ Images - mix good and bad """
         images = Images(["files/0_100.jpg", "nofile.jpg", "files/1_100.jpg"], [0,1,2], name='foobar')
-        self.assertEquals(len(images), 3)
+        self.assertEquals(len(images), 2)
         self.assertEquals(images.fail, 1)
         images = Images()
         images.load('foobar')
@@ -1654,6 +1655,7 @@ class MyTest(unittest.TestCase):
         self.assertEquals(len(images.errors), 2)
         self.assertEquals(images.errors[0][0], "nonexist.jpg")
         
+    ###
         
     def bug_1(self):
         """ Image - async, not a valid image """
