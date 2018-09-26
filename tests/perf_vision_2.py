@@ -107,3 +107,4 @@ print("CV2", time.time() - start, "secs")
 st = os.stat('flower.h5')
 print(st.st_size // (1024*1024), "MB, No. Images ", len(images), " Shape ", images[0].shape, " Type ", type(images[0][0][0][0]))
 images = None
+os.remove('flower.h5')
