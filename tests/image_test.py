@@ -1640,6 +1640,9 @@ class MyTest(unittest.TestCase):
         images = Images('files/imtest1', 1, config=['nostore'])
         self.assertEquals(len(images), 2)
         self.assertEquals(images[0].label, 1)
+        images = Images(['files/imtest1'], 1, config=['nostore'])
+        self.assertEquals(len(images), 2)
+        self.assertEquals(images[0].label, 1)
             
     def test_170(self):
         """ Images - error property """
