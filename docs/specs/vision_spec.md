@@ -877,7 +877,9 @@ A `ValueError` is raised if the degree is not between 0 and 360.
 2.	Added raw setting to config parameter.
 3. 	Added float setting to config parameter.
 4.	Added transformation property flatten.
-5.	Added support for numpy arrays as image collections to Images.
-6.	Added support for 16-bit pixels.
+
+**Gap v0.9.4 (beta)**
+1.	Added support for numpy arrays as image collections to Images.
+2.	Added support for 16-bit pixels.
 
 Copyright ©2018, Epipog, All Rights Reserved
