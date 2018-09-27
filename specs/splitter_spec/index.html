@@ -203,7 +203,7 @@ Technical Specification, Gap v0.9.2</p>
 <p><strong>document:</strong> If not None, a string that is either:</p>
 <pre><code>1. local path to document  
 2. remote path to document ((i.e., http[s]://…)
-The document must be one of the following types: PDF. JPG, PNG, BMP or TIF
+The document must be one of the following types: PDF, JPG (JPEG, J2K), PNG, BMP or TIF (TIFF)
 </code></pre>
 <p><strong>dir:</strong> The directory where to store the machine learning ready data.</p>
 <p><strong>ehandler:</strong> If not None, the processing of the images into machine learning ready data will be asynchronous, and the value of the parameter is the function (or method) that is the event handler when processing is complete.</p>
@@ -233,14 +233,14 @@ stem=gap|porter|Lancaster|snowball|lemma
 <li>The text from each page object will be preprocessed into machine learning ready data (see <a href="../syntax_spec/"><strong>syntax</strong></a> module specification), according to the optional parameters and configuration settings.</li>
 <li>If the document was a scanned or image document, the quality of the scan will be estimated, unless <code>Document.SCANCHECK</code> is set to zero.</li>
 </ol>
-<p>The machine learning ready data will be stored on a per page basis in the directory specified by the parameter dir.</p>
+<p>The machine learning ready data will be stored on a per page basis in the directory specified by the parameter <code>dir</code>.</p>
 <p>The following files are created and stored:</p>
 <pre><code>&lt;document&gt;&lt;pageno&gt;.&lt;suffix&gt;
 &lt;document&gt;&lt;pageno&gt;.txt
 &lt;document&gt;.&lt;pageno&gt;.json
 </code></pre>
 <p>The <code>&lt;document&gt;</code> is the root name of the document, and <code>&lt;pageno&gt;</code> is the corresponding page number starting at page 1. The file ending in the original file suffix <code>&lt;suffix&gt;</code> is the split page. The file ending in the file suffix <code>.txt</code> is the extracted text. The file ending in the file suffix <code>.json</code> is the NLP preprocessed machine learning data stored in a JSON format.</p>
-<p>If the ehandler parameter is not None, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the <code>Document</code> object passed as a parameter.</p>
+<p>If the ehandler parameter is not <code>None</code>, then the above will occur asynchronously, and when completed, the corresponding event handler will be called with the <code>Document</code> object passed as a parameter.</p>
 <p>If the path to the document file is remote (i.e., starts with http), an HTTP request will be made to fetch the contents of the file from the remote location.</p>
 <p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
@@ -313,8 +313,8 @@ document.label = label
 </code></pre>
 
 <p><strong>Usage</strong></p>
-<p>When used as a getter the property returns the <code>integer</code> label specified for the document.</p>
-<p>When used as a setter the property sets the label of the document to the specified integer value.</p>
+<p>When used as a getter the property returns the integer <code>label</code> specified for the document.</p>
+<p>When used as a setter the property sets the <code>label</code> of the document to the specified integer value.</p>
 <p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.</p>
 <h4 id="137-lang">1.3.7 lang</h4>
@@ -324,7 +324,7 @@ lang = document.lang
 </code></pre>
 
 <p><strong>Usage</strong></p>
-<p>When used as a getter the property returns whether the language of the document, which may be either 'en' (English), 'es' (Spanish) or 'fr' (French).</p>
+<p>When used as a getter the property returns the language of the document, which may be either 'en' (English), 'es' (Spanish), 'fr' (French), 'de' (German), or 'it' (Italian).</p>
 <h4 id="138-scanned">1.3.8 scanned</h4>
 <p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
@@ -362,7 +362,7 @@ bag = document.bagOfWords
 </code></pre>
 
 <p><strong>Usage</strong></p>
-<p>When used as a getter the property returns the document’s word sequences as a Bag of Words, represented as an unordered dictionary, where the key is the word and the value is the number of occurrences:</p>
+<p>When used as a getter the property returns the document’s word sequences as a <em>Bag of Words</em>, represented as an unordered dictionary, where the key is the word and the value is the number of occurrences:</p>
 <pre><code>{ ‘&lt;word’&gt; : &lt;no. of occurrences&gt;, … }
 </code></pre>
 <h4 id="1313-freqdist">1.3.13 freqDist</h4>
@@ -372,7 +372,7 @@ freq = document.freqDist
 </code></pre>
 
 <p><strong>Usage</strong></p>
-<p>When used as a getter the property returns the sorted tuples of a frequency distribution of words (from bag of words), in descending order (i.e., highest first)</p>
+<p>When used as a getter the property returns the sorted tuples of a frequency distribution of words (from <code>BagOfWords</code>), in descending order (i.e., highest first)</p>
 <pre><code>[ ( ‘&lt;word’&gt;: &lt;no.  of occurrences&gt; ), … ]
 </code></pre>
 <h4 id="1314-termfreq">1.3.14 termFreq</h4>
@@ -382,11 +382,11 @@ tf = document.termFreq
 </code></pre>
 
 <p><strong>Usage</strong></p>
-<p>When used as a getter the property returns the sorted tuples of a term frequency distribution (percent that term occurs), in descending order (i.e., highest first)</p>
+<p>When used as a getter the property returns the sorted tuples of a term frequency distribution (i.e., percent that term occurs), in descending order (i.e., highest first)</p>
 <pre><code>[ ( ‘&lt;word’&gt;: &lt;percentage  of occurrences&gt; ), …. ]
 </code></pre>
 <h4 id="1315-static-variables">1.3.15 Static Variables</h4>
-<p>The Document class contains the following static variables:</p>
+<p>The <code>Document</code> class contains the following static variables:</p>
 <ul>
 <li><strong>RESOLUTION</strong> – The image resolution when converting <code>PDF</code> to <code>PNG</code> for <code>OCR</code> (default <code>300</code>).  </li>
 <li><strong>SCANCHECK</strong>  – The number of <code>OCR</code> words to check to estimate the quality of the scan.  </li>
@@ -434,7 +434,7 @@ document[n] = page
 <p><strong>Parameters</strong></p>
 <p><strong>name:</strong> The name of the document. </p>
 <p><strong>Usage</strong></p>
-<p>This method will load into memory a preprocessed machine learning ready data from the corresponding JSON files specified by the document (root) name. The method will load the JSON files by the filename <code>&lt;name&gt;&lt;pageno&gt;.json</code>. If <code>dir</code> is <code>None</code>, then it will look for the files where the current value for dir is defined (either locally or reset by the dir property). Otherwise, it will look for the files under the directory specified by the dir parameter.</p>
+<p>This method will load into memory a preprocessed machine learning ready data from the corresponding JSON files specified by the document (root) name. The method will load the JSON files by the filename <code>&lt;name&gt;&lt;pageno&gt;.json</code>. If <code>dir</code> is <code>None</code>, then it will look for the files where the current value for <code>dir</code> is defined (either locally or reset by the dir property). Otherwise, it will look for the files under the directory specified by the <code>dir</code> parameter.</p>
 <p>Once loaded, the <code>Document</code> object will have the same characteristics as when the <code>Document</code> object was created.</p>
 <p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.<br />
@@ -452,7 +452,7 @@ A <code>ValueError</code> is raised if the name parameter is <code>None</code>.<
 <p>Splits the document into individual pages, where each page is individually stored in the same format as the document. The pages are named as follows:
 <br/><br/>
        <code>&lt;name&gt;&lt;pageno&gt;.&lt;suffix&gt;</code></p>
-<p>Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.</p>
+<p>Each page is stored in the subdirectory specified by the property dir. If <code>dir</code> is <code>None</code>, then the page is stored in the same directory where program is ran; otherwise, if the subdirectory does not exist, it is created.</p>
 <ul>
 <li>If the page is a scanned PDF page, the scanned image is extracted and saved as a PNG image. The PNG image is then OCR’d to convert to text.</li>
 </ul>
@@ -469,10 +469,10 @@ A <code>ValueError</code> is raised if the name parameter is <code>None</code>.<
 <li>Extracts the raw text from the page , where each page is individually stored in a raw text format. The pages are named as follows:</li>
 </ul>
 <p><code>&lt;name&gt;&lt;pageno&gt;.txt</code></p>
-<p>Each page is stored in the subdirectory specified by the property dir. If dir is None, then the page is stored in the same directory where program is ran.</p>
+<p>Each page is stored in the subdirectory specified by the property <code>dir</code>. If <code>dir</code> is <code>None</code>, then the page is stored in the same directory where program is ran.</p>
 <ul>
 <li>
-<p>Create a Page object for each page and adds them to the pages index property.</p>
+<p>Create a <code>Page</code> object for each page and adds them to the pages index property.</p>
 </li>
 <li>
 <p>If the document format is raw text, then:</p>
@@ -486,11 +486,11 @@ A <code>ValueError</code> is raised if the name parameter is <code>None</code>.<
 <br/><br/></li>
 <li>If the document format is TIFF, then page splitting is done with the open source Magick and then OCR’d using open source Tesseract.
 <br/><br/></li>
-<li><code>_langcheck()</code> – This method is called after NLP preprocessing of the document has been completed. The method will sample upto ten words to probabilistically determine the language of the document. The detected languages are English, French, German, Italian, and Spanish.
+<li><code>_langcheck()</code> – This method is called after NLP preprocessing of the document has been completed. The method will sample upto twenty words to probabilistically determine the language of the document. The detected languages are English, French, German, Italian, and Spanish.
 <br/><br/></li>
 <li><code>_scancheck()</code> – This method is called after NLP preprocessing of the document has been completed, and the document was a scanned image. The method will sample upto <code>SCANCHECK</code> number of words for recognition in the detected language dictionary (i.e., English, French, German, Italian, or Spanish). The method will check the words on either page 1 or page 2, depending on which page has a greater number of words. Punctuation, symbols, acronyms or single letter words are excluded. The method then sets the internal variable <code>_quality</code> to the percentage of the words that were recognized (between 0 and 1).
 <br/><br/></li>
-<li><code>_async()</code> – This method performs asynchronous processing of the <code>_collate()</code> function, when the optional ehandler parameter to the constructor is not <code>None</code>. When processing is completed, the <code>ehandler</code> parameter value is called as a function to signal completion of the processing, and the document object is passed as a parameter.</li>
+<li><code>_async()</code> – This method performs asynchronous processing of the <code>_collate()</code> function, when the optional ehandler parameter to the constructor is not <code>None</code>. When processing is completed, the <code>ehandler</code> parameter value is called as a function to signal completion of the processing, and the <code>Document</code> object is passed as a parameter.</li>
 </ul>
 </li>
 </ul>
@@ -519,7 +519,7 @@ A <code>ValueError</code> is raised if the name parameter is <code>None</code>.<
 <strong>text:</strong>   If not None, the text corresponding to the page.<br />
 <strong>pageno:</strong> If not None, the page number in the corresponding <code>Document</code> object.</p>
 <p><strong>Usage</strong></p>
-<p>If the text parameter is not None, a <code>Words</code> object is created and instantiated with the corresponding text. The text is then NLP preprocessed according to the configuration settings stored as static members in the <code>Page</code> class (i.e., set by the parent <code>Document</code> object):</p>
+<p>If the text parameter is not <code>None</code>, a <code>Words</code> object is created and instantiated with the corresponding text. The text is then NLP preprocessed according to the configuration settings stored as static members in the <code>Page</code> class (i.e., set by the parent <code>Document</code> object):</p>
 <p><code>BARE</code>  : If True, then the bare configuration setting is passed to the <code>Words</code> object.<br />
 <code>STEM</code>  : If not None, then the stem configuration setting is passed to the <code>Words</code> object.<br />
 <code>ROMAN</code> : If True, then the roman configuration setting is passed to the <code>Words</code> object.<br />
@@ -569,8 +569,8 @@ page.label = label
 </code></pre>
 
 <p><strong>Usage</strong></p>
-<p>When used as a getter the property returns the <code>integer</code> label that has been assigned to the page.</p>
-<p>When used as a setter the property assigns <code>sets</code> a label to the page.</p>
+<p>When used as a getter the property returns the integer <code>label</code> that has been assigned to the page.</p>
+<p>When used as a setter the property assigns a <code>label</code> to the page.</p>
 <p><strong>Exceptions</strong></p>
 <p>A <code>TypeError</code> is raised if the type of the parameter is not the expected type.</p>
 <h4 id="235-words">2.3.5 words</h4>
@@ -580,7 +580,7 @@ words = page.words
 </code></pre>
 
 <p><strong>Usage</strong></p>
-<p>When used as a getter the property returns the Words object of the corresponding NLP preprocessed text.</p>
+<p>When used as a getter the property returns the <code>Words</code> object of the corresponding NLP preprocessed text.</p>
 <h4 id="236-bagofwords">2.3.6 bagOfWords</h4>
 <p><strong>Synopsis</strong></p>
 <pre><code class="python"># Getter
@@ -588,7 +588,7 @@ bag = page.bagOfWords
 </code></pre>
 
 <p><strong>Usage</strong></p>
-<p>When used as a getter the property returns the page’s word sequences as a Bag of Words, represented as an unordered dictionary, where the key is the word and the value is the number of occurrences:</p>
+<p>When used as a getter the property returns the page’s word sequences as a <em>Bag of Words</em>, represented as an unordered dictionary, where the key is the word and the value is the number of occurrences:</p>
 <pre><code>{ ‘&lt;word’&gt; : &lt;no. of occurrences&gt;, … }
 </code></pre>
 <h4 id="237-freqdist">2.3.7 freqDist</h4>
@@ -598,7 +598,7 @@ freq = page.freqDist
 </code></pre>
 
 <p><strong>Usage</strong></p>
-<p>When used as a getter the property returns the sorted tuples of a frequency distribution of words (from bag of words), in descending order (i.e., highest first)</p>
+<p>When used as a getter the property returns the sorted tuples of a frequency distribution of words (from <code>BagOfWords</code>), in descending order (i.e., highest first)</p>
 <pre><code>[ ( ‘&lt;word’&gt;: &lt;no.  of occurrences&gt; ), …. ]
 </code></pre>
 <h4 id="238-termfreq">2.3.8 termFreq</h4>
@@ -608,15 +608,15 @@ tf = page.termFreq
 </code></pre>
 
 <p><strong>Usage</strong></p>
-<p>When used as a getter the property returns the sorted tuples of a term frequency distribution (percent that term occurs), in descending order (i.e., highest first)</p>
+<p>When used as a getter the property returns the sorted tuples of a term frequency distribution (i.e., percent that term occurs), in descending order (i.e., highest first)</p>
 <pre><code>[ ( ‘&lt;word’&gt;: &lt;percentage  of occurrences&gt; ), …. ]
 </code></pre>
 <h4 id="239-static-variables">2.3.9 Static Variables</h4>
 <p>The <code>Page</code> class contains the following static variables:</p>
-<p><code>BARE</code>  : If True, then the bare configuration setting is passed to the <code>Words</code> object.<br />
-<code>STEM</code>  : If not None, then the stem configuration setting is passed to the <code>Words</code> object.<br />
-<code>ROMAN</code> : If True, then the roman configuration setting is passed to the <code>Words</code> object.<br />
-<code>POS</code>     : If True, then the pos configuration setting is passed to the <code>Words</code> object.</p>
+<p><code>BARE</code>  : If <code>True</code>, then the bare configuration setting is passed to the <code>Words</code> object.<br />
+<code>STEM</code>  : If not <code>None</code>, then the stem configuration setting is passed to the <code>Words</code> object.<br />
+<code>ROMAN</code> : If <code>True</code>, then the roman configuration setting is passed to the <code>Words</code> object.<br />
+<code>POS</code>     : If <code>True</code>, then the pos configuration setting is passed to the <code>Words</code> object.</p>
 <h3 id="24-page-overwritten-operators">2.4 Page Overwritten Operators</h3>
 <h4 id="241-len">2.4.1 len()</h4>
 <p><strong>Synopsis</strong></p>
@@ -689,7 +689,7 @@ A <code>FileNotFoundError</code> is raised if the file path is invalid.</p>
 1.  Rewrote Specification.<br />
 2.  Add <code>OCR</code> quality estimate.</p>
 <p><strong>Gap v0.9.2 (alpha)</strong><br />
-1. Add language detection for English, Spanish and French.</p>
+1. Add language detection for English, Spanish, French, German and Italian.</p>
 <h2 id="appendix-ii-anticipated-engineering">APPENDIX II: Anticipated Engineering</h2>
 <p>The following has been identified as enhancement/issues to be addressed in subsequent update:</p>
 <ol>
@@ -700,8 +700,7 @@ A <code>FileNotFoundError</code> is raised if the file path is invalid.</p>
 <li>Add more pdf test files.  </li>
 <li>Fix bug of not handling Cryllic characters in page <code>load()</code> method.</li>
 </ol>
-<p>Proprietary Information<br />
-Copyright ©2018, Epipog, All Rights Reserved</p>
+<p>Copyright ©2018, Epipog, All Rights Reserved</p>
               
             </div>
           </div>

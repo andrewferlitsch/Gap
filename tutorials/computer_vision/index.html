@@ -95,6 +95,8 @@
         
             <li><a class="toctree-l4" href="#the-first-steps-in-using-gap-for-computer-vision-cv">The First Steps in using Gap for Computer Vision (CV)</a></li>
         
+            <li><a class="toctree-l4" href="#advanced-topics">ADVANCED TOPICS</a></li>
+        
         </ul>
     
 
@@ -244,21 +246,25 @@ print(type(data))   # outputs &lt;class 'numpy.ndarry'&gt;
 print(data.shape)   # outputs the shape of the machine learning data (e.g., (100, 100, 3))
 </code></pre>
 
-<p>By default, the shape and number of channels of the source image are maintained in the preprocessed machine learning ready data, and the pixel values are normalized to values between 0 and 1. </p>
+<p>By default, the shape and number of channels of the source image are maintained in the preprocessed machine learning ready data, and the pixel values are normalized to values between 0.0 and 1.0. </p>
 <pre><code class="python">print(raw[0][80])   # outputs pixel values (e.g., [250, 255, 255])
 print(data[0][80])  # outputs machine learning ready data values (e.g., [0.98039216, 1.0, 1.0])
 </code></pre>
 
-<p>When processing of the image is completed, the raw pixel data, machine learning ready data, and attributes are stored in a HDF5 (Hierarchical Data Format) formatted file. By default, the file is stored in the current local directory, where the rootname of the file is the rootname of the image. Storage provides the means to latter retrieval the machine learning ready data for feeding into a neural network, and/or retransforming the machine learning ready data. In the above example, the file would be stored as:</p>
+<p>When processing of the image is completed, the machine learning ready data, and attributes are stored in a HDF5 (Hierarchical Data Format) formatted file. By default, the file is stored in the current local directory, where the rootname of the file is the rootname of the image. Storage provides the means to latter retrieval the machine learning ready data for feeding into a neural network, and/or retransforming the machine learning ready data. In the above example, the file would be stored as:</p>
 <pre><code>./1_100.hd5
 </code></pre>
 <p>The path location of the stored HDF5 can be specified with the keyword parameter <code>dir</code>.</p>
 <pre><code class="python">image = Image(&quot;../tests/files/1_100.jpg&quot;, 1, dir=&quot;tmp&quot;)
 </code></pre>
 
-<p>In the above example, the HDF5 file will be stored under the subdirectory <code>tmp</code>. If the subdirectory path does not exist, the <code>Image</code> object will attempt to create the folder.</p>
-<p>The <code>Image</code> class optionally takes the keyword parameter <code>config</code>. This parameter takes a list of one or more settings, which alter how the image is preprocessed. For example, one can choose to use disable storing the HDF5 file using the keyword parameter <code>config</code> with the setting <code>nostore</code>.</p>
+<p>In the above example, the HDF5 file will be stored under the subdirectory <code>tmp</code>. If the subdirectory path does not exist, the <code>Image</code> object will attempt to create the subdirectory.</p>
+<p>The <code>Image</code> class optionally takes the keyword parameter <code>config</code>. This parameter takes a list of one or more settings, which alter how the image is preprocessed. For example, one can choose to disable storing to the HDF5 file using the keyword parameter <code>config</code> with the setting <code>nostore</code>.</p>
 <pre><code class="python">image = Image(&quot;../tests/files/1_100.jpg&quot;, 1, config=['nostore'])
+</code></pre>
+
+<p>Alternately, one could choose to additionally store the raw pixel data to the HDF5 file using the keyword parameter <code>config</code> with the setting <code>raw</code>.</p>
+<pre><code class="python">image = Image(&quot;../tests/files/1_100.jpg&quot;, 1, config=['raw'])
 </code></pre>
 
 <h3 id="example-cloud-based-image-processing-pipeline">Example: Cloud-based Image Processing Pipeline</h3>
@@ -275,18 +281,20 @@ print(data[0][80])  # outputs machine learning ready data values (e.g., [0.98039
     &quot;&quot;&quot;
     image = Image(uploaded_image, label, ehandler=next_step, config=['nostore'])
 
-def next_step(step):
+def next_step(image):
     &quot;&quot;&quot; Do something with the Image object as the next step in the data pipeline &quot;&quot;&quot;
     data = image.data
 </code></pre>
 
 <h3 id="preprocessing-transformations-resizing-reshaping-flattening">Preprocessing Transformations: Resizing, Reshaping, Flattening</h3>
 <p>The keyword parameter <code>config</code> has a number of settings for specifying how the raw pixel data is preprocessed. The <strong>Gap</strong> framework is designed to eliminate the use of large numbers of keyword parameters, and instead uses a modern convention of passing in a configuration parameter. Here are some of the configuration settings:</p>
-<pre><code>nostore                 # do not store in a HDF5 file
-grayscale | gray        # convert to a grayscale image with a single channel (i.e., color plane)
-flatten   | flat        # flatten the machine learning ready data into a 1D vector
-resize=(height, width)  # resize the raw pixel data
-thumb=(height, width)   # create (and store) a thumbnail of the raw pixel data
+<pre><code>nostore                     # do not store in a HDF5 file
+grayscale | gray            # convert to a grayscale image with a single channel (i.e., color plane)
+flatten   | flat            # flatten the machine learning ready data into a 1D vector
+resize=(height, width)      # resize the raw pixel data
+thumb=(height, width)       # create (and store) a thumbnail of the raw pixel data
+raw                         # store the raw pixel data
+float16 | float32 | float64 # data type of normalized pixel data (e.g., float32 is default)
 </code></pre>
 <p>Let's look how you can use these settings for something like neural network's equivalent of the hello world example ~ <a href="https://www.tensorflow.org/versions/r1.0/get_started/mnist/beginners">training the MNIST dataset</a>. The MNIST dataset consists of 28x28 grayscale images. Do to its size, grayscale and simplicity, it can be trained with just a ANN (vs. CNN). Since ANN take as input a 1D vector, the machine learning ready data would need to be reshaped (i.e., flatten) into a 1D vector.</p>
 <pre><code class="python"># An example of how one might use the Image object to preprocess an image from the MNIST dataset for a ANN
@@ -378,6 +386,7 @@ data = image.data
 <li>A list of local or remote images (e.g., [ '1_100.jpg', '2_100.jpg', '3_100.jpg'])</li>
 <li>A single directory path of images  (e.g., 'apple')</li>
 <li>A list of directory paths of images (e.g., ['apple', 'pear', 'banana'])</li>
+<li>A numpy multi-dimensional array</li>
 </ul>
 <p>The corresponding positional parameter <code>labels</code> must match the number of images as follows:</p>
 <ul>
@@ -505,6 +514,23 @@ def collectionHandler(images):
 
 <p>In the above example, we used the variable dataset for the combined collection. After the first collection is preprocessed, we set the variable dataset to the first <code>Images</code> object, and afterwards we combine it with subsequent collections using the <code>+=</code> operator.</p>
 <p>Because the processing and invoking the event handler happen concurrently, there are possible problems including a race condition (i.e., two threads access dataset at the same time), and trashing the internal data (i.e., two threads are combining data at the same time). We solve this by making this operation atomic using Python's thread lock mechanism.</p>
+<h3 id="example-image-data-is-already-numpy-preprocessed">Example: Image Data is Already Numpy Preprocessed</h3>
+<p><strong>Gap</strong> can handle datasets that have been prior preprocessed into numpy arrays, where the image data has been normalized and the label data has been one-hot encoded. For example, the Tensorflow MNIST example dataset, all the images have been flatten and normalized into a numpy array, and all the labels have been one-hot encoded into a 2D numpy matrix. Below is an example demonstrating importing the datasets into an <code>Images</code> collection.</p>
+<pre><code class="python"># Import the MNIST input_data function from the tutorials.mnist package
+from tensorflow.examples.tutorials.mnist import input_data
+
+# Read in the data
+# The paramter one_hot=True refers to the label which is categorical (1-10). 
+# The paramter causes the label to be re-encoded as a 10 column vector.
+mnist = input_data.read_data_sets(&quot;MNIST_data/&quot;, one_hot=True)
+
+# Create the images collection for the Training Set
+train = Images(mnist.train.images, mnist.train.labels)
+
+# Create the images collection for the Test Set
+test = Images(mnist.test.images, mnist.test.labels)
+</code></pre>
+
 <h3 id="size-of-preprocessed-machine-learning-ready-data">Size of Preprocessed Machine Learning Ready Data</h3>
 <p>When preprocessing image data into machine learning ready data, there can be a significant expansion in size. For example, the average size of an (compressed) JPEG flowers sample set (not shown) image is 30K bytes. The compression ratio on these image is as much as 90%. When read in by openCV and decompressed into a raw pixel image, the size typically is 250K bytes. In the raw pixel data, the byte size per pixel is 1 (i.e., 8bits per pixel). When the data is normalized (e.g., divided by 255.0), each pixel becomes represented by a floating point value. By default, the data type is np.float32, which is a 4 byte per pixel representation. Thus, a 250K byte raw pixel image will expand to 1Mb in memory.</p>
 <p>The <code>config</code> parameter setting <code>float=</code> overrides the size of the floating point representation after normalization. We generally recommend maintaining the 32-bit representation (np.float32). A smaller representation, such as a half floating point (np.float16) may expose the model to a vanishing gradient during training, while half the memory size. Some hardware, such as newer NVIDIA GPUs doing 16bit matrix multiplicaiton, have specialized hardware using stochastic rounding to eliminate the vanishing gradient problem. If you have this type of hardware, you can utilize the float16 representation to decrease the memory footprint by 50% and reduce instruction execution by appropriametly 75%. The following are the <code>float</code> settings for the <code>config</code> parameter:</p>
@@ -748,6 +774,72 @@ print(images[0].datas.shape)
 
 <h3 id="images-reference">Images Reference</h3>
 <p>For a complete reference on all methods and properties for the <code>Images</code> class, see <a href="../../specs/vision_spec/">reference</a>.</p>
+<h2 id="advanced-topics">ADVANCED TOPICS</h2>
+<p>This section discusses more advanced topics in uses the <strong>Gap</strong> computer vision module.</p>
+<h3 id="processing-errors">Processing Errors</h3>
+<p>The <code>Images</code> class tracks images that fail to be preprocessed. Examples for failure are: image does not exist, not an image, etc. The property <code>fail</code> will return the number of images that failed to preprocess and the property <code>errors</code> will return a list of tuples, where each tuple is the corresponding image argument that failed to preprocess, and the reason it failed.</p>
+<pre><code class="python"># assume that nonexist.jpg does not exist
+images = Images(['good_image.jpg', 'nonexist.jpg'], 1)
+
+# The length of the collection will be only one image (i.e., output from print is 1)
+print(len(images))
+
+# Will output 1 for the one failed image (i.e., nonexist.jpg)
+print(images.fail)
+
+# Will output: [ ('nonexist.jpg', 'FileNotFoundError') ]
+print(images.errors)
+</code></pre>
+
+<h3 id="image-dataset-as-numpy-multi-dimensional-array">Image Dataset as Numpy Multi-Dimensional Array</h3>
+<p>Many of the machine learning frameworks come with prepared training sets for their tutorials, such as the MNIST, CIFAR, IRIS, etc. In some cases, the training set may already be in a numpy multi-dimensional format:</p>
+<p><em>Color RGB</em><br />
+  Dimension 1: Number of Images<br />
+  Dimension 2: Image Height<br />
+  Dimension 3: Image Width<br />
+  Dimension 4: Number of Channels  </p>
+<p><em>Grayscale</em><br />
+  Dimension 1: Number of Images<br />
+  Dimension 2: Image Height<br />
+  Dimension 3: Image Width  </p>
+<p><em>Flatten</em><br />
+  Dimension 1: Number of Images<br />
+  Dimension 2: Flatten Pixel Data  </p>
+<p>This format of a training set can be passed into the Images class as the <code>images</code> parameter. If the data type of the pixel data is <code>uint8</code> or <code>uint16</code>, the pixel data will be normalized; otherwise, data type is float, the pixel data is assumed to be already normalized.</p>
+<pre><code class="python"># Let's assume that the image data is already available in memory, such as being read in from file by openCV
+import cv2
+raw = []
+raw.append(cv2.imread('image1.jpg'))  # assume shape is (100, 100, 3)
+raw.append(cv2.imread('image2.jpg'))  # assume shape is (100, 100, 3)
+
+# Let's assume now that the list of raw pixel images has been converted to a multi-dimensional numpy array
+import numpy as np
+dataset = np.asarray(raw)
+
+print(dataset.shape)  # would print: (2, 100, 100, 3)
+
+images = Images(dataset, labels)
+print(len(images))      # will output 2
+print(images[0].shape)  # will output (100, 100, 3)
+</code></pre>
+
+<h3 id="reducing-storage-by-deferring-normalization">Reducing Storage by Deferring Normalization</h3>
+<p>In some cases, you may want to reduce your overall storage of the machine learning ready data. By default, each normalized pixel is stored as a float32, which consists of 4 bytes of storage. If the <code>config</code> setting <code>uint8</code> is specified, then normalization of the image is deferred. Instead, each pixel is kept unchanged (non-normalized) and stored as a uint8, which consists of a single byte of storage. For example, if a dataset of 200,000 images of shape (100,100,3) which has been normalized will require 24GB of storage. If stored unnormalized, the data will only require 1/4 the space, or 6GB of storage.</p>
+<p>When the dataset is subsequently feed (i.e., properties <code>split</code>, <code>next()</code> and <code>minibatch</code>), the pixel data per image will be normalized in-place each time the image is feed.</p>
+<pre><code class="python"># Create the machine learning ready data without normalizing the image data
+images = Images(dataset, labels, config=['uint8'])
+
+# set 20% of the dataset as test and 80% as training
+images.split = 0.2
+
+# Run 100 epochs of the entire training set through the model
+epochs = 100
+for _ in range(epochs):
+  # get the next image - which will be normalized in-place
+  x, y = next(images)
+
+  # send image through the neural network ....
+</code></pre>
               
             </div>
           </div>

@@ -63,7 +63,7 @@
     <a class="current" href=".">Home</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#gap-nlpcv-data-engineering-framework-v092-pre-launch-alpha">Gap : NLP/CV Data Engineering Framework, v0.9.2 (Pre-launch: alpha)</a></li>
+    <li class="toctree-l2"><a href="#gap-nlpcv-data-engineering-framework-v093-pre-launch-alpha">Gap : NLP/CV Data Engineering Framework, v0.9.3 (Pre-launch: alpha)</a></li>
     
         <ul>
         
@@ -77,7 +77,9 @@
         
             <li><a class="toctree-l3" href="#prerequites">Prerequites</a></li>
         
-            <li><a class="toctree-l3" href="#installation">Installation:</a></li>
+            <li><a class="toctree-l3" href="#pip-installation">Pip Installation:</a></li>
+        
+            <li><a class="toctree-l3" href="#setuppy-installation">Setup.py Installation:</a></li>
         
             <li><a class="toctree-l3" href="#modules">Modules</a></li>
         
@@ -181,7 +183,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="gap-nlpcv-data-engineering-framework-v092-pre-launch-alpha">Gap : NLP/CV Data Engineering Framework, v0.9.2 (Pre-launch: alpha)</h1>
+                <h1 id="gap-nlpcv-data-engineering-framework-v093-pre-launch-alpha">Gap : NLP/CV Data Engineering Framework, v0.9.3 (Pre-launch: alpha)</h1>
 <h2 id="natural-language-processing-for-pdf-tiff-and-camera-captured-documents-and">Natural Language Processing for PDF, TIFF, and Camera Captured Documents, and</h2>
 <h2 id="computer-vision-processing-for-images">Computer Vision Processing for Images</h2>
 <h3 id="framework">Framework</h3>
@@ -251,7 +253,7 @@
 <li>imutils - image manipulation for computer vision</li>
 <li>pyaspeller - spelling dictionary for text</li>
 </ol>
-<h2 id="installation">Installation:</h2>
+<h2 id="pip-installation">Pip Installation:</h2>
 <p>The Gap framework is supported on Windows, MacOS, and Linux. It has been packaged for distribution via PyPi on launch.</p>
 <ol>
 <li>
@@ -280,27 +282,22 @@
   + Tesseract:    https://github.com/UB-Mannheim/tesseract/wiki</p>
 </li>
 </ol>
-<p>For pre-launch, after you have clone the source code, from the root of the source tree do the following to complete the install:</p>
-<pre><code>python setup.py install
-</code></pre>
-<h4 id="pypi-dependencies">PyPi Dependencies</h4>
-<p>The dependencies for python packages distributed at PyPi are automatically checked for and installed by the setup.py script. These include:</p>
+<h2 id="setuppy-installation">Setup.py Installation:</h2>
+<p>To install GapML via setup.py:</p>
+<ol>
+<li>
+<p>clone from the Github repo.  </p>
 <ul>
-<li>nltk : http://www.nltk.org/</li>
-<li>numpy : http://www.numpy.org/</li>
-<li>h5py : https://www.h5py.org/</li>
-<li>unidecode : https://pypi.org/project/Unidecode/</li>
-<li>openCV : https://www.opencv.org/</li>
-<li>imultils : https://github.com/jrosebr1/imutils</li>
-<li>pyaspeller : https://pypi.org/project/pyaspeller/</li>
+<li><code>git clone git@github.com:andrewferlitsch/Gap.git</code></li>
 </ul>
-<h4 id="3rd-party-dependencies">3rd Party Dependencies</h4>
-<p>The dependencies for non-python packages are automatically checked for and installed by the setup.py script. These include:</p>
+</li>
+<li>
+<p>install the GapML setup file. </p>
 <ul>
-<li>Ghostscript : https://www.ghostscript.com</li>
-<li>Tesseract : https://github.com/tesseract-ocr/tesseract/wiki</li>
-<li>Imagik :  https://www.imagemagick.org</li>
+<li><code>python setup.py install</code></li>
 </ul>
+</li>
+</ol>
 <h2 id="modules">Modules</h2>
 <p>The framework provides the following pipeline of modules to support your data and knowledge extraction from both digital and scanned PDF documents, TIFF facsimiles and image captured documents.</p>
 <h4 id="splitter"><span style='color: saddlebrown'>SPLITTER</span></h4>
@@ -434,5 +431,5 @@ pytest --cov=vision image_test.py
 
 <!--
 MkDocs version : 1.0.1
-Build Date UTC : 2018-09-04 23:34:20
+Build Date UTC : 2018-09-27 03:22:26
 -->
