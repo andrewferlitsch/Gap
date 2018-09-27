@@ -256,7 +256,7 @@ When used as a getter the property returns the class mapping as a list of tuples
 ('cats', 0), ('dogs', 1) ]
 ```
 
-#### 1.3.5 time
+#### 1.3.6 time
 
 **Synopsis**
 
@@ -269,7 +269,7 @@ secs = images.time
 
 When used as a getter the property returns the amount of time (in seconds) it took to preprocess the collection into machine learning ready data.
 
-#### 1.3.6 elapsed
+#### 1.3.7 elapsed
 
 **Synopsis**
 
@@ -282,7 +282,7 @@ elapsed = images.elapsed
 
 When used as a getter the property returns the amount of time it took to preprocess the collection into machine learning ready data, in the form HH:MM:SS.
  
-#### 1.3.7 split
+#### 1.3.8 split
 
 **Synopsis**
 
@@ -310,7 +310,7 @@ A `TypeError` is raised if the type of the parameter is not the expected type.
 A `ValueError` is raised if a parameter is out of range.  
 A `AttributeError` is raised if the number of parameters passed to the setter property is incorrect.
 
-#### 1.3.8 minibatch
+#### 1.3.9 minibatch
 
 **Synopsis**
 
@@ -335,7 +335,7 @@ If the `augment` property is set to True, for each image in the training set, an
 A `TypeError` is raised if the type of the parameter is not the expected type.  
 A `ValueError` is raised if the batch_size is out of range.
 
-#### 1.3.9 augment
+#### 1.3.10 augment
 
 **Synopsis**
 
@@ -363,7 +363,7 @@ The parameter to the `augment` property may also be a tuple. The tuple specifies
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
 
-#### 1.3.10 flatten
+#### 1.3.11 flatten
 
 ```python
 images.flatten = True | False
@@ -379,7 +379,7 @@ When used as a setter and set to `False`, the machine learning ready data is unf
 
 A `TypeError` is raised if the type of the parameter is not the expected type.
 
-#### 1.3.11 resize
+#### 1.3.12 resize
 
 ```python
 images.resize = (height, width)
@@ -394,7 +394,7 @@ When used as a setter, the machine learning ready data is resized to the specifi
 A `TypeError` is raised if the type of the parameter is not the expected type.
 A `AttributeError` is raised if the parameter is not a tuple of length 2.
 
-#### 1.3.12 pixeltype
+#### 1.3.13 pixeltype
 
 ```python
 ptype = images.pixeltype
@@ -404,7 +404,7 @@ ptype = images.pixeltype
 
 When used as a getter, the property returns the data type of the pixel data of the preprocessed machine learning ready data.
 
-#### 1.3.13 fail
+#### 1.3.14 fail
 
 ```python
 nfailed = images.fail
@@ -414,7 +414,7 @@ nfailed = images.fail
 
 When used as a getter, the property returns the number of images in the collection that failed to be preprocessed into machine learning ready data.
 
-#### 1.3.14 errors
+#### 1.3.15 errors
 
 ```python
 errors = images.errors
