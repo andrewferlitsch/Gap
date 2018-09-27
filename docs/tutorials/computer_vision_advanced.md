@@ -61,6 +61,37 @@ print(len(images))      # will output 2
 print(images[0].shape)  # will output (100, 100, 3)
 ```
 
+### Image Dataset as Image Folder
+
+In another case, a dataset is laid out as a set of subdirectories, each containing images, and where each subdirectory is a separate class. This directory/file layout is sometimes referred to as an Image Folder (e.g., Pytorch vision). Below is an example, where the classes are cat and dog:
+
+```
+dataset\
+        cat\
+            image1.jpg
+            image2.jpg
+            ...
+        dog\
+            image3.jpg
+            image4.jpg
+            ...
+```
+
+In this case, the root of the dataset (i.e., parent folder, e.g., dataset) is passed as the `images` parameter and the parameter `labels` is ignored. Each subdirectory (e.g., cat and dog) is a separate class name. In the above example, all the images under the subdirectories *cat* and *dog* are classified as a cat and dog, respectively. The `Images` object maps the class names (i.e., subdirectories) into integer labels, starting at zero. In the above example, cat *cat* is assigned the label 0 and *dog* is assigned the label 1.
+
+```python
+cats_and_dogs = Images('dataset', None)
+print(images[0].name, images[0].label)
+# Will output 'image1' and 0
+```
+
+The mapping of class names to integer labels is obtained from the property `classes` as a list of tuples, where each tuple is the class name, followed by the corresponding integer label.
+
+```python
+print(cats_and_dogs.classes)
+# Will output: [ ('cat', 0), ('dog') ]
+```
+
 ### Reducing Storage by Deferring Normalization
 
 In some cases, you may want to reduce your overall storage of the machine learning ready data. By default, each normalized pixel is stored as a float32, which consists of 4 bytes of storage. If the `config` setting `uint8` is specified, then normalization of the image is deferred. Instead, each pixel is kept unchanged (non-normalized) and stored as a uint8, which consists of a single byte of storage. For example, if a dataset of 200,000 images of shape (100,100,3) which has been normalized will require 24GB of storage. If stored unnormalized, the data will only require 1/4 the space, or 6GB of storage.
@@ -81,20 +112,4 @@ for _ in range(epochs):
   x, y = next(images)
   
   # send image through the neural network ....
-```
-
-### Image Folders
-
-In some cases, a dataset maybe laid out as a set of subdirectories, each containing images, and where each subdirectory is a separate class. This directory/file layout is sometimes referred to as an Image Folder (e.g., Pytorch vision). Below is an example, where the classes are cat and dog:
-
-```
-dataset\
-        cat\
-            image1.jpg
-            image2.jpg
-            ...
-        dog\
-            image3.jpg
-            image4.jpg
-            ...
 ```
