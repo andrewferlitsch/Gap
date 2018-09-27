@@ -58,6 +58,28 @@ Images('birds', 1)
 Images(['birds'], 1)
 ```
 
+In the case of a single directory, all the files under the subdirectory are images, or are subdirectories of images. In the former case, the images are assigned label(s) according to the `label` parameter. 
+
+In the case of subdirectories of images, each subdirectory is considered a separate class, and the `label` parameter maybe `None` (but otherwise ignored). Each subdirectory is assigned an integer label chronologically starting at zero. In the example below, the classes would be *cats* and *dogs*, and assigned the integer labels 0 and 1, respectively.
+
+```
+dataset\
+	cats\
+		image1.jpg
+		image2.jpg
+	dogs\
+		image3.jpg
+		image4.jpg
+```
+
+The above dataset can be specified as follows:
+
+```python
+Images('dataset', None)
+```
+
+The class mapping (e.g., cats = 0, dogs = 1) is stored as metadata in the HDF5 stored file, and can be access via the property `classes`.
+
 **labels:** If not `None`, either:  
 1.	A single integer value (i.e., label) which corresponds to all the images.  
 2.	A list of the same size as `images` parameter list of integer values; where the index of each value is the label for the corresponding index in the `images` parameter.
@@ -216,6 +238,23 @@ labels = images.labels
 **Usage**
 
 When used as a getter the property returns the label or list of labels for the collection.
+
+#### 1.3.5 classes
+
+**Synopsis**
+
+```python
+# Getter
+classes = images.classes
+```
+
+**Usage**
+
+When used as a getter the property returns the class mapping as a list of tuples of class names and their corresponding integer labels. If their is no class mapping, the property will return `None`. Below is an example.
+
+```
+('cats', 0), ('dogs', 1) ]
+```
 
 #### 1.3.5 time
 
