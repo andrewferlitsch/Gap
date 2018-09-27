@@ -81,7 +81,7 @@ In this case, the root of the dataset (i.e., parent folder, e.g., dataset) is pa
 
 ```python
 cats_and_dogs = Images('dataset', None)
-print(images[0].name, images[0].label)
+print(cats_and_dogs[0].name, cats_and_dogs[0].label)
 # Will output 'image1' and 0
 ```
 
@@ -89,7 +89,7 @@ The mapping of class names to integer labels is obtained from the property `clas
 
 ```python
 print(cats_and_dogs.classes)
-# Will output: [ ('cat', 0), ('dog') ]
+# Will output: [ ('cat', 0), ('dog', 1) ]
 ```
 
 ### Reducing Storage by Deferring Normalization
