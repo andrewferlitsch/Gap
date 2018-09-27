@@ -549,34 +549,34 @@ class Image(object):
 class Images(object):
     """ Base (super) for classifying a group of images """
     def __init__(self, images=None, labels=None, dir='./', name=None, ehandler=None, config=None, num_proc=1):
-        self._images   = images     # collection of images to process
-        self._dir      = dir        # storage directory for processed images
-        self._labels   = labels     # labels corresponding to collection of images
-        self._ehandler = ehandler   # asynchronous processing event handler
-        self._data     = None       # list of image objects
-        self._name     = name       # name of collection file
-        self._config   = config     # configuration settings
-        self._time     = time       # time to process the images
-        self._split    = 0.8        # percentage of split between train / test
-        self._seed     = 0          # seed for random shuffle of data
-        self._train    = None       # indexes for training set
-        self._test     = None       # indexes for test set
-        self._trainsz  = 0          # size of training set
-        self._testsz   = 0          # size of test set
-        self._minisz   = 1          # mini batch size
-        self._next     = 0          # next item in training set
-        self._augment  = False      # image augmentation
-        self._toggle   = True       # toggle for image augmentation
-        self._nostore  = False      # do not store into HDF5 flag
-        self._rotate   = [-90, 90, 1, 1] # rotation parameters for image augmentation
-        self._resize   = None       # config setting for resize
-        self._noraw    = True       # config setting for not storing raw data
-        self._time     = 0          # processing time
-        self._fail     = 0          # how many images that failed to process
-        self._nlabels  = None       # number of labels in the collection
-        self._errors   = None       # list of errors reporting
-        self._classes  = None       # mapping of classes to labels
-        self._num_proc  = num_proc   # number of processes
+        self._images    = images     # collection of images to process
+        self._dir       = dir        # storage directory for processed images
+        self._labels    = labels     # labels corresponding to collection of images
+        self._ehandler  = ehandler   # asynchronous processing event handler
+        self._data      = None       # list of image objects
+        self._name      = name       # name of collection file
+        self._config    = config     # configuration settings
+        self._time      = time       # time to process the images
+        self._split     = 0.8        # percentage of split between train / test
+        self._seed      = 0          # seed for random shuffle of data
+        self._train     = None       # indexes for training set
+        self._test      = None       # indexes for test set
+        self._trainsz   = 0          # size of training set
+        self._testsz    = 0          # size of test set
+        self._minisz    = 1          # mini batch size
+        self._next      = 0          # next item in training set
+        self._augment   = False      # image augmentation
+        self._toggle    = True       # toggle for image augmentation
+        self._nostore   = False      # do not store into HDF5 flag
+        self._rotate    = [-90, 90, 1, 1] # rotation parameters for image augmentation
+        self._resize    = None       # config setting for resize
+        self._noraw     = True       # config setting for not storing raw data
+        self._time      = 0          # processing time
+        self._fail      = 0          # how many images that failed to process
+        self._nlabels   = None       # number of labels in the collection
+        self._errors    = None       # list of errors reporting
+        self._classes   = None       # mapping of classes to labels
+        self._num_proc  = num_proc  # number of processes
 
         if images is None:
             return
@@ -809,7 +809,7 @@ class Images(object):
                 self._name = "collection." + self._data[0].name
             else:
                 self._name = "collection.untitled"
-            
+
         # Write the images and labels to disk as HD5 file
         with h5py.File(self._dir + self._name + '.h5', 'w') as hf:
             try:
