@@ -568,6 +568,7 @@ class Images(object):
         self._augment  = False      # image augmentation
         self._toggle   = True       # toggle for image augmentation
         self._nostore  = False      # do not store into HDF5 flag
+        self._nomem    = False      # do not keep collection in memory
         self._rotate   = [-90, 90, 1, 1] # rotation parameters for image augmentation
         self._resize   = None       # config setting for resize
         self._noraw    = True       # config setting for not storing raw data
@@ -672,6 +673,8 @@ class Images(object):
             for setting in config:
                 if setting == 'nostore':
                     self._nostore = True
+                if setting == 'nomem':
+                    self._nomem = True
                 elif setting == 'raw':
                     self._noraw = False
                 elif setting.startswith("resize="):
