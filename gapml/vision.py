@@ -120,7 +120,7 @@ class Image(object):
                     self._noraw = False
                 elif setting.startswith('resize=') or setting.startswith('thumb='):
                     toks = setting.split('=')
-                    if toks[0] == 'thumb=':
+                    if toks[0] == 'thumb':
                         toks[0] = 'thumbnail'
                     if len(toks) != 2:
                         raise AttributeError("Tuple(height, width) expected for {}".format(toks[0]))
