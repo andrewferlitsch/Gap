@@ -9,6 +9,7 @@ nav:
 - Quick Start Guide: quick-start-guide.md
 - Tutorials:
     - Computer Vision: tutorials/computer_vision.md
+    - Computer Vision advanced: tutorials/computer_vision_advanced.md
     - Natural Language Processing: tutorials/natural_language_processing.md
 - Specifications:
     - Splitter: specs/splitter_spec.md

@@ -101,6 +101,12 @@ class Image(object):
             raise TypeError("List expected for config settings")
 
         if config is not None:
+
+            info = {'uint8': np.uint8,
+                    'float16':np.float16,
+                    'float32': np.float32,
+                    'float64': np.float64}
+
             for setting in config:
                 if isinstance(setting, str) == False:
                     raise TypeError("String expected for each config setting")
@@ -112,46 +118,34 @@ class Image(object):
                     self._hd5 = False
                 elif setting in ['raw']:
                     self._noraw = False
-                elif setting.startswith('resize='):
+                elif setting.startswith('resize=') or setting.startswith('thumb='):
                     toks = setting.split('=')
+                    if toks[0] == 'thumb':
+                        toks[0] = 'thumbnail'
                     if len(toks) != 2:
-                        raise AttributeError("Tuple(height, width) expected for resize")
+                        raise AttributeError("Tuple(height, width) expected for {}".format(toks[0]))
                     vals = toks[1].split(',')
                     if len(vals) != 2:
-                        raise AttributeError("Tuple(height, width) expected for resize")
+                        raise AttributeError("Tuple(height, width) expected for {}".format(toks[0]))
                     if vals[0][0] == '(':
                         vals[0] = vals[0][1:]
                     if vals[1][-1] == ')':
                         vals[1] = vals[1][:-1]
                     if not vals[0].isdigit() or not vals[1].isdigit():
-                        raise AttributeError("Resize values must be an integer")
-                    self._resize = (int(vals[1]), int(vals[0]))
-                elif setting.startswith('thumb='):
-                    toks = setting.split('=')
-                    if len(toks) != 2:
-                        raise AttributeError("Tuple(height, width) expected for thumbnail")
-                    vals = toks[1].split(',')
-                    if len(vals) != 2:
-                        raise AttributeError("Tuple(height, width) expected for thumbnail")
-                    if vals[0][0] == '(':
-                        vals[0] = vals[0][1:]
-                    if vals[1][-1] == ')':
-                        vals[1] = vals[1][:-1]
-                    if not vals[0].isdigit() or not vals[1].isdigit():
-                        raise AttributeError("Thumbnail values must be an integer")
-                    self._thumbnail = (int(vals[1]), int(vals[0]))
+                        raise AttributeError("{} values must be an integer".format(toks[0]))
+                    if setting.startswith('resize='):
+                        self._resize = (int(vals[1]), int(vals[0]))
+                    elif setting.startswith('thumb='):
+                        self._thumbnail = (int(vals[1]), int(vals[0]))
+
                 elif setting.startswith('float'):
-                    if setting == 'float16':
-                        self._float = np.float16
-                    elif setting == 'float32':
-                        self._float = np.float32
-                    elif setting == 'float64':
-                        self._float = np.float64
+                    if setting in ['float16', 'float32', 'float64']:
+                        self._float = info[setting]
                     else:
                         raise AttributeError("Float values must be float16, float32 or float64")
                 elif setting.startswith('uint8'):
                     if setting == 'uint8':
-                        self._float = np.uint8
+                        self._float = info[setting]
                     else:
                         raise AttributeError("Integer values must be uint8")
                 elif setting.startswith('nlabels='):
@@ -318,32 +312,16 @@ class Image(object):
             data_type = type(image[0][0][0])
 
         # Normalize the image (convert pixel values from int range 0 .. 255 to float range 0 .. 1)
-        if data_type == np.uint8:
-            if self._float == np.float16:
-                image = (image / 255.0).astype(np.float16)
-            elif self._float == np.float64:
-                image = (image / 255.0).astype(np.float64)
-            elif self._float == np.float32:
-                image = (image / 255.0).astype(np.float32)
-            elif self._float == np.uint8:
-                pass    # do not normalize
-        elif data_type == np.uint16:
-            if self._float == np.float16:
-                image = (image / 65535.0).astype(np.float16)
-            elif self._float == np.float64:
-                image = (image / 65535.0).astype(np.float64)
-            elif self._float == np.float32:
-                image = (image / 65535.0).astype(np.float32)
-            elif self._float == np.uint8:
-                pass    # do not normalize
-        # assume pixel data is normalized
-        elif data_type == np.float16 or data_type is np.float32 or data_type is np.float64:
-            if self._float == np.float16:
-                image = image.astype(np.float16)
-            elif self._float == np.float64:
-                image = image.astype(np.float64)
-            else:
-                image = image.astype(np.float32)
+        if self._float in [np.float16, np.float32, np.float64]:
+            if data_type in [np.uint8, np.uint16]:
+                info = {np.uint8: 255.0,
+                        np.uint16: 65535.0}
+                image = (image / info[data_type]).astype(self._float)
+            # assume pixel data is normalized
+            if data_type == np.float16 or data_type is np.float32 or data_type is np.float64:
+                image = image.astype(self._float)
+        elif self._float == np.uint8:
+            pass    # do not normalize
 
         # Flatten the image into a 1D vector
         if self._flatten:
@@ -577,7 +555,7 @@ class Images(object):
         self._nlabels  = None       # number of labels in the collection
         self._errors   = None       # list of errors reporting
         self._classes  = None       # mapping of classes to labels
-        self._num_proc  = num_proc   # number of processes
+        self._num_proc = num_proc   # number of processes
 
         if images is None:
             return
@@ -609,6 +587,7 @@ class Images(object):
                 self._classes = [(os.path.basename(files[label]), label) for label in range(len(files))]
             else:
                 labels = [labels for _ in files]
+
             self._images = files
 
         elif isinstance(images, np.ndarray):
@@ -812,7 +791,7 @@ class Images(object):
                 self._name = "collection." + self._data[0].name
             else:
                 self._name = "collection.untitled"
-            
+
         # Write the images and labels to disk as HD5 file
         with h5py.File(self._dir + self._name + '.h5', 'w') as hf:
             try:
@@ -832,12 +811,12 @@ class Images(object):
             hf.create_dataset("names", data=names)
             hf.create_dataset("types", data=types)
             hf.create_dataset("paths", data=paths)
-            
+
     @property
     def dir(self):
         """ Getter for the image directory """
         return self._dir
-        
+
     @dir.setter
     def dir(self, dir):
         """ Setter for image directory """
@@ -849,12 +828,12 @@ class Images(object):
                 dir += "/"  
             self._dir = dir
         self._dir = dir 
-        
+
     @property
     def labels(self):
         """ Getter for image labels (classification) """
         return self._labels
-        
+
     @labels.setter
     def labels(self, labels):
         """ Setter for image labels (classification) """
@@ -894,12 +873,12 @@ class Images(object):
     def errors(self):
         """ list of errors reported """
         return self._errors
-        
+
     @property
     def classes(self):
         """ list of mapping of class names to labels (integers) """
         return self._classes
-        
+
     def load(self, name, dir=None):
         """ Load a Collection of Images """
         if name is None:
@@ -907,13 +886,13 @@ class Images(object):
         if not isinstance(name, str):
             raise TypeError("String expected for collection name")
         self._name = name
-        
+
         if dir is not None:
             self.dir = dir
-            
+
         if self._dir is None:
             self._dir = "./"
-        
+
         # Read the images and labels from disk as HD5 file
         with h5py.File(self._dir + self._name + '.h5', 'r') as hf:
             self._data = []
@@ -965,11 +944,11 @@ class Images(object):
             ix = self._test[_]
             X_test.append(self._data[ix]._imgdata)
             Y_test.append(self._data[ix]._label)
-          
+
         # calculate the number of labels in the training set
         if self._nlabels == None:
             self._nlabels = np.max(Y_train) + 1
-            
+
         if self._testsz > 0:    
             # labels already one-hot encoded
             if isinstance(Y_train[0], np.ndarray):
@@ -982,11 +961,11 @@ class Images(object):
         else:
             # Calculate the number of labels as a sequence starting from 0
             return np.asarray(X_train), None, self._one_hot(np.asarray(Y_train), self._nlabels), None
-        
+
     @split.setter
     def split(self, percent):
         """ Set the split for training/test and create a randomized index """
-        
+
         if isinstance(percent, tuple):
             if len(percent) != 2:
                 raise AttributeError("Split setter must be percent, seed")
@@ -994,13 +973,13 @@ class Images(object):
             if not isinstance(self._seed, int):
                 raise TypeError("Seed parameter must be an integer")
             percent = percent[0]
-            
+
         if not isinstance(percent, float) and percent != 0:
             raise TypeError("Float expected for percent")
         if percent < 0 or percent >= 1:
             raise ValueError("Percent parameter must be between 0 and 1")
         self._split = (1 - percent)
-        
+
         # create a randomized index to the images
         random.seed(self._seed)
         self._indices = random.sample([ index for index in range(len(self._data))], len(self._data))
