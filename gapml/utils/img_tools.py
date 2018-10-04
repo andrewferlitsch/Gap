@@ -38,16 +38,27 @@ class ImgUtils(object):
             :param root_path:      main image folder root
             :param tree:           type of folder tree
             :param remove_folder:  remove folder from directory
-        """   
-        self.labels        = os.listdir(root_path)   # list of images labels
-        self.root_path     = root_path.split('/')[0] # root folder where labels are located
-        self.tree          = tree                    # folder structure to the end sample
-        self.remove_folder = remove_folder           # warning! remove folder from directory
-        self._transf       = '1to2'                  # type of folder tree to tranform '1to2' or '2to1'
-        self._labels_org   = []                      # list of origen paths
-        self._end          = None                    # add or remove name folder extentions (e.g. '_spl', ...)
-        self._end2         = None                    # add or remove name folder extentions (e.g. '_spl', ...)
+        """
+        self.labels        = None           # list of images labels
+        self.root_path     = None           # root folder where labels are located
+        self.tree          = tree           # folder structure to the end sample
+        self.remove_folder = remove_folder  # warning! remove folder from directory
+        self._transf       = '1to2'         # type of folder tree to tranform '1to2' or '2to1'
+        self._labels_org   = []             # list of origen paths
+        self._end          = None           # add or remove name folder extentions (e.g. '_spl', ...)
+        self._end2         = None           # add or remove name folder extentions (e.g. '_spl', ...)
 
+        if not os.path.isdir(self.root_path):
+            raise TypeError("String expected for directory path")
+        else:
+            self.labels = os.listdir(root_path)
+            self.root_path = root_path.split('/')
+        
+        if len(self.root_path) > 1:
+            self.root_path = self.root_path[0] + '/' + self.root_path[1]
+        else:
+            self.root_path = self.root_path[0]
+        
         if remove_folder:
             answere_ok = False
             while answere_ok is False:
@@ -125,7 +136,6 @@ class ImgUtils(object):
         :param shufle:    select ramdom images per label or the first images on the list
         :param img_split: percentage of split between train / val
         """
-
         # specifies the name for the root_path
         if action == 'copy':
             self._end  = '_spl'
@@ -200,7 +210,6 @@ class ImgUtils(object):
         :param img_split: percentage of split between train / val
         :param transf:    type of folder tree to tranform '1to2' or '2to1'
         """
-
         # move the files between tree structures
         action = 'move'
         if self._transf == '1to2':
@@ -220,7 +229,6 @@ class ImgUtils(object):
         Rename Images
         :param text: Give a text for your images name
         """
-
         # creates source list
         if self.tree == 2:
             self._transf = '2to1'
