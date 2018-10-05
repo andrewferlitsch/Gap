@@ -48,17 +48,12 @@ class ImgUtils(object):
         self._end          = None           # add or remove name folder extentions (e.g. '_spl', ...)
         self._end2         = None           # add or remove name folder extentions (e.g. '_spl', ...)
 
-        if not os.path.isdir(self.root_path):
-            raise TypeError("String expected for directory path")
+        if not os.path.isdir(root_path):
+            raise TypeError('String expected for directory path')
         else:
             self.labels = os.listdir(root_path)
-            self.root_path = root_path.split('/')
-        
-        if len(self.root_path) > 1:
-            self.root_path = self.root_path[0] + '/' + self.root_path[1]
-        else:
-            self.root_path = self.root_path[0]
-        
+            self.root_path = root_path
+
         if remove_folder:
             answere_ok = False
             while answere_ok is False:
@@ -72,6 +67,12 @@ class ImgUtils(object):
             if warning == 'y':
                 shutil.rmtree(self.root_path)
                 print('Your files were deleted')
+
+    def _tree2_path(self):
+        """ Getting path for 2to1 """
+        if self._transf == '2to1':
+            self.root_path = self.root_path.split('/')
+            self.root_path = '/'.join(self.root_path[:-1])
 
     def _list_labels_org(self):
         """ List Labels Origin """
@@ -210,6 +211,10 @@ class ImgUtils(object):
         :param img_split: percentage of split between train / val
         :param transf:    type of folder tree to tranform '1to2' or '2to1'
         """
+        
+        # getting path for 2to1
+        self._tree2_path()
+
         # move the files between tree structures
         action = 'move'
         if self._transf == '1to2':
@@ -232,6 +237,9 @@ class ImgUtils(object):
         # creates source list
         if self.tree == 2:
             self._transf = '2to1'
+
+        # getting path for 2to1
+        self._tree2_path()
 
         self._list_labels_org()
 
@@ -264,6 +272,9 @@ class ImgUtils(object):
         if self.tree == 2:
             self._transf = '2to1'
 
+        # getting path for 2to1
+        self._tree2_path()
+
         self._list_labels_org()
 
         for lb in self._labels_org:
@@ -277,6 +288,7 @@ class ImgUtils(object):
                     os.rename('{}/{}'.format(lb, img), '{}/{}'.format(lb, img.replace(old, '{}_{}'.format(new, i))))
                 else:
                     os.rename('{}/{}'.format(lb, img), '{}/{}'.format(lb, img.replace(old, new)))
+
     @property
     def transf(self):
         """ Getter for image transform """
