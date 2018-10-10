@@ -576,34 +576,38 @@ class Images(object):
         is_file = False
         while is_dir:
             images2 = []
-            if len(images) > 0 and not isinstance(images[0], np.ndarray) and os.path.isdir(str(images[0])):
-                if os.path.isdir(images[0]):
-                    for i, image in enumerate(images):
-                        if os.path.isdir(image) and is_file is False:
-                            for file in os.listdir(image):
-                                if not os.path.isfile(image + '/' + file):
-                                    images2 += [image + '/' + file]
-                                    images = images2
-                                elif len(images) == i+1:
-                                    is_file = True
-                        elif os.path.isdir(image):
-                            for img in os.listdir(image):
-                                if len(labels) == 1 and labels[0] != 0:
+            # input path directory
+            if (len(images) > 0 and
+                    not isinstance(images[0], np.ndarray) and
+                    os.path.isdir(str(images[0]))):
+                for i, image in enumerate(images):
+                    if os.path.isdir(image) and is_file is False:
+                        for file in os.listdir(image):
+                            if not os.path.isfile(image + '/' + file):
+                                images2 += [image + '/' + file]
+                                images = images2
+                            elif len(images) == i+1:
+                                is_file = True
+                    else:
+                        for img in os.listdir(image):
+                            if labels[0] != 0:
+                                if len(labels) == 1:
                                     label = labels[0]
-                                elif len(labels) > 1 and labels[0] != 0:
+                                else:
                                     if len(images) != len(labels):
                                         raise IndexError("Number of images and labels do not match")
                                     label = labels[i]
-                                else:
-                                    label = i
-                                if not isinstance(label, int):
-                                    raise TypeError("Integer expected for image labels")
-                                images2 += [(image + '/' + img, label)]
-                                classes[image.split('/')[-1]] = label
-                            is_dir = False
-                            if len(images) == i+1:
-                                images = images2
+                            else:
+                                label = i
+                            if not isinstance(label, int):
+                                raise TypeError("Integer expected for image labels")
+                            images2 += [(image + '/' + img, label)]
+                            classes[image.split('/')[-1]] = label
+                        is_dir = False
+                        if len(images) == i+1:
+                            images = images2
             else:
+                # TypeErrors
                 if isinstance(images, list) and len(images) > 0:
                     for img in images:
                         if isinstance(img, str) or isinstance(img, int):
@@ -614,7 +618,7 @@ class Images(object):
                         raise TypeError("2D or greater numpy array expected for images")
                 else:
                     raise TypeError("String or Raw Pixel data expected for image paths")
-                
+
                 if isinstance(labels, np.ndarray):
                     if len(labels.shape) == 1:
                         if type(labels[0]) not in [np.uint8, np.uint16, np.uint32, np.int8, np.int16, np.int32]:
@@ -624,7 +628,7 @@ class Images(object):
                             raise TypeError("Floating point values expected for one-hot encoded labels")
                     else:
                         raise TypeError("1D or 2D numpy array expected for labels")
-
+                # input single image
                 if len(labels) == 1:
                     if isinstance(labels[0], np.ndarray):
                         pass
@@ -642,6 +646,7 @@ class Images(object):
                         except:
                             classes['label'] = labels[0]
                 else:
+                    # input list of labels folders paths and a custom labels list in directory
                     if len(images) != len(labels):
                         raise IndexError("Number of images and labels do not match")
                     for i in range(len(images)):
