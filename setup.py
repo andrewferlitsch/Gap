@@ -15,7 +15,7 @@ install_requires = [
     'h5py==2.8.0',
     'imutils==0.5.1',
     'Unidecode==1.0.22',
-    'nltk==3.3',
+    'nltk==3.6.3',
     'pandas==0.23.4',
     'requests==2.19.1',
     'opencv-python==3.4.3.18',
