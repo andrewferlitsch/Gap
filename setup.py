@@ -18,7 +18,7 @@ install_requires = [
     'nltk==3.3',
     'pandas==0.23.4',
     'requests==2.19.1',
-    'opencv-python==3.4.3.18',
+    'opencv-python==3.4.7.28',
     'Pillow==5.2.0',
     'matplotlib==2.2.3']
 
