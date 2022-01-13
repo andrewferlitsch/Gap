@@ -19,7 +19,7 @@ install_requires = [
     'pandas==0.23.4',
     'requests==2.19.1',
     'opencv-python==3.4.3.18',
-    'Pillow==5.2.0',
+    'Pillow==9.0.0',
     'matplotlib==2.2.3']
 
 tests_require=[
