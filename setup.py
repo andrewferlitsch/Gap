@@ -11,7 +11,7 @@ with open('README.md', 'r', encoding="utf-8") as f:
 
 install_requires = [
     'beautifulsoup4==4.6.3',
-    'numpy==1.15.1',
+    'numpy==1.22.0',
     'h5py==2.8.0',
     'imutils==0.5.1',
     'Unidecode==1.0.22',
