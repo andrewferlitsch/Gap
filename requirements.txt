@@ -1,5 +1,5 @@
 beautifulsoup4==4.6.3
-numpy==1.14.5
+numpy==1.22.0
 h5py==2.8.0
 imutils==0.5.1
 Unidecode==1.0.22
